@@ -97,38 +97,3 @@ CREATE TABLE Date_ran(
         id_formation   Int NOT NULL
 	,CONSTRAINT Date_ran_PK PRIMARY KEY (id_ran)
 )ENGINE=InnoDB;
-
-
-
-
-ALTER TABLE Formateur
-	ADD CONSTRAINT Formateur_GRM0_FK
-	FOREIGN KEY (numero_grm)
-	REFERENCES GRM(numero_grm);
-
-ALTER TABLE Date_formation
-	ADD CONSTRAINT Date_formation_Formation0_FK
-	FOREIGN KEY (id_formation)
-	REFERENCES Formation(id_formation);
-
-ALTER TABLE Date_formation 
-	ADD CONSTRAINT Date_formation_Formation0_AK 
-	UNIQUE (id_formation);
-
-ALTER TABLE Date_pae
-	ADD CONSTRAINT Date_pae_Formation0_FK
-	FOREIGN KEY (id_formation)
-	REFERENCES Formation(id_formation);
-
-ALTER TABLE Date_pae 
-	ADD CONSTRAINT Date_pae_Formation0_AK 
-	UNIQUE (id_formation);
-
-ALTER TABLE Date_certif
-	ADD CONSTRAINT Date_certif_Formation0_FK
-	FOREIGN KEY (id_formation)
-	REFERENCES Formation(id_formation);
-
-ALTER TABLE Date_certif 
-	ADD CONSTRAINT Date_certif_Formation0_AK 
-	UNIQUE (id_formation);
