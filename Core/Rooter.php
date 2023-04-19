@@ -12,21 +12,7 @@ class Rooter{
         session_start();
         // On retire le "trailing slash" éventuel de l'URL
         // On récupère l'URL
-        $uri = $_SERVER['REQUEST_URI'];
 
-        // On vérifie que uri n'est pas vide, n'est pas uniquement "/" et se termine par /
-        // index -1 signifie que l'on prend le tableau depuis la fin plutôt que le début, donc ici c'est le dernier caractère
-        if($uri !== "/planning/public/" && $uri[-1] === "/"){
-            // On enlève le dernier caractère (donc le /)
-            $uri = substr($uri, 0, -1);
-
-                // On envoie un code de redirection permanente
-                http_response_code(301);
-
-                // // On rediriger vers l'URL sans le /
-                header('Location: ' . $uri);
-                exit;
-        }
 
         // On gère les paramètres d'URL
         // p=controller/method/parameters

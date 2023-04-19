@@ -9,7 +9,7 @@ class Db extends PDO{
     private static $instance;
 
     private const DBHOST = "localhost";
-    private const DBNAME = "badge";
+    private const DBNAME = "planning";
     private const DBUSER = "AN";
     private const DBPASS = "projetbadge";
 

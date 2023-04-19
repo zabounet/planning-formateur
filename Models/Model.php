@@ -86,8 +86,10 @@ class Model extends Db{
     public function hydrate($donnees){
         foreach($donnees as $key => $value){
             // On récupère le nom du setter correspondant à la clé
-            // Nom -> setNom_Participant
-            $setter = 'set'.ucwords($key);
+            // Nom -> setNomFormateur
+            $setter = 'set'.ucwords($key, '_');
+            $setter = str_replace(ucwords('_' . $this->table, '_'), '' ,$setter);
+            $setter = str_replace('_', '', $setter);
 
             // On vérifie si le setter existe
             if(method_exists($this, $setter)){
@@ -97,6 +99,8 @@ class Model extends Db{
         }
         return $this;
     }
+
+  
 
     // Supprime une ligne de la bdd avec son id
     public function delete(int $id){

@@ -12,15 +12,14 @@
     <header style="width: 100%; height: 150px; background-color: crimson;">
         <nav>
             <ul>
-                
-                <li><a href="/planning/public/Participant/">Participants </a></li>
 
-                <?php if(isset($_SESSION['user']) && !empty($_SESSION['user']['id'])):?>
+                <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
                     <li><a href="/planning/public/Participant/profil">Profil </a></li>
-                    <li><a href="/planning/public/Participant/logout">Deconnexion</a></li>
+                    <li><a href="/planning/public/formateur/logout">logout</a></li>
+
                 <?php else :?>
                     <li><a href="/planning/public/Participant/register">Incription </a></li>
-                    <li><a href="/planning/public/Participant/login">Login </a></li>
+                    <li><a href="/planning/public/formateur/login">Login </a></li>
                 <?php endif;?>
 
             </ul>
@@ -28,6 +27,7 @@
     </header>
     <main>
         <div>
+            
             <?= $contenu ;?>
         </div>
     </main>
