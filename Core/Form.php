@@ -31,6 +31,12 @@ class Form{
         return true;
     }
 
+    
+    public function passwordVerify(string $password): bool
+    {
+        return $password;
+    }
+
     public function ajoutAttributs(array $attributs): string{
 
         // On initialise une chaîne de caractères 
