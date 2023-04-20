@@ -4,18 +4,6 @@
 
 
 #------------------------------------------------------------
-# Table: Date_formation
-#------------------------------------------------------------
-
-CREATE TABLE Date_formation(
-        id_date_formation    Int  Auto_increment  NOT NULL ,
-        date_debut_formation Date NOT NULL ,
-        date_fin_formation   Date NOT NULL
-	,CONSTRAINT Date_formation_PK PRIMARY KEY (id_date_formation)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
 # Table: Type Formation
 #------------------------------------------------------------
 
@@ -43,23 +31,8 @@ CREATE TABLE Couleurs(
         couleur_weekend           Char (7) NOT NULL ,
         couleur_interruption      Char (7) NOT NULL ,
         couleur_MNSP              Char (7) NOT NULL ,
-        couleur_itinerant         Char (7) NOT NULL
+        couleur_itinerant         Char (5) NOT NULL
 	,CONSTRAINT Couleurs_PK PRIMARY KEY (couleur_id)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
-# Table: Interruption
-#------------------------------------------------------------
-
-CREATE TABLE Interruption(
-        id_date_interruption    Int  Auto_increment  NOT NULL ,
-        date_debut_interruption Date ,
-        date_fin_interruption   Date ,
-        id_date_formation       Int NOT NULL
-	,CONSTRAINT Interruption_PK PRIMARY KEY (id_date_interruption)
-
-	,CONSTRAINT Interruption_Date_formation_FK FOREIGN KEY (id_date_formation) REFERENCES Date_formation(id_date_formation)
 )ENGINE=InnoDB;
 
 
@@ -109,18 +82,87 @@ CREATE TABLE Formateur(
 
 
 #------------------------------------------------------------
+# Table: Date_vacance
+#------------------------------------------------------------
+
+CREATE TABLE Date_vacance(
+        id_vacance          Int NOT NULL ,
+        date_debut_vacances Date NOT NULL ,
+        date_fin_vacances   Date NOT NULL ,
+        validation          Bool NOT NULL ,
+        id_formateur        Int
+	,CONSTRAINT Date_vacance_PK PRIMARY KEY (id_vacance)
+
+	,CONSTRAINT Date_vacance_Formateur_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Date_teletravail
+#------------------------------------------------------------
+
+CREATE TABLE Date_teletravail(
+        id_teletravail          Int NOT NULL ,
+        jour_teletravail        Date NOT NULL ,
+        date_demande_changement Date NOT NULL ,
+        date_prise_effet        Date ,
+        validation              Bool NOT NULL ,
+        id_formateur            Int
+	,CONSTRAINT Date_teletravail_PK PRIMARY KEY (id_teletravail)
+
+	,CONSTRAINT Date_teletravail_Formateur_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Acronyme_formation
+#------------------------------------------------------------
+
+CREATE TABLE Acronyme_formation(
+        id_acronyme_formation Int  Auto_increment  NOT NULL ,
+        acronyme_formation    Varchar (16) NOT NULL ,
+        numero_grn            Int NOT NULL
+	,CONSTRAINT Acronyme_formation_PK PRIMARY KEY (id_acronyme_formation)
+
+	,CONSTRAINT Acronyme_formation_GRN_FK FOREIGN KEY (numero_grn) REFERENCES GRN(numero_grn)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Formation
+#------------------------------------------------------------
+
+CREATE TABLE Formation(
+        id_formation          Int  Auto_increment  NOT NULL ,
+        description_formation Varchar (128) NOT NULL ,
+        numero_grn            Int NOT NULL ,
+        id_type_formation     Int NOT NULL ,
+        id_formateur          Int NOT NULL ,
+        id_ville              Int NOT NULL ,
+        id_acronyme_formation Int NOT NULL
+	,CONSTRAINT Formation_PK PRIMARY KEY (id_formation)
+
+	,CONSTRAINT Formation_GRN_FK FOREIGN KEY (numero_grn) REFERENCES GRN(numero_grn)
+	,CONSTRAINT Formation_Type_Formation0_FK FOREIGN KEY (id_type_formation) REFERENCES Type_Formation(id_type_formation)
+	,CONSTRAINT Formation_Formateur1_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
+	,CONSTRAINT Formation_Ville2_FK FOREIGN KEY (id_ville) REFERENCES Ville(id_ville)
+	,CONSTRAINT Formation_Acronyme_formation3_FK FOREIGN KEY (id_acronyme_formation) REFERENCES Acronyme_formation(id_acronyme_formation)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
 # Table: Date_pae
 #------------------------------------------------------------
 
 CREATE TABLE Date_pae(
-        id_date_pae       Int  Auto_increment  NOT NULL ,
-        date_debut_pae    Date ,
-        date_fin_pae      Date ,
-        id_date_formation Int NOT NULL ,
-        id_formateur      Int NOT NULL
+        id_date_pae    Int  Auto_increment  NOT NULL ,
+        date_debut_pae Date ,
+        date_fin_pae   Date ,
+        id_formation   Int NOT NULL ,
+        id_formateur   Int NOT NULL
 	,CONSTRAINT Date_pae_PK PRIMARY KEY (id_date_pae)
 
-	,CONSTRAINT Date_pae_Date_formation_FK FOREIGN KEY (id_date_formation) REFERENCES Date_formation(id_date_formation)
+	,CONSTRAINT Date_pae_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
 	,CONSTRAINT Date_pae_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
 )ENGINE=InnoDB;
 
@@ -133,36 +175,29 @@ CREATE TABLE Date_certif(
         id_certif         Int  Auto_increment  NOT NULL ,
         date_debut_certif Date ,
         date_fin_certif   Date ,
-        id_date_formation Int NOT NULL ,
+        id_formation      Int NOT NULL ,
         id_formateur      Int NOT NULL
 	,CONSTRAINT Date_certif_PK PRIMARY KEY (id_certif)
 
-	,CONSTRAINT Date_certif_Date_formation_FK FOREIGN KEY (id_date_formation) REFERENCES Date_formation(id_date_formation)
+	,CONSTRAINT Date_certif_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
 	,CONSTRAINT Date_certif_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
-	,CONSTRAINT Date_certif_Date_formation_AK UNIQUE (id_date_formation)
+	,CONSTRAINT Date_certif_Formation_AK UNIQUE (id_formation)
 )ENGINE=InnoDB;
 
 
 #------------------------------------------------------------
-# Table: Formation
+# Table: Interruption
 #------------------------------------------------------------
 
-CREATE TABLE Formation(
-        id_date_formation     Int NOT NULL ,
-        id_formation          Int NOT NULL ,
-        acronyme_formation    Varchar (10) NOT NULL ,
-        description_formation Varchar (128) NOT NULL ,
-        numero_grn            Int NOT NULL ,
-        id_type_formation     Int NOT NULL ,
-        id_formateur          Int NOT NULL ,
-        id_ville              Int NOT NULL
-	,CONSTRAINT Formation_PK PRIMARY KEY (id_date_formation,id_formation)
+CREATE TABLE Interruption(
+        id_interruption         Int  Auto_increment  NOT NULL ,
+        date_debut_interruption Date ,
+        date_fin_interruption   Date ,
+        id_formation            Int NOT NULL 
+	,CONSTRAINT Date_interruption_PK PRIMARY KEY (id_interruption)
 
-	,CONSTRAINT Formation_Date_formation_FK FOREIGN KEY (id_date_formation) REFERENCES Date_formation(id_date_formation)
-	,CONSTRAINT Formation_GRN0_FK FOREIGN KEY (numero_grn) REFERENCES GRN(numero_grn)
-	,CONSTRAINT Formation_Type_Formation1_FK FOREIGN KEY (id_type_formation) REFERENCES Type_Formation(id_type_formation)
-	,CONSTRAINT Formation_Formateur2_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
-	,CONSTRAINT Formation_Ville3_FK FOREIGN KEY (id_ville) REFERENCES Ville(id_ville)
+	,CONSTRAINT Date_interruption_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
+	,CONSTRAINT Date_interruption_Formation_AK UNIQUE (id_formation)
 )ENGINE=InnoDB;
 
 
@@ -171,47 +206,32 @@ CREATE TABLE Formation(
 #------------------------------------------------------------
 
 CREATE TABLE Date_ran(
-        id_ran            Int  Auto_increment  NOT NULL ,
-        date_debut_ran    Date ,
-        date_fin_ran      Date ,
-        id_date_formation Int NOT NULL ,
+        id_ran         Int  Auto_increment  NOT NULL ,
+        date_debut_ran Date ,
+        date_fin_ran   Date ,
+        id_formation      Int NOT NULL ,
         id_formateur      Int NOT NULL
 	,CONSTRAINT Date_ran_PK PRIMARY KEY (id_ran)
 
-	,CONSTRAINT Date_ran_Date_formation_FK FOREIGN KEY (id_date_formation) REFERENCES Date_formation(id_date_formation)
+	,CONSTRAINT Date_ran_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
 	,CONSTRAINT Date_ran_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
-	,CONSTRAINT Date_ran_Date_formation_AK UNIQUE (id_date_formation)
+	,CONSTRAINT Date_ran_Formation_AK UNIQUE (id_formation)
 )ENGINE=InnoDB;
 
 
 #------------------------------------------------------------
-# Table: Date_vacance
+# Table: Date_centre
 #------------------------------------------------------------
 
-CREATE TABLE Date_vacance(
-        id_vacance          Int  Auto_increment  NOT NULL ,
-        date_debut_vacances Date ,
-        date_fin_vacances   Date ,
-        validation          TINYINT NOT NULL ,
-        id_formateur        Int NOT NULL
-	,CONSTRAINT Date_vacance_PK PRIMARY KEY (id_vacance)
+CREATE TABLE Date_centre(
+        id_centre         Int  Auto_increment  NOT NULL ,
+        date_debut_centre Date ,
+        date_fin_centre   Date ,
+        id_formation      Int NOT NULL ,
+        id_formateur      Int NOT NULL
+	,CONSTRAINT Date_centre_PK PRIMARY KEY (id_centre)
 
-	,CONSTRAINT Date_vacance_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
+	,CONSTRAINT Date_centre_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
+	,CONSTRAINT Date_centre_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
 )ENGINE=InnoDB;
 
-
-#------------------------------------------------------------
-# Table: Date_teletravail
-#------------------------------------------------------------
-
-CREATE TABLE Date_teletravail(
-        id_teletravail          Int  Auto_increment  NOT NULL ,
-        jour_teletravail        Date ,
-        date_demande_changement Date ,
-        date_prise_effet        Date,
-        validation              TINYINT NOT NULL ,
-        id_formateur            Int NOT NULL
-	,CONSTRAINT Date_teletravail_PK PRIMARY KEY (id_teletravail)
-
-	,CONSTRAINT Date_teletravail_Formateur0_FK FOREIGN KEY (id_formateur) REFERENCES Formateur(id_formateur)
-)ENGINE=InnoDB;
