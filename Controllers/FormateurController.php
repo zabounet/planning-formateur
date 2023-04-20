@@ -15,10 +15,13 @@ class FormateurController extends Controller
             $pass = strip_tags($_POST['password']);
             $FormateurModel = new FormateurModel;
             $FormateurArray = $FormateurModel->findOneByEmail(strip_tags($_POST['email']));
+            
+            var_dump($FormateurArray);
 
             if(!$FormateurArray){
                 $_SESSION['erreur'] = 'l\'adresse ou pass est pas correct';
                 header('location: /planning/public/formateur/login');
+                
                 exit; 
             }
 
@@ -27,9 +30,12 @@ class FormateurController extends Controller
             //l'utilisateur existe
             $Formateur = $FormateurModel->hydrate($FormateurArray);
         
-
+            
             //verifier si le mot pass est correct
             if(sha1($pass) === $Formateur->getMdp()){
+
+                var_dump($pass);
+                var_dump($Formateur->getMdp());
 
                 if($Formateur->getPermissionsUtilisateur() >= 1){
                     $Formateur->setSessionAdmin();
