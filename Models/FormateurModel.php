@@ -34,8 +34,9 @@ class FormateurModel extends Model
         $_SESSION['formateur'] = 
         [
             'id' => $this->id_formateur,
-            'nom' => $this->mail_formateur,
-            'prenom' => $this->mail_formateur,
+            'mail' => $this->mail_formateur,
+            'prenom' => $this->prenom_formateur,
+            'nom' => $this->nom_formateur,
             'permissions_utilisateur' => $this->permissions_utilisateur
         ];
     }
@@ -45,8 +46,9 @@ class FormateurModel extends Model
         $_SESSION['admin'] = 
         [
             'id' => $this->id_formateur,
-            'nom' => $this->mail_formateur,
-            'prenom' => $this->mail_formateur,
+            'mail' => $this->mail_formateur,
+            'prenom' => $this->prenom_formateur,
+            'nom' => $this->nom_formateur,
             'permissions_utilisateur' => $this->permissions_utilisateur
         ];
     }

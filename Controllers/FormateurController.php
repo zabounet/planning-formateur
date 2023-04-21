@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Form;
 use App\Models\FormateurModel;
+use App\Models\VacanceModel;
 
 class FormateurController extends Controller
 {
@@ -83,6 +84,39 @@ class FormateurController extends Controller
         
     }
 
- 
+    public function profil(){
+        // if(isset($_POST['modifNom'])){
+        //     $nom = '';
+        //     $nom.json_encode($_SESSION['formateur']['nom']);
+        //     header('')
+        // }
+
+        if(Form::validate($_POST, ['date_debut','date_fin'])) {
+            // Récupérer les dates de début et de fin de vacances depuis le formulaire
+            $dateDebut = $_POST['date_debut'];
+            $dateFin = $_POST['date_fin'] ;
+
+            var_dump($_POST);
+
+             // Récupérer l'ID du formateur depuis la session
+            $idFormateur = $_SESSION['formateur']['id'];
+            
+            $vacance = new VacanceModel();
+                
+            $resultat = $vacance->createDateVacance($dateDebut, $dateFin, $idFormateur);
+
+            if ($resultat) {
+                // redirection vers une page de succès
+                echo'succsec';
+                exit;
+            } else {
+                // affichage d'un message d'erreur
+                echo 'Une erreur est survenue lors de l\'enregistrement.';
+            }
+    
+        }
+        $this->render('/formateur/profil');
+    }
+
 }
 

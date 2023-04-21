@@ -5,16 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
+    
+    <script src="/planning/Views/assets/js/script.js"></script>
 </head>
 <body>
 
     <header style="width: 100%; height: 150px; background-color: crimson;">
         <nav>
             <ul>
+            
 
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
-                    <li><a href="/planning/public/Participant/profil">Profil </a></li>
+                    <li><a href="/planning/public/profil/profilformateur">Profil </a></li>
                     <li><a href="/planning/public/formateur/logout">logout</a></li>
 
                 <?php else :?>
@@ -32,7 +36,5 @@
         </div>
     </main>
     <footer style="width: 100%; height: 150px; background-color: crimson;"></footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
