@@ -133,8 +133,10 @@ CREATE TABLE Acronyme_formation(
 #------------------------------------------------------------
 
 CREATE TABLE Formation(
-        id_formation          Int  Auto_increment  NOT NULL ,
+        id_formation          Varchar (128)  NOT NULL ,
         description_formation Varchar (128) NOT NULL ,
+        date_debut_formation  Date NOT NULL,
+        date_fin_formation    Date NOT NULL,
         numero_grn            Int NOT NULL ,
         id_type_formation     Int NOT NULL ,
         id_formateur          Int NOT NULL ,
@@ -158,7 +160,7 @@ CREATE TABLE Date_pae(
         id_date_pae    Int  Auto_increment  NOT NULL ,
         date_debut_pae Date ,
         date_fin_pae   Date ,
-        id_formation   Int NOT NULL ,
+        id_formation   Varchar (128) NOT NULL ,
         id_formateur   Int NOT NULL
 	,CONSTRAINT Date_pae_PK PRIMARY KEY (id_date_pae)
 
@@ -175,7 +177,7 @@ CREATE TABLE Date_certif(
         id_certif         Int  Auto_increment  NOT NULL ,
         date_debut_certif Date ,
         date_fin_certif   Date ,
-        id_formation      Int NOT NULL ,
+        id_formation      Varchar (128) NOT NULL ,
         id_formateur      Int NOT NULL
 	,CONSTRAINT Date_certif_PK PRIMARY KEY (id_certif)
 
@@ -193,7 +195,7 @@ CREATE TABLE Interruption(
         id_interruption         Int  Auto_increment  NOT NULL ,
         date_debut_interruption Date ,
         date_fin_interruption   Date ,
-        id_formation            Int NOT NULL 
+        id_formation            Varchar (128) NOT NULL 
 	,CONSTRAINT Date_interruption_PK PRIMARY KEY (id_interruption)
 
 	,CONSTRAINT Date_interruption_Formation_FK FOREIGN KEY (id_formation) REFERENCES Formation(id_formation)
@@ -209,7 +211,7 @@ CREATE TABLE Date_ran(
         id_ran         Int  Auto_increment  NOT NULL ,
         date_debut_ran Date ,
         date_fin_ran   Date ,
-        id_formation      Int NOT NULL ,
+        id_formation      Varchar (128) NOT NULL ,
         id_formateur      Int NOT NULL
 	,CONSTRAINT Date_ran_PK PRIMARY KEY (id_ran)
 
@@ -227,7 +229,7 @@ CREATE TABLE Date_centre(
         id_centre         Int  Auto_increment  NOT NULL ,
         date_debut_centre Date ,
         date_fin_centre   Date ,
-        id_formation      Int NOT NULL ,
+        id_formation      Varchar (128) NOT NULL ,
         id_formateur      Int NOT NULL
 	,CONSTRAINT Date_centre_PK PRIMARY KEY (id_centre)
 
