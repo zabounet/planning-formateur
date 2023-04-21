@@ -1,0 +1,71 @@
+
+
+/* general css */
+.titre{
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.date{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 40vw;
+}
+
+.container-info hr, .container-vacances hr{
+    border: 1px solid black;
+}
+/* profile css */
+
+.info-personel{
+    display: flex;
+    flex-direction: column;
+    
+    width: 60vw;
+    margin-right: auto;
+    margin-left: auto;
+    
+}
+
+
+
+.container-info{
+    border: solid black;
+    border-radius: 30px;
+    padding: 10px 20px;
+    background-color: aquamarine;
+}
+
+
+.nom-profil, .prenom-profil, .mail-profil, .mdp-profil{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 25px;
+    margin: 35px 0;
+}
+
+
+
+/* vacances css */
+
+.demande-vacances{
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.container-vacances{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
