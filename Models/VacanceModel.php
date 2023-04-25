@@ -14,7 +14,7 @@ class VacanceModel extends FormateurModel
 
     public function createDateVacance(string $dateDebut, string $dateFin,int $id_formateur){
             // Prepare the SQL query
-            $sql = "INSERT INTO Date_vacance (date_debut_vacances, date_fin_vacances, validation, id_formateur) 
+            $sql = "INSERT INTO date_vacance (date_debut_vacances, date_fin_vacances, validation, id_formateur) 
             VALUES (?, ?, 0, ?)";
 
             // Execute the query with the given parameters
