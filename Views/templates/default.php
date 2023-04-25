@@ -18,7 +18,7 @@
             
 
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
-                    <li><a href="/planning/public/profil/profilformateur">Profil </a></li>
+                    <li><a href="/planning/public/formateur/profil">Profil </a></li>
                     <li><a href="/planning/public/formateur/logout">logout</a></li>
 
                 <?php else :?>

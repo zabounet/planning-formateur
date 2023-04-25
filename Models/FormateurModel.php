@@ -56,6 +56,32 @@ class FormateurModel extends Model
         ];
     }
 
+
+    public function updateNomProfil($new_nom, $idFormateur){
+        $sql= "UPDATE ".$this->table." SET nom_formateur = ? WHERE id_formateur = ?";
+        $result = $this->requete($sql, [$new_nom, $idFormateur]);
+        return $result;
+        
+    }
+    public function updatePrenomProfil($new_prenom, $idFormateur){
+        $sql= "UPDATE ".$this->table." SET prenom_formateur = ? WHERE id_formateur = ?";
+        $result = $this->requete($sql, [$new_prenom, $idFormateur]);
+        return $result;
+        
+    }
+    public function updateMailProfil($new_mail, $idFormateur){
+        $sql= "UPDATE ".$this->table." SET mail_formateur = ? WHERE id_formateur = ?";
+        $result = $this->requete($sql, [$new_mail, $idFormateur]);
+        return $result;
+        
+    }
+    public function updateMdpProfil($new_mdp, $idFormateur){
+        $sql= "UPDATE ".$this->table." SET mdp_formateur = ? WHERE id_formateur = ?";
+        $result = $this->requete($sql, [$new_mdp, $idFormateur]);
+        return $result;
+        
+    }
+
     public function setId(int $id){
         $this->id_formateur = $id;
         return $this;

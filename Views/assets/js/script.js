@@ -1,9 +1,14 @@
 addEventListener('DOMContentLoaded', function(){
 
     let modif = document.getElementById('modifier_nom_formateur');
-        
-    modif.addEventListener('submit', function(e){
-        e.preventDefault;
-        // document.getElementById('nomProfil').innerHTML = `<input type="text" name="nom" value="<?= $_SESSION['formateur']['nom'] ;?>" />`;   
+    let nom = document.getElementsByClassName('nomProfil');
+    console.log('yes');
+
+    Array.from(nom).forEach(function(noms){
+        modif.addEventListener('click', function(){
+            sessionNom = noms.childNodes.getAttribute("value");
+            console.log(sessionNom);
+            noms.innerHTML = `<input type="text" name="nom" value="<?= ${sessionNom} ;?>" />`;   
+        })
     })
 })
