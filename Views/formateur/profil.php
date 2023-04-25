@@ -44,7 +44,9 @@
                 <?php if(str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4"):?>
                     <span>saisie voutre mot de pass actuel :</span>
                     <input type="password" name="current_mdp" class="mdpProfil" value="" />
+                    <span>saisie new mot de pass :</span>
                     <input type="password" name="new_mdp" class="mdpProfil" value="" />
+                    <span>saisie conf mot de pass :</span>
                     <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
                     <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" />
                 <?php else :?>
@@ -56,6 +58,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div>
     <span class="vacances">Demande vacanses</span>
@@ -184,76 +188,92 @@
     </div>
 </div>
 
-<form method="POST">
+<form method="POST" name="list-color">
 <div class="list-color">
     <div class="cloumn cloumn-color1">
         
         <div>
             <span>couleur_centre</span>
-            <input type="color" name="centre" id="">
+            <input type="color" name="centre" value="<?=$_SESSION['color']['centre']; ?>" id="">
         </div>
 
         <div >
             <span>couleur_pae</span>
-            <input type="color" name="pae" id="">
+            <input type="color" name="pae" value="<?= $_SESSION['color']['pae']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_certif</span>
-            <input type="color" name="certif" id="">
+            <input type="color" name="certif" value="<?= $_SESSION['color']['certif']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_ran</span>
-            <input type="color" name="ran" id="">
+            <input type="color" name="ran" value="<?= $_SESSION['color']['ran']; ?>" id="">
         </div>
     </div>
     <div class="cloumn cloumn-color2">
         <div>
             <span>couleur_vacance_demandees</span>
-            <input type="color" name="vacance_demandees" id="">
+            <input type="color" name="vacance_demandees" value="<?= $_SESSION['color']['vacance_demandees']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_vacance_validee</span>
-            <input type="color" name="vacance_validee" id="">
+            <input type="color" name="vacance_validee" value="<?= $_SESSION['color']['vacance_validee']; ?>" id="">
         </div>
 
         <div  >
             <span>couleur_tt</span>
-            <input type="color" name="couleur_tt" id="">
+            <input type="color" name="couleur_tt" value="<?=$_SESSION['color']['couleur_tt']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_ferie</span>
-            <input type="color" name="ferie" id="">
+            <input type="color" name="ferie" value="<?=$_SESSION['color']['ferie']; ?>" id="">
         </div>
     </div>
     <div class="cloumn cloumn-color3">
         <div>
             <span>couleur_weekend</span>
-            <input type="color" name="weekend" id="">
+            <input type="color" name="weekend" value="<?=$_SESSION['color']['weekend']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_interruption</span>
-            <input type="color" name="interruption" id="">
+            <input type="color" name="interruption" value="<?=$_SESSION['color']['interruption']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_MNSP</span>
-            <input type="color" name="MNSP" id="">
+            <input type="color" name="MNSP" value="<?=$_SESSION['color']['MNSP']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_itinerant</span>
-            <input type="color" name="itinerant" id="">
+            <input type="color" name="itinerant" value="<?=$_SESSION['color']['itinerant']; ?>" id="">
         </div>
     </div>
 </div>
-<input type="submit" value="send">
+<input type="submit" value="send" name="send-color">
 </form>
 
 
 <?php endif;?>
+<div>
+    <span style="color:red;">
+        <?php if (isset($_SESSION['error'])) {
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);}
+        ?>
+    </span>
+</div>
+<div>
+    <span style="color:green;">
+        <?php if (isset($_SESSION['success'])) {
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);}
+        ?>
+    </span>
+</div>
 

@@ -8,6 +8,7 @@ use App\Models\VacanceModel;
 use App\Models\TeletravailModel;
 
 use App\Core\Refresh;
+use App\Models\CouleursModel;
 
 class FormateurController extends Controller
 {
@@ -20,7 +21,6 @@ class FormateurController extends Controller
             $FormateurModel = new FormateurModel;
             $FormateurArray = $FormateurModel->findOneByEmail(strip_tags($_POST['email']));
             
-            var_dump($FormateurArray);
             // si il trouve pas le mail
             if(!$FormateurArray){
                 $_SESSION['erreur'] = 'l\'adresse ou pass est pas correct';
@@ -178,30 +178,36 @@ class FormateurController extends Controller
 
 
     // modif pass
-    if(Form::validate($_POST, ['verifierMdp'])){
-        
-        if(isset($_POST['modifMdp'])){
-   
-        $idFormateur = $_SESSION['formateur']['id'];
-        $new_mdp = $_POST['mdp'];
-        $profil = new FormateurModel();
-        $resultat = $profil->updateMdpProfil($new_mdp, $idFormateur);
-        if ($resultat) {
-            // message succès
-            if(isset($_SESSION['admin'])){
-                $_SESSION['admin']['mail'] = $new_mail;
-            } elseif(isset($_SESSION['formateur'])) {
-                $_SESSION['formateur']['mail'] = $new_mail;
+    if(Form::validate($_POST, ['verifierMdp'])) {
+        if(isset($_POST['current_mdp'])) {
+            $pass = $_POST['current_mdp'];
+            $FormateurModel = new FormateurModel;
+            $Formateur  = $FormateurModel->findOneByEmail($_SESSION['formateur']['mail']);
+            
+            //l'utilisateur existe
+            if(sha1($pass) === $Formateur->mdp_formateur){
+                if(!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
+                    $idFormateur = $_SESSION['formateur']['id'];
+                    $new_mdp = sha1($_POST['new_mdp']);
+                    $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);
+                    
+                    if ($resultat) {
+                       $_SESSION['success'] = "votre changement est bien effectué";
+                        Refresh::refresh('/planning/public/formateur/profil');
+                        exit;  
+                    } else {
+                        $_SESSION['error'] = "un error est fait pendant le enregistment merci de le saisir a nouvou";
+                    }
+                } else {
+                    $_SESSION['error'] = "le new mot de pass est pas match avec sa confirmation de mot de pass";
+                    
+                }
+            } else {
+                $_SESSION['error'] = "non c'est pas correct";
             }
-    
-            Refresh::refresh('/planning/public/formateur/profil');
-        exit;  
-        } else {
-            //  message d'erreur
-            echo 'Une erreur est survenue lors de l\'enregistrement.';
         }
     }
-}
+    
 
         // choisir la date de vacance
         if(Form::validate($_POST, ['date_debut','date_fin'])) {
@@ -261,10 +267,9 @@ class FormateurController extends Controller
             }
             
             if($nbreJours == 0){
-                echo 'c\'est pas choisi';
-                exit;
+                $_SESSION['error'] = "vous avez 0 jour choisi";
             } elseif($nbreJours > 2) {
-                echo "Vous ne pouvez pas choisir plus de deux jours pour le télétravail.";
+                $_SESSION['error'] = "non le max est 2 jours";
 
             }  else {
                 $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
@@ -277,18 +282,64 @@ class FormateurController extends Controller
                      $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                  }
             }
+            $_SESSION['success'] = "votre demande a bien envoyer";
             Refresh::refresh('/planning/public/formateur/profil');
             exit;
-        }  
-        
-        
-        if(Form::validate($_POST,['test'])){
-
-            if(isset($_POST['test'])){
-            echo $_POST['itinerant'];
-            };
         }
+
+
+
+        // modif les color
+        if(Form::validate($_POST,['send-color'])) {
+            
+            if(isset($_POST['send-color'])){
+            $couleur_centre = $_POST['centre'];
+            $couleur_pae = $_POST['pae'];
+            $couleur_certif = $_POST['certif'];
+            $couleur_ran = $_POST['ran'];
+            $couleur_vacance_demandees = $_POST['vacance_demandees'];
+            $couleur_vacance_validee = $_POST['vacance_validee'];
+            $couleur_tt =  $_POST['couleur_tt'];
+            $couleur_ferie = $_POST['ferie'];
+            $couleur_weekend = $_POST['weekend'];
+            $couleur_interruption = $_POST['interruption'];
+            $couleur_MNSP = $_POST['MNSP'];
+            $couleur_itinerant = $_POST['itinerant'];
+
+            $Couleurs = new CouleursModel();
+            $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_itinerant);
+                 if ($resultat) {
+                    $_SESSION['color'] = $_POST;
+                    $couleur_centre = $_SESSION['color']['centre'];
+                    $couleur_pae = $_SESSION['color']['pae'];
+                    $couleur_certif = $_SESSION['color']['certif'];
+                    $couleur_ran = $_SESSION['color']['ran'];
+                    $couleur_vacance_demandees = $_SESSION['color']['vacance_demandees'];
+                    $couleur_vacance_validee = $_SESSION['color']['vacance_validee'];
+                    $couleur_tt = $_SESSION['color']['couleur_tt'];
+                    $couleur_ferie = $_SESSION['color']['ferie'];
+                    $couleur_weekend = $_SESSION['color']['weekend'];
+                    $couleur_interruption = $_SESSION['color']['interruption'];
+                    $couleur_MNSP = $_SESSION['color']['MNSP'];
+                    $couleur_itinerant = $_SESSION['color']['itinerant'];
+                    $_SESSION['succes'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                 } else {
+                     $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                 }
+        }}
+
         
+
+
+
+
+
+
+
+
+
+
+
         $this->render('/formateur/profil');
     }
 
