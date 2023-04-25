@@ -34,9 +34,14 @@ class Model extends Db{
         return $this->requete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs, $valeurs)->fetchAll();
     }
 
-    // Retourne un seul résultat basé sur un ID
-    public function getOne(int $id){
-        return $this->requete("SELECT * FROM " . $this->table . " WHERE Id_Participant = '$id'")->fetch();
+    // Retourne un seul résultat basé sur un ID, un nom de colonne et une colonne de condition
+    public function getOne(string $col, string $conditionCol, string $id){
+        return $this->requete("SELECT ". $col . " FROM " . $this->table . " WHERE " . $conditionCol . " = " .$id)->fetch(Db::FETCH_ASSOC);
+    }
+
+    // Retourne la valeur du dernier id en prenant le champ d'id en paramètre
+    public function getLastId(string $idRow){
+        return $this->requete("SELECT MAX(". $idRow .") FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
     }
 
     // Créé une ligne de données via les informations reçues

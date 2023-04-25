@@ -4,7 +4,7 @@
             <select name="type">
                 <option disabled selected>Choisir un type de formation</option>
                 <?php foreach($infosFormation['Types'] as $types):?>
-                    <option value="<?= $types->designation_type_formation?>"><?= $types->designation_type_formation ;?></option>
+                    <option value="<?= $types->id_type_formation?>"><?= $types->designation_type_formation ;?></option>
                 <?php endforeach;?>
             </select>
         </label>
@@ -18,12 +18,17 @@
             </select>
         </label>
 
-        <label for="offre"> Nom de l'offre :
-            <input name="offre" type="text" placeholder="Exemple : AIS offre 1234">
+        <label for="acronyme"> Acronyme de formation :
+            <input name="acronyme" type="text" placeholder="Exemple : CDA">
         </label>
 
         <label for="description"> Description
             <textarea name="description" style="resize : none;"></textarea>
+        </label>
+
+        <label for="offre"> Numéro d'offre :
+            <input name="offre" type="text" placeholder="Exemple : offre 1234">
+        </label>
 
         <label for="date-debut-formation"> Date de début :
             <input name="date-debut-formation" type="date" min="<?= date('Y-m-d') ;?>">
@@ -36,7 +41,7 @@
             <select name="ville">
                 <option disabled selected>Choisir une ville</option>
                 <?php foreach($infosFormation['Villes'] as $villes):?>
-                    <option value="<?= $villes->nom_ville;?>"><?= $villes->nom_ville ;?></option>
+                    <option value="<?= $villes->id_ville;?>"><?= $villes->nom_ville ;?></option>
                 <?php endforeach;?>
             </select>
         </label>
@@ -70,7 +75,7 @@
             <select name="referent-formateur">
                 <option disabled selected>Choisir un formateur</option>
                 <?php foreach($infosFormation['Formateurs'] as $formateurs):?>
-                    <option value="<?= $formateurs['nom_formateur'] . $formateurs['prenom_formateur'];?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur'];?></option>
+                    <option value="<?= $formateurs['id_formateur'];?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur'];?></option>
                 <?php endforeach;?>
             </select>
         </label>
@@ -80,7 +85,7 @@
         </div>
     </fieldset>
 
-    <input type="submit" name="submit">
+    <input type="submit">
 </form>
 
 <?php 

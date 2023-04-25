@@ -11,9 +11,9 @@ class FormationModel extends Model{
     protected $date_fin_formation;
     protected $numero_grn;
     protected $id_type_formation;
-    protected $id_formateur;
-    protected $id_ville;
     protected $id_acronyme_formation;
+    protected $id_ville;
+    protected $id_formateur;
 
     public function __construct()
     {
@@ -29,6 +29,38 @@ class FormationModel extends Model{
             'Villes' => $this->requete("SELECT * FROM `Ville`")->fetchAll(),
             'Types' => $this->requete("SELECT * FROM `Type_Formation`")->fetchAll()
         ];
+    }
+
+    public function insertFormation(string $id, 
+                                    string $description, 
+                                    string $debutFormation, 
+                                    string $finFormation, 
+                                    string $idTypeFormation, 
+                                    string $grn, 
+                                    string $idAcronyme,
+                                    string $idFormateur ,
+                                    string $idVille){
+        $this->requete("INSERT INTO " . $this->table . "(
+        `id_formation`,
+        `description_formation`, 
+        `date_debut_formation`, 
+        `date_fin_formation`, 
+        `id_type_formation`, 
+        `numero_grn`, 
+        `id_acronyme_formation`, 
+        `id_formateur`, 
+        `id_ville`) 
+        VALUES(?,?,?,?,?,?,?,?,?)" 
+        ,[$id,
+        $description,
+        $debutFormation, 
+        $finFormation, 
+        $idTypeFormation, 
+        $grn, 
+        $idAcronyme, 
+        $idFormateur, 
+        $idVille]);
+
     }
     
     /**

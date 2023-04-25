@@ -41,5 +41,6 @@ class Db extends PDO{
         }
         return self::$instance;
     }
+
 }
 ?>
