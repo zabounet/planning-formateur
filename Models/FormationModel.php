@@ -6,12 +6,12 @@ use App\Core\Db;
 class FormationModel extends Model{
 
     protected $id_formation;
+    protected $acronyme_formation;
     protected $description_formation;
     protected $date_debut_formation;
     protected $date_fin_formation;
     protected $numero_grn;
     protected $id_type_formation;
-    protected $id_acronyme_formation;
     protected $id_ville;
     protected $id_formateur;
 
@@ -31,37 +31,48 @@ class FormationModel extends Model{
         ];
     }
 
-    public function insertFormation(string $id, 
-                                    string $description, 
-                                    string $debutFormation, 
-                                    string $finFormation, 
-                                    string $idTypeFormation, 
-                                    string $grn, 
-                                    string $idAcronyme,
-                                    string $idFormateur ,
-                                    string $idVille){
-        $this->requete("INSERT INTO " . $this->table . "(
+    public function insertFormation(
+        string $id,
+        string $acronyme,
+        string $description,
+        string $debutFormation,
+        string $finFormation,
+        string $idTypeFormation,
+        string $grn,
+        string $idFormateur,
+        string $idVille
+    ): void {
+
+        $this->requete(
+            "INSERT INTO " . $this->table . "(
         `id_formation`,
+        `acronyme_formation`, 
         `description_formation`, 
         `date_debut_formation`, 
         `date_fin_formation`, 
         `id_type_formation`, 
         `numero_grn`, 
-        `id_acronyme_formation`, 
         `id_formateur`, 
         `id_ville`) 
-        VALUES(?,?,?,?,?,?,?,?,?)" 
-        ,[$id,
-        $description,
-        $debutFormation, 
-        $finFormation, 
-        $idTypeFormation, 
-        $grn, 
-        $idAcronyme, 
-        $idFormateur, 
-        $idVille]);
-
+        VALUES(?,?,?,?,?,?,?,?,?)",
+            [
+                $id,
+                $acronyme,
+                $description,
+                $debutFormation,
+                $finFormation,
+                $idTypeFormation,
+                $grn,
+                $idFormateur,
+                $idVille
+            ]
+        );
     }
+
+    // Insère une période de dates dans une table données contenant 2 champs de date et 1 une clé étrangère
+    public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
+        return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
+     }  
     
     /**
      * Get the value of id_formation
@@ -187,15 +198,15 @@ class FormationModel extends Model{
      * Get the value of id_acronyme_formation
      */
     public function getIdAcronymeFormation() {
-        return $this->id_acronyme_formation;
+        return $this->acronyme_formation;
     }
 
     /**
      * Set the value of id_acronyme_formation
      */
-    public function setIdAcronymeFormation($id_acronyme_formation): self {
-        $this->id_acronyme_formation = $id_acronyme_formation;
+    public function setIdAcronymeFormation($acronyme_formation): self {
+        $this->acronyme_formation = $acronyme_formation;
         return $this;
     }
 }
-;?>
+;
