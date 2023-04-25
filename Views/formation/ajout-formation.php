@@ -89,18 +89,4 @@
 </form>
 
 <?php 
-// $id = $_POST["grn"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . ' ' . $_POST["ville"];
-// echo "<h1>" . $id . "</h1>";
-// var_dump($_POST);
-// $total = count($_POST['date-debut-pae']);
-// for($i = 0; $i < $total; $i++){
-//     $dateDebutPae = $_POST['date-debut-pae'][$i];
-//     $dateFinPae = $_POST['date-fin-pae'][$i];
-
-//     echo $dateDebutPae;
-//     echo "<br>";
-//     echo $dateFinPae;
-//     echo "<br><br>";
-
-// }
 ;?>

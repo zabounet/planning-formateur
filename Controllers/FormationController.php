@@ -14,8 +14,8 @@ use App\Models\InterruptionModel;
 use App\Models\FormateurModel;
 use App\Models\VilleModel;
 use App\Models\GRNModel;
+use App\Models\Model;
 use App\Models\Type_FormationModel;
-use App\Models\Acronyme_formationModel;
 
 class FormationController extends Controller
 {
@@ -41,48 +41,58 @@ class FormationController extends Controller
         'date-debut-interruption', 
         'date-fin-interruption', 
         'referent-formateur', 
+        'formateur',
         'date-debut-intervention', 
         'date-fin-intervention'])) {
 
             //Déclaration des objets model
-            $acronyme = new Acronyme_formationModel;
-            $ville = new VilleModel;
-            $formation = new FormationModel;
+            $database = new FormationModel;
 
-            // $acronyme->insertAcronym($_POST['acronyme'], $_POST['grn']);
-            $idAcronyme = $acronyme->getLastId("id_acronyme_formation");
+            //Récupèration du nom de la ville pour composer l'id de la formation
+            $villeNom = $database->getOne("Ville", "nom_ville", "id_ville", $_POST['ville']);
 
-            $villeNom = $ville->getOne("nom_ville", "id_ville" ,$_POST['ville']);
+            //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
+            $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
 
             //Création de l'id de la formation
             $idFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " à " . $villeNom['nom_ville'];
-            $formation->insertFormation(
+            
+            //Insertion des données dans la table formation
+            $database->insertFormation(
                 $idFormation, 
+                $_POST['acronyme'], 
                 $_POST['description'], 
                 $_POST['date-debut-formation'], 
                 $_POST['date-fin-formation'], 
                 $_POST['type'], 
                 $_POST['grn'], 
-                $idAcronyme["MAX(id_acronyme_formation)"], 
-                $_POST['referent-formateur'], 
+                $referent, 
                 $_POST['ville']);
 
-            // $db = $formation->lastInsertId();
-
-            // $periodesEntreprise = count($_POST['date-debut-entreprise']);
-            // for($i = 0; $i < $periodesEntreprise; $i++){
-            //     $pae = new Date_paeModel;
-            //     $pae->insertPAE($db, );
-            // }
-            // $periodesCentre = count($_POST['date-debut-centre']);
-            // for($i = 0; $i < $periodesCentre; $i++){
-            // }
-            // $periodesInterruption = count($_POST['date-debut-interruption']);
-            // for($i = 0; $i < $periodesInterruption; $i++){
-            // }
-            // $periodesFormateurs = count($_POST['date-debut-intervention']);
-            // for($i = 0; $i < $periodesFormateurs; $i++){
-            // }
+            $periodesEntreprise = count($_POST['date-debut-entreprise']);
+            for($i = 0; $i < $periodesEntreprise; $i++){
+                $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $idFormation);
+            }
+            $periodesCentre = count($_POST['date-debut-centre']);
+            for($i = 0; $i < $periodesCentre; $i++){
+                $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $idFormation);
+            }
+            $periodesRan = count($_POST['date-debut-ran']);
+            for($i = 0; $i < $periodesRan; $i++){
+                $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $idFormation);
+            }
+            $periodesCertif = count($_POST['date-debut-certification']);
+            for($i = 0; $i < $periodesCertif; $i++){
+                $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $idFormation);
+            }
+            $periodesInterruption = count($_POST['date-debut-interruption']);
+            for($i = 0; $i < $periodesInterruption; $i++){
+                $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $idFormation);
+            }
+            $periodesFormateurs = count($_POST['date-debut-intervention']);
+            for($i = 0; $i < $periodesFormateurs; $i++){
+                $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
+            }
         }
 
         $infos = new FormationModel;

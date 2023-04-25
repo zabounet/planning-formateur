@@ -25,10 +25,6 @@ class Form{
                 if(isset($form[$champFacultatif]) && !empty($form[$champFacultatif])){
                     //
                 }
-                else{
-                    $form[$champFacultatif] = "Vide";
-
-                }
             }
         return true;
     }
