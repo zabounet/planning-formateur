@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Core\Db;
+
 class FormateurModel extends Model
 {
     protected $id_formateur;
@@ -26,6 +28,7 @@ class FormateurModel extends Model
     {
         return $this->requete("SELECT * FROM {$this->table} WHERE mail_formateur = ?", [$email])->fetch();
     }
+
 
 
     //cree la session de l'usilateur

@@ -20,14 +20,16 @@ class Form{
             } 
         }
         // Si le paramètre $champsFacultatif n'est pas vide
-        if($champsFacultatifs !== []){
-            foreach($champsFacultatifs as $champFacultatif){
+        foreach($champsFacultatifs as $champFacultatif){
                 // Si les champs sont remplis et non vide
                 if(isset($form[$champFacultatif]) && !empty($form[$champFacultatif])){
                     //
                 }
+                else{
+                    $form[$champFacultatif] = "Vide";
+
+                }
             }
-        }
         return true;
     }
 
