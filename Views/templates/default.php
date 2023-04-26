@@ -7,8 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
-    
-    <script src="/planning/Views/assets/js/script.js"></script>
+    <script src="/planning/Views/assets/js/formation.js"></script>
 </head>
 <body>
 
@@ -19,7 +18,7 @@
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
                     <li><a href="/planning/public/formateur/profil">Profil </a></li>
                     <li><a href="/planning/public/formateur/logout">logout</a></li>
-                    <li><a href="/planning/public/formation/ajouterFormation">Ajouter une nouvelle formation</a></li>
+                    <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
                     <li><a href="/planning/public/admin/"></a></li>
                     <li><a href="/planning/public/admin/"></a></li>
                 <?php else :?>
