@@ -293,38 +293,27 @@ class FormateurController extends Controller
         if(Form::validate($_POST,['send-color'])) {
             
             if(isset($_POST['send-color'])){
-            $couleur_centre = $_POST['centre'];
-            $couleur_pae = $_POST['pae'];
-            $couleur_certif = $_POST['certif'];
-            $couleur_ran = $_POST['ran'];
-            $couleur_vacance_demandees = $_POST['vacance_demandees'];
-            $couleur_vacance_validee = $_POST['vacance_validee'];
-            $couleur_tt =  $_POST['couleur_tt'];
-            $couleur_ferie = $_POST['ferie'];
-            $couleur_weekend = $_POST['weekend'];
-            $couleur_interruption = $_POST['interruption'];
-            $couleur_MNSP = $_POST['MNSP'];
-            $couleur_itinerant = $_POST['itinerant'];
-
-            $Couleurs = new CouleursModel();
-            $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_itinerant);
-                 if ($resultat) {
+                $couleur_centre = $_POST['centre'];
+                $couleur_pae = $_POST['pae'];
+                $couleur_certif = $_POST['certif'];
+                $couleur_ran = $_POST['ran'];
+                $couleur_vacance_demandees = $_POST['vacance_demandees'];
+                $couleur_vacance_validee = $_POST['vacance_validee'];
+                $couleur_tt =  $_POST['couleur_tt'];
+                $couleur_ferie = $_POST['ferie'];
+                $couleur_weekend = $_POST['weekend'];
+                $couleur_interruption = $_POST['interruption'];
+                $couleur_MNSP = $_POST['MNSP'];
+                $couleur_itinerant = $_POST['itinerant'];
+                
+                $Couleurs = new CouleursModel();
+                $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_itinerant);
+                if ($resultat) {
                     $_SESSION['color'] = $_POST;
-                    $couleur_centre = $_SESSION['color']['centre'];
-                    $couleur_pae = $_SESSION['color']['pae'];
-                    $couleur_certif = $_SESSION['color']['certif'];
-                    $couleur_ran = $_SESSION['color']['ran'];
-                    $couleur_vacance_demandees = $_SESSION['color']['vacance_demandees'];
-                    $couleur_vacance_validee = $_SESSION['color']['vacance_validee'];
-                    $couleur_tt = $_SESSION['color']['couleur_tt'];
-                    $couleur_ferie = $_SESSION['color']['ferie'];
-                    $couleur_weekend = $_SESSION['color']['weekend'];
-                    $couleur_interruption = $_SESSION['color']['interruption'];
-                    $couleur_MNSP = $_SESSION['color']['MNSP'];
-                    $couleur_itinerant = $_SESSION['color']['itinerant'];
-                    $_SESSION['succes'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    $_SESSION['success'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    Refresh::refresh('/planning/public/formateur/profil');
                  } else {
-                     $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                     $_SESSION['error'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                  }
         }}
 
@@ -338,8 +327,8 @@ class FormateurController extends Controller
 
 
 
-
-
+        $colors = new CouleursModel;
+        $colors->setSessionCoulors();
         $this->render('/formateur/profil');
     }
 
