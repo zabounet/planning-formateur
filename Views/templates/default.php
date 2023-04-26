@@ -15,12 +15,13 @@
     <header style="width: 100%; height: 150px; background-color: crimson;">
         <nav>
             <ul>
-            
-
+                <li><a href="/planning/public">Home</a></li>
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
                     <li><a href="/planning/public/formateur/profil">Profil </a></li>
                     <li><a href="/planning/public/formateur/logout">logout</a></li>
-
+                    <li><a href="/planning/public/formation/ajouterFormation">Ajouter une nouvelle formation</a></li>
+                    <li><a href="/planning/public/admin/"></a></li>
+                    <li><a href="/planning/public/admin/"></a></li>
                 <?php else :?>
                     <li><a href="/planning/public/Participant/register">Incription </a></li>
                     <li><a href="/planning/public/formateur/login">Login </a></li>
@@ -31,7 +32,6 @@
     </header>
     <main>
         <div>
-            
             <?= $contenu ;?>
         </div>
     </main>
