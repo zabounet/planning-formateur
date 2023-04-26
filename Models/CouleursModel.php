@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Core\Db;
+
 class CouleursModel extends Model
 {
     protected $couleur_id;
@@ -23,14 +25,34 @@ class CouleursModel extends Model
         $this->table = strtolower(str_replace('Model', '', $class));
     }
 
-    public function getColors(){
-        return $this->requete("SELECT * FROM {$this->table}")->fetch();
-    }
-
     public function setIdCouleur($couleur_id): self {
         $this->couleur_id = $couleur_id;
         return $this;
     }
+
+
+    public function setSessionCoulors(): void{
+       $_SESSION['color'] = $this->requete("SELECT * FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
+       unset($_SESSION['color']['couleur_id']);
+        // $_SESSION['color'] = 
+        // [
+        //     'id' => $this->couleur_id,
+        //     'centre' => $this->couleur_centre,
+        //     'pae' => $this->couleur_pae,
+        //     'certif' => $this->couleur_certif,
+        //     'ran' => $this->couleur_ran,
+        //     'vacance_demandees' => $this->couleur_vacance_demandees,
+        //     'vacance_validee' => $this->couleur_vacance_validee,
+        //     'couleur_tt' => $this->couleur_tt,
+        //     'ferie' => $this->couleur_ferie,
+        //     'weekend' => $this->couleur_weekend,
+        //     'interruption' => $this->couleur_interruption,
+        //     'MNSP' => $this->couleur_MNSP,
+        //     'itinerant' => $this->couleur_itinerant ];
+    }
+
+    
+
     public function updateCouleur(string $couleur_centre, 
                                   string $couleur_pae, 
                                   string $couleur_certif, 
@@ -43,7 +65,7 @@ class CouleursModel extends Model
                                   string $couleur_interruption ,
                                   string $couleur_MNSP ,
                                   string $couleur_itinerant){
-        $this->requete("UPDATE " . $this->table . " SET
+    $result = $this->requete("UPDATE " . $this->table . " SET
         `couleur_centre` = ?, 
         `couleur_pae` = ?, 
         `couleur_certif` = ?, 
@@ -69,8 +91,122 @@ class CouleursModel extends Model
             $couleur_interruption ,
             $couleur_MNSP ,
             $couleur_itinerant]);
+
+            if ($result !== false) {
+                // The update was successful
+                return true;
+            } else {
+                // The update failed
+                return false;
+            }
     }
 
+   
     
+    public function getId(){
+        return $this->couleur_id;
+    }
+
+    public function setCouleurCentre($couleur_centre){
+        $this->couleur_centre = $couleur_centre;
+        return $this;
+    }
+    
+    public function getCouleurCentre(){
+        return $this->couleur_centre;
+    }
+
+    public function setCouleurPae($couleur_pae){
+        $this->couleur_pae = $couleur_pae;
+        return $this;
+    }
+    
+    public function getCouleurPae(){
+        return $this->couleur_pae;
+    }
+
+    public function setCouleurRan($couleur_ran){
+        $this->couleur_ran = $couleur_ran;
+        return $this;
+    }
+    
+    public function getCouleurRan(){
+        return $this->couleur_ran;
+    }
+
+    public function setCouleurVacanceDemandees($couleur_vacance_demandees){
+        $this->couleur_vacance_demandees = $couleur_vacance_demandees;
+        return $this;
+    }
+    
+    public function getCouleurVacanceDemandees(){
+        return $this->couleur_vacance_demandees;
+    }
+
+    public function setCouleurVacanceValidee($couleur_vacance_validee){
+        $this->couleur_vacance_validee = $couleur_vacance_validee;
+        return $this;
+    }
+    
+    public function getCouleurVacanceValidee(){
+        return $this->couleur_vacance_validee;
+    }
+
+    public function setCouleurTt($couleur_tt){
+        $this->couleur_tt = $couleur_tt;
+        return $this;
+    }
+    
+    public function getCouleurTt(){
+        return $this->couleur_tt;
+    }
+
+    public function setCouleurFerie($couleur_ferie){
+        $this->couleur_ferie = $couleur_ferie;
+        return $this;
+    }
+    
+    public function getCouleurFerie(){
+        return $this->couleur_ferie;
+    }
+
+    public function setCouleurWeekend($couleur_weekend){
+        $this->couleur_weekend = $couleur_weekend;
+        return $this;
+    }
+    
+    public function getCouleurWeekend(){
+        return $this->couleur_weekend;
+    }
+
+    public function setCouleurInterruption($couleur_interruption){
+        $this->couleur_interruption = $couleur_interruption;
+        return $this;
+    }
+    
+    public function getCouleurInterruption(){
+        return $this->couleur_interruption;
+    }
+
+    public function setCouleurMnsp($couleur_MNSP){
+        $this->couleur_MNSP = $couleur_MNSP;
+        return $this;
+    }
+    
+    public function getCouleurMnsp(){
+        return $this->couleur_MNSP;
+    }
+
+    public function setCouleurItinerant($couleur_itinerant){
+        $this->couleur_itinerant = $couleur_itinerant;
+        return $this;
+    }
+    
+    public function getCouleurItinerant(){
+        return $this->couleur_itinerant;
+    }
+
+
      
 }
+

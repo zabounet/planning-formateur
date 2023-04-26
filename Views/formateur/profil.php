@@ -194,33 +194,33 @@
         
         <div>
             <span>couleur_centre</span>
-            <input type="color" name="centre" value="<?=$_SESSION['color']['centre']; ?>" id="">
+            <input type="color" name="centre" value="<?=$_SESSION['color']['couleur_centre']; ?>" id="">
         </div>
 
         <div >
             <span>couleur_pae</span>
-            <input type="color" name="pae" value="<?= $_SESSION['color']['pae']; ?>" id="">
+            <input type="color" name="pae" value="<?= $_SESSION['color']['couleur_pae']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_certif</span>
-            <input type="color" name="certif" value="<?= $_SESSION['color']['certif']; ?>" id="">
+            <input type="color" name="certif" value="<?= $_SESSION['color']['couleur_certif']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_ran</span>
-            <input type="color" name="ran" value="<?= $_SESSION['color']['ran']; ?>" id="">
+            <input type="color" name="ran" value="<?= $_SESSION['color']['couleur_ran']; ?>" id="">
         </div>
     </div>
     <div class="cloumn cloumn-color2">
         <div>
             <span>couleur_vacance_demandees</span>
-            <input type="color" name="vacance_demandees" value="<?= $_SESSION['color']['vacance_demandees']; ?>" id="">
+            <input type="color" name="vacance_demandees" value="<?= $_SESSION['color']['couleur_vacance_demandees']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_vacance_validee</span>
-            <input type="color" name="vacance_validee" value="<?= $_SESSION['color']['vacance_validee']; ?>" id="">
+            <input type="color" name="vacance_validee" value="<?= $_SESSION['color']['couleur_vacance_validee']; ?>" id="">
         </div>
 
         <div  >
@@ -230,28 +230,28 @@
 
         <div>
             <span>couleur_ferie</span>
-            <input type="color" name="ferie" value="<?=$_SESSION['color']['ferie']; ?>" id="">
+            <input type="color" name="ferie" value="<?=$_SESSION['color']['couleur_ferie']; ?>" id="">
         </div>
     </div>
     <div class="cloumn cloumn-color3">
         <div>
             <span>couleur_weekend</span>
-            <input type="color" name="weekend" value="<?=$_SESSION['color']['weekend']; ?>" id="">
+            <input type="color" name="weekend" value="<?=$_SESSION['color']['couleur_weekend']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_interruption</span>
-            <input type="color" name="interruption" value="<?=$_SESSION['color']['interruption']; ?>" id="">
+            <input type="color" name="interruption" value="<?=$_SESSION['color']['couleur_interruption']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_MNSP</span>
-            <input type="color" name="MNSP" value="<?=$_SESSION['color']['MNSP']; ?>" id="">
+            <input type="color" name="MNSP" value="<?=$_SESSION['color']['couleur_MNSP']; ?>" id="">
         </div>
 
         <div>
             <span>couleur_itinerant</span>
-            <input type="color" name="itinerant" value="<?=$_SESSION['color']['itinerant']; ?>" id="">
+            <input type="color" name="itinerant" value="<?=$_SESSION['color']['couleur_itinerant']; ?>" id="">
         </div>
     </div>
 </div>
