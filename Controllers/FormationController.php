@@ -4,18 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Form;
 
-use App\Core\Db;
 use App\Models\FormationModel;
-use App\Models\Date_paeModel;
-use App\Models\Date_centreModel;
-use App\Models\Date_certifModel;
-use App\Models\Date_ranModel;
-use App\Models\InterruptionModel;
-use App\Models\FormateurModel;
-use App\Models\VilleModel;
-use App\Models\GRNModel;
-use App\Models\Model;
-use App\Models\Type_FormationModel;
 
 class FormationController extends Controller
 {
@@ -106,7 +95,7 @@ class FormationController extends Controller
             exit;
         }
         else{
-            $this->render('/formation/ajout-formation', compact('infosFormation'), 'formation');
+            $this->render('/admin/ajouterFormation', compact('infosFormation'));
         };
     }
 }
