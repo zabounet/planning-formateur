@@ -31,7 +31,7 @@ CREATE TABLE Couleurs(
         couleur_weekend           Char (7) NOT NULL ,
         couleur_interruption      Char (7) NOT NULL ,
         couleur_MNSP              Char (7) NOT NULL ,
-        couleur_itinerant         Char (5) NOT NULL
+        couleur_itinerant         Char (7) NOT NULL
 	,CONSTRAINT Couleurs_PK PRIMARY KEY (couleur_id)
 )ENGINE=InnoDB;
 

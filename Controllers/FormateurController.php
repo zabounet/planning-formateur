@@ -13,8 +13,7 @@ use App\Models\CouleursModel;
 class FormateurController extends Controller
 {
 
-    public function login(): void
-    {
+    public function login(): void{
         //on verifie si le formulaire est complet
         if(Form::validate($_POST, ['email', 'password'])){
             $pass = strip_tags($_POST['password']);
@@ -118,33 +117,34 @@ class FormateurController extends Controller
                 }
             }
         }
-            // modif prenom
-            if(Form::validate($_POST, ['modifPrenom'])){
+
+        // modif prenom
+        if(Form::validate($_POST, ['modifPrenom'])){
                 if(isset($_SESSION['admin'])){
                     $idFormateur = $_SESSION['admin']['id'];
                 } elseif(isset($_SESSION['formateur'])) {
                     $idFormateur = $_SESSION['formateur']['id'];
                 }
-            if(isset($_POST['modifPrenom'])){
+                if(isset($_POST['modifPrenom'])){
                 
-                $new_prenom = $_POST['prenom'];
-                $profil = new FormateurModel();
-                $resultat = $profil->updatePrenomProfil($new_prenom, $idFormateur);
-                if ($resultat) {
-                    // message succès
-                    if(isset($_SESSION['admin'])){
-                        $_SESSION['admin']['prenom'] = $new_prenom;
-                    } elseif(isset($_SESSION['formateur'])) {
-                        $_SESSION['formateur']['prenom'] = $new_prenom;
+                    $new_prenom = $_POST['prenom'];
+                    $profil = new FormateurModel();
+                    $resultat = $profil->updatePrenomProfil($new_prenom, $idFormateur);
+                    if ($resultat) {
+                        // message succès
+                        if(isset($_SESSION['admin'])){
+                            $_SESSION['admin']['prenom'] = $new_prenom;
+                        } elseif(isset($_SESSION['formateur'])) {
+                            $_SESSION['formateur']['prenom'] = $new_prenom;
+                        }
+                
+                        Refresh::refresh('/planning/public/formateur/profil');
+                        exit;  
+                    } else {
+                        //  message d'erreur
+                        echo 'Une erreur est survenue lors de l\'enregistrement.';
                     }
-            
-                    Refresh::refresh('/planning/public/formateur/profil');
-                exit;  
-                } else {
-                    //  message d'erreur
-                    echo 'Une erreur est survenue lors de l\'enregistrement.';
                 }
-            }
         }
 
         // modif mail
@@ -154,59 +154,59 @@ class FormateurController extends Controller
             } elseif(isset($_SESSION['formateur'])) {
                 $idFormateur = $_SESSION['formateur']['id'];
             }
-        if(isset($_POST['modifMail'])){
+            if(isset($_POST['modifMail'])){
             
-            $new_mail = $_POST['mail'];
-            $profil = new FormateurModel();
-            $resultat = $profil->updateMailProfil($new_mail, $idFormateur);
-            if ($resultat) {
-                // message succès
-                if(isset($_SESSION['admin'])){
-                    $_SESSION['admin']['mail'] = $new_mail;
-                } elseif(isset($_SESSION['formateur'])) {
-                    $_SESSION['formateur']['mail'] = $new_mail;
+                $new_mail = $_POST['mail'];
+                $profil = new FormateurModel();
+                $resultat = $profil->updateMailProfil($new_mail, $idFormateur);
+                if ($resultat) {
+                    // message succès
+                    if(isset($_SESSION['admin'])){
+                        $_SESSION['admin']['mail'] = $new_mail;
+                    } elseif(isset($_SESSION['formateur'])) {
+                        $_SESSION['formateur']['mail'] = $new_mail;
+                    }
+            
+                    Refresh::refresh('/planning/public/formateur/profil');
+                    exit;  
+                } else {
+                    //  message d'erreur
+                    echo 'Une erreur est survenue lors de l\'enregistrement.';
                 }
-        
-                Refresh::refresh('/planning/public/formateur/profil');
-            exit;  
-            } else {
-                //  message d'erreur
-                echo 'Une erreur est survenue lors de l\'enregistrement.';
             }
         }
-    }
 
 
-    // modif pass
-    if(Form::validate($_POST, ['verifierMdp'])) {
-        if(isset($_POST['current_mdp'])) {
-            $pass = $_POST['current_mdp'];
-            $FormateurModel = new FormateurModel;
-            $Formateur  = $FormateurModel->findOneByEmail($_SESSION['formateur']['mail']);
-            
-            //l'utilisateur existe
-            if(sha1($pass) === $Formateur->mdp_formateur){
-                if(!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
-                    $idFormateur = $_SESSION['formateur']['id'];
-                    $new_mdp = sha1($_POST['new_mdp']);
-                    $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);
-                    
-                    if ($resultat) {
-                       $_SESSION['success'] = "votre changement est bien effectué";
-                        Refresh::refresh('/planning/public/formateur/profil');
-                        exit;  
+        // modif pass
+        if(Form::validate($_POST, ['verifierMdp'])) {
+            if(isset($_POST['current_mdp'])) {
+                $pass = $_POST['current_mdp'];
+                $FormateurModel = new FormateurModel;
+                $Formateur  = $FormateurModel->findOneByEmail($_SESSION['formateur']['mail']);
+                
+                //l'utilisateur existe
+                if(sha1($pass) === $Formateur->mdp_formateur){
+                    if(!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
+                        $idFormateur = $_SESSION['formateur']['id'];
+                        $new_mdp = sha1($_POST['new_mdp']);
+                        $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);
+                        
+                        if ($resultat) {
+                        $_SESSION['success'] = "votre changement est bien effectué";
+                            Refresh::refresh('/planning/public/formateur/profil');
+                            exit;  
+                        } else {
+                            $_SESSION['error'] = "un error est fait pendant le enregistment merci de le saisir a nouvou";
+                        }
                     } else {
-                        $_SESSION['error'] = "un error est fait pendant le enregistment merci de le saisir a nouvou";
+                        $_SESSION['error'] = "le new mot de pass est pas match avec sa confirmation de mot de pass";
+                        
                     }
                 } else {
-                    $_SESSION['error'] = "le new mot de pass est pas match avec sa confirmation de mot de pass";
-                    
+                    $_SESSION['error'] = "non c'est pas correct";
                 }
-            } else {
-                $_SESSION['error'] = "non c'est pas correct";
             }
         }
-    }
     
 
         // choisir la date de vacance
@@ -310,27 +310,33 @@ class FormateurController extends Controller
                 $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_itinerant);
                 if ($resultat) {
                     $_SESSION['color'] = $_POST;
-                    $_SESSION['success'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    $_SESSION['success'] = "Les colors ont été enregistrés avec succès.";
                     Refresh::refresh('/planning/public/formateur/profil');
                  } else {
                      $_SESSION['error'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                  }
-        }}
+            }
+        }
 
         
-
-
-
-
-
-
-
-
-
         $colors = new CouleursModel;
         $colors->setSessionCoulors();
         $this->render('/formateur/profil');
     }
 
+    public function activiter()
+    {
+
+
+
+
+
+
+
+
+
+        
+        $this->render('/formateur/activiter');
+    }
 }
 
