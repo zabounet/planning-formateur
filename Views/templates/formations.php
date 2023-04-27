@@ -15,16 +15,7 @@
         <nav>
             <ul>
                 <li><a href="/planning/public">Home</a></li>
-                <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id']) || isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])):?>
-                    <li><a href="/planning/public/formateur/profil">Profil </a></li>
-                    <li><a href="/planning/public/formateur/logout">logout</a></li>
-                    <li><a href="/planning/public/admin/formationsHome">Gérer les formations</a></li>
-                    <li><a href="/planning/public/admin/formateursHome">Gérer les formateurs</a></li>
-                <?php else :?>
-                    <li><a href="/planning/public/Participant/register">Incription </a></li>
-                    <li><a href="/planning/public/formateur/login">Login </a></li>
-                <?php endif;?>
-
+                <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
             </ul>
         </nav>
     </header>

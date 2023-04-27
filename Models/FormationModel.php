@@ -6,6 +6,7 @@ use App\Core\Db;
 class FormationModel extends Model{
 
     protected $id_formation;
+    protected $nom_formation;
     protected $acronyme_formation;
     protected $description_formation;
     protected $date_debut_formation;
@@ -31,8 +32,42 @@ class FormationModel extends Model{
         ];
     }
 
+    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
+    {
+        $nbChamps = count($champsSelect);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $champsSelect[$z];
+        }
+
+        $sql .= " FROM " . $table;
+        $nbJoin = count($tablesJointures);
+        for($i = 0; $i < $nbJoin; $i++){
+            $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
+        }
+        if(!empty($champCondJointures) && !empty($CondJointures)){
+            $nbCond = count($champCondJointures);
+
+            if($nbCond > 0){
+                $sql .= " WHERE ";
+                for($j = 0; $j < $nbCond; $j++){
+                    if($j == 0){$writeAnd = "";}
+                    else{$writeAnd = " AND ";}
+
+                    $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
+                }
+            }else{
+                $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
+            }
+        }
+        return $this->requete($sql)->fetchAll();
+    }
+
     public function insertFormation(
-        string $id,
+        string $nom,
         string $acronyme,
         string $description,
         string $debutFormation,
@@ -45,7 +80,7 @@ class FormationModel extends Model{
 
         $this->requete(
             "INSERT INTO " . $this->table . "(
-        `id_formation`,
+        `nom_formation`,
         `acronyme_formation`, 
         `description_formation`, 
         `date_debut_formation`, 
@@ -56,7 +91,7 @@ class FormationModel extends Model{
         `id_ville`) 
         VALUES(?,?,?,?,?,?,?,?,?)",
             [
-                $id,
+                $nom,
                 $acronyme,
                 $description,
                 $debutFormation,
@@ -86,6 +121,19 @@ class FormationModel extends Model{
      */
     public function setIdFormation($id_formation): self {
         $this->id_formation = $id_formation;
+        return $this;
+    }
+
+
+    public function getNomFormation() {
+        return $this->nom_formation;
+    }
+
+    /**
+     * Set the value of nom_formation
+     */
+    public function setNomformation($nom_formation): self {
+        $this->nom_formation = $nom_formation;
         return $this;
     }
 
