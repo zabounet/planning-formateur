@@ -74,7 +74,7 @@ addEventListener('DOMContentLoaded', () => {
                     });
 
                 };
-                xhr.open('GET', '/planning/public/formation/ajouterFormation');
+                xhr.open('GET', '/planning/public/admin/ajouterFormation');
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 xhr.send();
 
