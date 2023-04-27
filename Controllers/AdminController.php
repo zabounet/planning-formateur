@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Form;
 use App\Core\Refresh;
 use App\Models\FormationModel;
+use App\Models\FormateurModel;
 
 class AdminController extends Controller
 {
@@ -174,7 +175,7 @@ class AdminController extends Controller
             $this->render('admin/ajouterFormation', compact('infosFormation'));
         };
     }
-
+    
     public function formateursHome(): void{
         
         $formateur = new FormationModel;
@@ -195,5 +196,66 @@ class AdminController extends Controller
             ['id_ville']);
 
         $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
+    }
+
+    public function inscriptionFormateur()
+    {
+        if (Form::validate($_POST, ['inscription'],)) {
+            if(!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])){
+                
+                // verifier le mail
+                $mail = $_POST['mail'];
+                // if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
+                   
+                    $formateur = new FormateurModel;
+                    
+                    //Création de le mot de pass de la formation
+                    $mdp_formateur = $_POST["nom"] .  $_POST["prenom"] ;
+                    $mdp = sha1($mdp_formateur);
+                    
+                    //un formateur n'est pas admin
+                    $permissions_utilisateur = 0;
+                    
+                    if(!isset($_POST['date_fin_contrat'])){
+                        $date_fin_contrat = '0001-01-01';
+                    }
+                    else{
+                        $date_fin_contrat =  $_POST['date_fin_contrat'] ;
+                    }
+                
+                    $type_contrat = strtoupper($_POST["type_contrat"]) ;
+                //Insertion des données dans la table formation
+                    $formateur->insertFormateur(
+                        $_POST['nom'],
+                        $_POST['prenom'],
+                        $mail,
+                        $mdp,
+                        $type_contrat,
+                        $_POST['date_debut_contrat'],
+                        $date_fin_contrat,
+                        $permissions_utilisateur,
+                        $_POST['grn'],
+                        $_POST['ville']
+                    );
+                    
+                    
+                    $_SESSION['success'] = "cest fait";
+                    Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+                    exit;
+                // } else {
+                //     $_SESSION['error'] = "email pas bon";
+                // }
+
+            } else {
+                $_SESSION['error'] = "cest pas complet";
+                Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+                exit;
+            }
+        } 
+
+        $infos = new FormateurModel;
+
+        $infosFormateur = $infos->getInformations();
+        $this->render('/admin/inscriptionFormateur', compact('infosFormateur'));
     }
 }

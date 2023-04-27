@@ -6,10 +6,10 @@ use App\Core\Db;
 class FormateurModel extends Model
 {
     protected $id_formateur;
-    protected $mail_formateur;
-    protected $mdp_formateur;
     protected $nom_formateur;
     protected $prenom_formateur;
+    protected $mail_formateur;
+    protected $mdp_formateur;
     protected $type_contrat_formateur;
     protected $date_debut_contrat;
     protected $date_fin_contrat;
@@ -23,14 +23,62 @@ class FormateurModel extends Model
         $this->table = strtolower(str_replace('Model', '', $class));
     }
 
+        // Recupère Les GRN, Villes et Types de contrat
+        public function getInformations(){
+            return $infos = [
+                'GRNS' => $this->requete("SELECT * FROM `GRN`")->fetchAll(),
+                'Villes' => $this->requete("SELECT * FROM `Ville`")->fetchAll()
+            ];
+        }
+
     // recuperer user by son adresse mail
     public function findOneByEmail(string $email)
     {
         return $this->requete("SELECT * FROM {$this->table} WHERE mail_formateur = ?", [$email])->fetch();
     }
 
+    public function insertFormateur(
+        string $nom_formateur,
+        string $prenom_formateur,
+        string $mail_formateur,
+        string $mdp,
+        string $type_contrat ,
+        string $date_debut_contrat,
+        string $date_fin_contrat,
+        string $permissions_utilisateur,
+        string $numero_GRN,
+        string $id_ville
+        ): void {
 
-
+            $this->requete(
+                "INSERT INTO " . $this->table . "(
+                    `nom_formateur`, 
+                    `prenom_formateur`, 
+                    `mail_formateur`, 
+                    `mdp_formateur`, 
+                    `type_contrat_formateur`, 
+                    `date_debut_contrat`, 
+                    `date_fin_contrat`, 
+                    `permissions_utilisateur`, 
+                    `numero_grn`, 
+                    `id_ville`) 
+                    VALUES(?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        $nom_formateur,
+                        $prenom_formateur,
+                        $mail_formateur,
+                        $mdp,
+                        $type_contrat ,
+                        $date_debut_contrat,
+                        $date_fin_contrat,
+                        $permissions_utilisateur,
+                        $numero_GRN,
+                        $id_ville
+                        ]
+                    );
+                   
+                }
+                
     //cree la session de l'usilateur
     public function setSession()
     {
@@ -80,6 +128,15 @@ class FormateurModel extends Model
         $result = $this->requete($sql, [$new_mdp, $idFormateur]);
         return $result;
         
+    }
+
+    public function getInterventionById($id_formateur)
+    {
+       return $this->requete("SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, f.numero_grn, f.id_ville,
+                            GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut,
+                            GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
+                            FROM Formateur f LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
+                            WHERE f.id_formateur = ? GROUP BY f.id_formateur;",[$id_formateur])->fetch();
     }
 
     public function setId(int $id){
