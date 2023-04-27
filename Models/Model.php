@@ -15,28 +15,38 @@ class Model extends Db{
         return $query->fetchAll();
     }
 
-    // Retourne tous les résultats correspondants au critères
-    public function getBy(array $criteres){
-        $champs = [];
-        $valeurs = [];
+    // Retourne les résultats de la table correspondants au critères 
+    public function getBy(array $rows,string $table, array $conditionCol, array $valeur){
 
-        // On boucle pour éclater le tableau
-        foreach($criteres as $champ => $valeur){
-            //Select * From Participants WHERE $champ = $valeur
-            if($valeur !== null && $champ != 'db' && $champ != 'table'){
-                $champs[] = "$champ = ?";
-                $valeurs[] = $valeur;
-            }
+        $nbChamps = count($rows);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $rows[$z];
         }
-        // On transforme le tableau de champs en une chaine de caractères
-        $liste_champs = implode(' AND ', $champs);
+        $sql .= " FROM " . $table;
 
-        return $this->requete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs, $valeurs)->fetchAll();
+        $nbCond = count($conditionCol);
+        $sql .= " WHERE ";
+        for($i = 0; $i < $nbCond; $i++){
+            if($i == 0){$writeAnd = "";}
+            else{$writeAnd = " AND ";}
+
+            $sql .= $writeAnd . $conditionCol[$i] . " = " . $valeur[$i];
+        }
+        return $this->requete($sql)->fetchAll();
+    }
+
+    // Retourne les résultats d'une colonne
+    public function getColumn(string $col, string $table){
+        return $this->requete("SELECT " . $col . " FROM " . $table)->fetchAll(Db::FETCH_ASSOC);
     }
 
     // Retourne un seul résultat basé sur un ID, un nom de colonne et une colonne de condition dans une table donnée
-    public function getOne(string $table, string $col, string $conditionCol, string $id){
-        return $this->requete("SELECT " . $col . " FROM " . $table . " WHERE " . $conditionCol . " = " .$id)->fetch(Db::FETCH_ASSOC);
+    public function getOne(string $col, string $table, string $conditionCol, string $id){
+        return $this->requete("SELECT " . $col . " FROM " . $table . " WHERE " . $conditionCol . " = '$id'")->fetch(Db::FETCH_ASSOC);
     }
 
     // Retourne la valeur du dernier id en prenant le champ d'id en paramètre

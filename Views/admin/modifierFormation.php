@@ -1,3 +1,4 @@
+<h1>Modifier la formation : <?= $infosCurrent['nom_formation'] ;?></h1>
 <form method="post">
     <fieldset id="part1">Informations sur la formation
         <label for="type">Catégorie de formation :
@@ -67,22 +68,6 @@
 
     <fieldset id="part3"> Ajouter des interruptions
         <button type="button" class="add-date-fields" data="interruption">Ajouter une nouvelle interruption</button>
-    </fieldset>
-
-    <fieldset id="part4"> Répartition des formateurs
-        
-        <label for="referent-formateur"> Formateur référent : 
-            <select name="referent-formateur">
-                <option disabled selected>Choisir un formateur</option>
-                <?php foreach($infosFormation['Formateurs'] as $formateurs):?>
-                    <option value="<?= $formateurs['id_formateur'];?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur'];?></option>
-                <?php endforeach;?>
-            </select>
-        </label>
-
-        <div>
-            <button type="button" class="add-date-fields" data="intervention">Add new</button>
-        </div>
     </fieldset>
 
     <input type="submit">
