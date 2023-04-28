@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
-    <script src="/planning/Views/assets/js/formation.js"></script>
+    <script src="/planning/Views/assets/js/formateur.js"></script>
 </head>
 <body>
 
@@ -17,6 +17,7 @@
                 <li><a href="/planning/public">Home</a></li>
                 <li><a href="/planning/public/admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
                 <li><a href="/planning/public/admin/ajouterFormateurs">Ajouter un formateur</a></li>
+                <li><a href="/planning/public/admin/formateursHome">Retour à la liste des formateurs</a></li>
             </ul>
         </nav>
     </header>
