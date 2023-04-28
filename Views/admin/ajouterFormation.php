@@ -31,10 +31,10 @@
         </label>
 
         <label for="date-debut-formation"> Date de début :
-            <input name="date-debut-formation" type="date" min="<?= date('Y-m-d') ;?>">
+            <input name="date-debut-formation" type="date">
         </label>
         <label for="date-fin-formation"> Date de fin :
-            <input name="date-fin-formation" type="date" min="<?= date('Y-m-d') ;?>">
+            <input name="date-fin-formation" type="date">
         </label>
 
         <label for="ville"> Ville :

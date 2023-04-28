@@ -48,6 +48,121 @@ class AdminController extends Controller
 
     public function modifierFormation(): void{
         
+        if(Form::validate(
+        $_POST,
+        [
+            'type',
+            'grn',
+            'acronyme',
+            'description',
+            'offre',
+            'date-debut-formation',
+            'date-fin-formation',
+            'ville'
+        ],
+        [
+            'date-debut-ran',
+            'date-fin-ran',
+            'date-debut-entreprise',
+            'date-fin-entreprise',
+            'date-debut-centre',
+            'date-fin-centre',
+            'date-debut-certification',
+            'date-fin-certification',
+            'date-debut-interruption',
+            'date-fin-interruption',
+            'referent-formateur',
+            'formateur',
+            'date-debut-intervention',
+            'date-fin-intervention'
+        ]
+    )) {
+        $database = new FormationModel;
+
+        $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
+
+        //Récupèration du nom de la ville pour composer l'id de la formation
+        $villeNom = $database->getOne("nom_ville", "Ville", "id_ville", $_POST['ville']);
+
+        //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
+        $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
+
+        //Création de l'id de la formation
+        $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
+
+        $database->update(
+        'Formation',
+        [
+            'nom_formation', 
+            'acronyme_formation', 
+            'description_formation', 
+            'date_debut_formation', 
+            'date_fin_formation', 
+            'id_type_formation', 
+            'numero_grn', 
+            'id_formateur', 
+            'id_ville'
+        ], 
+        [
+            $nomFormation,
+            $_POST['acronyme'],
+            $_POST['description'],
+            $_POST['date-debut-formation'],
+            $_POST['date-fin-formation'],
+            $_POST['type'],
+            $_POST['grn'],
+            $referent,
+            $_POST['ville']
+        ],
+            'id_formation',
+            $currentId
+        );
+
+        $deleteRan = $database->delete('Date_ran','id_formation', $currentId);
+        $deletePae = $database->delete('Date_pae','id_formation', $currentId);
+        $deleteCentre = $database->delete('Date_centre','id_formation', $currentId);
+        $deleteCertif = $database->delete('Date_certif','id_formation', $currentId);
+        $deleteInterruptions = $database->delete('Interruption','id_formation', $currentId);
+
+        if(isset($_POST['date-debut-entreprise'])){ 
+            $periodesEntreprise = count($_POST['date-debut-entreprise']);
+            for ($i = 0; $i < $periodesEntreprise; $i++) {
+                $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $currentId);
+            }
+        } 
+        if(isset($_POST['date-debut-centre'])){
+            $periodesCentre = count($_POST['date-debut-centre']);
+            for ($i = 0; $i < $periodesCentre; $i++) {
+                $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $currentId);
+            }
+        }
+        if(isset($_POST['date-debut-ran'])){
+            $periodesRan = count($_POST['date-debut-ran']);
+            for ($i = 0; $i < $periodesRan; $i++) {
+                $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $currentId);
+            }
+        }
+        if(isset($_POST['date-debut-certification'])){
+            $periodesCertif = count($_POST['date-debut-certification']);
+            for ($i = 0; $i < $periodesCertif; $i++) {
+                $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $currentId);
+            }
+        }
+        if(isset($_POST['date-debut-interruption'])){
+            $periodesInterruption = count($_POST['date-debut-interruption']);
+            for ($i = 0; $i < $periodesInterruption; $i++) {
+                $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $currentId);
+            }
+        }
+        if(isset($_POST['date-debut-intervention'])){
+            $periodesFormateurs = count($_POST['date-debut-intervention']);
+            for ($i = 0; $i < $periodesFormateurs; $i++) {
+                $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
+            }
+        }
+        Refresh::refresh('formationsHome');
+    }
+
         $formation = new FormationModel;
 
         $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
@@ -58,10 +173,9 @@ class AdminController extends Controller
         $infosPae = $formation->getBy(['date_debut_pae', 'date_fin_pae'],'Date_pae',['id_formation'],[$currentId]);
         $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'],'Date_certif',['id_formation'],[$currentId]);
         $infosCentre = $formation->getBy(['date_debut_centre', 'date_fin_centre'],'Date_centre',['id_formation'],[$currentId]);
-        $infosInterruption = $formation->getBy(['date_debut_ran', 'date_fin_ran'],'Date_ran',['id_formation'],[$currentId]);
+        $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'],'Interruption ',['id_formation'],[$currentId]);
 
-
-        $this->render('admin/modifierFormation', compact( 'infosCurrent', 'infosFormation', 'infosDates'), 'formations');
+        $this->render('admin/modifierFormation', compact( 'infosCurrent','infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre',  'infosInterruption'), 'formations');
     }
 
     public function ajouterFormation(): void{
@@ -189,7 +303,8 @@ class AdminController extends Controller
                 'type_contrat_formateur',
                 'date_debut_contrat',
                 'date_fin_contrat',
-                'numero_grn'
+                'numero_grn',
+                'nom_ville'
             ],
             "Formateur", 
             ['Ville'], 

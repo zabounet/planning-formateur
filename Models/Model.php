@@ -77,24 +77,31 @@ class Model extends Db{
     }
 
     // Met à jour les informations d'une ligne depuis un ID et les informations reçue
-    public function update(int $id){
-        $champs = [];
-        $valeurs = [];
+    public function update(string $table, array $updateCol, array $updateFields, string $updateCond, string $id){
+        
+        $sql = "UPDATE " . $table . " SET ";
 
-        // On boucle pour éclater le tableau
-        foreach($this as $champ => $valeur){
-            // Insert into participants 
-            if($valeur !== null && $champ != 'db' && $champ != 'table'){
-                $champs[] = "$champ = ?";
-                $valeurs[] = $valeur;
-            }
+        $nbChamps = count($updateCol);
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $updateCol[$z] . " = '$updateFields[$z]'";
         }
-        $valeurs[] = $id;
-        // On transforme le tableau de champs en une chaine de caractères
-        $liste_champs = implode(', ', $champs);
 
-        // On exécute la requete
-        return $this->requete('UPDATE ' . $this->table . ' SET ' . $liste_champs . ' WHERE Id_Participant = ?', $valeurs);
+        // $nbCond = count($updateCond);
+        // $sql .= " WHERE ";
+        // for($i = 0; $i < $nbCond; $i++){
+        //     if($i == 0){$writeAnd = "";}
+        //     else{$writeAnd = " AND ";}
+
+        //     $sql .= $writeAnd . $updateCond[$i] . " = '$id[$i]'";
+        // }
+
+        $sql .= " WHERE " . $updateCond . " = '$id'";
+
+        // echo $sql;die;
+        return $this->requete($sql);    
     }
 
     // Transforme les données reçue et les transforme afin de correspondre au noms des accesseurs correspondants
@@ -115,12 +122,10 @@ class Model extends Db{
         return $this;
     }
 
-  
-
     // Supprime une ligne de la bdd avec son id
-    public function delete(int $id){
+    public function delete(string $table, string $delCond, string $id){
         //id dans un array car requete prend comme 2eme argument un array.
-        return $this->requete("DELETE FROM " . $this->table . " WHERE Id_Participant = ?", [$id]);
+        return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
     }
 
     public function requete(string $sql, array $attributs = null){
@@ -133,13 +138,16 @@ class Model extends Db{
             $query->execute($attributs);
 
             // var_dump($query->errorInfo());
-            // echo '<br><br><br>';
+            // echo '<br><br><br>';die;
             
             return $query;
 
         } else{
             // Requete simple
-            return $this->db->query($sql);
+            $query = $this->db->prepare($sql);
+            $query->execute();
+
+            return $query;
         }
     }
 }

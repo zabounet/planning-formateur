@@ -16,6 +16,7 @@
             <ul>
                 <li><a href="/planning/public">Home</a></li>
                 <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
+                <li><a href="/planning/public/admin/formationsHome">Retour à la liste des formations</a></li>
             </ul>
         </nav>
     </header>

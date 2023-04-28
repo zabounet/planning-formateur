@@ -51,10 +51,10 @@ addEventListener('DOMContentLoaded', () => {
                         // Concaténation de la chaine de caractères avec le reste des create elements
                         newFields.innerHTML += `
                         <label for="date-debut-${dateType}"> Date de début d'${dateType} :
-                        <input name="date-debut-${dateType}[]" type="date" min="${dateMin}">
+                        <input name="date-debut-${dateType}[]" type="date">
                         </label>
                         <label for="date-fin-${dateType}"> Date de fin d'${dateType} :
-                        <input name="date-fin-${dateType}[]" type="date" min="${dateMin}">
+                        <input name="date-fin-${dateType}[]" type="date">
                         </label>
                         <button class="delete-date-fields" type="button" data="${dateType}">Supprimer période ${dateType}</button>
                     `;
@@ -87,10 +87,10 @@ addEventListener('DOMContentLoaded', () => {
                 newFields.setAttribute("data", dateType);
                 newFields.innerHTML = `
                     <label for="date-debut-${dateType}"> Date de début période ${dateType} :
-                    <input name="date-debut-${dateType}[]" type="date" min="${dateMin}">
+                    <input name="date-debut-${dateType}[]" type="date">
                     </label>
                     <label for="date-fin-${dateType}"> Date de fin période ${dateType} :
-                    <input name="date-fin-${dateType}[]" type="date" min="${dateMin}">
+                    <input name="date-fin-${dateType}[]" type="date">
                     </label>
                     <button class="delete-date-fields" type="button" data="${dateType}">Supprimer période ${dateType}</button>
                 `;
