@@ -2,13 +2,11 @@
 <?php 
 $iterations = 1;
 foreach($infosFormateur as $formateur):
-    if($iterations == 1){
+    if($iterations == 1 || $iterations == 2){
         $iterations++;
         continue;
     }
 ?>
-
-<?php var_dump($formateur) ;?>
 <h3>Formateur : <?= $formateur->nom_formateur . " " . $formateur->prenom_formateur ;?></h3>
 <p>GRN de rattachement : <?= $formateur->numero_grn ;?></p>
 <p>Ville de rattachement : <?= $formateur->nom_ville ;?></p>

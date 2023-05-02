@@ -3,7 +3,7 @@
     <p>profil</p>
 
     <div class="info-personel">
-        <span class="titre titre-profil">vos informations personnelles :</span>
+        <span class="titre titre-profil">Vos informations personnelles :</span>
         <div class="container-info">
             
         <form class="profil nom-profil" method="post">
@@ -42,15 +42,15 @@
             <form class="profil mdp-profil" method="post">
                 
                 <?php if(str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4"):?>
-                    <span>saisie voutre mot de pass actuel :</span>
+                    <span>Saisir votre mot de passe actuel :</span>
                     <input type="password" name="current_mdp" class="mdpProfil" value="" />
-                    <span>saisie new mot de pass :</span>
+                    <span>Saisir nouveau mot de passe :</span>
                     <input type="password" name="new_mdp" class="mdpProfil" value="" />
-                    <span>saisie conf mot de pass :</span>
+                    <span>Saisir confirmation du nouveau mot de passe :</span>
                     <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
                     <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" />
                 <?php else :?>
-                    <span>Mot de pass :</span>
+                    <span>Mot de passe :</span>
                     <span id="mdpProfil">****</span>
                     <a href="?id=4">Modifier</a>
                 <?php endif; ?>
@@ -62,7 +62,7 @@
 
 
 <div>
-    <span class="vacances">Demande vacanses</span>
+    <span class="vacances">Demande de vacances</span>
     <div class="demande-vacances">
         <span class="titre titre-demande-vacances" >Sélectionnez une période</span>
         <form method="POST" class="container-vacances">
@@ -70,13 +70,13 @@
                 <div class="date date-debut date-debut-vacance">
                     <p>Date de début</p>
                     <input type="date" name="date_debut" id="" min="<?= date('Y-m-d'); ?>">
-                    <div>clandier</div>
+                    <div>Calendrier</div>
                 </div>
                 <hr>
                 <div class="date date-fin date-fin-vacance">
                     <p>Date de fin</p>
                     <input type="date" name="date_fin" id="" >
-                    <div>clandier</div>
+                    <div>Calendrier</div>
                 </div>
             </div>
             <div class="btn btn-validation-vacance">
@@ -87,11 +87,11 @@
 </div>
 
 <div>
-    <span class="teletravail">Demande teletravail</span>
+    <span class="teletravail">Demande de teletravail</span>
     <div class="demande-teletravail">
-        <span class="titre titre-demande-teletravai">Selectione les jour da la semaine pour teletravail</span>
-        <span class="notif notif-demande-teletravail">!! vous ne pouvez pas choisir le max 2 jour par semaine pour le teletravail</span>
-        <p>les jour pour teletravail :</p>
+        <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
+        <span class="notif notif-demande-teletravail">Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
+        <p>Les jours pour teletravail :</p>
         <form method="post" class="container-teletravail">
             <div>
                 <section class="app">
@@ -149,7 +149,7 @@
 <?php elseif(isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])) :?>
 
     <div class="info-personel">
-        <span class="titre titre-profil">vos informations personnelles :</span>
+        <span class="titre titre-profil">Vos informations personnelles :</span>
         <div class="container-info">
             
             <form class="profil nom-profil" method="post">
@@ -255,7 +255,7 @@
         </div>
     </div>
 </div>
-<input type="submit" value="send" name="send-color">
+<input type="submit" value="valider" name="send-color">
 </form>
 
 

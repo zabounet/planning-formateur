@@ -1,8 +1,6 @@
-<p>hello world</p>
-
-<p>inscription formateur</p>
+<h1>Inscription formateur</h1>
 <section>
-    <form method="post" onsubmit="submitForm(event)" name="validation">
+    <form style="text-transform: capitalize;" method="post" onsubmit="submitForm(event)" name="validation">
         <span>nom</span>
         <input type="text" name="nom" id="nom-input" oninput="checkNomValidity()">
 
@@ -15,8 +13,8 @@
         <label for="type_contrat"> type contrat :
             <select name="type_contrat" id="type_contrat">
                 <option disabled selected>Choisir type contat</option>
-                    <option value="cdi">cdi</option>
-                    <option value="cdd">cdd</option>
+                    <option value="CDI">CDI</option>
+                    <option value="CDD">CDD</option>
                     <option value="intrime">intrime</option>
                     <option value="autre">autre</option>
             </select>
@@ -46,7 +44,7 @@
             </select>
         </label>
 
-    <input type="submit" value="inscrir" name="inscription" >
+    <input type="submit" value="Inscrire" name="inscription" >
         
     </form>
 </section>

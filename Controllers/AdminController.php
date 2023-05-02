@@ -280,13 +280,14 @@ class AdminController extends Controller
         $infosFormation = $infos->getInformations();
         unset($infosFormation['Formations']);
 
+        var_dump($infosFormation['Formateurs']);
         // Check if the request is an AJAX request
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             header('Content-type: application/json');
             echo json_encode($infosFormation["Formateurs"]);
             exit;
         } else {
-            $this->render('admin/ajouterFormation', compact('infosFormation'));
+            $this->render('admin/ajouterFormation', compact('infosFormation'), 'formations');
         };
     }
     
@@ -331,7 +332,7 @@ class AdminController extends Controller
                     //un formateur n'est pas admin
                     $permissions_utilisateur = 0;
                     
-                    if(!isset($_POST['date_fin_contrat'])){
+                    if($_POST['type_contrat'] === 'CDI'){
                         $date_fin_contrat = '0001-01-01';
                     }
                     else{
@@ -354,7 +355,7 @@ class AdminController extends Controller
                     );
                     
                     
-                    $_SESSION['success'] = "cest fait";
+                    $_SESSION['success'] = "Formateur ajouté avec succès";
                     Refresh::refresh('/planning/public/admin/inscriptionFormateur');
                     exit;
                 // } else {
@@ -362,7 +363,7 @@ class AdminController extends Controller
                 // }
 
             } else {
-                $_SESSION['error'] = "cest pas complet";
+                $_SESSION['error'] = "Formulaire incomplet";
                 Refresh::refresh('/planning/public/admin/inscriptionFormateur');
                 exit;
             }
@@ -371,7 +372,7 @@ class AdminController extends Controller
         $infos = new FormateurModel;
 
         $infosFormateur = $infos->getInformations();
-        $this->render('/admin/inscriptionFormateur', compact('infosFormateur', ));
+        $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
 
@@ -382,6 +383,7 @@ class AdminController extends Controller
                     // Récupérer les dates saisies par l'utilisateur
             $date_debut = $_POST['date_debut'];
             $date_fin = $_POST['date_fin'];
+            $id_formateur = $_POST['formateur[]'];
 
             // Récupérer les formateurs qui sont occupés pendant cette période
             $formateurs = $FormateurModel->getInterventionById( $id_formateur);
@@ -459,7 +461,7 @@ class AdminController extends Controller
 
         // }
 
-        $infosFormateur = $infos->getFormateur();
+        // $infosFormateur = $infos->getFormateur();
         $this->render('/admin/activiteFormateur', compact('infosFormateur', ));
     }
 }
