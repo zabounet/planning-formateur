@@ -3,7 +3,7 @@ addEventListener('DOMContentLoaded', () => {
     typeContratSelect = document.getElementById('type_contrat');
 
     typeContratSelect.addEventListener('change', (event) => {
-      if (event.target.value === 'cdi') {
+      if (event.target.value === 'CDI') {
         dateFinContratInput.disabled = true;
       } else {
         dateFinContratInput.disabled = false;

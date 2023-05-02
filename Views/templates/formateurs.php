@@ -16,7 +16,7 @@
             <ul>
                 <li><a href="/planning/public">Home</a></li>
                 <li><a href="/planning/public/admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
-                <li><a href="/planning/public/admin/ajouterFormateurs">Ajouter un formateur</a></li>
+                <li><a href="/planning/public/admin/inscriptionFormateur">Ajouter un formateur</a></li>
                 <li><a href="/planning/public/admin/formateursHome">Retour à la liste des formateurs</a></li>
             </ul>
         </nav>

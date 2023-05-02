@@ -1,0 +1,6 @@
+projectKey=test-ali
+serverUrl=http://192.168.130.50
+serverVersion=9.2.2.50622
+dashboardUrl=http://192.168.130.50/dashboard?id=test-ali
+ceTaskId=AYfGpu81CHbqbwcChlSZ
+ceTaskUrl=http://192.168.130.50/api/ce/task?id=AYfGpu81CHbqbwcChlSZ

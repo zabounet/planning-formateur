@@ -280,13 +280,14 @@ class AdminController extends Controller
         $infosFormation = $infos->getInformations();
         unset($infosFormation['Formations']);
 
+        var_dump($infosFormation['Formateurs']);
         // Check if the request is an AJAX request
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             header('Content-type: application/json');
             echo json_encode($infosFormation["Formateurs"]);
             exit;
         } else {
-            $this->render('admin/ajouterFormation', compact('infosFormation'));
+            $this->render('admin/ajouterFormation', compact('infosFormation'), 'formations');
         };
     }
     
@@ -331,7 +332,7 @@ class AdminController extends Controller
                     //un formateur n'est pas admin
                     $permissions_utilisateur = 0;
                     
-                    if(!isset($_POST['date_fin_contrat'])){
+                    if($_POST['type_contrat'] === 'CDI'){
                         $date_fin_contrat = '0001-01-01';
                     }
                     else{
@@ -354,7 +355,7 @@ class AdminController extends Controller
                     );
                     
                     
-                    $_SESSION['success'] = "cest fait";
+                    $_SESSION['success'] = "Formateur ajouté avec succès";
                     Refresh::refresh('/planning/public/admin/inscriptionFormateur');
                     exit;
                 // } else {
@@ -362,7 +363,7 @@ class AdminController extends Controller
                 // }
 
             } else {
-                $_SESSION['error'] = "cest pas complet";
+                $_SESSION['error'] = "Formulaire incomplet";
                 Refresh::refresh('/planning/public/admin/inscriptionFormateur');
                 exit;
             }
@@ -371,6 +372,96 @@ class AdminController extends Controller
         $infos = new FormateurModel;
 
         $infosFormateur = $infos->getInformations();
-        $this->render('/admin/inscriptionFormateur', compact('infosFormateur'));
+        $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
+    }
+
+
+    public function activiteFormateur()
+    {
+        $FormateurModel = new FormateurModel;
+
+                    // Récupérer les dates saisies par l'utilisateur
+            $date_debut = $_POST['date_debut'];
+            $date_fin = $_POST['date_fin'];
+            $id_formateur = $_POST['formateur[]'];
+
+            // Récupérer les formateurs qui sont occupés pendant cette période
+            $formateurs = $FormateurModel->getInterventionById( $id_formateur);
+
+            // Construire le tableau HTML
+            $table_html = '<table>';
+            $table_html .= '<tr><th></th>'; // Première ligne avec les dates
+            $date_courante = strtotime($date_debut);
+            while ($date_courante <= strtotime($date_fin)) {
+                $table_html .= '<th>' . date('d/m/Y', $date_courante) . '</th>';
+                $date_courante = strtotime('+1 day', $date_courante);
+            }
+            $table_html .= '</tr>';
+
+            foreach ($formateurs as $formateur) {
+                $table_html .= '<tr>';
+                $table_html .= '<td>' . $formateur['nom'] . ' ' . $formateur['prenom'] . '</td>';
+
+                // Pour chaque jour entre la date de début et la date de fin, vérifier si le formateur est occupé
+                $date_courante = strtotime($date_debut);
+                while ($date_courante <= strtotime($date_fin)) {
+                    $occupe = false;
+                    foreach ($formateur['dates_occupees'] as $date_occupee) {
+                        if ($date_courante >= strtotime($date_occupee['date_debut']) && $date_courante <= strtotime($date_occupee['date_fin'])) {
+                            $occupe = true;
+                            break;
+                        }
+                    }
+                    $table_html .= '<td class="' . ($occupe ? 'occupe' : '') . '"></td>';
+                    $date_courante = strtotime('+1 day', $date_courante);
+                }
+
+                $table_html .= '</tr>';
+            }
+            $table_html .= '</table>';
+
+            // Afficher le tableau dans la vue
+            echo $table_html;
+
+
+       // // if(Form::validate($_POST,['date_debut','date_fin','formateur'])){
+            // $date_debut = $_POST['date_debut'];
+            // $date_fin = $_POST['date_fin'];
+            
+          //  // $infos = new FormateurModel;
+            
+            
+            
+            // $nb_formateur = count($_POST['formateur']);
+            // for($i = 0 ; $i < $nb_formateur; $i++){
+            //     $test = [
+            //         "test" => ""
+            //     ];
+            //     $infos->joinInformations(['date_debut_intervention','date_fin_intervention','nom_formateur','prenom_formateur'],'Formateur',['Date_intervention'],['id_formateur'],['Formateur.id_formateur'], [$_POST['formateur'][$i]])
+                
+             //   // $nomPrenomFormateur = $test[$i][0]->nom_formateur . " " . $test[$i][0]->prenom_formateur;
+
+              //  // echo $nomPrenomFormateur;
+            //     var_dump($test);
+            // }die;
+            // $nbDate = count($test);
+
+            // for($j = 0 ; $j < $nbDate; $j++){
+            //     $intervention = strtotime($test[$j]->date_debut_intervention);
+
+            //     var_dump($test[$j]); echo '<br><br>';
+            //     echo $intervention . '<br><br>';
+
+            //     if(strtotime($_POST['date_debut'] <= $intervention && strtotime($_POST['date_fin'] >= $intervention))){
+            //         echo $intervention;
+            //    }
+           // }
+ 
+
+
+        // }
+
+        // $infosFormateur = $infos->getFormateur();
+        $this->render('/admin/activiteFormateur', compact('infosFormateur', ));
     }
 }
