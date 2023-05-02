@@ -1,3 +1,5 @@
+<?php $link = "Connexion";?>
+
 <h1>Login</h1>
 
 <?= $loginForm ?><br>

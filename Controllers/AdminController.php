@@ -16,6 +16,11 @@ class AdminController extends Controller
 
     public function formationsHome(): void{
         
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         $formation = new FormationModel;
 
         $infosFormation = $formation->joinInformations(
@@ -47,7 +52,12 @@ class AdminController extends Controller
     }
 
     public function modifierFormation(): void{
-        
+
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         if(Form::validate(
         $_POST,
         [
@@ -179,6 +189,12 @@ class AdminController extends Controller
     }
 
     public function ajouterFormation(): void{
+
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         if (Form::validate(
             $_POST,
             [
@@ -292,6 +308,11 @@ class AdminController extends Controller
     
     public function formateursHome(): void{
         
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         $formateur = new FormationModel;
 
         $infosFormateur = $formateur->joinInformations(
@@ -315,6 +336,12 @@ class AdminController extends Controller
 
     public function inscriptionFormateur()
     {
+
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         if (Form::validate($_POST, ['inscription'],)) {
             if(!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])){
                 
@@ -374,10 +401,14 @@ class AdminController extends Controller
         $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
-
     public function activiteFormateurs()
     {
-        
+
+        if(!isset($_SESSION['admin'])){
+            header('Location: /planning/public/');
+            exit;
+        }
+
         $FormateurModel = new FormateurModel;
         
         if(Form::validate($_POST,['valider'])){

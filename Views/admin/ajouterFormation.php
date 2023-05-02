@@ -1,3 +1,5 @@
+<?php $link = "Ajouter une formation" ;?>
+
 <form method="post">
     <fieldset id="part1">Informations sur la formation
         <label for="type">Catégorie de formation :
