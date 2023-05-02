@@ -286,7 +286,7 @@ class AdminController extends Controller
             echo json_encode($infosFormation["Formateurs"]);
             exit;
         } else {
-            $this->render('admin/ajouterFormation', compact('infosFormation'));
+            $this->render('admin/ajouterFormation', compact('infosFormation'), 'formations');
         };
     }
     
