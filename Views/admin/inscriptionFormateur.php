@@ -1,3 +1,5 @@
+<?php $link = "Inscription formateur" ;?>
+
 <h1>Inscription formateur</h1>
 <section>
     <form style="text-transform: capitalize;" method="post" onsubmit="submitForm(event)" name="validation">
