@@ -1,3 +1,5 @@
+<?php $link = "Profil";?>
+
 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])):?>
 <div class="profil">
     <p>profil</p>

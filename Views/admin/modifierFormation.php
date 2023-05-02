@@ -1,6 +1,8 @@
 <?php 
     $disassemble = explode(" ",$infosCurrent['nom_formation']);
     $reassemble = $disassemble[2] . " " . $disassemble[3] . " ";
+
+    $link = "Modifier la formation " . $infosCurrent['acronyme_formation']; 
 ?>
 
 <h1>Modifier la formation : <?= $infosCurrent['nom_formation']; ?></h1>
