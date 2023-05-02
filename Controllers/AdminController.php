@@ -280,7 +280,6 @@ class AdminController extends Controller
         $infosFormation = $infos->getInformations();
         unset($infosFormation['Formations']);
 
-        var_dump($infosFormation['Formateurs']);
         // Check if the request is an AJAX request
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             header('Content-type: application/json');
