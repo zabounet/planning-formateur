@@ -375,18 +375,24 @@ class AdminController extends Controller
     }
 
 
-    public function activiteFormateur()
+    public function activiteFormateurs()
     {
+        
         $FormateurModel = new FormateurModel;
-
-                    // Récupérer les dates saisies par l'utilisateur
+        
+        if(Form::validate($_POST,['valider'])){
+            echo "ee";
+            // Récupérer les dates saisies par l'utilisateur
             $date_debut = $_POST['date_debut'];
             $date_fin = $_POST['date_fin'];
-            $id_formateur = $_POST['formateur[]'];
-
+            $id_formateur = $_POST['formateur'];
+            // Construire une chaîne de caractères contenant les ID sous forme de liste
+            
             // Récupérer les formateurs qui sont occupés pendant cette période
-            $formateurs = $FormateurModel->getInterventionById( $id_formateur);
-
+            $formateurs = $FormateurModel->getInterventionById($id_formateur);
+            var_dump($formateurs);
+            
+            
             // Construire le tableau HTML
             $table_html = '<table>';
             $table_html .= '<tr><th></th>'; // Première ligne avec les dates
@@ -396,11 +402,11 @@ class AdminController extends Controller
                 $date_courante = strtotime('+1 day', $date_courante);
             }
             $table_html .= '</tr>';
-
+            
             foreach ($formateurs as $formateur) {
                 $table_html .= '<tr>';
                 $table_html .= '<td>' . $formateur['nom'] . ' ' . $formateur['prenom'] . '</td>';
-
+                
                 // Pour chaque jour entre la date de début et la date de fin, vérifier si le formateur est occupé
                 $date_courante = strtotime($date_debut);
                 while ($date_courante <= strtotime($date_fin)) {
@@ -414,53 +420,54 @@ class AdminController extends Controller
                     $table_html .= '<td class="' . ($occupe ? 'occupe' : '') . '"></td>';
                     $date_courante = strtotime('+1 day', $date_courante);
                 }
-
+                
                 $table_html .= '</tr>';
             }
             $table_html .= '</table>';
-
+            
             // Afficher le tableau dans la vue
             echo $table_html;
-
-
-       // // if(Form::validate($_POST,['date_debut','date_fin','formateur'])){
-            // $date_debut = $_POST['date_debut'];
-            // $date_fin = $_POST['date_fin'];
-            
-          //  // $infos = new FormateurModel;
             
             
-            
-            // $nb_formateur = count($_POST['formateur']);
-            // for($i = 0 ; $i < $nb_formateur; $i++){
-            //     $test = [
-            //         "test" => ""
-            //     ];
-            //     $infos->joinInformations(['date_debut_intervention','date_fin_intervention','nom_formateur','prenom_formateur'],'Formateur',['Date_intervention'],['id_formateur'],['Formateur.id_formateur'], [$_POST['formateur'][$i]])
+            // // if(Form::validate($_POST,['date_debut','date_fin','formateur'])){
+                // $date_debut = $_POST['date_debut'];
+                // $date_fin = $_POST['date_fin'];
                 
-             //   // $nomPrenomFormateur = $test[$i][0]->nom_formateur . " " . $test[$i][0]->prenom_formateur;
-
-              //  // echo $nomPrenomFormateur;
-            //     var_dump($test);
-            // }die;
-            // $nbDate = count($test);
-
-            // for($j = 0 ; $j < $nbDate; $j++){
-            //     $intervention = strtotime($test[$j]->date_debut_intervention);
-
-            //     var_dump($test[$j]); echo '<br><br>';
-            //     echo $intervention . '<br><br>';
-
-            //     if(strtotime($_POST['date_debut'] <= $intervention && strtotime($_POST['date_fin'] >= $intervention))){
-            //         echo $intervention;
-            //    }
-           // }
+                //  // $infos = new FormateurModel;
+                
+                
+                
+                // $nb_formateur = count($_POST['formateur']);
+                // for($i = 0 ; $i < $nb_formateur; $i++){
+                    //     $test = [
+                        //         "test" => ""
+                        //     ];
+                        //     $infos->joinInformations(['date_debut_intervention','date_fin_intervention','nom_formateur','prenom_formateur'],'Formateur',['Date_intervention'],['id_formateur'],['Formateur.id_formateur'], [$_POST['formateur'][$i]])
+                        
+                        //   // $nomPrenomFormateur = $test[$i][0]->nom_formateur . " " . $test[$i][0]->prenom_formateur;
+                        
+                        //  // echo $nomPrenomFormateur;
+                        //     var_dump($test);
+                        // }die;
+                        // $nbDate = count($test);
+                        
+                        // for($j = 0 ; $j < $nbDate; $j++){
+                            //     $intervention = strtotime($test[$j]->date_debut_intervention);
+                            
+                            //     var_dump($test[$j]); echo '<br><br>';
+                            //     echo $intervention . '<br><br>';
+                            
+                            //     if(strtotime($_POST['date_debut'] <= $intervention && strtotime($_POST['date_fin'] >= $intervention))){
+                                //         echo $intervention;
+                                //    }
+                                // }
  
 
 
-        // }
-
-        // $infosFormateur = $infos->getFormateur();
-        $this->render('/admin/activiteFormateur', compact('infosFormateur', ));
-    }
-}
+                                // }
+                            }
+                            $infosFormateur = $FormateurModel->getFormateur();
+                            $this->render('/admin/activiteFormateur', compact('infosFormateur', ));
+                        }
+                    }
+                    
