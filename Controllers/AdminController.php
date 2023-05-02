@@ -401,6 +401,7 @@ class AdminController extends Controller
         $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
+
     public function activiteFormateurs()
     {
 
