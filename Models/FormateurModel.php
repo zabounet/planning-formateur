@@ -172,13 +172,30 @@ class FormateurModel extends Model
         return $result;
     }
 
-    public function getInterventionById($id_formateur)
+    public function getInterventionById(array $id_list)
     {
-        return $this->requete("SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, f.numero_grn, f.id_ville,
-                            GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut,
-                            GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
-                            FROM Formateur f LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
-                            WHERE f.id_formateur = ? GROUP BY f.id_formateur;", [$id_formateur])->fetch();
+        $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur,
+                GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut,
+                GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
+                FROM Formateur f 
+                LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
+                WHERE f.id_formateur IN (";
+
+        $nbId = count($id_list);
+        for($i = 0; $i < $nbId; $i++){
+            if($i == 0){
+                $virgule = "";
+            }
+            else{
+                $virgule = ",";
+            }
+           $sql .= $virgule . $id_list[$i];
+        }
+
+        $sql .= ") GROUP BY f.id_formateur";
+                                
+        $result = $this->requete($sql)->fetchAll();
+        return $result;
     }
 
     public function setId(int $id)
