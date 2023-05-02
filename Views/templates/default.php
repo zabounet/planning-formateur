@@ -7,6 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <script src="/planning/Views/assets/js/formation.js"></script>
     <script src="/planning/Views/assets/js/formateur.js"></script>
 </head>
@@ -22,7 +23,7 @@
                     <li><a href="/planning/public/admin/formationsHome">Gérer les formations</a></li>
                     <li><a href="/planning/public/admin/formateursHome">Gérer les formateurs</a></li>
                     
-                    <li><a href="/planning/public/formateur/activiter">activiter formateur</a></li>
+                    <li><a href="/planning/public/admin/activiteFormateur">activiter formateur</a></li>
                     <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
                     <li><a href="/planning/public/admin/inscriptionFormateur">Inscription le/la formateur/trice</a></li>
                 <?php else :?>
