@@ -93,7 +93,7 @@
                 </div>
 
             <?php endforeach; ?>
-            <button type="button" class="add-date-fields" data="ran">Add new</button>
+            <button type="button" class="add-date-fields" data="ran">Ajouter période RAN</button>
         </div>
 
         <div>
@@ -110,7 +110,7 @@
                 </div>
 
             <?php endforeach; ?>
-            <button type="button" class="add-date-fields" data="entreprise">Add new</button>
+            <button type="button" class="add-date-fields" data="entreprise">Ajouter période PAE</button>
         </div>
 
         <div>
@@ -127,7 +127,7 @@
                 </div>
 
             <?php endforeach; ?>
-            <button type="button" class="add-date-fields" data="centre">Add new</button>
+            <button type="button" class="add-date-fields" data="centre">Ajouter période centre</button>
         </div>
 
         <div>
@@ -144,7 +144,7 @@
                 </div>
 
             <?php endforeach; ?>
-            <button type="button" class="add-date-fields" data="certification">Add new</button>
+            <button type="button" class="add-date-fields" data="certification">Ajouter période certification</button>
         </div>
     </fieldset>
 

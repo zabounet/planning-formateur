@@ -49,19 +49,19 @@
 
     <fieldset id="part2">Répartition des périodes
         <div>
-            <button type="button" class="add-date-fields" data="ran">Add new</button>
+            <button type="button" class="add-date-fields" data="ran">Ajouter période RAN</button>
         </div>
 
         <div>
-            <button type="button" class="add-date-fields" data="entreprise">Add new</button>
+            <button type="button" class="add-date-fields" data="entreprise">Ajouter période PAE</button>
         </div>
 
         <div>
-            <button type="button" class="add-date-fields" data="centre">Add new</button>
+            <button type="button" class="add-date-fields" data="centre">Ajouter période centre</button>
         </div>
 
         <div>
-            <button type="button" class="add-date-fields" data="certification">Add new</button>
+            <button type="button" class="add-date-fields" data="certification">Ajouter période certification</button>
         </div>
     </fieldset>
 
@@ -81,7 +81,7 @@
         </label>
 
         <div>
-            <button type="button" class="add-date-fields" data="intervention">Add new</button>
+            <button type="button" class="add-date-fields" data="intervention">Ajouter intervention</button>
         </div>
     </fieldset>
 

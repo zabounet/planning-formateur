@@ -324,19 +324,6 @@ class FormateurController extends Controller
         $this->render('/formateur/profil');
     }
 
-    public function activiter()
-    {
-
-
-
-
-
-
-
-
-
-        
-        $this->render('/formateur/activiter');
-    }
+    
 }
 
