@@ -1,3 +1,5 @@
+<?php $link = "Activité des formateurs" ;?>
+
 <form  method="post">
   <input type="date" name="date_debut" id="date_debut">
   <input type="date" name="date_fin" id="date_fin">

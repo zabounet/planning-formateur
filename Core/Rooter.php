@@ -1,6 +1,7 @@
 <?php
 namespace App\Core;
 
+use App\Controllers\FormateurController;
 use App\Controllers\RooterController;
 
 //Rooter principal
@@ -49,9 +50,14 @@ class Rooter{
             
         }else{
             // On a pas de paramètres donc on instancie le controller par défaut
-            $controller = new RooterController;
-
-            $controller->index();
+            if(isset($_SESSION['formateur']) || isset($_SESSION['admin'])){
+                $controller = new RooterController;
+                $controller->index();
+            }
+            else{
+                $formateur = new FormateurController;
+                $formateur->login();
+            }
         }
     }
 }

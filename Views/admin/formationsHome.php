@@ -1,3 +1,5 @@
+<?php $link = "Formation home" ;?>
+
 <h1>Liste des formations</h1>
 <?php 
 $iterations = 1;
