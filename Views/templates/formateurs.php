@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
-    <script src="/planning/Views/assets/js/formateur.js"></script>
+    <?php if($link !== "Formateur home"): ?>
+        <script src="/planning/Views/assets/js/formateur.js"></script>
+    <?php endif;?>
 </head>
 <body>
 

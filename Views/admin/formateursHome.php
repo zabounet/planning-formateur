@@ -21,6 +21,8 @@ foreach($infosFormateur as $formateur):
 <a href="/planning/public/admin/modifierFormateur?id=<?= $iterations ;?>">Modifier les informations du formateur</a>
 <a href="#">Supprimer le formateur</a>
 
+<hr>
+
 <?php 
 $iterations++;
 endforeach;
