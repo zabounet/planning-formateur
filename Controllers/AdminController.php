@@ -313,7 +313,7 @@ class AdminController extends Controller
             exit;
         }
 
-        $formateur = new FormationModel;
+        $formateur = new FormateurModel;
 
         $infosFormateur = $formateur->joinInformations(
             [
@@ -401,6 +401,34 @@ class AdminController extends Controller
         $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
+    public function modifierFormateur(): void{
+        
+        $formateur = new FormateurModel;
+
+        $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
+
+        $infosCurrent = $formateur->joinInformations(
+            [
+                'id_formateur',
+                'nom_formateur',
+                'prenom_formateur',
+                'mail_formateur',
+                'type_contrat_formateur',
+                'date_debut_contrat',
+                'date_fin_contrat',
+                'numero_grn',
+                'nom_ville'
+            ],
+            "Formateur", 
+            ['Ville'], 
+            ['id_ville'],
+            ['id_formateur'],
+            [$currentId]);
+
+        $infosFormateur = $formateur->getInformations();
+            $this->render('admin/modifierFormateur', compact('infosCurrent','infosFormateur'), 'formateurs');
+
+    }
 
     public function activiteFormateurs()
     {
