@@ -6,17 +6,20 @@ use App\Core\Form;
 use App\Core\Refresh;
 use App\Models\FormationModel;
 use App\Models\FormateurModel;
+use DateTime;
 
 class AdminController extends Controller
 {
-    public function index(): void{
+    public function index(): void
+    {
 
         $this->render('/main/index');
     }
 
-    public function formationsHome(): void{
-        
-        if(!isset($_SESSION['admin'])){
+    public function formationsHome(): void
+    {
+
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
@@ -38,159 +41,162 @@ class AdminController extends Controller
             ],
             "Formation",
             [
-                'Formateur', 
-                'Ville', 
+                'Formateur',
+                'Ville',
                 'Type_Formation'
-            ], 
+            ],
             [
                 'id_formateur',
                 'id_ville',
                 'id_type_formation'
-            ]);
+            ]
+        );
 
         $this->render('admin/formationsHome', compact('infosFormation'), 'formations');
     }
 
-    public function modifierFormation(): void{
+    public function modifierFormation(): void
+    {
 
-        if(!isset($_SESSION['admin'])){
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
 
-        if(Form::validate(
-        $_POST,
-        [
-            'type',
-            'grn',
-            'acronyme',
-            'description',
-            'offre',
-            'date-debut-formation',
-            'date-fin-formation',
-            'ville'
-        ],
-        [
-            'date-debut-ran',
-            'date-fin-ran',
-            'date-debut-entreprise',
-            'date-fin-entreprise',
-            'date-debut-centre',
-            'date-fin-centre',
-            'date-debut-certification',
-            'date-fin-certification',
-            'date-debut-interruption',
-            'date-fin-interruption',
-            'referent-formateur',
-            'formateur',
-            'date-debut-intervention',
-            'date-fin-intervention'
-        ]
-    )) {
-        $database = new FormationModel;
+        if (Form::validate(
+            $_POST,
+            [
+                'type',
+                'grn',
+                'acronyme',
+                'description',
+                'offre',
+                'date-debut-formation',
+                'date-fin-formation',
+                'ville'
+            ],
+            [
+                'date-debut-ran',
+                'date-fin-ran',
+                'date-debut-entreprise',
+                'date-fin-entreprise',
+                'date-debut-centre',
+                'date-fin-centre',
+                'date-debut-certification',
+                'date-fin-certification',
+                'date-debut-interruption',
+                'date-fin-interruption',
+                'referent-formateur',
+                'formateur',
+                'date-debut-intervention',
+                'date-fin-intervention'
+            ]
+        )) {
+            $database = new FormationModel;
 
-        $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
+            $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
 
-        //Récupèration du nom de la ville pour composer l'id de la formation
-        $villeNom = $database->getOne("nom_ville", "Ville", "id_ville", $_POST['ville']);
+            //Récupèration du nom de la ville pour composer l'id de la formation
+            $villeNom = $database->getOne("nom_ville", "Ville", "id_ville", $_POST['ville']);
 
-        //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
-        $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
+            //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
+            $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
 
-        //Création de l'id de la formation
-        $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
+            //Création de l'id de la formation
+            $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
 
-        $database->update(
-        'Formation',
-        [
-            'nom_formation', 
-            'acronyme_formation', 
-            'description_formation', 
-            'date_debut_formation', 
-            'date_fin_formation', 
-            'id_type_formation', 
-            'numero_grn', 
-            'id_formateur', 
-            'id_ville'
-        ], 
-        [
-            $nomFormation,
-            $_POST['acronyme'],
-            $_POST['description'],
-            $_POST['date-debut-formation'],
-            $_POST['date-fin-formation'],
-            $_POST['type'],
-            $_POST['grn'],
-            $referent,
-            $_POST['ville']
-        ],
-            'id_formation',
-            $currentId
-        );
+            $database->update(
+                'Formation',
+                [
+                    'nom_formation',
+                    'acronyme_formation',
+                    'description_formation',
+                    'date_debut_formation',
+                    'date_fin_formation',
+                    'id_type_formation',
+                    'numero_grn',
+                    'id_formateur',
+                    'id_ville'
+                ],
+                [
+                    $nomFormation,
+                    $_POST['acronyme'],
+                    $_POST['description'],
+                    $_POST['date-debut-formation'],
+                    $_POST['date-fin-formation'],
+                    $_POST['type'],
+                    $_POST['grn'],
+                    $referent,
+                    $_POST['ville']
+                ],
+                'id_formation',
+                $currentId
+            );
 
-        $deleteRan = $database->delete('Date_ran','id_formation', $currentId);
-        $deletePae = $database->delete('Date_pae','id_formation', $currentId);
-        $deleteCentre = $database->delete('Date_centre','id_formation', $currentId);
-        $deleteCertif = $database->delete('Date_certif','id_formation', $currentId);
-        $deleteInterruptions = $database->delete('Interruption','id_formation', $currentId);
+            $deleteRan = $database->delete('Date_ran', 'id_formation', $currentId);
+            $deletePae = $database->delete('Date_pae', 'id_formation', $currentId);
+            $deleteCentre = $database->delete('Date_centre', 'id_formation', $currentId);
+            $deleteCertif = $database->delete('Date_certif', 'id_formation', $currentId);
+            $deleteInterruptions = $database->delete('Interruption', 'id_formation', $currentId);
 
-        if(isset($_POST['date-debut-entreprise'])){ 
-            $periodesEntreprise = count($_POST['date-debut-entreprise']);
-            for ($i = 0; $i < $periodesEntreprise; $i++) {
-                $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $currentId);
+            if (isset($_POST['date-debut-entreprise'])) {
+                $periodesEntreprise = count($_POST['date-debut-entreprise']);
+                for ($i = 0; $i < $periodesEntreprise; $i++) {
+                    $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $currentId);
+                }
             }
-        } 
-        if(isset($_POST['date-debut-centre'])){
-            $periodesCentre = count($_POST['date-debut-centre']);
-            for ($i = 0; $i < $periodesCentre; $i++) {
-                $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $currentId);
+            if (isset($_POST['date-debut-centre'])) {
+                $periodesCentre = count($_POST['date-debut-centre']);
+                for ($i = 0; $i < $periodesCentre; $i++) {
+                    $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $currentId);
+                }
             }
+            if (isset($_POST['date-debut-ran'])) {
+                $periodesRan = count($_POST['date-debut-ran']);
+                for ($i = 0; $i < $periodesRan; $i++) {
+                    $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $currentId);
+                }
+            }
+            if (isset($_POST['date-debut-certification'])) {
+                $periodesCertif = count($_POST['date-debut-certification']);
+                for ($i = 0; $i < $periodesCertif; $i++) {
+                    $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $currentId);
+                }
+            }
+            if (isset($_POST['date-debut-interruption'])) {
+                $periodesInterruption = count($_POST['date-debut-interruption']);
+                for ($i = 0; $i < $periodesInterruption; $i++) {
+                    $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $currentId);
+                }
+            }
+            if (isset($_POST['date-debut-intervention'])) {
+                $periodesFormateurs = count($_POST['date-debut-intervention']);
+                for ($i = 0; $i < $periodesFormateurs; $i++) {
+                    $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
+                }
+            }
+            Refresh::refresh('formationsHome');
         }
-        if(isset($_POST['date-debut-ran'])){
-            $periodesRan = count($_POST['date-debut-ran']);
-            for ($i = 0; $i < $periodesRan; $i++) {
-                $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $currentId);
-            }
-        }
-        if(isset($_POST['date-debut-certification'])){
-            $periodesCertif = count($_POST['date-debut-certification']);
-            for ($i = 0; $i < $periodesCertif; $i++) {
-                $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $currentId);
-            }
-        }
-        if(isset($_POST['date-debut-interruption'])){
-            $periodesInterruption = count($_POST['date-debut-interruption']);
-            for ($i = 0; $i < $periodesInterruption; $i++) {
-                $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $currentId);
-            }
-        }
-        if(isset($_POST['date-debut-intervention'])){
-            $periodesFormateurs = count($_POST['date-debut-intervention']);
-            for ($i = 0; $i < $periodesFormateurs; $i++) {
-                $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
-            }
-        }
-        Refresh::refresh('formationsHome');
-    }
 
         $formation = new FormationModel;
 
         $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
 
-        $infosCurrent = $formation->getOne('*','Formation','id_formation',$currentId);
+        $infosCurrent = $formation->getOne('*', 'Formation', 'id_formation', $currentId);
         $infosFormation = $formation->getInformations();
-        $infosRan = $formation->getBy(['date_debut_ran', 'date_fin_ran'],'Date_ran',['id_formation'],[$currentId]);
-        $infosPae = $formation->getBy(['date_debut_pae', 'date_fin_pae'],'Date_pae',['id_formation'],[$currentId]);
-        $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'],'Date_certif',['id_formation'],[$currentId]);
-        $infosCentre = $formation->getBy(['date_debut_centre', 'date_fin_centre'],'Date_centre',['id_formation'],[$currentId]);
-        $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'],'Interruption ',['id_formation'],[$currentId]);
+        $infosRan = $formation->getBy(['date_debut_ran', 'date_fin_ran'], 'Date_ran', ['id_formation'], [$currentId]);
+        $infosPae = $formation->getBy(['date_debut_pae', 'date_fin_pae'], 'Date_pae', ['id_formation'], [$currentId]);
+        $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'], 'Date_certif', ['id_formation'], [$currentId]);
+        $infosCentre = $formation->getBy(['date_debut_centre', 'date_fin_centre'], 'Date_centre', ['id_formation'], [$currentId]);
+        $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'], 'Interruption ', ['id_formation'], [$currentId]);
 
-        $this->render('admin/modifierFormation', compact( 'infosCurrent','infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre',  'infosInterruption'), 'formations');
+        $this->render('admin/modifierFormation', compact('infosCurrent', 'infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre',  'infosInterruption'), 'formations');
     }
 
-    public function ajouterFormation(): void{
+    public function ajouterFormation(): void
+    {
 
-        if(!isset($_SESSION['admin'])){
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
@@ -252,37 +258,37 @@ class AdminController extends Controller
 
             $idFormation = $database->getLastId('id_formation');
 
-            if(isset($_POST['date-debut-entreprise'])){ 
+            if (isset($_POST['date-debut-entreprise'])) {
                 $periodesEntreprise = count($_POST['date-debut-entreprise']);
                 for ($i = 0; $i < $periodesEntreprise; $i++) {
                     $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $idFormation['MAX(id_formation)']);
                 }
-            } 
-            if(isset($_POST['date-debut-centre'])){
+            }
+            if (isset($_POST['date-debut-centre'])) {
                 $periodesCentre = count($_POST['date-debut-centre']);
                 for ($i = 0; $i < $periodesCentre; $i++) {
                     $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            if(isset($_POST['date-debut-ran'])){
+            if (isset($_POST['date-debut-ran'])) {
                 $periodesRan = count($_POST['date-debut-ran']);
                 for ($i = 0; $i < $periodesRan; $i++) {
                     $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            if(isset($_POST['date-debut-certification'])){
+            if (isset($_POST['date-debut-certification'])) {
                 $periodesCertif = count($_POST['date-debut-certification']);
                 for ($i = 0; $i < $periodesCertif; $i++) {
                     $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            if(isset($_POST['date-debut-interruption'])){
+            if (isset($_POST['date-debut-interruption'])) {
                 $periodesInterruption = count($_POST['date-debut-interruption']);
                 for ($i = 0; $i < $periodesInterruption; $i++) {
                     $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            if(isset($_POST['date-debut-intervention'])){
+            if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
@@ -305,10 +311,11 @@ class AdminController extends Controller
             $this->render('admin/ajouterFormation', compact('infosFormation'), 'formations');
         };
     }
-    
-    public function formateursHome(): void{
-        
-        if(!isset($_SESSION['admin'])){
+
+    public function formateursHome(): void
+    {
+
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
@@ -327,9 +334,10 @@ class AdminController extends Controller
                 'numero_grn',
                 'nom_ville'
             ],
-            "Formateur", 
-            ['Ville'], 
-            ['id_ville']);
+            "Formateur",
+            ['Ville'],
+            ['id_ville']
+        );
 
         $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
     }
@@ -337,53 +345,52 @@ class AdminController extends Controller
     public function inscriptionFormateur()
     {
 
-        if(!isset($_SESSION['admin'])){
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
 
         if (Form::validate($_POST, ['inscription'],)) {
-            if(!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])){
-                
+            if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])) {
+
                 // verifier le mail
                 $mail = $_POST['mail'];
                 // if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
-                   
-                    $formateur = new FormateurModel;
-                    
-                    //Création de le mot de pass de la formation
-                    $mdp_formateur = $_POST["nom"] .  $_POST["prenom"] ;
-                    $mdp = sha1($mdp_formateur);
-                    
-                    //un formateur n'est pas admin
-                    $permissions_utilisateur = 0;
-                    
-                    if($_POST['type_contrat'] === 'CDI'){
-                        $date_fin_contrat = '0001-01-01';
-                    }
-                    else{
-                        $date_fin_contrat =  $_POST['date_fin_contrat'] ;
-                    }
-                
-                    $type_contrat = strtoupper($_POST["type_contrat"]) ;
+
+                $formateur = new FormateurModel;
+
+                //Création de le mot de pass de la formation
+                $mdp_formateur = $_POST["nom"] .  $_POST["prenom"];
+                $mdp = sha1($mdp_formateur);
+
+                //un formateur n'est pas admin
+                $permissions_utilisateur = 0;
+
+                if ($_POST['type_contrat'] === 'CDI') {
+                    $date_fin_contrat = '0001-01-01';
+                } else {
+                    $date_fin_contrat =  $_POST['date_fin_contrat'];
+                }
+
+                $type_contrat = strtoupper($_POST["type_contrat"]);
                 //Insertion des données dans la table formation
-                    $formateur->insertFormateur(
-                        $_POST['nom'],
-                        $_POST['prenom'],
-                        $mail,
-                        $mdp,
-                        $type_contrat,
-                        $_POST['date_debut_contrat'],
-                        $date_fin_contrat,
-                        $permissions_utilisateur,
-                        $_POST['grn'],
-                        $_POST['ville']
-                    );
-                    
-                    
-                    $_SESSION['success'] = "Formateur ajouté avec succès";
-                    Refresh::refresh('/planning/public/admin/inscriptionFormateur');
-                    exit;
+                $formateur->insertFormateur(
+                    $_POST['nom'],
+                    $_POST['prenom'],
+                    $mail,
+                    $mdp,
+                    $type_contrat,
+                    $_POST['date_debut_contrat'],
+                    $date_fin_contrat,
+                    $permissions_utilisateur,
+                    $_POST['grn'],
+                    $_POST['ville']
+                );
+
+
+                $_SESSION['success'] = "Formateur ajouté avec succès";
+                Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+                exit;
                 // } else {
                 //     $_SESSION['error'] = "email pas bon";
                 // }
@@ -393,7 +400,7 @@ class AdminController extends Controller
                 Refresh::refresh('/planning/public/admin/inscriptionFormateur');
                 exit;
             }
-        } 
+        }
 
         $infos = new FormateurModel;
 
@@ -401,8 +408,9 @@ class AdminController extends Controller
         $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
-    public function modifierFormateur(): void{
-        
+    public function modifierFormateur(): void
+    {
+
         $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
@@ -419,115 +427,333 @@ class AdminController extends Controller
                 'numero_grn',
                 'nom_ville'
             ],
-            "Formateur", 
-            ['Ville'], 
+            "Formateur",
+            ['Ville'],
             ['id_ville'],
             ['id_formateur'],
-            [$currentId]);
+            [$currentId]
+        );
 
         $infosFormateur = $formateur->getInformations();
-            $this->render('admin/modifierFormateur', compact('infosCurrent','infosFormateur'), 'formateurs');
-
+        $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur'), 'formateurs');
     }
 
     public function activiteFormateurs()
     {
-
-        if(!isset($_SESSION['admin'])){
+        if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
-
-        $FormateurModel = new FormateurModel;
         
-        if(Form::validate($_POST,['valider'])){
-            echo "ee";
+        $html = "<h1 style='text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1>";
+        $FormateurModel = new FormateurModel;
+
+        if (Form::validate($_POST, ['valider'])) {
             // Récupérer les dates saisies par l'utilisateur
-            $date_debut = $_POST['date_debut'];
-            $date_fin = $_POST['date_fin'];
+            $date_debut_calendrier = $_POST['date_debut'];
+            $date_fin_calendrier = $_POST['date_fin'];
             $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
-            
             // Récupérer les formateurs qui sont occupés pendant cette période
             $formateurs = $FormateurModel->getInterventionById($id_formateur);
-            var_dump($formateurs);
-            
-            
-            // Construire le tableau HTML
-            $table_html = '<table>';
-            $table_html .= '<tr><th></th>'; // Première ligne avec les dates
-            $date_courante = strtotime($date_debut);
-            while ($date_courante <= strtotime($date_fin)) {
-                $table_html .= '<th>' . date('d/m/Y', $date_courante) . '</th>';
-                $date_courante = strtotime('+1 day', $date_courante);
-            }
-            $table_html .= '</tr>';
-            
             foreach ($formateurs as $formateur) {
-                $table_html .= '<tr>';
-                $table_html .= '<td>' . $formateur['nom'] . ' ' . $formateur['prenom'] . '</td>';
+                $date_debut_activite = $formateur['date_debut'];
+                $date_debut_array = explode(",", $date_debut_activite);
+                // var_dump($date_debut_array);
+                $date_fin_activite = $formateur['date_fin'];
+                $date_fin_array = explode(",", $date_fin_activite);
+
+                $dates_interventions_formateurs = array();
+
+                $test = count($date_debut_array);
+                for ($i = 0; $i < $test; $i++) {
+                    $dates_formateur[] = [
+                        "id_formateur" => $formateur['id_formateur'],
+                        "debut" => $date_debut_array[$i],
+                        "fin" => $date_fin_array[$i]
+                    ];
+                }
+
+                $dates_interventions_formateurs[] = $dates_formateur;
+            }
+
+            $date_debut_tableau = new DateTime($_POST['date_debut'], new \DateTimeZone('Europe/Paris'));
+            // $formattedDebut = date('Y-m-d', $date_debut_tableau);
+
+            $date_fin_tableau = new DateTime(($_POST['date_fin']));
+            // $formattedFin = $date_fin_tableau->format("Y-m-d");
+
+            $nbJours = $date_fin_tableau->diff($date_debut_tableau)->days + 1;
+
+
+            $mois31 = array('1', '3', '5', '7', '8', '10', '12');
+            $mois30 = array('4', '6', '9', '11');
+
+            $current_date_year = clone $date_debut_tableau;
+            $last_date_year = clone $date_fin_tableau;
+            $yearDebut = $current_date_year->format('L');
+            $yearFin = $last_date_year->format('L');
+
+            $current_date_year = clone $date_debut_tableau;
+            $current_date_month = clone $date_debut_tableau;
+            $current_date_dayName = clone $date_debut_tableau;
+            $current_date_day = clone $date_debut_tableau;
+            $current_date_dayForYears = clone $date_debut_tableau;
+            $current_date_dayForMonths = clone $date_debut_tableau;
+
+            $count = 0;
+            $countFormateurs = count($formateurs);
+            $countDates = count($dates_interventions_formateurs[0]);
+
+            $html = "<div class='main-container'> <div class='tableau-container'> <table> <thead> <tr> <th rowspan = 4>Afpa</th>";
+            for ($i = 0; $i < $nbJours; $i++) {
+                $annee = $current_date_year->format('Y');
+                $dernierJour = $current_date_dayForYears->format('m-d');
+
+                if($yearDebut || $yearFin){
+                    $count++;
+                    if($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
+                        $html .= "<th colspan='$count'>" . $annee . "</th> ";
+
+                        $count = 0;
+                    }
+                }else{
+                    $count++;
+                    if($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
+                    $html .= "<th colspan='$count'>" . $annee . "</th> ";
+
+                    $count = 0;
+                    }
+                }
                 
-                // Pour chaque jour entre la date de début et la date de fin, vérifier si le formateur est occupé
-                $date_courante = strtotime($date_debut);
-                while ($date_courante <= strtotime($date_fin)) {
-                    $occupe = false;
-                    foreach ($formateur['dates_occupees'] as $date_occupee) {
-                        if ($date_courante >= strtotime($date_occupee['date_debut']) && $date_courante <= strtotime($date_occupee['date_fin'])) {
-                            $occupe = true;
+                $current_date_year->modify("+1 day");
+                $current_date_dayForYears->modify("+1 day");
+
+            }
+
+            $html .= "</tr> <tr>";
+            for ($i = 0; $i < $nbJours; $i++) {
+                $mois = $current_date_month->format('n');
+                $numeroJour = $current_date_dayForMonths->format('j');
+
+                if (in_array($mois, $mois31)) {
+                    $count++;
+                    if ($numeroJour === "31" || ($i + 1) == $nbJours) {
+                        switch ($mois) {
+                            case 1: {
+                                    $mois = "Janvier";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 3: {
+                                    $mois = "Mars";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 5: {
+                                    $mois = "Mai";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 7: {
+                                    $mois = "Juillet";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 8: {
+                                    $mois = "Août";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 10: {
+                                    $mois = "Octobre";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 12: {
+                                    $mois = "Décembre";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                        }
+                        $numeroJour = $current_date_dayForMonths->format('j');
+                        $count = 0;
+                    }
+                }
+
+                if(in_array($mois, $mois30)){
+                    $count++;
+                    if($numeroJour === "30" || ($i + 1) == $nbJours){
+                        switch($mois){
+                            case 4:{
+                                $mois = "Avril";
+                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                break;
+                            }
+                            case 6:{
+                                $mois = "Juin";
+                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                break;
+                            }
+                            case 9:{
+                                $mois = "Septembre";
+                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                break;
+                            }
+                            case 11:{
+                                $mois = "Novembre";
+                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                break;
+                            }
+                            
+                        }
+                        $numeroJour = $current_date_dayForMonths->format('j');
+                        $count = 0;
+                    }
+                }
+
+                if ($mois === "2") {
+                    $count++;
+                    if ($yearDebut || $yearFin) {
+                        if ($numeroJour == 29 || ($i + 1) == $nbJours) {
+                            $mois = "Février";
+                            $html .= "<th colspan='$count'>" . $mois . "</th> ";
+
+                            $numeroJour = $current_date_dayForMonths->format('j');
+                            $count = 0;
+                        }
+
+                    } else {
+                        if ($numeroJour == 28 || ($i + 1) == $nbJours) {
+                            $mois = "Février";
+                            $html .= "<th colspan='$count'>" . $mois . "</th> ";
+
+                            $numeroJour = $current_date_dayForMonths->format('j');
+                            $count = 0;
+                        }
+                    }
+                }
+                $current_date_month->modify("+1 day");
+                $current_date_dayForMonths->modify("+1 day");
+            }
+
+            $html .= "</tr> <tr> ";
+            for ($i = 0; $i < $nbJours; $i++) {
+                $jourNom = $current_date_dayName->format('N');
+                switch ($jourNom) {
+                    case 1: {
+                            $jourNom = "Lun";
+                            break;
+                        }
+                    case 2: {
+                            $jourNom = "Mar";
+                            break;
+                        }
+                    case 3: {
+                            $jourNom = "Mer";
+                            break;
+                        }
+                    case 4: {
+                            $jourNom = "Jeu";
+                            break;
+                        }
+                    case 5: {
+                            $jourNom = "Ven";
+                            break;
+                        }
+                    case 6: {
+                            $jourNom = "Sam";
+                            break;
+                        }
+                    case 7: {
+                            $jourNom = "Dim";
+                            break;
+                        }
+                }
+                $current_date_dayName->modify("+1 day");
+                $html .= "<th>" . $jourNom . "</th> ";
+            }
+
+            $html .= '</tr> <tr> ';
+            for ($i = 0; $i < $nbJours; $i++) {
+                $jour = $current_date_day->format('j');
+                $current_date_day->modify("+1 day");
+                $html .= "<th>" . $jour . "</th> ";
+            }
+            $html .= "</tr> <tbody> <tr>";
+
+            // Création d'un tableau vide pour stocker les périodes de chaque formateur
+            $formateur_periodes = array();
+
+            // Boucle pour parcourir tous les formateurs
+            for ($z = 0; $z < $countFormateurs; $z++) {
+
+                // Clonage de la date de début du tableau pour éviter de modifier l'objet original
+                $current_date_dayForFormateurs = clone $date_debut_tableau;
+                $current_date_Weekends = clone $date_debut_tableau;
+
+                // Ajout du nom et prénom du formateur dans la première colonne du tableau
+                $html .= "<th>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</th> ";
+                
+                // Création d'un tableau vide pour stocker les périodes du formateur en cours
+                $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
+
+                // Boucle pour parcourir tous les jours du tableau
+                for ($i = 0; $i < $nbJours; $i++){
+                    
+                    // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
+                    for ($j = 0; $j < $countDates; $j++) {
+
+                        // Stockage de la période dans le tableau des périodes du formateur en cours
+                        if ($dates_interventions_formateurs[0][$j]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                            $formateur_periodes[$formateurs[$z]['id_formateur']][] = array(
+                                'debut' => $dates_interventions_formateurs[0][$j]['debut'],
+                                'fin' => $dates_interventions_formateurs[0][$j]['fin']
+                            );
+                        }
+                        
+                    }
+
+                    // Récupération de la période courante
+                    $periode = $current_date_dayForFormateurs->format('Y-m-d');
+                    $weekend = $current_date_Weekends->format('N');
+
+                    // Vérification si le formateur a une période pour le jour en cours
+                    $trainer_has_period = false;
+                    foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $period) {
+                        if ($periode >= $period['debut'] && $periode <= $period['fin']) {
+                            $trainer_has_period = true;
                             break;
                         }
                     }
-                    $table_html .= '<td class="' . ($occupe ? 'occupe' : '') . '"></td>';
-                    $date_courante = strtotime('+1 day', $date_courante);
-                }
-                
-                $table_html .= '</tr>';
-            }
-            $table_html .= '</table>';
-            
-            // Afficher le tableau dans la vue
-            echo $table_html;
-            
-            
-            // // if(Form::validate($_POST,['date_debut','date_fin','formateur'])){
-                // $date_debut = $_POST['date_debut'];
-                // $date_fin = $_POST['date_fin'];
-                
-                //  // $infos = new FormateurModel;
-                
-                
-                
-                // $nb_formateur = count($_POST['formateur']);
-                // for($i = 0 ; $i < $nb_formateur; $i++){
-                    //     $test = [
-                        //         "test" => ""
-                        //     ];
-                        //     $infos->joinInformations(['date_debut_intervention','date_fin_intervention','nom_formateur','prenom_formateur'],'Formateur',['Date_intervention'],['id_formateur'],['Formateur.id_formateur'], [$_POST['formateur'][$i]])
-                        
-                        //   // $nomPrenomFormateur = $test[$i][0]->nom_formateur . " " . $test[$i][0]->prenom_formateur;
-                        
-                        //  // echo $nomPrenomFormateur;
-                        //     var_dump($test);
-                        // }die;
-                        // $nbDate = count($test);
-                        
-                        // for($j = 0 ; $j < $nbDate; $j++){
-                            //     $intervention = strtotime($test[$j]->date_debut_intervention);
-                            
-                            //     var_dump($test[$j]); echo '<br><br>';
-                            //     echo $intervention . '<br><br>';
-                            
-                            //     if(strtotime($_POST['date_debut'] <= $intervention && strtotime($_POST['date_fin'] >= $intervention))){
-                                //         echo $intervention;
-                                //    }
-                                // }
- 
 
-
-                                // }
-                            }
-                            $infosFormateur = $FormateurModel->getFormateur();
-                            $this->render('/admin/activiteFormateur', compact('infosFormateur', ));
+                    // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
+                    if ($trainer_has_period) {
+                        if($weekend === "6" || $weekend === "7"){
+                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                        }
+                        else{
+                            $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                        }
+                    } else {
+                        if($weekend === "6" || $weekend === "7"){
+                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                        }
+                        else{
+                            $html .= "<th style='background-color: var(--emptyCell);'></th> ";
                         }
                     }
-                    
+                    // Incrémentation de la date pour passer au jour suivant
+                    $current_date_Weekends->modify("+1 day");
+                    $current_date_dayForFormateurs->modify("+1 day");
+                }
+                // Fermeture de la ligne correspondant au formateur en cours
+                $html .= "</tr>";
+            }            
+            $html .= "</tbody> </table> </div> </div>";
+
+        }
+        $infosFormateur = $FormateurModel->getFormateur();
+        $this->render('/admin/activiteFormateur', compact('infosFormateur','html'));
+    }
+}
