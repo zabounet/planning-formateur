@@ -1,0 +1,10 @@
+:root{
+    --greenCell: #00FF99;
+    --weekendCell: gray;
+    --emptyCell: #ddd;
+}
+
+::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+}

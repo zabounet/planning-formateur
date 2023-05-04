@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
+    <script src='/planning/Views/assets/js/planning.js'></script>
 </head>
 <body>
 

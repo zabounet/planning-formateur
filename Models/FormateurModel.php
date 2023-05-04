@@ -174,12 +174,12 @@ class FormateurModel extends Model
 
     public function getInterventionById(array $id_list)
     {
-        $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur,
-                GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut,
-                GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
-                FROM Formateur f 
-                LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
-                WHERE f.id_formateur IN (";
+        $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, 
+        GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut, 
+        GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
+        FROM Formateur f 
+        LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
+        WHERE f.id_formateur IN (";
 
         $nbId = count($id_list);
         for($i = 0; $i < $nbId; $i++){
@@ -194,7 +194,7 @@ class FormateurModel extends Model
 
         $sql .= ") GROUP BY f.id_formateur";
                                 
-        $result = $this->requete($sql)->fetchAll();
+        $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
         return $result;
     }
 
