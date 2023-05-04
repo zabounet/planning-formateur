@@ -1,7 +1,6 @@
 <?php
 namespace App\Core;
 
-use App\Core\CustomException;
 use App\Controllers\FormateurController;
 use App\Controllers\RooterController;
 
@@ -9,9 +8,6 @@ use App\Controllers\RooterController;
 class Rooter{
 
     public function start(){
-        
-        set_error_handler(['\App\Core\CustomException','PhpErrors'],E_ALL);
-        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
         // On démarre la session
         session_start();
@@ -48,7 +44,7 @@ class Rooter{
                 (isset($params[0])) ? call_user_func_array([$controller, $action], $params) : $controller->$action(); 
             }else{
                 http_response_code(404);
-                echo "<h1 style='padding: 0; margin: 0; font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>La page recherchée n'existe pas </h1>";
+                echo "La page recherchée n'existe pas";
                 exit;
             }
             
