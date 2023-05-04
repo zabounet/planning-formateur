@@ -104,7 +104,7 @@ class AdminController extends Controller
 
             //Création de l'id de la formation
             $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
-            
+
             $database->update(
                 'Formation',
                 [
@@ -350,7 +350,8 @@ class AdminController extends Controller
             exit;
         }
 
-        if (Form::validate($_POST, ['inscription'])) {
+        if (Form::validate($_POST, ['inscription'],)) {
+            if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])) {
 
                 // verifier le mail
                 $mail = $_POST['mail'];
@@ -371,13 +372,14 @@ class AdminController extends Controller
                     $date_fin_contrat =  $_POST['date_fin_contrat'];
                 }
 
+                $type_contrat = strtoupper($_POST["type_contrat"]);
                 //Insertion des données dans la table formation
                 $formateur->insertFormateur(
                     $_POST['nom'],
                     $_POST['prenom'],
                     $mail,
                     $mdp,
-                    $_POST['type_contrat'],
+                    $type_contrat,
                     $_POST['date_debut_contrat'],
                     $date_fin_contrat,
                     $permissions_utilisateur,
@@ -408,82 +410,7 @@ class AdminController extends Controller
 
     public function modifierFormateur(): void
     {
-        if (!isset($_SESSION['admin'])) {
-            header('Location: /planning/public/');
-            exit;
-        }
 
-        if (Form::validate($_POST, ['inscription'])) {
-
-            $database = new FormateurModel;
-            $permissions_utilisateur = 0;
-
-            if ($_POST['type_contrat'] === 'CDI') {
-                $date_fin_contrat = '0001-01-01';
-            } else {
-                $date_fin_contrat =  $_POST['date_fin_contrat'];
-            }
-
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
-
-            $database->update(
-                'Formateur',
-                [
-                    'nom_formateur',
-                    'prenom_formateur',
-                    'mail_formateur',
-                    'type_contrat_formateur',
-                    'date_debut_contrat',
-                    'date_fin_contrat',
-                    'numero_grn',
-                    'id_ville'
-                ],
-                [
-                    $_POST['nom'],
-                    $_POST['prenom'],
-                    $_POST['mail'],
-                    $_POST['type_contrat'],
-                    $_POST['date_debut_contrat'],
-                    $date_fin_contrat,
-                    $_POST['grn'],
-                    $_POST['ville']
-                ],
-                'id_formateur',
-                $currentId
-            );
-
-            Refresh::refresh('/planning/public/admin/formateursHome');
-            exit;
-        }
-
-        if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention'])) {
-
-            $database = new FormateurModel;
-
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
-
-            if (isset($_POST['date-debut-intervention'])) {
-                $periodesFormateurs = count($_POST['date-debut-intervention']);
-                for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $currentId);
-                }
-            }
-
-            Refresh::refresh('/planning/public/admin/modifierFormateur?id=' . $currentId);
-            exit;
-        }
-
-        if (Form::validate($_POST, ['intervention'])) {
-
-            $database = new FormateurModel;
-
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
-
-            $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
-
-            Refresh::refresh('/planning/public/admin/modifierFormateur?id=' . $currentId);
-            exit;
-        }
         $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
@@ -506,10 +433,9 @@ class AdminController extends Controller
             ['id_formateur'],
             [$currentId]
         );
-        $infosInterventions = $formateur->getBy(['id_intervention','date_debut_intervention', 'date_fin_intervention'],'Date_intervention', ['id_formateur'], [$currentId]);
 
         $infosFormateur = $formateur->getInformations();
-        $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');
+        $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur'), 'formateurs');
     }
 
     public function activiteFormateurs()
@@ -518,7 +444,7 @@ class AdminController extends Controller
             header('Location: /planning/public/');
             exit;
         }
-     
+        
         $html = "<h1 style='text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1>";
         $FormateurModel = new FormateurModel;
 
@@ -528,7 +454,6 @@ class AdminController extends Controller
             $date_fin_calendrier = $_POST['date_fin'];
             $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
-
             // Récupérer les formateurs qui sont occupés pendant cette période
             $formateurs = $FormateurModel->getInterventionById($id_formateur);
             foreach ($formateurs as $formateur) {
