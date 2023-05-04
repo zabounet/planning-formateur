@@ -103,6 +103,10 @@ class Model extends Db{
         // echo $sql;die;
         return $this->requete($sql);    
     }
+    // Insère une période de dates dans une table données contenant 2 champs de date et 1 une clé étrangère
+    public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
+        return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
+    }  
 
     // Transforme les données reçue et les transforme afin de correspondre au noms des accesseurs correspondants
     public function hydrate($donnees){
