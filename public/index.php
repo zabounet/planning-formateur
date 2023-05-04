@@ -1,4 +1,5 @@
 <?php
+
 use App\Autoloader;
 use App\Core\Rooter;
 

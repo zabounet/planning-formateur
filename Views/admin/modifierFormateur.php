@@ -1,7 +1,5 @@
 <?php $link = "Modifier " . $infosCurrent[0]->prenom_formateur . " " .$infosCurrent[0]->nom_formateur; ?>
 
-<?php $link = "Inscription formateur" ;?>
-
 <h1>Inscription formateur</h1>
 <section>
     <form style="text-transform: capitalize;" method="post" name="validation">
@@ -67,5 +65,27 @@
 
     <input type="submit" value="Inscrire" name="inscription" >
         
+    </form>
+
+    <hr>
+    
+        <h2>Liste des périodes d'intervention du formateur</h2>
+        
+        <?php foreach($infosInterventions as $intervention):?>
+        <form method="post">
+            <p>Date de début : <?= $intervention->date_debut_intervention ;?></p>
+            <p>Date de fin : <?= $intervention->date_fin_intervention ;?></p>   
+            <input type="hidden" name="intervention" value="<?= $intervention->id_intervention ;?>">
+            <input type="submit" value="Supprimer la période">     
+        </form>
+        <?php endforeach;?>
+    <hr>
+
+    <form method="post">
+        <h2>Ajouter une période d'intervention pour ce formateur</h2>
+        <div>
+            <button type="button" class="add-date-fields" data="intervention">Ajouter intervention</button>
+        </div>
+        <input type="submit" value="Ajouter les périodes">
     </form>
 </section>

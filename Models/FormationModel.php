@@ -103,11 +103,6 @@ class FormationModel extends Model{
             ]
         );
     }
-
-    // Insère une période de dates dans une table données contenant 2 champs de date et 1 une clé étrangère
-    public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
-        return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
-     }  
     
     /**
      * Get the value of id_formation
