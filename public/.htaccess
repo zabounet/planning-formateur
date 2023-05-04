@@ -1,3 +1,7 @@
+# Désactiver l'affichage des erreurs
+php_flag display_errors off
+php_value error_reporting 0
+
 # On démarre le moteur de réécriture
 RewriteEngine On
 
