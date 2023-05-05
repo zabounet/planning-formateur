@@ -178,9 +178,9 @@
                 <?php foreach ($infosFormation['Formateurs'] as $formateurs) : ?>
 
                     <?php if($formateurs->id_formateur === $infosCurrent->id_formateur): ?>
-                        <option selected value="<?= $formateurs['id_formateur']; ?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur']; ?></option>
+                        <option selected value="<?= $formateurs->id_formateur ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
                     <?php else :?>
-                        <option selected value="<?= $formateurs['id_formateur']; ?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur']; ?></option>
+                        <option selected value="<?= $formateurs->id_formateur; ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
                     <?php endif;?>
 
                 <?php endforeach; ?>

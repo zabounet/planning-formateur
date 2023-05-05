@@ -1,18 +1,49 @@
 addEventListener('DOMContentLoaded', () => {
-    const dateFinContratInput = document.getElementById('fin');
-    typeContratSelect = document.getElementById('type_contrat');
+  const dateFinContratInput = document.getElementById('fin');
+  typeContratSelect = document.getElementById('type_contrat');
 
-    typeContratSelect.addEventListener('change', (event) => {
-      if (event.target.value === 'CDI') {
-        dateFinContratInput.disabled = true;
-      } else {
-        dateFinContratInput.disabled = false;
-      }
+  typeContratSelect.addEventListener('change', (event) => {
+    if (event.target.value === 'CDI') {
+      dateFinContratInput.disabled = true;
+    } else {
+      dateFinContratInput.disabled = false;
+    }
+  });
+
+
+  let newFields;
+  let newDateBtn = document.querySelector(".add-date-fields");
+
+    newDateBtn.addEventListener("click", () => {
+
+      let dateType = newDateBtn.getAttribute("data");
+
+      newFields = document.createElement("div");
+      newFields.classList.add("date-fields");
+      newFields.setAttribute("data", dateType);
+      newFields.innerHTML = `
+                      <label for="date-debut-${dateType}"> Date de début de la période d'${dateType} :
+                      <input name="date-debut-${dateType}[]" type="date">
+                      </label>
+                      <label for="date-fin-${dateType}"> Date de fin de la période d'${dateType} :
+                      <input name="date-fin-${dateType}[]" type="date">
+                      </label>
+                      <button class="delete-date-fields" type="button" data="${dateType}">Supprimer la période d'${dateType}</button>
+                  `;
+      newDateBtn.before(newFields);
+
+      let deleteButtons = document.querySelectorAll(".delete-date-fields");
+      Array.from(deleteButtons).forEach(function (deleteBtn) {
+        deleteBtn.addEventListener("click", () => {
+          let fields = deleteBtn.parentNode;
+
+          if (fields) {
+            fields.remove();
+          }
+        });
+      });
     });
-
-
-    
-})
+  });
 
 
 

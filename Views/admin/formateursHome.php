@@ -18,7 +18,7 @@ foreach($infosFormateur as $formateur):
     <p>Date de fin du contrat : <?= $formateur->date_fin_contrat ;?></p>
 <?php endif;?>
 
-<a href="/planning/public/admin/modifierFormateur?id=<?= $iterations ;?>">Modifier les informations du formateur</a>
+<a href="/planning/public/admin/modifierFormateur?id=<?= $formateur->id_formateur ;?>">Modifier les informations du formateur</a>
 <a href="#">Supprimer le formateur</a>
 
 <hr>
