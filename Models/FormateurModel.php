@@ -36,7 +36,7 @@ class FormateurModel extends Model
     public function getFormateur()
     {
         return $infos = [
-            'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`, `prenom_formateur` FROM `Formateur` WHERE id_formateur != 1")->fetchAll(),
+            'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`, `prenom_formateur` FROM `Formateur`")->fetchAll(),
         ];
     }
 
