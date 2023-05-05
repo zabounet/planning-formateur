@@ -21,7 +21,7 @@
                     <option <?php if($infosCurrent[0]->type_contrat_formateur === "Autre"):?> selected <?php endif;?> value="Autre">autre</option>
             </select>
         </label>
-
+        
         <span>date debut contrat</span>
         <input value="<?= $infosCurrent[0]->date_debut_contrat ;?>" type="date" name="date_debut_contrat" id="">
 
