@@ -26,7 +26,7 @@ class FormationModel extends Model{
     public function getInformations(){
         return $infos = [
             'GRNS' => $this->requete("SELECT * FROM `GRN`")->fetchAll(),
-            'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`,`prenom_formateur`,`date_debut_contrat`,`date_fin_contrat` FROM `Formateur`")->fetchAll(Db::FETCH_ASSOC),
+            'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`,`prenom_formateur`,`date_debut_contrat`,`date_fin_contrat` FROM `Formateur`")->fetchAll(),
             'Villes' => $this->requete("SELECT * FROM `Ville`")->fetchAll(),
             'Types' => $this->requete("SELECT * FROM `Type_Formation`")->fetchAll()
         ];

@@ -77,7 +77,7 @@
             <select name="referent-formateur">
                 <option disabled selected>Choisir un formateur</option>
                 <?php foreach($infosFormation['Formateurs'] as $formateurs):?>
-                    <option value="<?= $formateurs['id_formateur'];?>"><?= $formateurs['nom_formateur'] . ' ' . $formateurs['prenom_formateur'];?></option>
+                    <option value="<?= $formateurs->id_formateur;?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur;?></option>
                 <?php endforeach;?>
             </select>
         </label>
