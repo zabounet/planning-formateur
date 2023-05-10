@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <header style="width: 100%; height: 150px; background-color: crimson;">
+    <header style="width: 100%; height: 15rem; background-color: crimson;">
         <nav>
             <ul>
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) :?>

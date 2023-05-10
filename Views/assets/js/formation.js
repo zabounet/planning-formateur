@@ -7,10 +7,6 @@ addEventListener('DOMContentLoaded', () => {
         newDateBtn.addEventListener("click", () => {
 
             let dateType = newDateBtn.getAttribute("data");
-            let date = new Date();
-            let dateMin = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-                .toISOString()
-                .split("T")[0];
 
             if (dateType === "intervention") {
                 // Charger le contenu du json via AJAX
@@ -41,11 +37,17 @@ addEventListener('DOMContentLoaded', () => {
                         defaultOption.textContent = "Choisir un formateur";
                         selectFormateur.appendChild(defaultOption);
 
+                        let counter = 0;
                         data.forEach(formateur => {
+                            if(counter == 0 || counter == 1){
+                                counter++;
+                                return;
+                            }
                             let option = document.createElement("option");
                             option.value = formateur.id_formateur;
                             option.textContent = formateur.nom_formateur + ' ' + formateur.prenom_formateur;
                             selectFormateur.appendChild(option)
+                            counter++;
                         });
 
                         // Concaténation de la chaine de caractères avec le reste des create elements

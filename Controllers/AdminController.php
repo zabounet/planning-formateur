@@ -172,7 +172,7 @@ class AdminController extends Controller
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
+                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $currentId);
                 }
             }
             Refresh::refresh('formationsHome');
@@ -291,7 +291,7 @@ class AdminController extends Controller
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i]);
+                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation);
                 }
             }
             Refresh::refresh('/planning/public/admin/ajouterFormation');
@@ -512,8 +512,16 @@ class AdminController extends Controller
         $infosInterventions = $formateur->getBy(['id_intervention','date_debut_intervention', 'date_fin_intervention'],'Date_intervention', ['id_formateur'], [$currentId]);
 
         $infosFormateur = $formateur->getInformations();
-        $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');
-    }
+        $infosFormation = $formateur->getAll('formation');
+
+        // Check if the request is an AJAX request
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-type: application/json');
+            echo json_encode($infosFormation);
+            exit;
+        } else {
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');};
+        }
 
     public function activiteFormateurs()
     {

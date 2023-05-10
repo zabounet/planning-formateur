@@ -176,6 +176,10 @@
                 <option disabled>Choisir un formateur</option>
 
                 <?php foreach ($infosFormation['Formateurs'] as $formateurs) : ?>
+                
+                    <?php if($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2){
+                        continue;
+                    };?>
 
                     <?php if($formateurs->id_formateur === $infosCurrent->id_formateur): ?>
                         <option selected value="<?= $formateurs->id_formateur ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>

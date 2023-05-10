@@ -18,30 +18,99 @@ addEventListener('DOMContentLoaded', () => {
 
       let dateType = newDateBtn.getAttribute("data");
 
-      newFields = document.createElement("div");
-      newFields.classList.add("date-fields");
-      newFields.setAttribute("data", dateType);
-      newFields.innerHTML = `
-                      <label for="date-debut-${dateType}"> Date de début de la période d'${dateType} :
-                      <input name="date-debut-${dateType}[]" type="date">
-                      </label>
-                      <label for="date-fin-${dateType}"> Date de fin de la période d'${dateType} :
-                      <input name="date-fin-${dateType}[]" type="date">
-                      </label>
-                      <button class="delete-date-fields" type="button" data="${dateType}">Supprimer la période d'${dateType}</button>
+      if(dateType === "intervention"){
+         // Charger le contenu du json via AJAX
+         const xhr = new XMLHttpRequest();
+         xhr.onload = function () {
+             if (xhr.status == 200) {
+                 const data = JSON.parse(xhr.responseText);
+
+                 newFields = document.createElement("div");
+                 newFields.classList.add("date-fields");
+                 newFields.setAttribute("data", dateType);
+
+                 // Label du select
+                 let interventionLabel = document.createElement("label");
+                 interventionLabel.htmlFor = "intervention";
+                 interventionLabel.textContent = "Formation : ";
+                 newFields.appendChild(InterventionLabel);
+
+                 //élément Select avec formateurs
+                 let selectIntervention = document.createElement("select");
+                 selectIntervention.name = "intervention[]";
+                 interventionLabel.appendChild(selectIntervention);
+
+                 //Option de départ
+                 let defaultOption = document.createElement("option");
+                 defaultOption.disabled = true;
+                 defaultOption.setAttribute("selected", "");
+                 defaultOption.textContent = "Choisir une formation";
+                 selectIntervention.appendChild(defaultOption);
+
+                 data.forEach(formation => {
+                     let option = document.createElement("option");
+                     option.value = formation.id_formation;
+                     option.textContent = formation.nom_formation;
+                     selectIntervention.appendChild(option)
+                 });
+
+                 // Concaténation de la chaine de caractères avec le reste des create elements
+                 newFields.innerHTML += `
+                 <label for="date-debut-${dateType}"> Date de début d'${dateType} :
+                 <input name="date-debut-${dateType}[]" type="date">
+                 </label>
+                 <label for="date-fin-${dateType}"> Date de fin d'${dateType} :
+                 <input name="date-fin-${dateType}[]" type="date">
+                 </label>
+                 <button class="delete-date-fields" type="button" data="${dateType}">Supprimer période ${dateType}</button>
                   `;
-      newDateBtn.before(newFields);
+                 newDateBtn.before(newFields);
 
-      let deleteButtons = document.querySelectorAll(".delete-date-fields");
-      Array.from(deleteButtons).forEach(function (deleteBtn) {
-        deleteBtn.addEventListener("click", () => {
-          let fields = deleteBtn.parentNode;
+             }
 
-          if (fields) {
-            fields.remove();
-          }
+             let deleteButtons = document.querySelectorAll(".delete-date-fields");
+             Array.from(deleteButtons).forEach(function (deleteBtn) {
+                 deleteBtn.addEventListener("click", () => {
+                     let fields = deleteBtn.parentNode;
+
+                     if (fields) {
+                         fields.remove();
+                     }
+                 });
+             });
+
+         };
+         xhr.open('GET', '/planning/public/admin/modifierFormateur');
+         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+         xhr.send();
+
+      }
+      else{
+        newFields = document.createElement("div");
+        newFields.classList.add("date-fields");
+        newFields.setAttribute("data", dateType);
+        newFields.innerHTML = `
+                        <label for="date-debut-${dateType}"> Date de début de la période d'${dateType} :
+                        <input name="date-debut-${dateType}[]" type="date">
+                        </label>
+                        <label for="date-fin-${dateType}"> Date de fin de la période d'${dateType} :
+                        <input name="date-fin-${dateType}[]" type="date">
+                        </label>
+                        <button class="delete-date-fields" type="button" data="${dateType}">Supprimer la période d'${dateType}</button>
+                    `;
+        newDateBtn.before(newFields);
+
+        let deleteButtons = document.querySelectorAll(".delete-date-fields");
+        Array.from(deleteButtons).forEach(function (deleteBtn) {
+          deleteBtn.addEventListener("click", () => {
+            let fields = deleteBtn.parentNode;
+
+            if (fields) {
+              fields.remove();
+            }
+          });
         });
-      });
+      };
     });
   });
 
