@@ -77,6 +77,9 @@
             <select name="referent-formateur">
                 <option disabled selected>Choisir un formateur</option>
                 <?php foreach($infosFormation['Formateurs'] as $formateurs):?>
+                    <?php if($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2){
+                        continue;
+                    };?>
                     <option value="<?= $formateurs->id_formateur;?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur;?></option>
                 <?php endforeach;?>
             </select>

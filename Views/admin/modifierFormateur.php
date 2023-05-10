@@ -86,6 +86,6 @@
         <div>
             <button type="button" class="add-date-fields" data="intervention">Ajouter intervention</button>
         </div>
-        <input type="submit" value="Ajouter les périodes">
+        <input type="submit" value="Valider">
     </form>
 </section>

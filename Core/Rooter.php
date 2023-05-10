@@ -9,8 +9,8 @@ class Rooter{
 
     public function start(){
 
-        set_error_handler(['\App\Core\CustomException','PhpErrors'],E_ALL);
-        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
+        // set_error_handler(['\App\Core\CustomException','PhpErrors'],E_ALL);
+        // register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
         
         // On démarre la session

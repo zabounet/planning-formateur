@@ -10,8 +10,8 @@ class Model extends Db{
     // Instance de Db
     private $db;
 
-    public function getAll(){
-        $query = $this->requete('SELECT * FROM ' . $this->table);
+    public function getAll(string $table){
+        $query = $this->requete('SELECT * FROM ' . $table);
         return $query->fetchAll();
     }
 
@@ -36,6 +36,55 @@ class Model extends Db{
 
             $sql .= $writeAnd . $conditionCol[$i] . " = " . $valeur[$i];
         }
+        return $this->requete($sql)->fetchAll();
+    }
+    // Retourne les résultats de la table correspondants au multiples critères
+    public function getByIn(array $rows,string $table, array $conditionCol, array $valeur){
+
+        $nbChamps = count($rows);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $rows[$z];
+        }
+        $sql .= " FROM " . $table;
+
+        $nbCond = count($conditionCol);
+        $sql .= " WHERE ";
+        $iterations = 0;
+
+        // var_dump($valeur); echo "<br><br>";
+
+        for($i = 0; $i < $nbCond; $i++){
+            if($valeur[$i] !== "Aucun"){
+                if($i == 0 || $iterations == 0){$writeAnd = "";}
+                else{$writeAnd = " AND ";}
+
+                $sql .= $writeAnd . $conditionCol[$i] . " IN (";
+
+                if(is_array($valeur[$i])) {
+                    $nbValues = count($valeur[$i]);
+                } else{
+                    $nbValues = 1;
+                }
+                for($j = 0; $j < $nbValues; $j++){
+                    if($j == 0){$virgule = "";}
+                    else{$virgule = ",";}
+
+                    if(is_array($valeur[$i])){
+                        $sql .= $virgule . $valeur[$i][$j];
+                    }else{
+                        $sql .= $virgule . $valeur[$i];
+                    }
+                }
+                $sql .= ")";
+                $iterations++;
+            }
+        }
+
+        echo $sql;
         return $this->requete($sql)->fetchAll();
     }
 
@@ -108,6 +157,10 @@ class Model extends Db{
         return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
     }  
 
+    public function insertPeriodeIntervention(string $table, string $debut, string $fin, string $fk, string $fk2) {
+        return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?,?)", [$debut, $fin, $fk, $fk2]);
+    }  
+
     // Transforme les données reçue et les transforme afin de correspondre au noms des accesseurs correspondants
     public function hydrate($donnees){
         foreach($donnees as $key => $value){
@@ -150,6 +203,10 @@ class Model extends Db{
             // Requete simple
             $query = $this->db->prepare($sql);
             $query->execute();
+
+            
+            // var_dump($query->errorInfo());
+            // echo '<br><br><br>';
 
             return $query;
         }
