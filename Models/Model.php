@@ -185,6 +185,8 @@ class Model extends Db{
         return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
     }
 
+   
+
     public function requete(string $sql, array $attributs = null){
         //On récupère l'instance de DB
         $this->db = Db::getInstance();
@@ -192,21 +194,22 @@ class Model extends Db{
         if($attributs !== null){
             // Requete préparée
             $query = $this->db->prepare($sql);
-            $query->execute($attributs);
-
-            // var_dump($query->errorInfo());
-            // echo '<br><br><br>';die;
+            try {
+                $query->execute($attributs);
+            } catch (\PDOException $e) {
+                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+            }
             
             return $query;
 
         } else{
             // Requete simple
             $query = $this->db->prepare($sql);
-            $query->execute();
-
-            
-            // var_dump($query->errorInfo());
-            // echo '<br><br><br>';
+            try {
+                $query->execute();
+            } catch (\PDOException $e) {
+                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+            }
 
             return $query;
         }
