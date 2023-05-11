@@ -33,7 +33,7 @@
             <form class="profil mail-profil" method="post">
                 <span>Mail :</span>
                 <?php if(str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3"):?>
-                    <input type='text' name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail']?>" />
+                    <input type="email" name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail']?>" />
                     <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" />
                 <?php else :?>
                     <span id="mailProfil"><?= $_SESSION['formateur']['mail']?></span>

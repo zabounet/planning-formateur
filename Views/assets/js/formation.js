@@ -39,7 +39,7 @@ addEventListener('DOMContentLoaded', () => {
 
                         let counter = 0;
                         data.forEach(formateur => {
-                            if(counter == 0 || counter == 1){
+                            if (counter == 0 || counter == 1) {
                                 counter++;
                                 return;
                             }
@@ -52,13 +52,16 @@ addEventListener('DOMContentLoaded', () => {
 
                         // Concaténation de la chaine de caractères avec le reste des create elements
                         newFields.innerHTML += `
-                        <label for="date-debut-${dateType}"> Date de début d'${dateType} :
-                        <input name="date-debut-${dateType}[]" type="date">
-                        </label>
-                        <label for="date-fin-${dateType}"> Date de fin d'${dateType} :
-                        <input name="date-fin-${dateType}[]" type="date">
-                        </label>
-                        <button class="delete-date-fields" type="button" data="${dateType}">Supprimer période ${dateType}</button>
+                        <div class="separate">
+                        <label for="date-debut-${dateType}"> Date de début :</label>
+                        <input name="date-debut-${dateType}[]" type="date" class="date-periode">
+                        </div>
+                        <div class="separate">
+                        <label for="date-fin-${dateType}"> Date de fin :</label>
+                        <input name="date-fin-${dateType}[]" type="date" class="date-periode">
+                        </div>
+                        <button class="delete-date-fields" type="button" data="${dateType}">X</button>
+                        <hr>
                     `;
                         newDateBtn.before(newFields);
 
@@ -88,13 +91,16 @@ addEventListener('DOMContentLoaded', () => {
                 newFields.classList.add("date-fields");
                 newFields.setAttribute("data", dateType);
                 newFields.innerHTML = `
-                    <label for="date-debut-${dateType}"> Date de début période ${dateType} :
-                    <input name="date-debut-${dateType}[]" type="date">
-                    </label>
-                    <label for="date-fin-${dateType}"> Date de fin période ${dateType} :
-                    <input name="date-fin-${dateType}[]" type="date">
-                    </label>
-                    <button class="delete-date-fields" type="button" data="${dateType}">Supprimer période ${dateType}</button>
+                    <div class="separate">
+                    <label for="date-debut-${dateType}"> Date de début :</label>
+                    <input id="date-debut-${dateType}" name="date-debut-${dateType}[]" type="date" class="date-periode">
+                    </div>
+                    <div class="separate">
+                    <label for="date-fin-${dateType}"> Date de fin :</label>
+                    <input id="date-debut-${dateType}" name="date-fin-${dateType}[]" type="date" class="date-periode">
+                    </div>
+                    <button class="delete-date-fields" type="button" data="${dateType}">X</button>
+                    <hr>
                 `;
                 newDateBtn.before(newFields);
 
@@ -112,4 +118,179 @@ addEventListener('DOMContentLoaded', () => {
             }
         });
     })
+
+    // Get the fieldsets and the next button
+    const part1 = document.getElementById('part1');
+    const part2 = document.getElementById('part2');
+    const part3 = document.getElementById('part3');
+    const part4 = document.getElementById('part4');
+    const nextButton = document.getElementById('nextButton');
+    const submitButton = document.getElementById('submitButton');
+
+    // Show the first fieldset
+    part1.style.display = 'flex';
+
+    // Add a click event listener to the next button
+    nextButton.addEventListener('click', function () {
+        if (part1.style.display === "flex") {
+            if (document.getElementById('type').value
+                && document.getElementById('grn').value
+                && document.getElementById('ville').value
+                && document.getElementById('grn').value
+                && document.getElementById('acronyme').value
+                && document.getElementById('description').value
+                && document.getElementById('offre').value
+                && document.getElementById('date-debut').value
+                && document.getElementById('date-fin').value) {
+                part1.animate(
+                    [
+                        {
+                            transform: "translate(0, 0)",
+                            display: "flex",
+                        },
+                        {
+                            transform: "translate(-1200px, 0)",
+                            display: "none"
+                        }
+                    ],
+                    {
+                        duration: 700,
+                        iterations: 1,
+                        direction: 'normal',
+                    }
+                );
+
+                part2.animate(
+                    [
+                        {
+                            position: "absolute",
+                            left: "1300px",
+                            top: "73.3px",
+                            display: "none",
+                        },
+                        {
+                            position: "absolute",
+                            left: "0",
+                            top: "73.3px",
+                            display: "flex"
+                        }
+                    ],
+                    {
+                        duration: 700,
+                        iterations: 1,
+                        direction: 'normal',
+                    }
+                );
+                part2.style.display = 'flex';
+                setTimeout(function () {
+                    part1.style.display = 'none';
+                }, 700);
+            }
+            else {
+                alert("merci de remplir tous les champs.")
+            }
+            return;
+        }
+        if (part2.style.display === "flex") {
+            if (document.getElementById('date-debut-centre').value && document.getElementById('date-fin-centre').value) {
+            part2.animate(
+                [
+                    {
+                        transform: "translate(0, 0)",
+                        display: "flex",
+                    },
+                    {
+                        transform: "translate(-1200px, 0)",
+                        display: "none"
+                    }
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
+
+            part3.animate(
+                [
+                    {
+                        position: "absolute",
+                        left: "1300px",
+                        top: "73.3px",
+                        display: "none",
+                    },
+                    {
+                        position: "absolute",
+                        left: "0",
+                        top: "73.3px",
+                        display: "flex"
+                    }
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
+            part3.style.display = 'flex';
+            setTimeout(function () {
+                part2.style.display = 'none';
+            }, 700);
+        }
+        else {
+            alert("merci de remplir tous les champs.")
+        }
+            return;
+        }
+        if (part3.style.display === "flex") {
+
+            part3.animate(
+                [
+                    {
+                        transform: "translate(0, 0)",
+                        display: "flex",
+                    },
+                    {
+                        transform: "translate(-1200px, 0)",
+                        display: "none"
+                    }
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
+
+            part4.animate(
+                [
+                    {
+                        position: "absolute",
+                        left: "1300px",
+                        top: "73.3px",
+                        display: "none",
+                    },
+                    {
+                        position: "absolute",
+                        left: "0",
+                        top: "73.3px",
+                        display: "flex"
+                    }
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
+            part4.style.display = 'flex';
+            setTimeout(function () {
+                part3.style.display = 'none';
+            }, 700);
+
+            nextButton.style.display = "none";
+            submitButton.style.display = "inline-block"
+            return;
+        }
+    });
 })
