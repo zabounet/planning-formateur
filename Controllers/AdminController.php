@@ -52,7 +52,48 @@ class AdminController extends Controller
             ]
         );
 
-        $this->render('admin/formationsHome', compact('infosFormation'), 'formations');
+        if(isset($_POST['search_d']) && !empty($_POST['search_d'])){
+            $infosFormation = $formation->search(
+                [
+                    'id_formation',
+                    'nom_formation',
+                    'description_formation',
+                    'date_debut_formation',
+                    'date_fin_formation',
+                    'Formation.numero_grn',
+                    'nom_formateur',
+                    'prenom_formateur',
+                    'designation_type_formation',
+                    'nom_ville' 
+                ],
+                "Formation",
+                $_POST['search_d'],
+                [
+                    'nom_formation',
+                    'nom_formateur',
+                    'prenom_formateur',
+                    'Formation.numero_grn',
+                    'nom_ville',
+                    'designation_type_formation'
+                ],
+                [
+                    'Formateur',
+                    'Ville',
+                    'Type_Formation'
+                ],
+                [
+                    'id_formateur',
+                    'id_ville',
+                    'id_type_formation'
+                ]);
+                $search = $_POST['search_d'];
+            $this->render('admin/formationsHome', compact('infosFormation','search'), 'formations');
+        } else {
+        
+            
+            $this->render('admin/formationsHome', compact('infosFormation',), 'formations');
+
+        }
     }
 
     public function modifierFormation(): void
@@ -337,7 +378,41 @@ class AdminController extends Controller
             ['Ville'],
             ['id_ville']
         );
-
+        
+        if(isset($_POST['search_d']) && !empty($_POST['search_d'])){
+            $infosFormateur = $formateur->search(
+                [
+                    'id_formateur',
+                    'nom_formateur',
+                    'prenom_formateur',
+                    'mail_formateur',
+                    'type_contrat_formateur',
+                    'date_debut_contrat',
+                    'date_fin_contrat',
+                    'numero_grn',
+                    'nom_ville'
+                ],
+                "Formateur",
+                $_POST['search_d'],
+                [
+                    'nom_formateur',
+                    'prenom_formateur',
+                    'nom_ville',
+                    'type_contrat_formateur',
+                    'numero_grn'
+                ],
+                [
+                    
+                    'Ville'
+                ],
+                [
+                    
+                    'id_ville'
+                ]
+            );
+            $search = $_POST['search_d'];
+            $this->render('admin/formateursHome', compact('infosFormateur','search'), 'formateurs');
+        }
         $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
     }
 

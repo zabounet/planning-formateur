@@ -39,6 +39,42 @@ class FormateurModel extends Model
             'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`, `prenom_formateur` FROM `Formateur`")->fetchAll(),
         ];
     }
+    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = []){
+       
+        $nbChamps = count($champsSelect);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $champsSelect[$z];
+        }
+        $sql .= " FROM " . $table;
+
+        if(!empty($tablesJointures) && !empty($colonnesJointures)){
+            $nbJoin = count($tablesJointures);
+            for($i = 0; $i < $nbJoin; $i++){
+                $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
+            }
+        }
+
+        $nbCond = count($searchCond);
+
+        if($nbCond > 0){
+            $sql .= " WHERE ";
+            for($j = 0; $j < $nbCond; $j++){
+                if($j == 0){$writeOr = "";}
+                else{$writeOr = " OR ";}
+
+                $sql .= $writeOr . $searchCond[$j] . " LIKE " . "'%$search%'";
+            }
+        }else{
+            $sql .= " WHERE " . $searchCond[0] . " LIKE " . "'%$search%'";
+        }
+       
+        return $this->requete($sql)->fetchAll();
+    
+    }
 
     public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
     {

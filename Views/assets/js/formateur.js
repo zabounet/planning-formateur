@@ -33,7 +33,7 @@ addEventListener('DOMContentLoaded', () => {
                  let interventionLabel = document.createElement("label");
                  interventionLabel.htmlFor = "intervention";
                  interventionLabel.textContent = "Formation : ";
-                 newFields.appendChild(InterventionLabel);
+                 newFields.appendChild(interventionLabel);
 
                  //élément Select avec formateurs
                  let selectIntervention = document.createElement("select");
@@ -80,7 +80,7 @@ addEventListener('DOMContentLoaded', () => {
              });
 
          };
-         xhr.open('GET', '/planning/public/admin/modifierFormateur');
+         xhr.open('GET', '/planning/public/admin/modifierFormateur?id=0');
          xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
          xhr.send();
 
