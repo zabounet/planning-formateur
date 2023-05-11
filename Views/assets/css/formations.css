@@ -1,0 +1,328 @@
+/**************************************************
+************* Ajouter une formation ***************
+**************************************************/
+header {
+    display: none;
+}
+
+form {
+    height: 100%;
+    position: relative;
+}
+
+.title-container {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.head-title {
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: DejaVuSerif, sans-serif;
+}
+
+fieldset {
+    width: 100%;
+    height: 75%;
+    border: none;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.second-title-container {
+    width: 100%;
+    padding-left: 2rem;
+    padding-bottom: .5rem;
+}
+
+.second-title-container legend {
+    font-size: 1.6rem;
+    font-weight: 100;
+    font-family: DejaVuSerif, sans-serif;
+    text-align: left;
+}
+
+hr {
+    height: 2px;
+    width: 100%;
+    border-color: #84AE70;
+}
+
+label {
+    font-size: 1.45rem;
+    font-family: Alice, sans-serif;
+}
+
+label,
+input {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+input,
+textarea,
+select {
+    width: 15rem;
+    height: 2.5rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+    outline: none;
+}
+
+input[type="date"] {
+    justify-content: space-around;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 20px;
+    height: 20px;
+    content: url('/planning/Views/assets/image/calendar.svg');
+}
+
+input[type="button"],
+input[type="submit"]{
+    position: absolute;
+    bottom: 0;
+    left: 38.5vw;
+    padding: 2.5rem;
+    background-color: #809382;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-family: DejaVuSerif, sans-serif;
+    color: whitesmoke;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: ease .3s;
+}
+input[type="button"]:hover {
+    background-color: #58d665;
+    color: black
+}
+input[type="submit"]{
+    display: none;
+    background-color: #58d665;
+}
+input[type="submit"]:hover {
+    background-color: #3D2EFF;
+    color: rgb(255, 255, 255)
+}
+
+/* #backButton{
+    position: absolute;
+    bottom: 15px;
+    left: 30vw;
+    width: 3rem;
+    height: 3rem;
+    background: transparent;
+    border: none;
+    border-top: 8px solid black;
+    border-left: 8px solid black;
+    transform: rotate(-45deg);
+    cursor: pointer;
+    z-index: 10;
+    transition: .3s ease;
+} */
+
+.indicator {
+    position: absolute;
+    bottom: 0;
+    left: 2%;
+    display: flex;
+    justify-content: space-between;
+    width: 10%;
+    height: 10%;
+}
+
+.indicator div {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #FFF;
+    box-shadow: inset 0 0 4px 2px #8AA48D;
+}
+
+textarea {
+    padding-top: .6rem;
+    text-align: center;
+}
+
+fieldset{
+    display: none;
+}
+
+/************* Part 1 **************/
+
+.part1-sect {
+    width: 75%;
+    height: 20%;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.part1-sect:last-child {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/************* Part 2 **************/
+.part2-container {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.col1,
+.col2 {
+    width: 45%;
+    height: 100%;
+}
+
+.col1 h3,
+.col2 h3 {
+    padding-top: 1rem;
+}
+
+.date-container {
+    overflow: scroll;
+    height: 37%;
+    width: 100%;
+    border: 1px solid green;
+}
+
+.add-date-fields,
+.delete-date-fields {
+    display: block;
+    font-size: 3.5rem;
+    font-family: 'Alice', sans-serif;
+    line-height: 35px;
+    height: 35px;
+    width: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    background-color: #99D37E;
+    border-radius: 5px;
+}
+
+.add-date-fields {
+    margin-top: .4rem;
+}
+
+.delete-date-fields {
+    padding-top: .05rem;
+    margin-bottom: .4rem;
+    font-size: 2.2rem;
+    font-family: Hack-Regular, 'sans-serif';
+    background-color: #b22233;
+    color: whitesmoke;
+}
+
+.date-periode {
+    background-color: #99D37E;
+}
+
+.separate {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 1rem 0;
+}
+
+/************* Part 3 **************/
+.part3-container {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+}
+
+.checkbox-choice {
+    border-right: 2px solid #84AE70;
+    padding: 1rem .5rem;
+}
+
+.separate input[type="radio"] {
+    width: 2rem;
+    display: grid;
+    place-content: center;
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0 0 0 1rem;
+    border: 0.15rem solid #8AA48D;
+    border-radius: 5px;
+    transform: translateY(-0.075em);
+}
+
+input[type="radio"]::before {
+    content: "X";
+    width: 2rem;
+    font-size: 1.7rem;
+    border: 0.15rem solid #8AA48D;
+    border-radius: 5px;
+    transform: scale(0);
+    background-color: #B4E19D;
+    transition: 160ms transform ease-in-out;
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+.interruption-dates {
+    padding: 1rem;
+    overflow: scroll;
+    display: block;
+    width: 71%;
+}
+
+/************* Part 3 **************/
+
+label[for="referent-formateur"] {
+    margin-top: 1rem;
+}
+
+.addbtn-title{
+    position: absolute;
+    left: 0;
+}
+.addbtn{
+    position: absolute;
+    left: 0;
+    margin-top: 1.5rem;
+}
+
+.intervention-container {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: scroll;
+}
+
+.date-fields {
+    width: 40%;
+    padding: 1rem 1rem;
+}
+.delete-date-fields[data="intervention"]{
+    margin: 0.4rem auto;
+}

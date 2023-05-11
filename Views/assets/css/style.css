@@ -2,9 +2,44 @@
     --greenCell: #00FF99;
     --weekendCell: gray;
     --emptyCell: #ddd;
+    --vacancesCell: #492a91;
+    --ferieCell: #3985E2;
 }
 
 ::-webkit-scrollbar{
     width: 0;
     height: 0;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    scroll-behavior: smooth;
+}
+ul{
+    list-style: none;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    padding: 2rem;
+    background-color: #EFFFE2;
+    box-shadow: inset 0px 0px 27px 10px rgba(153, 211, 126, 0.69);
+}
+header{
+    /* position: fixed; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+    height: 10vh;
+    background-color: #00FF99;
+}
+main{
+    height: 90vh;
+    width: 100%;
+    overflow: scroll;
 }

@@ -914,6 +914,6 @@ class AdminController extends Controller
 
         }
         $infosFormateur = $FormateurModel->getFormateur();
-        $this->render('/admin/activiteFormateur', compact('infosFormateur','html'));
+        $this->render('/admin/activiteFormateur', compact('infosFormateur','html'), 'formateurs');
     }
 }
