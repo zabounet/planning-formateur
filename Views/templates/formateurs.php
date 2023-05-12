@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <?php
-    if(!isset($infosCurrent))$infosCurrent = [];
     
     if ($link === "Activité des formateurs") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">';
@@ -18,10 +17,13 @@
     if ($link === "Formateur home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
     }
-
-    if ($link !== "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur || $link === "Inscripton formateur") {
-        echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
-    }; ?>
+    if(isset($infosCurrent)){
+        if ($link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur || $link === "Inscripton formateur") {
+            echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
+        }; 
+    };
+    
+    ?>
 </head>
 
 <body>

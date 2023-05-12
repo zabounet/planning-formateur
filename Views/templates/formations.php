@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <?php
-    if(!isset($infosCurrent))$infosCurrent = [];
+    if(!isset($infosCurrent))$infosCurrent['acronyme_formation'] = "";
 
     if ($link === "Formateur home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
