@@ -5,13 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $link ;?></title>
+    <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
 </head>
 <body>
 
-    <header style="width: 100%; height: 15rem; background-color: crimson;">
+    <header>
         <nav>
             <ul>
                 <?php if(isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) :?>
@@ -88,6 +87,5 @@
             <?= $contenu ;?>
         </div>
     </main>
-    <footer style="width: 100%; height: 150px; background-color: crimson;"></footer>
 </body>
 </html>

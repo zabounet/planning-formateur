@@ -54,11 +54,11 @@ addEventListener('DOMContentLoaded', () => {
                         newFields.innerHTML += `
                         <div class="separate">
                         <label for="date-debut-${dateType}"> Date de début :</label>
-                        <input name="date-debut-${dateType}[]" type="date" class="date-periode">
+                        <input id="date-debut-${dateType}" name="date-debut-${dateType}[]" type="date" class="date-periode">
                         </div>
                         <div class="separate">
                         <label for="date-fin-${dateType}"> Date de fin :</label>
-                        <input name="date-fin-${dateType}[]" type="date" class="date-periode">
+                        <input id="date-debut-${dateType}" name="date-fin-${dateType}[]" type="date" class="date-periode">
                         </div>
                         <button class="delete-date-fields" type="button" data="${dateType}">X</button>
                         <hr>
@@ -97,7 +97,7 @@ addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="separate">
                     <label for="date-fin-${dateType}"> Date de fin :</label>
-                    <input id="date-debut-${dateType}" name="date-fin-${dateType}[]" type="date" class="date-periode">
+                    <input id="date-fin-${dateType}" name="date-fin-${dateType}[]" type="date" class="date-periode">
                     </div>
                     <button class="delete-date-fields" type="button" data="${dateType}">X</button>
                     <hr>
@@ -124,6 +124,10 @@ addEventListener('DOMContentLoaded', () => {
     const part2 = document.getElementById('part2');
     const part3 = document.getElementById('part3');
     const part4 = document.getElementById('part4');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
     const nextButton = document.getElementById('nextButton');
     const submitButton = document.getElementById('submitButton');
 
@@ -132,6 +136,7 @@ addEventListener('DOMContentLoaded', () => {
 
     // Add a click event listener to the next button
     nextButton.addEventListener('click', function () {
+
         if (part1.style.display === "flex") {
             if (document.getElementById('type').value
                 && document.getElementById('grn').value
@@ -185,61 +190,67 @@ addEventListener('DOMContentLoaded', () => {
                 setTimeout(function () {
                     part1.style.display = 'none';
                 }, 700);
+
+                step2.style.backgroundColor = "#58d665";
             }
             else {
                 alert("merci de remplir tous les champs.")
             }
+
             return;
         }
         if (part2.style.display === "flex") {
             if (document.getElementById('date-debut-centre').value && document.getElementById('date-fin-centre').value) {
-            part2.animate(
-                [
+                part2.animate(
+                    [
+                        {
+                            transform: "translate(0, 0)",
+                            display: "flex",
+                        },
+                        {
+                            transform: "translate(-1200px, 0)",
+                            display: "none"
+                        }
+                    ],
                     {
-                        transform: "translate(0, 0)",
-                        display: "flex",
-                    },
-                    {
-                        transform: "translate(-1200px, 0)",
-                        display: "none"
+                        duration: 700,
+                        iterations: 1,
+                        direction: 'normal',
                     }
-                ],
-                {
-                    duration: 700,
-                    iterations: 1,
-                    direction: 'normal',
-                }
-            );
+                );
 
-            part3.animate(
-                [
+                part3.animate(
+                    [
+                        {
+                            position: "absolute",
+                            left: "1300px",
+                            top: "73.3px",
+                            display: "none",
+                        },
+                        {
+                            position: "absolute",
+                            left: "0",
+                            top: "73.3px",
+                            display: "flex"
+                        }
+                    ],
                     {
-                        position: "absolute",
-                        left: "1300px",
-                        top: "73.3px",
-                        display: "none",
-                    },
-                    {
-                        position: "absolute",
-                        left: "0",
-                        top: "73.3px",
-                        display: "flex"
+                        duration: 700,
+                        iterations: 1,
+                        direction: 'normal',
                     }
-                ],
-                {
-                    duration: 700,
-                    iterations: 1,
-                    direction: 'normal',
-                }
-            );
-            part3.style.display = 'flex';
-            setTimeout(function () {
-                part2.style.display = 'none';
-            }, 700);
-        }
-        else {
-            alert("merci de remplir tous les champs.")
-        }
+                );
+                part3.style.display = 'flex';
+                setTimeout(function () {
+                    part2.style.display = 'none';
+                }, 700);
+
+                step3.style.backgroundColor = "#58d665";
+            }
+            else {
+                alert("merci de remplir tous les champs.")
+            }
+            
             return;
         }
         if (part3.style.display === "flex") {
@@ -290,6 +301,8 @@ addEventListener('DOMContentLoaded', () => {
 
             nextButton.style.display = "none";
             submitButton.style.display = "inline-block"
+
+            step4.style.backgroundColor = "#58d665";
             return;
         }
     });
