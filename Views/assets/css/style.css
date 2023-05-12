@@ -4,6 +4,7 @@
     --emptyCell: #ddd;
     --vacancesCell: #492a91;
     --ferieCell: #3985E2;
+    --vacencesCell: #def41d;
 }
 
 ::-webkit-scrollbar{
