@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Form;
 use App\Core\Refresh;
+use App\Core\AlgorithmePaques;
 use App\Models\FormationModel;
 use App\Models\FormateurModel;
 use DateTime;
@@ -52,7 +53,7 @@ class AdminController extends Controller
             ]
         );
 
-        if(isset($_POST['search_d']) && !empty($_POST['search_d'])){
+        if (isset($_POST['search_d']) && !empty($_POST['search_d'])) {
             $infosFormation = $formation->search(
                 [
                     'id_formation',
@@ -64,7 +65,7 @@ class AdminController extends Controller
                     'nom_formateur',
                     'prenom_formateur',
                     'designation_type_formation',
-                    'nom_ville' 
+                    'nom_ville'
                 ],
                 "Formation",
                 $_POST['search_d'],
@@ -85,14 +86,14 @@ class AdminController extends Controller
                     'id_formateur',
                     'id_ville',
                     'id_type_formation'
-                ]);
-                $search = $_POST['search_d'];
-            $this->render('admin/formationsHome', compact('infosFormation','search'), 'formations');
+                ]
+            );
+            $search = $_POST['search_d'];
+            $this->render('admin/formationsHome', compact('infosFormation', 'search'), 'formations');
         } else {
-        
-            
-            $this->render('admin/formationsHome', compact('infosFormation',), 'formations');
 
+
+            $this->render('admin/formationsHome', compact('infosFormation',), 'formations');
         }
     }
 
@@ -378,8 +379,8 @@ class AdminController extends Controller
             ['Ville'],
             ['id_ville']
         );
-        
-        if(isset($_POST['search_d']) && !empty($_POST['search_d'])){
+
+        if (isset($_POST['search_d']) && !empty($_POST['search_d'])) {
             $infosFormateur = $formateur->search(
                 [
                     'id_formateur',
@@ -402,16 +403,16 @@ class AdminController extends Controller
                     'numero_grn'
                 ],
                 [
-                    
+
                     'Ville'
                 ],
                 [
-                    
+
                     'id_ville'
                 ]
             );
             $search = $_POST['search_d'];
-            $this->render('admin/formateursHome', compact('infosFormateur','search'), 'formateurs');
+            $this->render('admin/formateursHome', compact('infosFormateur', 'search'), 'formateurs');
         }
         $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
     }
@@ -584,7 +585,7 @@ class AdminController extends Controller
             ['id_formateur'],
             [$currentId]
         );
-        $infosInterventions = $formateur->getBy(['id_intervention','date_debut_intervention', 'date_fin_intervention'],'Date_intervention', ['id_formateur'], [$currentId]);
+        $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention'], 'Date_intervention', ['id_formateur'], [$currentId]);
 
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('formation');
@@ -595,8 +596,9 @@ class AdminController extends Controller
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');};
-        }
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');
+        };
+    }
 
     public function activiteFormateurs()
     {
@@ -604,7 +606,7 @@ class AdminController extends Controller
             header('Location: /planning/public/');
             exit;
         }
-        
+
         $html = "<h1 style='text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1>";
         $FormateurModel = new FormateurModel;
 
@@ -615,29 +617,29 @@ class AdminController extends Controller
             $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
 
-                 //recupere les date de vacances pour chaque formateur
+            //recupere les date de vacances pour chaque formateur
             $formateurs = $FormateurModel->getVacancesById($id_formateur);
             foreach ($formateurs as $formateur) {
                 $date_debut_vacences = $formateur['date_debut_vacences'];
                 $date_debut_vacences_array = explode(",", $date_debut_vacences);
-            
+
                 $date_fin_vacences = $formateur['date_fin_vacences'];
                 $date_fin_vacences_array = explode(",", $date_fin_vacences);
 
                 $validation = $formateur['validation'];
                 $validation_array = explode(",", $validation);
-                
+
                 $dates_vacences_formateurs = array();
                 $nbVacs = count($date_debut_vacences_array);
                 for ($i = 0; $i < $nbVacs; $i++) {
                     $dates_vacences_formateur[] = [
-                         "id_formateur" => $formateur['id_formateur'],
-                         "debut_vacences" => $date_debut_vacences_array[$i],
-                         "fin_vacences" => $date_fin_vacences_array[$i],
-                         "validation_vacences" => $validation_array[$i]
+                        "id_formateur" => $formateur['id_formateur'],
+                        "debut_vacences" => $date_debut_vacences_array[$i],
+                        "fin_vacences" => $date_fin_vacences_array[$i],
+                        "validation_vacences" => $validation_array[$i]
                     ];
                 }
-    
+
                 $dates_vacences_formateurs[] = $dates_vacences_formateur;
             }
 
@@ -663,7 +665,7 @@ class AdminController extends Controller
 
                 $dates_interventions_formateurs[] = $dates_formateur;
             }
-       
+
 
             $date_debut_tableau = new DateTime($_POST['date_debut'], new \DateTimeZone('Europe/Paris'));
             // $formattedDebut = date('Y-m-d', $date_debut_tableau);
@@ -689,36 +691,37 @@ class AdminController extends Controller
             $current_date_dayForYears = clone $date_debut_tableau;
             $current_date_dayForMonths = clone $date_debut_tableau;
 
+            $joursFeries = array('01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25');
+
             $count = 0;
             $countFormateurs = count($formateurs);
             $countDates = count($dates_interventions_formateurs[0]);
             $countDatesVacences = count($dates_vacences_formateurs[0]);
-            
+
 
             $html = "<div class='main-container'> <div class='tableau-container'> <table> <thead> <tr> <th rowspan = 4>Afpa</th>";
             for ($i = 0; $i < $nbJours; $i++) {
                 $annee = $current_date_year->format('Y');
                 $dernierJour = $current_date_dayForYears->format('m-d');
 
-                if($yearDebut || $yearFin){
+                if ($yearDebut || $yearFin) {
                     $count++;
-                    if($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
+                    if ($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
                         $html .= "<th colspan='$count'>" . $annee . "</th> ";
 
                         $count = 0;
                     }
-                }else{
+                } else {
                     $count++;
-                    if($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
-                    $html .= "<th colspan='$count'>" . $annee . "</th> ";
+                    if ($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
+                        $html .= "<th colspan='$count'>" . $annee . "</th> ";
 
-                    $count = 0;
+                        $count = 0;
                     }
                 }
-                
+
                 $current_date_year->modify("+1 day");
                 $current_date_dayForYears->modify("+1 day");
-
             }
 
             $html .= "</tr> <tr>";
@@ -771,31 +774,30 @@ class AdminController extends Controller
                     }
                 }
 
-                if(in_array($mois, $mois30)){
+                if (in_array($mois, $mois30)) {
                     $count++;
-                    if($numeroJour === "30" || ($i + 1) == $nbJours){
-                        switch($mois){
-                            case 4:{
-                                $mois = "Avril";
-                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
-                                break;
-                            }
-                            case 6:{
-                                $mois = "Juin";
-                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
-                                break;
-                            }
-                            case 9:{
-                                $mois = "Septembre";
-                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
-                                break;
-                            }
-                            case 11:{
-                                $mois = "Novembre";
-                                $html .= "<th colspan='$count'>" . $mois . "</th> ";
-                                break;
-                            }
-                            
+                    if ($numeroJour === "30" || ($i + 1) == $nbJours) {
+                        switch ($mois) {
+                            case 4: {
+                                    $mois = "Avril";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 6: {
+                                    $mois = "Juin";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 9: {
+                                    $mois = "Septembre";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
+                            case 11: {
+                                    $mois = "Novembre";
+                                    $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                                    break;
+                                }
                         }
                         $numeroJour = $current_date_dayForMonths->format('j');
                         $count = 0;
@@ -812,7 +814,6 @@ class AdminController extends Controller
                             $numeroJour = $current_date_dayForMonths->format('j');
                             $count = 0;
                         }
-
                     } else {
                         if ($numeroJour == 28 || ($i + 1) == $nbJours) {
                             $mois = "Février";
@@ -881,18 +882,17 @@ class AdminController extends Controller
 
                 // Clonage de la date de début du tableau pour éviter de modifier l'objet original
                 $current_date_dayForFormateurs = clone $date_debut_tableau;
-                $current_date_Weekends = clone $date_debut_tableau;
 
                 // Ajout du nom et prénom du formateur dans la première colonne du tableau
                 $html .= "<th>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</th> ";
-                
+
                 // Création d'un tableau vide pour stocker les périodes du formateur en cours
                 $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
                 $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
 
                 // Boucle pour parcourir tous les jours du tableau
-                for ($i = 0; $i < $nbJours; $i++){
-                    
+                for ($i = 0; $i < $nbJours; $i++) {
+
                     // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
                     for ($j = 0; $j < $countDates; $j++) {
 
@@ -903,7 +903,6 @@ class AdminController extends Controller
                                 'fin' => $dates_interventions_formateurs[0][$j]['fin']
                             );
                         }
-                        
                     }
 
                     for ($v = 0; $v < $countDatesVacences; $v++) {
@@ -916,12 +915,12 @@ class AdminController extends Controller
                                 'validation' => $dates_vacences_formateurs[0][$v]['validation_vacences']
                             );
                         }
-                        
                     }
 
                     // Récupération de la période courante
+                    $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
+                    $weekend = $current_date_dayForFormateurs->format('N');
                     $periode = $current_date_dayForFormateurs->format('Y-m-d');
-                    $weekend = $current_date_Weekends->format('N');
 
                     // Vérification si le formateur a une période pour le jour en cours
                     $trainer_has_period = false;
@@ -931,52 +930,64 @@ class AdminController extends Controller
                             break;
                         }
                     }
-                    
+
                     $trainer_has_vacences = 0;
                     foreach ($formateur_vacance[$formateurs[$z]['id_formateur']] as $period_vacences) {
                         if ($periode >= $period_vacences['debut_vacences'] && $periode <= $period_vacences['fin_vacences']) {
                             $trainer_has_vacences = 1;
-                            if($period_vacences['validation'] === "1"){
+                            if ($period_vacences['validation'] === "1") {
                                 $trainer_has_vacences = 2;
                             }
                             break;
                         }
                     }
                     // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
-                    if($trainer_has_vacences !== 0){
-                        if($trainer_has_vacences == 2){
+                    if ($trainer_has_vacences !== 0) {
+                        if ($trainer_has_vacences == 2) {
                             $html .= "<th style='background-color: var(--vacancesCell);'></th>";
-                        } else if($trainer_has_vacences == 1){
+                        } else if ($trainer_has_vacences == 1) {
                             $html .= "<th style='background-color: goldenrod;'></th> ";
                         }
                     } else {
                         if ($trainer_has_period) {
-                            if($weekend === "6" || $weekend === "7"){
-                                $html .= "<th style='background-color: var(--weekendCell);'></th> ";
-                            }
-                            else{
-                                $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                            if (
+                                in_array($periodeJourFeries, $joursFeries)
+                                || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                            ) {
+                                $html .= "<th style='background-color: #050F29;'></th> ";
+                            } else {
+                                if ($weekend === "6" || $weekend === "7") {
+                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                } else {
+                                    $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                }
                             }
                         } else {
-                            if($weekend === "6" || $weekend === "7"){
-                                $html .= "<th style='background-color: var(--weekendCell);'></th> ";
-                            }
-                            else{
-                                $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                            if (
+                                in_array($periodeJourFeries, $joursFeries)
+                                || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                            ) {
+                                $html .= "<th style='background-color: #050F29;'></th> ";
+                            } else {
+                                if ($weekend === "6" || $weekend === "7") {
+                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                } else {
+                                    $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                }
                             }
                         }
                     }
                     // Incrémentation de la date pour passer au jour suivant
-                    $current_date_Weekends->modify("+1 day");
                     $current_date_dayForFormateurs->modify("+1 day");
                 }
                 // Fermeture de la ligne correspondant au formateur en cours
                 $html .= "</tr>";
-            }            
+            }
             $html .= "</tbody> </table> </div> </div>";
-
         }
         $infosFormateur = $FormateurModel->getFormateur();
-        $this->render('/admin/activiteFormateur', compact('infosFormateur','html'), 'formateurs');
+        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html'), 'formateurs');
     }
 }
