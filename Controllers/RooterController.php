@@ -6,38 +6,39 @@ use App\Core\Form;
 use App\Models\FormateurModel;
 use App\Models\FormationModel;
 use DateTime;
+use App\Core\AlgorithmePaques;
 
-class RooterController extends Controller{
+class RooterController extends Controller
+{
 
-    public function index(){
+    public function index()
+    {
 
-        if(Form::validate($_POST, ['rechercher'])){
+        if (Form::validate($_POST, ['rechercher'])) {
 
             $databaseFormation = new FormationModel;
             $databaseFormateur = new FormateurModel;
 
-            $_POST['lieu'] !== "default" ? $centre = $_POST['lieu'] : $centre = "Aucun" ;
-            foreach($_POST['grns'] as $grns){
-                $grns !== "default" ? $grn = $grns : $grn = "Aucun" ;
+            $_POST['lieu'] !== "default" ? $centre = $_POST['lieu'] : $centre = "Aucun";
+            foreach ($_POST['grns'] as $grns) {
+                $grns !== "default" ? $grn = $grns : $grn = "Aucun";
             }
 
-            if(is_null($_POST['formateurs'])){
+            if (is_null($_POST['formateurs'])) {
                 echo "Veuillez choisir au moins un formateur";
                 exit;
-            }else{
-                $_POST['formateurs'] === $_POST['nbFormateurs'] ? $formateursSelectionnes = "Aucun" : $formateursSelectionnes = $_POST['formateurs'] ;
+            } else {
+                $_POST['formateurs'] === $_POST['nbFormateurs'] ? $formateursSelectionnes = "Aucun" : $formateursSelectionnes = $_POST['formateurs'];
             }
 
 
-            $formations = $databaseFormation->getByIn(['*'],'formation', ['numero_grn', 'id_formateur', 'id_ville'],[$grn, $_POST['formateurs'], $centre]);
-
+            $formations = $databaseFormation->getByIn(['*'], 'formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
             $html = "
                 <div class='main-container'> 
                     <div class='tableau-container'> ";
             $nbformation = count($formations);
-            for($x = 0 ;$x < $nbformation ; $x++){
-
+            for ($x = 0; $x < $nbformation; $x++) {
                 $formateurs = $databaseFormateur->getInterventionById($formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
                     $date_debut_activite = $formateur['date_debut'];
@@ -65,7 +66,6 @@ class RooterController extends Controller{
 
                 $nbJours = $date_fin_tableau->diff($date_debut_tableau)->days + 1;
 
-
                 $mois31 = array('1', '3', '5', '7', '8', '10', '12');
                 $mois30 = array('4', '6', '9', '11');
 
@@ -74,12 +74,13 @@ class RooterController extends Controller{
                 $yearDebut = $current_date_year->format('L');
                 $yearFin = $last_date_year->format('L');
 
-                $current_date_year = clone $date_debut_tableau;
                 $current_date_month = clone $date_debut_tableau;
                 $current_date_dayName = clone $date_debut_tableau;
                 $current_date_day = clone $date_debut_tableau;
                 $current_date_dayForYears = clone $date_debut_tableau;
                 $current_date_dayForMonths = clone $date_debut_tableau;
+
+                $joursFeries = array('01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25');
 
                 $count = 0;
                 $countFormateurs = count($formateurs);
@@ -98,25 +99,24 @@ class RooterController extends Controller{
                     $annee = $current_date_year->format('Y');
                     $dernierJour = $current_date_dayForYears->format('m-d');
 
-                    if($yearDebut || $yearFin){
+                    if ($yearDebut || $yearFin) {
                         $count++;
-                        if($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
+                        if ($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
                             $html .= "<th class='sticky-container' colspan='$count'> <span> " . $annee . "</span> </th> ";
 
                             $count = 0;
                         }
-                    }else{
+                    } else {
                         $count++;
-                        if($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31"){
+                        if ($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
                             $html .= "<th class='sticky-container' colspan='$count'> <span> " . $annee . "</span> </th> ";
 
-                        $count = 0;
+                            $count = 0;
                         }
                     }
-                    
+
                     $current_date_year->modify("+1 day");
                     $current_date_dayForYears->modify("+1 day");
-
                 }
 
                 $html .= "</tr> <tr>";
@@ -169,31 +169,30 @@ class RooterController extends Controller{
                         }
                     }
 
-                    if(in_array($mois, $mois30)){
+                    if (in_array($mois, $mois30)) {
                         $count++;
-                        if($numeroJour === "30" || ($i + 1) == $nbJours){
-                            switch($mois){
-                                case 4:{
-                                    $mois = "Avril";
-                                    $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
-                                    break;
-                                }
-                                case 6:{
-                                    $mois = "Juin";
-                                    $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
-                                    break;
-                                }
-                                case 9:{
-                                    $mois = "Septembre";
-                                    $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
-                                    break;
-                                }
-                                case 11:{
-                                    $mois = "Novembre";
-                                    $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
-                                    break;
-                                }
-                                
+                        if ($numeroJour === "30" || ($i + 1) == $nbJours) {
+                            switch ($mois) {
+                                case 4: {
+                                        $mois = "Avril";
+                                        $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
+                                        break;
+                                    }
+                                case 6: {
+                                        $mois = "Juin";
+                                        $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
+                                        break;
+                                    }
+                                case 9: {
+                                        $mois = "Septembre";
+                                        $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
+                                        break;
+                                    }
+                                case 11: {
+                                        $mois = "Novembre";
+                                        $html .= "<th class='sticky-container' colspan='$count'> <span> " . $mois . " </span> </th> ";
+                                        break;
+                                    }
                             }
                             $numeroJour = $current_date_dayForMonths->format('j');
                             $count = 0;
@@ -210,7 +209,6 @@ class RooterController extends Controller{
                                 $numeroJour = $current_date_dayForMonths->format('j');
                                 $count = 0;
                             }
-
                         } else {
                             if ($numeroJour == 28 || ($i + 1) == $nbJours) {
                                 $mois = "Février";
@@ -273,24 +271,23 @@ class RooterController extends Controller{
                 // Création d'un tableau vide pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
                 // Ajout du nom formation dans la première colonne du tableau
-             
+
                 // Boucle pour parcourir tous les formateurs
                 for ($z = 0; $z < $countFormateurs; $z++) {
 
                     // Clonage de la date de début du tableau pour éviter de modifier l'objet original
                     $current_date_dayForFormateurs = clone $date_debut_tableau;
-                    $current_date_Weekends = clone $date_debut_tableau;
 
                     // Ajout du nom et prénom du formateur dans la première colonne du tableau
                     $html .= "<th>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</th> ";
-                    
+
                     // Création d'un tableau vide pour stocker les périodes du formateur en cours
                     $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
 
                     // Boucle pour parcourir tous les jours du tableau
                     $test = 1;
-                    for ($i = 0; $i < $nbJours; $i++){
-                        
+                    for ($i = 0; $i < $nbJours; $i++) {
+
                         // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
                         for ($j = 0; $j < $countDates; $j++) {
 
@@ -301,13 +298,12 @@ class RooterController extends Controller{
                                     'fin' => $dates_interventions_formateurs[0][$j]['fin']
                                 );
                             }
-                            
-                            
                         }
 
                         // Récupération de la période courante
+                        $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
                         $periode = $current_date_dayForFormateurs->format('Y-m-d');
-                        $weekend = $current_date_Weekends->format('N');
+                        $weekend = $current_date_dayForFormateurs->format('N');
 
                         // Vérification si le formateur a une période pour le jour en cours
                         $trainer_has_period = false;
@@ -324,31 +320,41 @@ class RooterController extends Controller{
 
                         if ($formation_en_cours) {
                             $html .= "<th style='background-color: black;'></th> ";
-                        }else{
+                        } else {
                             // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
                             if ($trainer_has_period) {
-                                if($weekend === "6" || $weekend === "7"){
-                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
-                                }
-                                else{
-                                    $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                if(in_array($periodeJourFeries, $joursFeries) 
+                                || in_array($periode ,AlgorithmePaques::calculatePaques($current_date_year->format('Y'))) 
+                                || in_array($periode ,AlgorithmePaques::calculatePaques($last_date_year->format('Y'))))
+                                {
+                                    $html .= "<th style='background-color: #050F29;'></th> ";
+                                } else {
+                                    if ($weekend === "6" || $weekend === "7") {
+                                        $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                    } else {
+                                        $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                    }
                                 }
                             } else {
-                                if($weekend === "6" || $weekend === "7"){
-                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
-                                }
-                                else{
-                                    $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                if(in_array($periodeJourFeries, $joursFeries)
+                                || in_array($periode ,AlgorithmePaques::calculatePaques($current_date_year->format('Y'))) 
+                                || in_array($periode ,AlgorithmePaques::calculatePaques($last_date_year->format('Y')))){
+                                    $html .= "<th style='background-color: #050F29;'></th> ";
+                                } else {
+                                    if ($weekend === "6" || $weekend === "7") {
+                                        $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                    } else {
+                                        $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                    }
                                 }
                             }
                         }
                         // Incrémentation de la date pour passer au jour suivant
-                        $current_date_Weekends->modify("+1 day");
                         $current_date_dayForFormateurs->modify("+1 day");
                     }
                     // Fermeture de la ligne correspondant au formateur en cours
                     $html .= "</tr>";
-                }            
+                }
                 $html .= "</tbody> </table>";
             }
             $nbformation == 0 ? $html = "Aucun résultat." : $html .= " </div> </div>";
@@ -363,6 +369,6 @@ class RooterController extends Controller{
         !isset($html) ? $html = "Aucun résultat." : '';
 
 
-        $this->render('main/index' ,compact('GRNs','formateurs','villes', 'html'), 'main');
+        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html'), 'main');
     }
 }
