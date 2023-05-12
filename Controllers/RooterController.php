@@ -39,6 +39,33 @@ class RooterController extends Controller
                     <div class='tableau-container'> ";
             $nbformation = count($formations);
             for ($x = 0; $x < $nbformation; $x++) {
+
+                //recupere les date de vacances pour chaque formateur
+                $formateurs = $databaseFormateur->getVacancesById($formateursSelectionnes);
+                foreach ($formateurs as $formateur) {
+                    $date_debut_vacences = $formateur['date_debut_vacences'];
+                    $date_debut_vacences_array = explode(",", $date_debut_vacences);
+
+                    $date_fin_vacences = $formateur['date_fin_vacences'];
+                    $date_fin_vacences_array = explode(",", $date_fin_vacences);
+
+                    $validation = $formateur['validation'];
+                    $validation_array = explode(",", $validation);
+
+                    $dates_vacences_formateurs = array();
+                    $nbVacs = count($date_debut_vacences_array);
+                    for ($i = 0; $i < $nbVacs; $i++) {
+                        $dates_vacences_formateur[] = [
+                            "id_formateur" => $formateur['id_formateur'],
+                            "debut_vacences" => $date_debut_vacences_array[$i],
+                            "fin_vacences" => $date_fin_vacences_array[$i],
+                            "validation_vacences" => $validation_array[$i]
+                        ];
+                    }
+
+                    $dates_vacences_formateurs[] = $dates_vacences_formateur;
+                }
+
                 $formateurs = $databaseFormateur->getInterventionById($formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
                     $date_debut_activite = $formateur['date_debut'];
@@ -85,6 +112,7 @@ class RooterController extends Controller
                 $count = 0;
                 $countFormateurs = count($formateurs);
                 $countDates = count($dates_interventions_formateurs[0]);
+                $countDatesVacences = count($dates_vacences_formateurs[0]);
 
                 $html .= " 
                             <table> 
@@ -270,6 +298,7 @@ class RooterController extends Controller
 
                 // Création d'un tableau vide pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
+                $formateur_vacance = array();
                 // Ajout du nom formation dans la première colonne du tableau
 
                 // Boucle pour parcourir tous les formateurs
@@ -283,9 +312,9 @@ class RooterController extends Controller
 
                     // Création d'un tableau vide pour stocker les périodes du formateur en cours
                     $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
+                    $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
 
                     // Boucle pour parcourir tous les jours du tableau
-                    $test = 1;
                     for ($i = 0; $i < $nbJours; $i++) {
 
                         // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
@@ -296,6 +325,18 @@ class RooterController extends Controller
                                 $formateur_periodes[$formateurs[$z]['id_formateur']][] = array(
                                     'debut' => $dates_interventions_formateurs[0][$j]['debut'],
                                     'fin' => $dates_interventions_formateurs[0][$j]['fin']
+                                );
+                            }
+                        }
+
+                        for ($v = 0; $v < $countDatesVacences; $v++) {
+
+                            // Stockage de la période dans le tableau des périodes du formateur en cours
+                            if ($dates_vacences_formateurs[0][$v]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                $formateur_vacance[$formateurs[$z]['id_formateur']][] = array(
+                                    'debut_vacences' => $dates_vacences_formateurs[0][$v]['debut_vacences'],
+                                    'fin_vacences' => $dates_vacences_formateurs[0][$v]['fin_vacences'],
+                                    'validation' => $dates_vacences_formateurs[0][$v]['validation_vacences']
                                 );
                             }
                         }
@@ -313,6 +354,16 @@ class RooterController extends Controller
                                 break;
                             }
                         }
+                        $trainer_has_vacences = 0;
+                        foreach ($formateur_vacance[$formateurs[$z]['id_formateur']] as $period_vacences) {
+                            if ($periode >= $period_vacences['debut_vacences'] && $periode <= $period_vacences['fin_vacences']) {
+                                $trainer_has_vacences = 1;
+                                if ($period_vacences['validation'] === "1") {
+                                    $trainer_has_vacences = 2;
+                                }
+                                break;
+                            }
+                        }
                         $formation_en_cours = true;
                         if ($periode >= $formations[$x]->date_debut_formation && $periode <= $formations[$x]->date_fin_formation) {
                             $formation_en_cours = false;
@@ -322,29 +373,40 @@ class RooterController extends Controller
                             $html .= "<th style='background-color: black;'></th> ";
                         } else {
                             // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
-                            if ($trainer_has_period) {
-                                if(in_array($periodeJourFeries, $joursFeries) 
-                                || in_array($periode ,AlgorithmePaques::calculatePaques($current_date_year->format('Y'))) 
-                                || in_array($periode ,AlgorithmePaques::calculatePaques($last_date_year->format('Y'))))
-                                {
-                                    $html .= "<th style='background-color: #050F29;'></th> ";
-                                } else {
-                                    if ($weekend === "6" || $weekend === "7") {
-                                        $html .= "<th style='background-color: var(--weekendCell);'></th> ";
-                                    } else {
-                                        $html .= "<th style='background-color: var(--greenCell);'></th> ";
-                                    }
+                            if ($trainer_has_vacences !== 0) {
+                                if ($trainer_has_vacences == 2) {
+                                    $html .= "<th style='background-color: var(--vacancesCell);'></th>";
+                                } else if ($trainer_has_vacences == 1) {
+                                    $html .= "<th style='background-color: goldenrod;'></th> ";
                                 }
                             } else {
-                                if(in_array($periodeJourFeries, $joursFeries)
-                                || in_array($periode ,AlgorithmePaques::calculatePaques($current_date_year->format('Y'))) 
-                                || in_array($periode ,AlgorithmePaques::calculatePaques($last_date_year->format('Y')))){
-                                    $html .= "<th style='background-color: #050F29;'></th> ";
-                                } else {
-                                    if ($weekend === "6" || $weekend === "7") {
-                                        $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                if ($trainer_has_period) {
+                                    if (
+                                        in_array($periodeJourFeries, $joursFeries)
+                                        || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                        || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                                    ) {
+                                        $html .= "<th style='background-color: #050F29;'></th> ";
                                     } else {
-                                        $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                        if ($weekend === "6" || $weekend === "7") {
+                                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                        } else {
+                                            $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                        }
+                                    }
+                                } else {
+                                    if (
+                                        in_array($periodeJourFeries, $joursFeries)
+                                        || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                        || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                                    ) {
+                                        $html .= "<th style='background-color: #050F29;'></th> ";
+                                    } else {
+                                        if ($weekend === "6" || $weekend === "7") {
+                                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                        } else {
+                                            $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                        }
                                     }
                                 }
                             }
