@@ -7,6 +7,7 @@
     <title><?= $link ;?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
 </head>
 <body>
 
@@ -69,7 +70,7 @@
                                         } 
                                     ;?>
                                 
-                                <input type="checkbox" value="<?=$formateur->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?>
+                                <input checked type="checkbox" value="<?=$formateur->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?>
 
                                 <?php $nombre++; endforeach ?>
                                 <input type="hidden" name="nbFormateurs" value="<?= $nombre ;?>">

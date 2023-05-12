@@ -213,6 +213,7 @@ class FormateurModel extends Model
         $this->requete("SET sql_mode='';");
 
         $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, di.id_formation, 
+
         GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut, 
         GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
         FROM Formateur f 
