@@ -82,12 +82,13 @@ select {
 }
 
 input[type="date"] {
-    justify-content: space-around;
+    flex-direction: row;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
     width: 20px;
     height: 20px;
+    padding-right: 30px;
     content: url('/planning/Views/assets/image/calendar.svg');
 }
 
@@ -151,6 +152,10 @@ input[type="submit"]:hover {
     border-radius: 50%;
     background-color: #FFF;
     box-shadow: inset 0 0 4px 2px #8AA48D;
+    transition: .7s ease-in-out;
+}
+.indicator div:first-child{
+    background-color: #58d665;
 }
 
 textarea {
@@ -258,14 +263,10 @@ fieldset{
 
 .separate input[type="radio"] {
     width: 2rem;
-    display: grid;
-    place-content: center;
-    /* Add if not using autoprefixer */
+    height: 2rem;
     -webkit-appearance: none;
     appearance: none;
-    /* For iOS < 15 to remove gradient background */
     background-color: #fff;
-    /* Not removed via appearance */
     margin: 0 0 0 1rem;
     border: 0.15rem solid #8AA48D;
     border-radius: 5px;
@@ -275,6 +276,7 @@ fieldset{
 input[type="radio"]::before {
     content: "X";
     width: 2rem;
+    height: 2rem;
     font-size: 1.7rem;
     border: 0.15rem solid #8AA48D;
     border-radius: 5px;
@@ -294,7 +296,7 @@ input[type="radio"]:checked::before {
     width: 71%;
 }
 
-/************* Part 3 **************/
+/************* Part 4 **************/
 
 label[for="referent-formateur"] {
     margin-top: 1rem;
@@ -319,7 +321,7 @@ label[for="referent-formateur"] {
     overflow: scroll;
 }
 
-.date-fields {
+.intervention-container .date-fields {
     width: 40%;
     padding: 1rem 1rem;
 }

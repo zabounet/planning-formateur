@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $link ;?></title>
+    <title><?= $link; ?></title>
+    <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
-    <?php if($link !== "Formateur home"): ?>
-        <script src="/planning/Views/assets/js/formateur.js"></script>
-    <?php endif;?>
+    <?php
+    
+    if ($link === "Activité des formateurs") {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">';
+    }
+
+    if ($link === "Formateur home") {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
+    }
+    if(isset($infosCurrent)){
+        if ($link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur || $link === "Inscripton formateur") {
+            echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
+        }; 
+    };
+    
+    ?>
 </head>
+
 <body>
 
-    <header style="width: 100%; height: 150px; background-color: crimson;">
+    <header>
         <nav>
             <ul>
-                <?php if($link === "Formateur home"): ?>
+                <?php if ($link === "Formateur home") : ?>
                     <li><a href="/planning/public">Home</a></li>
                     <li><a href="/planning/public/admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
                     <li><a href="/planning/public/admin/inscriptionFormateur">Ajouter un formateur</a></li>
-                <?php else :?>
+                <?php else : ?>
                     <li><a href="/planning/public/admin/formateursHome">Retour à la liste des formateurs</a></li>
                 <?php endif; ?>
             </ul>
@@ -29,9 +43,9 @@
     </header>
     <main>
         <div>
-            <?= $contenu ;?>
+            <?= $contenu; ?>
         </div>
     </main>
-    <footer style="width: 100%; height: 150px; background-color: crimson;"></footer>
 </body>
+
 </html>

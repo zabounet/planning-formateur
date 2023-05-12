@@ -6,19 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $link; ?></title>
-    <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css?<?= time(); ?>">
-    <link rel="stylesheet" href="/planning/Views/assets/css/style.css?<?= time(); ?>">
-    <?php if ($link === "Ajouter une formation") : ?>
-        <link rel="stylesheet" href="/planning/Views/assets/css/formations.css?<?= time(); ?>">
-    <?php endif; ?>
+    <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
+    <?php
+    if(!isset($infosCurrent))$infosCurrent['acronyme_formation'] = "";
 
-    <?php if ($link === "Profil") : ?>
-        <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
-    <?php endif; ?>
-
-    <?php if ($link !== "Formation home") : ?>
-        <script src="/planning/Views/assets/js/formation.js?<?= time(); ?>"></script>
-    <?php endif; ?>
+    if ($link === "Formateur home") {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
+    }
+    if ($link === "Profil") {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">';
+    }
+    if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css">';
+    }
+    if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
+        echo '<script src="/planning/Views/assets/js/formation.js"></script>';
+    }; ?>
 </head>
 
 <body>
