@@ -212,11 +212,12 @@ class FormateurModel extends Model
     {
         $this->requete("SET sql_mode='';");
 
-        $sql = " SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, di.id_formation, 
+        $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, di.id_formation, 
+
         GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut, 
         GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
         FROM Formateur f 
-        LEFT JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
+        JOIN Date_intervention di ON f.id_formateur = di.id_formateur 
         WHERE f.id_formateur IN (";
 
         $nbId = count($id_list);
@@ -231,7 +232,36 @@ class FormateurModel extends Model
         }
 
         $sql .= ") GROUP BY f.id_formateur";
-                                
+                           
+        $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getVacancesById(array $id_list)
+    {
+        $this->requete("SET sql_mode='';");
+        
+        $sql = "SELECT f.id_formateur,
+        GROUP_CONCAT(dv.date_debut_vacances ORDER BY dv.date_debut_vacances SEPARATOR ',') AS date_debut_vacences, 
+        GROUP_CONCAT(dv.date_fin_vacances ORDER BY dv.date_debut_vacances SEPARATOR ',') AS date_fin_vacences,
+        GROUP_CONCAT(dv.validation ORDER BY dv.date_debut_vacances SEPARATOR ',') AS validation
+        FROM Formateur f 
+        JOIN Date_vacance dv ON f.id_formateur = dv.id_formateur 
+        WHERE f.id_formateur IN (";
+
+        $nbId = count($id_list);
+        for($i = 0; $i < $nbId; $i++){
+            if($i == 0){
+                $virgule = "";
+            }
+            else{
+                $virgule = ",";
+            }
+           $sql .= $virgule . $id_list[$i];
+        }
+
+        $sql .= ") GROUP BY f.id_formateur"; 
+        
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
         return $result;
     }
