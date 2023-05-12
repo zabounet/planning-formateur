@@ -13,31 +13,9 @@
     font-style: normal;
 }
 @font-face{
-    font-family: 'Dited';
-    src: url('../Fonts/Dited-webfont.ttf');
-    src: url('../Fonts/Dited-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
     font-family: 'Hack-Regular';
     src: url('../Fonts/Hack-Regular-webfont.ttf');
     src: url('../Fonts/Hack-Regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
-    font-family: 'slkscr';
-    src: url('../Fonts/slkscr-webfont.ttf');
-    src: url('../Fonts/slkscr-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
-    font-family: 'PixelCode';
-    src: url('../Fonts/CHNOPixelCodePro-Regular.ttf');
-    src: url('../Fonts/CHNOPixelCodePro-Regular.woff') format('woff'),
-         url('../Fonts/CHNOPixelCodePro-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }

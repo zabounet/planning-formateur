@@ -542,7 +542,7 @@ class AdminController extends Controller
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriode("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $currentId);
+                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $currentId, $_POST['intervention'][$i]);
                 }
             }
 
