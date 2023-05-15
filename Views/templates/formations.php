@@ -18,10 +18,10 @@
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">';
     }
     if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
-        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css">';
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css?' . time() . '">' ;
     }
     if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
-        echo '<script src="/planning/Views/assets/js/formation.js"></script>';
+        echo '<script src="/planning/Views/assets/js/formation.js?' . time() . '"></script>';
     }; ?>
 </head>
 

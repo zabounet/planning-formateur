@@ -12,14 +12,13 @@
         <hr>
 
         <div class="part1-sect">
-            <label for="type">Catégorie :
+        <label for="type">Catégorie :
                 <select name="type" id="type">
                     <option disabled selected>Choisir un type de formation</option>
                     <?php foreach ($infosFormation['Types'] as $types) : ?>
                         <option value="<?= $types->id_type_formation ?>"><?= $types->designation_type_formation; ?></option>
                     <?php endforeach; ?>
-                </select>
-            </label>
+                </select><span class="legend">*</span></label>
 
             <label for="grn"> GRN :
                 <select name="grn" id="grn">
@@ -27,7 +26,7 @@
                     <?php foreach ($infosFormation['GRNS'] as $grn) : ?>
                         <option value="<?= $grn->numero_grn; ?>"><?= $grn->numero_grn . ' - ' . $grn->nom_grn; ?></option>
                     <?php endforeach; ?>
-                </select>
+                </select><span class="legend">*</span>
             </label>
             <label for="ville"> Ville :
                 <select name="ville" id="ville">
@@ -35,28 +34,28 @@
                     <?php foreach ($infosFormation['Villes'] as $villes) : ?>
                         <option value="<?= $villes->id_ville; ?>"><?= $villes->nom_ville; ?></option>
                     <?php endforeach; ?>
-                </select>
+                </select><span class="legend">*</span>
             </label>
         </div>
         <div class="part1-sect">
             <label for="acronyme"> Acronyme :
-                <input id="acronyme" name="acronyme" type="text" placeholder="Exemple : CDA">
+                <input id="acronyme" name="acronyme" type="text" placeholder="Exemple : CDA"><span class="legend">*</span>
             </label>
 
             <label for="description"> Description :
-                <textarea id="description" name="description" style="resize : none;"></textarea>
+                <textarea id="description" name="description" style="resize : none;"></textarea><span class="legend">*</span>
             </label>
 
             <label for="offre"> Offre :
-                <input id="offre" name="offre" type="text" placeholder="Exemple : offre 1234">
+                <input id="offre" name="offre" type="text" placeholder="Exemple : offre 1234"><span class="legend">*</span>
             </label>
         </div>
         <div class="part1-sect">
             <label for="date-debut-formation"> Date de début :
-                <input id="date-debut" name="date-debut-formation" type="date">
+                <input id="date-debut" name="date-debut-formation" type="date"><span class="legend">*</span>
             </label>
             <label for="date-fin-formation"> Date de fin :
-                <input id="date-fin" name="date-fin-formation" type="date">
+                <input id="date-fin" name="date-fin-formation" type="date"><span class="legend">*</span>
             </label>
         </div>
     </fieldset>
@@ -81,7 +80,7 @@
             </div>
 
             <div class="col2">
-                <h3>Périodes d'activité en centre</h3>
+                <h3>Périodes d'activité en centre <span class="legend">*</span></h3>
                 <div class="date-container">
                     <button type="button" class="add-date-fields" data="centre"><span>+</span></button>
                 </div>
@@ -104,15 +103,15 @@
             <div class="checkbox-choice">
                 <div class="separate">
                     <label for="">Aucune interruption</label>
-                    <input type="radio" name="interruption" id="noInterrupt">
+                    <input type="radio" name="interruption" value="noInterruptions">
                 </div>
                 <div class="separate">
                     <label for="">Ajouter une interruption</label>
-                    <input type="radio" name="interruption" id="addInterrupt">
+                    <input type="radio" name="interruption" value="addInterruptions">
                 </div>
             </div>
             <div class="interruption-dates">
-                <h3>Période d'interruption</h3>
+                <h3>Période d'interruption <span class="legend">*</span></h3>
                 <button type="button" class="add-date-fields" data="interruption">+</button>
             </div>
         </div>
@@ -149,5 +148,5 @@
     </div>    
     <input id="nextButton" type="button" value="Suivant">
     <input id="submitButton" type="submit" value="Valider">
-    
+    <span class="legend">* champs obligatoires</span>  
 </form>
