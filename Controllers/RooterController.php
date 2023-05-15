@@ -40,6 +40,7 @@ class RooterController extends Controller
             $nbformation = count($formations);
             for ($x = 0; $x < $nbformation; $x++) {
 
+                $referent = $databaseFormateur->getBy(['nom_formateur', 'prenom_formateur'], 'Formateur', ['id_formateur'], [$formations[$x]->id_formateur]);
                 //recupere les date de vacances pour chaque formateur
                 $formateurs = $databaseFormateur->getVacancesById($formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
@@ -119,7 +120,7 @@ class RooterController extends Controller
                                 <thead> 
                                 <tr> 
                                     <th rowspan = 5>Afpa </th>
-                                    <th class='sticky-container' colspan = '$nbJours'> <span> {$formations[$x]->nom_formation} </span> </th> 
+                                    <th class='sticky-container' colspan = '$nbJours'> <span> " . $formations[$x]->nom_formation . ' - ' . $referent[0]->nom_formateur . ' ' . $referent[0]->prenom_formateur . " </span> </th> 
                                 </tr>
                                 <tr>";
 

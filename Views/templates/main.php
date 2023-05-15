@@ -65,7 +65,7 @@
                             <div>
                                 <label for="">Formateur</label>
                                 <?php $nombre = 0; foreach($formateurs['Formateurs'] as $formateur) :?>
-                                    <?php if($formateur->id_formateur == 1 || $formateur->id_formateur == 2){ 
+                                    <?php if($formateur->id_formateur == 2){ 
                                         continue;
                                         } 
                                     ;?>
