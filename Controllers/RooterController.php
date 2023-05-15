@@ -20,9 +20,15 @@ class RooterController extends Controller
             $databaseFormateur = new FormateurModel;
 
             $_POST['lieu'] !== "default" ? $centre = $_POST['lieu'] : $centre = "Aucun";
-            foreach ($_POST['grns'] as $grns) {
-                $grns !== "default" ? $grn = $grns : $grn = "Aucun";
-            }
+            // $_POST['grns'] !== "default" ? $grn = $_POST['grns'] : $grn = "Aucun"; 
+            if(empty($_POST['grns'])) {
+                $grn = "Aucun";
+            } else {
+                $_POST['grns'] !== "default" ? $grn = $_POST['grns'] : $grn = "Aucun"; 
+            };
+            // foreach ($_POST['grns'] as $grns) {
+            //     $grns !== "default" ? $grn = $grns : $grn = "Aucun";
+            // }
 
             if (is_null($_POST['formateurs'])) {
                 echo "Veuillez choisir au moins un formateur";
@@ -422,16 +428,19 @@ class RooterController extends Controller
             }
             $nbformation == 0 ? $html = "Aucun résultat." : $html .= " </div> </div>";
         }
-
+        
         $formation = new FormationModel;
         $formateur = new FormateurModel;
         $formateurs = $formateur->getFormateur();
         $GRNs = $formateur->getAll('GRN');
         $villes = $formation->getAll('ville');
-
         !isset($html) ? $html = "Aucun résultat." : '';
+        isset($_POST['rechercher']) ? $data = $_POST : $data = "";
 
+        
 
-        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html'), 'main');
+    
+
+        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data'), 'main');
     }
 }
