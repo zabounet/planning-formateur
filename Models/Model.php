@@ -83,6 +83,7 @@ class Model extends Db{
                 $iterations++;
             }
         }
+        echo $sql;
         return $this->requete($sql)->fetchAll();
     }
 
