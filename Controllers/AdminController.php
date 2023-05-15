@@ -607,7 +607,7 @@ class AdminController extends Controller
             exit;
         }
 
-        $html = "<h1 style='text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1>";
+        $html = "<div style='display:flex;justify-content:center;'> <h1 style='width:60%;text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1> </div>";
         $FormateurModel = new FormateurModel;
 
         if (Form::validate($_POST, ['valider'])) {
@@ -988,6 +988,6 @@ class AdminController extends Controller
             $html .= "</tbody> </table> </div> </div>";
         }
         $infosFormateur = $FormateurModel->getFormateur();
-        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html'), 'formateurs');
+        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html'), 'activite');
     }
 }

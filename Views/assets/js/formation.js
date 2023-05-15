@@ -124,10 +124,11 @@ addEventListener('DOMContentLoaded', () => {
     const part2 = document.getElementById('part2');
     const part3 = document.getElementById('part3');
     const part4 = document.getElementById('part4');
-    const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step3 = document.getElementById('step3');
     const step4 = document.getElementById('step4');
+    const interruptions = document.getElementsByName('interruption');
+    const interruptionsDates = document.querySelector('.interruption-dates');
     const nextButton = document.getElementById('nextButton');
     const submitButton = document.getElementById('submitButton');
 
@@ -254,56 +255,139 @@ addEventListener('DOMContentLoaded', () => {
             return;
         }
         if (part3.style.display === "flex") {
+            if(nextButton.style.opacity == .1){
+                alert("Veuillez cocher l'une des deux cases avant de continuer.");
+            }
+            else{
+                if(interruptionsDates.style.display === "none"){
+                    part3.animate(
+                        [
+                            {
+                                transform: "translate(0, 0)",
+                                display: "flex",
+                            },
+                            {
+                                transform: "translate(-1200px, 0)",
+                                display: "none"
+                            }
+                        ],
+                        {
+                            duration: 700,
+                            iterations: 1,
+                            direction: 'normal',
+                        }
+                    );
 
-            part3.animate(
-                [
-                    {
-                        transform: "translate(0, 0)",
-                        display: "flex",
-                    },
-                    {
-                        transform: "translate(-1200px, 0)",
-                        display: "none"
-                    }
-                ],
-                {
-                    duration: 700,
-                    iterations: 1,
-                    direction: 'normal',
+                    part4.animate(
+                        [
+                            {
+                                position: "absolute",
+                                left: "1300px",
+                                top: "73.3px",
+                                display: "none",
+                            },
+                            {
+                                position: "absolute",
+                                left: "0",
+                                top: "73.3px",
+                                display: "flex"
+                            }
+                        ],
+                        {
+                            duration: 700,
+                            iterations: 1,
+                            direction: 'normal',
+                        }
+                    );
+                    part4.style.display = 'flex';
+                    setTimeout(function () {
+                        part3.style.display = 'none';
+                    }, 700);
+
+                    nextButton.style.display = "none";
+                    submitButton.style.display = "inline-block"
+
+                    step4.style.backgroundColor = "#58d665";
+                    return;
                 }
-            );
-
-            part4.animate(
-                [
-                    {
-                        position: "absolute",
-                        left: "1300px",
-                        top: "73.3px",
-                        display: "none",
-                    },
-                    {
-                        position: "absolute",
-                        left: "0",
-                        top: "73.3px",
-                        display: "flex"
+                else if(interruptionsDates.style.display === "block"){
+                    if(document.getElementById('date-debut-interruption') && document.getElementById('date-fin-interruption')){
+                        part3.animate(
+                            [
+                                {
+                                    transform: "translate(0, 0)",
+                                    display: "flex",
+                                },
+                                {
+                                    transform: "translate(-1200px, 0)",
+                                    display: "none"
+                                }
+                            ],
+                            {
+                                duration: 700,
+                                iterations: 1,
+                                direction: 'normal',
+                            }
+                        );
+        
+                        part4.animate(
+                            [
+                                {
+                                    position: "absolute",
+                                    left: "1300px",
+                                    top: "73.3px",
+                                    display: "none",
+                                },
+                                {
+                                    position: "absolute",
+                                    left: "0",
+                                    top: "73.3px",
+                                    display: "flex"
+                                }
+                            ],
+                            {
+                                duration: 700,
+                                iterations: 1,
+                                direction: 'normal',
+                            }
+                        );
+                        part4.style.display = 'flex';
+                        setTimeout(function () {
+                            part3.style.display = 'none';
+                        }, 700);
+        
+                        nextButton.style.display = "none";
+                        submitButton.style.display = "inline-block"
+        
+                        step4.style.backgroundColor = "#58d665";
+                        return;
                     }
-                ],
-                {
-                    duration: 700,
-                    iterations: 1,
-                    direction: 'normal',
+                    else {
+                        alert("Veuillez renseigner au moins une période ou cocher \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
+                    }
                 }
-            );
-            part4.style.display = 'flex';
-            setTimeout(function () {
-                part3.style.display = 'none';
-            }, 700);
-
-            nextButton.style.display = "none";
-            submitButton.style.display = "inline-block"
-
-            step4.style.backgroundColor = "#58d665";
-            return;
+            }
         }
     });
+    nextButton.addEventListener('click', function () {
+        if (part3.style.display === "flex") {
+            Array.from(interruptions).forEach(function (interruption){
+                // nextButton.setAttribute('disabled', '');
+                nextButton.style.opacity = .1;
+
+                interruption.addEventListener('change', () =>{
+                    if(interruption.value === "addInterruptions"){
+                        interruptionsDates.style.display = "block";
+                        // nextButton.removeAttribute('disabled');
+                        nextButton.style.opacity = 1;
+                    }
+                    else if(interruption.value === "noInterruptions"){
+                        interruptionsDates.style.display = "none";
+                        // nextButton.removeAttribute('disabled');
+                        nextButton.style.opacity = 1;
+                    }
+                })
+            });
+        };
+    })
 })

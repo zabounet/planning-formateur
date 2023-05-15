@@ -157,7 +157,16 @@ input[type="submit"]:hover {
 .indicator div:first-child{
     background-color: #58d665;
 }
-
+#submitButton + .legend{
+    position: absolute;
+    bottom: 0;
+    right: 2%;
+    height: 10%;
+}
+.legend{
+    color: red;
+    font-weight: 800;
+}
 textarea {
     padding-top: .6rem;
     text-align: center;
@@ -292,7 +301,7 @@ input[type="radio"]:checked::before {
 .interruption-dates {
     padding: 1rem;
     overflow: scroll;
-    display: block;
+    display: none;
     width: 71%;
 }
 
