@@ -11,6 +11,7 @@ class CustomException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
+	// Nécessaire lors de la création d'un gestionnaire d'exception personnalisé afin de pouvoir gérer les erreur fatales.
     static function PhpFatalErrors()
 	{
 		$lastError = error_get_last();
@@ -18,26 +19,29 @@ class CustomException extends Exception
         static::PhpErrors($lastError['type'],$lastError['message'],$lastError['file'],$lastError['line']);
     }
     
-	/* It's a function that will be called when a PHP error occurs. */
+	/* Gestionnaire d'erreurs */
 	static function PhpErrors($errno,$errstr,$errfile,$errline)
 	{
         $Action = [];
-        $Action['msg'] 		='';
-		$Action['exit'] 	=true;
-		$Action['display']	=false;
-		$Action['notify']	=false;
+        $Action['msg'] 		=''; // Le message renvoyé par l'erreur
+		$Action['exit'] 	=true; // Arrête ou non de l'execution du script
+		$Action['display']	=false;	
+		$Action['notify']	=false;	// Apparition ou non de l'erreur
 		
 		switch ($errno)
 		{
+			// Notice
 			case E_USER_NOTICE :
 			case E_NOTICE :
 			{
 			    $Action['exit'] 	= false;
 			    $Action['display'] 	= false;
 			    $Action['notify'] 	= true;
-			    $Action['type'] 	= "Notification (".$errno.")";
+			    $Action['msg'] 	= "<h1> Désolé, une erreur est survenue </h1>";
 				break;
 			}
+
+			// Warnings
 			case E_COMPILE_WARNING :
 			case E_CORE_WARNING :
 			case E_USER_WARNING :
@@ -47,18 +51,22 @@ class CustomException extends Exception
 			{
 			    $Action['exit'] 	= false;
 			    $Action['display'] 	= false;
-			    $Action['notify'] 	= false;
-			    $Action['type'] 	= "Avertissement (".$errno;
+			    $Action['notify'] 	= true;
+			    $Action['msg'] 	= "<h1> Désolé, une erreur est survenue </h1>";
 			    break;
 			}
+
+			// Erreur de syntaxe
 			case E_PARSE :
 			{
-			   	$Action['exit'] 	= true;
+			   	$Action['exit'] 	= false;
 			    $Action['display'] 	= false;
 			    $Action['notify'] 	= true;
-			    $Action['type'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>Oups ! Il semblerait que les développeurs aient fait une bourde. Veuillez contacter l'administrateur du site afin de résoudre le problème.</h1>";
+			    $Action['msg'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>Oups ! Il semblerait que les développeurs aient fait une bourde. Veuillez contacter l'administrateur du site afin de résoudre le problème.</h1>";
 			    break;
 			}
+			
+			// Erreur fatales
 			case E_COMPILE_ERROR :
 			case E_CORE_ERROR :
 			case E_USER_ERROR :
@@ -67,22 +75,24 @@ class CustomException extends Exception
 			   	$Action['exit'] 	= true;
 			    $Action['display'] 	= false;
 			    $Action['notify'] 	= true;
-			    $Action['type'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>/!\ Ce système est sur le point de s'autodétruire. /!\</h1> <h2 style='text-align:center;'> Veuillez ordonner l'évacuation immédiate des lieux dans un rayon de 1kilomètre. Autodestruction dans 30 secondes.</h2> <p style='text-align: center; font-size:1.25rem;'>Si le problème persiste, veuillez contacter l'admnistrateur.</p>";
+			    $Action['msg'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>/!\ Ce système est sur le point de s'autodétruire. /!\</h1> <h2 style='text-align:center;'> Veuillez ordonner l'évacuation immédiate des lieux dans un rayon de 1kilomètre. Autodestruction dans 30 secondes.</h2> <p style='text-align: center; font-size:1.25rem;'>Si le problème persiste, veuillez contacter l'admnistrateur.</p>";
 			    break;
 			}
+
+			// Autres erreurs
 			default :
 			{
 			    $Action['exit'] 	= false;
 			    $Action['display'] 	= false;
 			    $Action['notify'] 	= true;
-			    $Action['type'] 	= "<h1> Désolé, une erreur est survenue </h1>";
+			    $Action['msg'] 	= "<h1> Désolé, une erreur est survenue </h1>";
 			    break;
 			}
 	    }
 	    
 	    if($Action['notify'] === true)
 	    {
-		    echo $Action['type'];
+		    echo $Action['msg'];
 		}
 	    if($Action['exit'] === true)
 	    {

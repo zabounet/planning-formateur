@@ -32,82 +32,12 @@ class FormateurModel extends Model
             'Villes' => $this->requete("SELECT * FROM `Ville`")->fetchAll()
         ];
     }
-    // Recupère Lesformateur
+    // Recupère Les formateurs
     public function getFormateur()
     {
         return $infos = [
             'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`, `prenom_formateur` FROM `Formateur`")->fetchAll(),
         ];
-    }
-    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = []){
-       
-        $nbChamps = count($champsSelect);
-        $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
-
-            $sql .= $writeComma . $champsSelect[$z];
-        }
-        $sql .= " FROM " . $table;
-
-        if(!empty($tablesJointures) && !empty($colonnesJointures)){
-            $nbJoin = count($tablesJointures);
-            for($i = 0; $i < $nbJoin; $i++){
-                $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
-            }
-        }
-
-        $nbCond = count($searchCond);
-
-        if($nbCond > 0){
-            $sql .= " WHERE ";
-            for($j = 0; $j < $nbCond; $j++){
-                if($j == 0){$writeOr = "";}
-                else{$writeOr = " OR ";}
-
-                $sql .= $writeOr . $searchCond[$j] . " LIKE " . "'%$search%'";
-            }
-        }else{
-            $sql .= " WHERE " . $searchCond[0] . " LIKE " . "'%$search%'";
-        }
-       
-        return $this->requete($sql)->fetchAll();
-    
-    }
-
-    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
-    {
-        $nbChamps = count($champsSelect);
-        $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
-
-            $sql .= $writeComma . $champsSelect[$z];
-        }
-
-        $sql .= " FROM " . $table;
-        $nbJoin = count($tablesJointures);
-        for($i = 0; $i < $nbJoin; $i++){
-            $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
-        }
-        if(!empty($champCondJointures) && !empty($CondJointures)){
-            $nbCond = count($champCondJointures);
-
-            if($nbCond > 0){
-                $sql .= " WHERE ";
-                for($j = 0; $j < $nbCond; $j++){
-                    if($j == 0){$writeAnd = "";}
-                    else{$writeAnd = " AND ";}
-
-                    $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
-                }
-            }else{
-                $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
-            }
-        }
-        return $this->requete($sql)->fetchAll();
     }
 
     // recuperer user by son adresse mail
@@ -116,6 +46,7 @@ class FormateurModel extends Model
         return $this->requete("SELECT * FROM {$this->table} WHERE mail_formateur = ?", [$email])->fetch();
     }
 
+    // Insertion d'un formateur en base de données
     public function insertFormateur(
         string $nom_formateur,
         string $prenom_formateur,
@@ -157,7 +88,40 @@ class FormateurModel extends Model
         );
     }
 
-    //cree la session de l'usilateur
+    // Insère une demande de jours de congé dans la table date_vacances
+    public function createDateVacance(string $dateDebut, string $dateFin, int $id_formateur)
+    {
+        // Prepare the SQL query
+        $sql = "INSERT INTO date_vacance (date_debut_vacances, date_fin_vacances, validation, id_formateur) 
+        VALUES (?, ?, 0, ?)";
+
+        // Execute the query with the given parameters
+        $result = $this->requete($sql, [$dateDebut, $dateFin, $id_formateur]);
+
+        // Check if the query was successful
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Insère une demande de jours de télétravail dans la table date_teletravail
+    public function createJoursTeletravail(string $jour_teletravail, string $date_demande_changement, int $id_formateur): bool
+    {
+        $sql = "INSERT INTO date_teletravail (jour_teletravail, date_demande_changement, date_prise_effet, validation, id_formateur)
+        VALUES (?, ?, NULL, 0, ?)";
+
+        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $id_formateur]);
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //cree la session de l'utilisateur
     public function setSession()
     {
         $_SESSION['formateur'] =
@@ -170,6 +134,7 @@ class FormateurModel extends Model
             ];
     }
 
+    // Crée la session de l'administrateur
     public function setSessionAdmin()
     {
         $_SESSION['admin'] =
@@ -182,7 +147,7 @@ class FormateurModel extends Model
             ];
     }
 
-
+    // Fonctions de gestion du profil
     public function updateNomProfil($new_nom, $idFormateur)
     {
         $sql = "UPDATE " . $this->table . " SET nom_formateur = ? WHERE id_formateur = ?";
@@ -208,12 +173,15 @@ class FormateurModel extends Model
         return $result;
     }
 
+    // Recupère les dates d'interventions des formateurs selon leur id et effectue une jointure.
     public function getInterventionById(array $id_list)
     {
+        // Nécessaire afin de pouvoir contourner la règle du group by forcant à y mettre l'ensemble des champs du select
         $this->requete("SET sql_mode='';");
 
+        // Effectues une concaténation de toute les lignes de la table "date_intervention" où l'id du formateur correspond
+        // afin de ne retourner qu'une seule ligne par formateurs.
         $sql = "SELECT f.id_formateur, f.nom_formateur, f.prenom_formateur, di.id_formation, 
-
         GROUP_CONCAT(di.date_debut_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_debut, 
         GROUP_CONCAT(di.date_fin_intervention ORDER BY di.date_debut_intervention SEPARATOR ',') AS date_fin 
         FROM Formateur f 
@@ -221,26 +189,26 @@ class FormateurModel extends Model
         WHERE f.id_formateur IN (";
 
         $nbId = count($id_list);
-        for($i = 0; $i < $nbId; $i++){
-            if($i == 0){
+        for ($i = 0; $i < $nbId; $i++) {
+            if ($i == 0) {
                 $virgule = "";
-            }
-            else{
+            } else {
                 $virgule = ",";
             }
-           $sql .= $virgule . $id_list[$i];
+            $sql .= $virgule . $id_list[$i];
         }
 
         $sql .= ") GROUP BY f.id_formateur";
-                           
+
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
         return $result;
     }
 
+    // Recupère les dates de vacance des formateurs selon leur id et effectue une jointure.
     public function getVacancesById(array $id_list)
     {
         $this->requete("SET sql_mode='';");
-        
+
         $sql = "SELECT f.id_formateur,
         GROUP_CONCAT(dv.date_debut_vacances ORDER BY dv.date_debut_vacances SEPARATOR ',') AS date_debut_vacences, 
         GROUP_CONCAT(dv.date_fin_vacances ORDER BY dv.date_debut_vacances SEPARATOR ',') AS date_fin_vacences,
@@ -250,18 +218,17 @@ class FormateurModel extends Model
         WHERE f.id_formateur IN (";
 
         $nbId = count($id_list);
-        for($i = 0; $i < $nbId; $i++){
-            if($i == 0){
+        for ($i = 0; $i < $nbId; $i++) {
+            if ($i == 0) {
                 $virgule = "";
-            }
-            else{
+            } else {
                 $virgule = ",";
             }
-           $sql .= $virgule . $id_list[$i];
+            $sql .= $virgule . $id_list[$i];
         }
 
-        $sql .= ") GROUP BY f.id_formateur"; 
-        
+        $sql .= ") GROUP BY f.id_formateur";
+
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
         return $result;
     }

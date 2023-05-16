@@ -59,7 +59,7 @@ class Form{
         return $str;
     }
 
-    // Création de la balise d'ouverture du formulaire avec son action, sa methode et évetuels attributs
+    // Création de la balise d'ouverture du formulaire avec son action, sa methode et éventuels attributs
     public function debutForm(string $methode = "post", string $action = "#", array $attributs = []): self{
            
         $this->formCode .= "<form action='$action' method='$methode'";

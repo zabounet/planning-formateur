@@ -17,6 +17,7 @@ class AdminController extends Controller
         $this->render('/main/index');
     }
 
+    // Liste des formations
     public function formationsHome(): void
     {
 
@@ -27,6 +28,7 @@ class AdminController extends Controller
 
         $formation = new FormationModel;
 
+        // Jointure pour récupèrer l'ensemble des informations importantes relatives à la formation
         $infosFormation = $formation->joinInformations(
             [
                 'id_formation',
@@ -53,6 +55,7 @@ class AdminController extends Controller
             ]
         );
 
+        // Si une recherche est effectuée, alors recupère les informations correspondantes à la recherche
         if (isset($_POST['search_d']) && !empty($_POST['search_d'])) {
             $infosFormation = $formation->search(
                 [
@@ -91,15 +94,13 @@ class AdminController extends Controller
             $search = $_POST['search_d'];
             $this->render('admin/formationsHome', compact('infosFormation', 'search'), 'formations');
         } else {
-
-
             $this->render('admin/formationsHome', compact('infosFormation',), 'formations');
         }
     }
 
+    // Modifier les informations d'une formation
     public function modifierFormation(): void
     {
-
         if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
@@ -136,6 +137,7 @@ class AdminController extends Controller
         )) {
             $database = new FormationModel;
 
+            // Récupère l'id à la fin de l'URL actuelle
             $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
 
             //Récupèration du nom de la ville pour composer l'id de la formation
@@ -147,6 +149,7 @@ class AdminController extends Controller
             //Création de l'id de la formation
             $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
 
+            // Mise à jour des informations
             $database->update(
                 'Formation',
                 [
@@ -175,12 +178,15 @@ class AdminController extends Controller
                 $currentId
             );
 
+            // Supprime l'ensemble des informations existantes pour cette formation dans les tables de periodes
+            // afin d'éviter les doublons.
             $deleteRan = $database->delete('Date_ran', 'id_formation', $currentId);
             $deletePae = $database->delete('Date_pae', 'id_formation', $currentId);
             $deleteCentre = $database->delete('Date_centre', 'id_formation', $currentId);
             $deleteCertif = $database->delete('Date_certif', 'id_formation', $currentId);
             $deleteInterruptions = $database->delete('Interruption', 'id_formation', $currentId);
 
+            // Boucles d'insertion de chaque périodes 
             if (isset($_POST['date-debut-entreprise'])) {
                 $periodesEntreprise = count($_POST['date-debut-entreprise']);
                 for ($i = 0; $i < $periodesEntreprise; $i++) {
@@ -224,8 +230,13 @@ class AdminController extends Controller
 
         $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
 
+        // Infos sur la formation actuelle
         $infosCurrent = $formation->getOne('*', 'Formation', 'id_formation', $currentId);
+
+        // Récupération du tableau contenant les informations nécessaire à la création des menus déroulants de la page.
         $infosFormation = $formation->getInformations();
+
+        //Récupèration des periodes de date relatives à la formation
         $infosRan = $formation->getBy(['date_debut_ran', 'date_fin_ran'], 'Date_ran', ['id_formation'], [$currentId]);
         $infosPae = $formation->getBy(['date_debut_pae', 'date_fin_pae'], 'Date_pae', ['id_formation'], [$currentId]);
         $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'], 'Date_certif', ['id_formation'], [$currentId]);
@@ -235,6 +246,7 @@ class AdminController extends Controller
         $this->render('admin/modifierFormation', compact('infosCurrent', 'infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre',  'infosInterruption'), 'formations');
     }
 
+    // Ajouter une nouvelle formation 
     public function ajouterFormation(): void
     {
 
@@ -343,8 +355,9 @@ class AdminController extends Controller
 
         $infosFormation = $infos->getInformations();
 
-        // Check if the request is an AJAX request
+        // Vérifie si la requête est de type 'xmlhttprequest'
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            // Envoie les informations en json afin de pouvoir les lire en javascript
             header('Content-type: application/json');
             echo json_encode($infosFormation['Formateurs']);
             exit;
@@ -417,64 +430,62 @@ class AdminController extends Controller
         $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
     }
 
+    // Ajouter un nouveau formateur dans la base de données
     public function inscriptionFormateur()
     {
-
         if (!isset($_SESSION['admin'])) {
             header('Location: /planning/public/');
             exit;
         }
 
-        if (Form::validate($_POST, ['inscription'],)) {
-            if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['type_contrat']) && !empty($_POST['grn']) && !empty($_POST['ville'])) {
+        if (Form::validate($_POST, ['inscription'])) {
 
-                // verifier le mail
-                $mail = $_POST['mail'];
-                // if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
+            // verifier le mail
+            $mail = $_POST['mail'];
+            // if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
 
-                $formateur = new FormateurModel;
+            $formateur = new FormateurModel;
 
-                //Création de le mot de pass de la formation
-                $mdp_formateur = $_POST["nom"] .  $_POST["prenom"];
-                $mdp = sha1($mdp_formateur);
+            //Création de le mot de pass de la formation
+            $mdp_formateur = $_POST["nom"] .  $_POST["prenom"];
+            $mdp = sha1($mdp_formateur);
 
-                //un formateur n'est pas admin
-                $permissions_utilisateur = 0;
+            //un formateur n'est pas admin
+            $permissions_utilisateur = 0;
 
-                if ($_POST['type_contrat'] === 'CDI') {
-                    $date_fin_contrat = '0001-01-01';
-                } else {
-                    $date_fin_contrat =  $_POST['date_fin_contrat'];
-                }
-
-                $type_contrat = strtoupper($_POST["type_contrat"]);
-                //Insertion des données dans la table formation
-                $formateur->insertFormateur(
-                    $_POST['nom'],
-                    $_POST['prenom'],
-                    $mail,
-                    $mdp,
-                    $type_contrat,
-                    $_POST['date_debut_contrat'],
-                    $date_fin_contrat,
-                    $permissions_utilisateur,
-                    $_POST['grn'],
-                    $_POST['ville']
-                );
-
-
-                $_SESSION['success'] = "Formateur ajouté avec succès";
-                Refresh::refresh('/planning/public/admin/inscriptionFormateur');
-                exit;
-                // } else {
-                //     $_SESSION['error'] = "email pas bon";
-                // }
-
+            if ($_POST['type_contrat'] === 'CDI') {
+                $date_fin_contrat = '0001-01-01';
             } else {
-                $_SESSION['error'] = "Formulaire incomplet";
-                Refresh::refresh('/planning/public/admin/inscriptionFormateur');
-                exit;
+                $date_fin_contrat =  $_POST['date_fin_contrat'];
             }
+
+            $type_contrat = strtoupper($_POST["type_contrat"]);
+            //Insertion des données dans la table formation
+            $formateur->insertFormateur(
+                $_POST['nom'],
+                $_POST['prenom'],
+                $mail,
+                $mdp,
+                $type_contrat,
+                $_POST['date_debut_contrat'],
+                $date_fin_contrat,
+                $permissions_utilisateur,
+                $_POST['grn'],
+                $_POST['ville']
+            );
+
+
+            $_SESSION['success'] = "Formateur ajouté avec succès";
+            Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+            exit;
+            // } else {
+            //     $_SESSION['error'] = "email pas bon";
+            // }
+
+        } else {
+            $_SESSION['error'] = "Formulaire incomplet";
+            Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+            exit;
         }
 
         $infos = new FormateurModel;
@@ -483,6 +494,7 @@ class AdminController extends Controller
         $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
+    // Modifier les informations d'un formateur
     public function modifierFormateur(): void
     {
 
@@ -496,6 +508,7 @@ class AdminController extends Controller
             $database = new FormateurModel;
             $permissions_utilisateur = 0;
 
+            // set à 0001-01-01 car le null n'est pas accepté.
             if ($_POST['type_contrat'] === 'CDI') {
                 $date_fin_contrat = '0001-01-01';
             } else {
