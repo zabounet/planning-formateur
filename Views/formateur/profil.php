@@ -97,46 +97,26 @@
             <form method="post" class="container-teletravail">
                 <div>
                     <section class="app">
-                        <article class="feature1">
-                            <input type="checkbox" id="lundi" name="lundi" />
-                            <div>
-                                <span>
-                                    Lundi
-                                </span>
-                            </div>
-                        </article>
-                        <article class="feature2">
-                            <input type="checkbox" id="mardi" name="mardi" />
-                            <div>
-                                <span>
-                                    Mardi
-                                </span>
-                            </div>
-                        </article>
-                        <article class="feature3">
-                            <input type="checkbox" id="mercredi" name="mercredi" />
-                            <div>
-                                <span>
-                                    Mercredi
-                                </span>
-                            </div>
-                        </article>
-                        <article class="feature4">
-                            <input type="checkbox" id="jeudi" name="jeudi" />
-                            <div>
-                                <span>
-                                    Jeudi
-                                </span>
-                            </div>
-                        </article>
-                        <article class="feature5">
-                            <input type="checkbox" id="vendredi" name="vendredi" />
-                            <div>
-                                <span>
-                                    Vendredi
-                                </span>
-                            </div>
-                        </article>
+                    <?php
+                        $jourSemaine = array('lundi','mardi','mercredi','jeudi','vendredi'); 
+                        $jourTeletravail = explode("," , $_SESSION['teletravail']['jour_teletravail']);
+                        var_dump($jourTeletravail);
+
+                        foreach($jourSemaine as $jour) :
+                    ?>
+
+                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = "";?>
+
+                            <article class="features">
+                                <input <?= $checked ;?> type="checkbox" id="<?= $jour ;?>" name="<?= $jour ;?>" />
+                                <div>
+                                    <span>
+                                        <?= $jour ;?>
+                                    </span>
+                                </div>
+                            </article>
+
+                        <?php endforeach;?>
                     </section>
                 </div>
                 <div>

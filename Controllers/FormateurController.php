@@ -272,6 +272,7 @@ class FormateurController extends Controller
                      $_SESSION['error'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                  }
             }
+            $teletravail->setSessionTeletravail($idFormateur);
             Refresh::refresh('/planning/public/formateur/profil');
             exit;
         }
@@ -280,7 +281,6 @@ class FormateurController extends Controller
 
         // modif les color
         if (Form::validate($_POST, ['send-color'])) {
-
             if (isset($_POST['send-color'])) {
                 $couleur_centre = $_POST['centre'];
                 $couleur_pae = $_POST['pae'];
@@ -307,7 +307,8 @@ class FormateurController extends Controller
             }
         }
 
-
+        $teletravailActuel = new FormateurModel;
+        $teletravailActuel->setSessionTeletravail($_SESSION['formateur']['id']);
         $colors = new CouleursModel;
         $colors->setSessionCoulors();
         $this->render('/formateur/profil');
