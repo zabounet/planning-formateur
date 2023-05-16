@@ -34,9 +34,9 @@ class FormateurController extends Controller
 
                 // verifier si cest admin ou formateur et le mettre en session
                 if ($Formateur->permissions_utilisateur >= 1) {
-                    $Formateur = $FormateurModel->setSessionAdmin();
+                    $Formateur = $FormateurModel->setSessionAdmin($Formateur);
                 } else {
-                    $Formateur = $FormateurModel->setSession();
+                    $Formateur = $FormateurModel->setSession($Formateur);
                 }
 
                 header('location: /planning/public/');
@@ -307,10 +307,13 @@ class FormateurController extends Controller
             }
         }
 
-        $teletravailActuel = new FormateurModel;
-        $teletravailActuel->setSessionTeletravail($_SESSION['formateur']['id']);
-        $colors = new CouleursModel;
-        $colors->setSessionCoulors();
+        if(isset($_SESSION['formateur'])){
+            $teletravailActuel = new FormateurModel;
+            $teletravailActuel->setSessionTeletravail($_SESSION['formateur']['id']);
+        } elseif(isset($_SESSION['admin'])) {
+            $colors = new CouleursModel;
+            $colors->setSessionCoulors();
+        }
         $this->render('/formateur/profil');
     }
 }

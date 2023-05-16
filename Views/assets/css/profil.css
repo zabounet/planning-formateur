@@ -8,12 +8,9 @@
     margin-bottom: 20px;
 }
 
-.date{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 40vw;
+input[type="date"]{
+  height: 35px;
+  width: 9em;
 }
 
 .container-info hr, .container-vacances hr{
@@ -21,12 +18,18 @@
 }
 
 .valider {
-  width: 120px;
+  width: fit-content;
   background-color: darkgreen;
+  padding: 0 24PX;
   color: aliceblue;
   font-size: x-large;
+  height: fit-content;
+}
+input[type="submit"]{
+  float: right;
 }
 /* profile css */
+
 .profil-text{
   outline: solid #50f29e;
   width: fit-content;
@@ -55,13 +58,37 @@
 }
 
 
-.nom-profil, .prenom-profil, .mail-profil, .mdp-profil{
+.profil{
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
     font-size: 25px;
     margin: 35px 0;
+    align-items: center;
+}
+
+.profil input[type="text"],.profil input[type="email"]{
+  height: 35px;
+  width: 30%;
+}
+.mdp-container{
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  justify-content: space-between;
+  width: 27em;
+}
+
+.mdp-container div {
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.mdp-container div input{
+  height: 35px;
+  width: 30%;
 }
 
 .profil a{
@@ -78,6 +105,9 @@
 
 /* vacances css */
 
+.vacances{
+  height: 24em;
+}
 .demande-vacances{
     display: flex;
     flex-direction: column;
@@ -87,11 +117,25 @@
 }
 
 
-.container-vacances{
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.date-demande-vacances{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: fit-content;
+  height: 5em;
+  margin: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: x-large;
+}
+
+.date{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 312px;
 }
 
 
@@ -99,13 +143,23 @@
 
 /* les jours de semain */
 
-.container-teletravail{
-    display: flex;
-    align-items: center;
+.teletravail{
+   height: 24em;
+}
+.demande-teletravail{
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  margin-right: auto;
+  margin-left: auto;
+  height: 21em;
+  justify-content: space-between;
 }
 
 .app{
     display: flex;
+    margin-bottom: 2em;
+    justify-content: center;
 }
 
 

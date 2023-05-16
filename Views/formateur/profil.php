@@ -1,7 +1,7 @@
 <?php $link = "Profil"; ?>
 
 <?php if (isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) : ?>
-    <div class="profil">
+    <div class="profile">
         <span>profil</span>
 
         <div class="info-personel">
@@ -12,7 +12,7 @@
                     <span>Nom :</span>
                     <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=1") : ?>
                         <input type='text' name="nom" class="nomProfil" value="<?= $_SESSION['formateur']['nom'] ?>" />
-                        <input type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
+                        <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
                     <?php else : ?>
                         <span id="prenomProfil"><?= $_SESSION['formateur']['nom'] ?></span>
                         <a href="?id=1">Modifier</a>
@@ -23,7 +23,7 @@
                     <span>Prenom :</span>
                     <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=2") : ?>
                         <input type='text' name="prenom" class="prenomProfil" value="<?= $_SESSION['formateur']['prenom'] ?>" />
-                        <input type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
+                        <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
                     <?php else : ?>
                         <span id="prenomProfil"><?= $_SESSION['formateur']['prenom'] ?></span>
                         <a href="?id=2">Modifier</a>
@@ -34,7 +34,7 @@
                     <span>Mail :</span>
                     <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
                         <input type="email" name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail'] ?>" />
-                        <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" />
+                        <input  type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider"/>
                     <?php else : ?>
                         <span id="mailProfil"><?= $_SESSION['formateur']['mail'] ?></span>
                         <a href="?id=3">Modifier</a>
@@ -44,13 +44,21 @@
                 <form class="profil mdp-profil" method="post">
 
                     <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4") : ?>
-                        <span>Saisir votre mot de passe actuel :</span>
-                        <input type="password" name="current_mdp" class="mdpProfil" value="" />
-                        <span>Saisir nouveau mot de passe :</span>
-                        <input type="password" name="new_mdp" class="mdpProfil" value="" />
-                        <span>Saisir confirmation du nouveau mot de passe :</span>
-                        <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
-                        <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" />
+                        <div class="mdp-container">
+                            <div>
+                                <span>Saisir votre mot de passe actuel :</span>
+                                <input type="password" name="current_mdp" class="mdpProfil" value="" />
+                            </div>
+                            <div>
+                                <span>Saisir nouveau mot de passe :</span>
+                                <input type="password" name="new_mdp" class="mdpProfil" value="" />
+                            </div>
+                            <div>
+                                <span>Saisir confirmation du nouveau mot de passe :</span>
+                                <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
+                            </div>
+                        </div>
+                        <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
                     <?php else : ?>
                         <span>Mot de passe :</span>
                         <span id="mdpProfil">****</span>
@@ -61,35 +69,32 @@
         </div>
     </div>
 
+<hr>
 
-
-    <div>
-        <span class="vacances">Demande de vacances</span>
+    <div class="vacances" >
+        <span class="vacances-text">Demande de vacances</span>
+        <span class="titre titre-demande-vacances">Sélectionnez une période</span>
         <div class="demande-vacances">
-            <span class="titre titre-demande-vacances">Sélectionnez une période</span>
             <form method="POST" class="container-vacances">
                 <div class="date-demande-vacances">
                     <div class="date date-debut date-debut-vacance">
                         <p>Date de début</p>
                         <input type="date" name="date_debut" id="" min="<?= date('Y-m-d'); ?>">
-                        <div>Calendrier</div>
                     </div>
-                    <hr>
                     <div class="date date-fin date-fin-vacance">
                         <p>Date de fin</p>
                         <input type="date" name="date_fin" id="">
-                        <div>Calendrier</div>
                     </div>
                 </div>
                 <div class="btn btn-validation-vacance">
-                    <input type="submit" value="envoyer la demande" name="vacances">
+                    <input type="submit" value="envoyer la demande" name="vacances" class="valider">
                 </div>
             </form>
         </div>
     </div>
-
-    <div>
-        <span class="teletravail">Demande de teletravail</span>
+<hr>
+    <div class="teletravail">
+        <span class="teletravail-text">Demande de teletravail</span>
         <div class="demande-teletravail">
             <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
             <span class="notif notif-demande-teletravail">Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
@@ -100,7 +105,6 @@
                     <?php
                         $jourSemaine = array('lundi','mardi','mercredi','jeudi','vendredi'); 
                         $jourTeletravail = explode("," , $_SESSION['teletravail']['jour_teletravail']);
-                        var_dump($jourTeletravail);
 
                         foreach($jourSemaine as $jour) :
                     ?>
@@ -120,7 +124,7 @@
                     </section>
                 </div>
                 <div>
-                    <input type="submit" value="envoyer la demande" name="jourTeletravail">
+                    <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
                 </div>
             </form>
 
@@ -162,7 +166,7 @@
             <form class="profil mail-profil" method="post">
                 <span>Mail :</span>
                 <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
-                    <input type='text' name="mail" class="mailProfil" value="<?= $_SESSION['admin']['mail'] ?>" />
+                    <input type='email' name="mail" class="mailProfil" value="<?= $_SESSION['admin']['mail'] ?>" />
                     <input class="valider" type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" />
                 <?php else : ?>
                     <span id="mailProfil"><?= $_SESSION['admin']['mail'] ?></span>
