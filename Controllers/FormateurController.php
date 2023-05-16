@@ -264,16 +264,14 @@ class FormateurController extends Controller
                 $_SESSION['error'] = "non le max est 2 jours";
             } else {
                 $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
-
-                $teletravail = new FormateurModel();
-                $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $idFormateur);
-                if ($resultat) {
-                    $_SESSION['succes'] = "Les jours de télétravail ont été enregistrés avec succès.";
-                } else {
-                    $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
-                }
+                 $teletravail = new FormateurModel();
+                 $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement ,$idFormateur);
+                 if ($resultat) {
+                     $_SESSION['success'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                 } else {
+                     $_SESSION['error'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                 }
             }
-            $_SESSION['success'] = "votre demande a bien envoyer";
             Refresh::refresh('/planning/public/formateur/profil');
             exit;
         }

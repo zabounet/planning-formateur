@@ -19,16 +19,30 @@
 .container-info hr, .container-vacances hr{
     border: 1px solid black;
 }
-/* profile css */
 
+.valider {
+  width: 120px;
+  background-color: darkgreen;
+  color: aliceblue;
+  font-size: x-large;
+}
+/* profile css */
+.profil-text{
+  outline: solid #50f29e;
+  width: fit-content;
+  padding: 2em;
+  border-radius: 1.5rem;
+  margin: 1em 0 0 1em;
+  position: absolute;
+}
 .info-personel{
     display: flex;
     flex-direction: column;
-    
     width: 60vw;
     margin-right: auto;
-    margin-left: auto;
-    
+    margin-left: auto; 
+    margin-top: 5em; 
+    margin-bottom: 5em; 
 }
 
 
@@ -48,6 +62,16 @@
     justify-content: space-between;
     font-size: 25px;
     margin: 35px 0;
+}
+
+.profil a{
+    text-decoration: none;
+    background: ghostwhite;
+    border: solid 1px;
+    width: 120PX;
+    text-align: center;
+    font-size: x-large;
+    font-family: sans-serif;
 }
 
 
@@ -141,6 +165,24 @@ article {
     width: 80%;
     margin-right: auto;
     margin-left: auto;
+  }
+  .cloumn{
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 280px;
+    min-width: fit-content;
+  }
+  .cloumn div {
+    position: relative;
+    display: flex;
+    width: auto;
+    justify-content: space-between;
+    outline: solid black 2px;
+    align-items: center;
+    padding-left: 20px;
+    font-size: large;
   }
 
 

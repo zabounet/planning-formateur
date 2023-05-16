@@ -8,11 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
             burger.classList.add('active');
             dropnav.classList.add('active-nav')
             dropnav.style.display = "block";
+            dropnav.style.opacity = 1;
         }
         else {
             burger.classList.remove('active');
             dropnav.classList.add('active-nav')
             dropnav.style.display = "none";
+            dropnav.style.opacity = 0;
         }
     })
 })

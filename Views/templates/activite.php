@@ -8,8 +8,8 @@
     <title><?= $link; ?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css?" <?= time(); ?>>
-    <script src="/planning/Views/assets/js/header.js?" <?= time(); ?>></script>
+    <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
+    <script src="/planning/Views/assets/js/header.js"></script>
 </head>
 
 <body>
