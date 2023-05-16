@@ -127,28 +127,28 @@ class FormateurModel extends Model
     }
 
     //cree la session de l'utilisateur
-    public function setSession()
+    public function setSession($formateur)
     {
         $_SESSION['formateur'] =
             [
-                'id' => $this->id_formateur,
-                'mail' => $this->mail_formateur,
-                'prenom' => $this->prenom_formateur,
-                'nom' => $this->nom_formateur,
-                'permissions_utilisateur' => $this->permissions_utilisateur
+                'id' => $formateur->id_formateur,
+                'mail' => $formateur->mail_formateur,
+                'prenom' => $formateur->prenom_formateur,
+                'nom' => $formateur->nom_formateur,
+                'permissions_utilisateur' => $formateur->permissions_utilisateur
             ];
     }
 
     // Crée la session de l'administrateur
-    public function setSessionAdmin()
+    public function setSessionAdmin($formateur)
     {
         $_SESSION['admin'] =
             [
-                'id' => $this->id_formateur,
-                'mail' => $this->mail_formateur,
-                'prenom' => $this->prenom_formateur,
-                'nom' => $this->nom_formateur,
-                'permissions_utilisateur' => $this->permissions_utilisateur
+                'id' => $formateur->id_formateur,
+                'mail' => $formateur->mail_formateur,
+                'prenom' => $formateur->prenom_formateur,
+                'nom' => $formateur->nom_formateur,
+                'permissions_utilisateur' => $formateur->permissions_utilisateur
             ];
     }
 
