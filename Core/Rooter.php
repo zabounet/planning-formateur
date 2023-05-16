@@ -1,18 +1,23 @@
 <?php
+
 namespace App\Core;
 
 use App\Controllers\FormateurController;
 use App\Controllers\RooterController;
 
 //Rooter principal
-class Rooter{
+class Rooter
+{
 
-    public function start(){
+    public function start()
+    {
+        //Passer les lignes ci-dessous en commentaires afin de recevoir les erreurs PHP.
+        // Désactive l'affichage des erreurs .
+        // ini_set('display_errors', 'off');
+        set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
+        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
-        // set_error_handler(['\App\Core\CustomException','PhpErrors'],E_ALL);
-        // register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
-        
         // On démarre la session
         session_start();
         // On retire le "trailing slash" éventuel de l'URL
@@ -24,41 +29,43 @@ class Rooter{
         // On sépare les paramètres dans un tableau
         $params = explode('/', $_GET['p']);
 
-        if($params[0] != ""){
+        if ($params[0] != "") {
             // On a au moins 1 paramètre
             // On récupère le nom du controller à instancier
             // On met une majuscule en 1ère lettre, on ajoute le namepace complet avant et on ajouter "Controller" après
             $controller = '\\App\\Controllers\\' . ucfirst(array_shift($params)) . 'Controller';
 
             // On instancie le controller s'il existe
-            if(class_exists($controller)){
+            if (class_exists($controller)) {
                 $controller = new $controller();
 
                 // On récupère le 2eme paramètre d'URL
                 $action = (isset($params[0])) ? array_shift($params) : 'index';
-            } else{
+            } else {
                 http_response_code(404);
-                echo "La page recherchée n'existe pas";
+                echo "<h1>La page recherchée n'existe pas</h1>";
                 exit;
             }
 
-            if(method_exists($controller, $action)){
+            if (method_exists($controller, $action)) {
                 // Si il reste des paramètres on les passe à la méthode
                 // call_user_func_array envoie a une fonction un tableau de paramètres
-                (isset($params[0])) ? call_user_func_array([$controller, $action], $params) : $controller->$action(); 
-            }else{
+                (isset($params[0])) ? call_user_func_array([$controller, $action], $params) : $controller->$action();
+            } else {
                 http_response_code(404);
-                echo "La page recherchée n'existe pas";
+                echo "<h1>La page recherchée n'existe pas</h1>";
                 exit;
             }
-            
-        }else{
+
             // On a pas de paramètres donc on instancie le controller par défaut
-            if(isset($_SESSION['formateur']) || isset($_SESSION['admin'])){
+        } else {
+            // Si il y a déjà une session d'ouverte
+            if (isset($_SESSION['formateur']) || isset($_SESSION['admin'])) {
                 $controller = new RooterController;
                 $controller->index();
             }
-            else{
+            // Si aucune session n'est ouverte
+            else {
                 $formateur = new FormateurController;
                 $formateur->login();
             }

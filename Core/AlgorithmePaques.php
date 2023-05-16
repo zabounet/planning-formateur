@@ -57,8 +57,10 @@ class AlgorithmePaques
         //$day est initialisé avec la valeur de (($h + $l - 7*$m + 114) modulo 31) plus 1.
         $day = (($h + $l - 7 * $m + 114) % 31) + 1;
 
+        //Création d'un nouvel objet DateTime à partir de l'année, du mois et du jour de pâques.
         $easter = new DateTime("$year-$month-$day");
 
+        //Création d'un tableau contenant les différents jours fériés liés à pâques
         $holidays = [
             'easter_sunday' => $easter->format('Y-m-d'),
             'easter_monday' => $easter->modify('+1 day')->format('Y-m-d'),
