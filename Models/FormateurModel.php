@@ -121,6 +121,11 @@ class FormateurModel extends Model
         }
     }
 
+    // Récupère les couleurs actuellements inscrites en base de données afin de les restituer dans la page.
+    public function setSessionTeletravail(string $id): void{
+        $_SESSION['teletravail'] = $this->requete("SELECT * FROM `Date_teletravail` WHERE id_formateur = '$id' AND validation = 1")->fetch(Db::FETCH_ASSOC);
+    }
+
     //cree la session de l'utilisateur
     public function setSession()
     {
