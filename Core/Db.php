@@ -26,7 +26,7 @@ class Db extends PDO{
             //Mode de fetch (fetch_obj = retourne les resultats en tant qu'objets)
             $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
-            //Déclence une exception dés lors qu'il y a un problème
+            //Déclenche une exception dés lors qu'il y a un problème
             $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch(PDOException $e){
@@ -34,8 +34,9 @@ class Db extends PDO{
         }
     }
 
-    //Connexion utilisant le design patten singleton
+    //Connexion utilisant le design pattern singleton
     public static function getInstance(){
+        // Si aucune instance n'existe, alors créé une instance.
         if(self::$instance === null){
             self::$instance = new self();
         }

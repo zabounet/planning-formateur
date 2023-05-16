@@ -97,7 +97,7 @@ class Model extends Db{
         return $this->requete("SELECT " . $col . " FROM " . $table . " WHERE " . $conditionCol . " = '$id'")->fetch(Db::FETCH_ASSOC);
     }
 
-    // Retourne la valeur du dernier id en prenant le champ d'id en paramètre
+    // Retourne la valeur de l'id le plus grand en prenant le champ d'id en paramètre
     public function getLastId(string $idRow){
         return $this->requete("SELECT MAX(". $idRow .") FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
     }
@@ -151,31 +151,89 @@ class Model extends Db{
         // echo $sql;die;
         return $this->requete($sql);    
     }
-    // Insère une période de dates dans une table données contenant 2 champs de date et 1 une clé étrangère
+    // Effectue une requête sur un certain nombre de champs, sur une table, 
+    // une chaîne de caractère à chercher et les champs dans lesquels chercher.
+    // Possibilité d'effectuer une ou plusieurs jointures afin d'étendre la recherche à plusieurs tables.
+    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = []){
+       
+        $nbChamps = count($champsSelect);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $champsSelect[$z];
+        }
+        $sql .= " FROM " . $table;
+
+        if(!empty($tablesJointures) && !empty($colonnesJointures)){
+            $nbJoin = count($tablesJointures);
+            for($i = 0; $i < $nbJoin; $i++){
+                $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
+            }
+        }
+
+        $nbCond = count($searchCond);
+
+        if($nbCond > 0){
+            $sql .= " WHERE ";
+            for($j = 0; $j < $nbCond; $j++){
+                if($j == 0){$writeOr = "";}
+                else{$writeOr = " OR ";}
+
+                $sql .= $writeOr . $searchCond[$j] . " LIKE " . "'%$search%'";
+            }
+        }else{
+            $sql .= " WHERE " . $searchCond[0] . " LIKE " . "'%$search%'";
+        }
+       
+        return $this->requete($sql)->fetchAll();
+    
+    }
+
+    // Effectue une requete sur une liste de champs, à partir d'une table, une liste des tables à joindres et la colonne à utiliser
+    // ainsi qu'une liste de conditions supplémentaires et les colonnes qui doivent remplir ces conditions
+    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
+    {
+        $nbChamps = count($champsSelect);
+        $sql = "SELECT ";
+        for($z = 0; $z < $nbChamps; $z++){
+            if($z == 0){$writeComma = "";}
+            else{$writeComma = ", ";}
+
+            $sql .= $writeComma . $champsSelect[$z];
+        }
+
+        $sql .= " FROM " . $table;
+        $nbJoin = count($tablesJointures);
+        for($i = 0; $i < $nbJoin; $i++){
+            $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
+        }
+        if(!empty($champCondJointures) && !empty($CondJointures)){
+            $nbCond = count($champCondJointures);
+
+            if($nbCond > 0){
+                $sql .= " WHERE ";
+                for($j = 0; $j < $nbCond; $j++){
+                    if($j == 0){$writeAnd = "";}
+                    else{$writeAnd = " AND ";}
+
+                    $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
+                }
+            }else{
+                $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
+            }
+        }
+        return $this->requete($sql)->fetchAll();
+    }
+
+    // Insère une période de dates dans une table données contenant 2 champs de date et 1 clé étrangère
     public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
         return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
     }  
-
+    // Insère une période de dates dans une table données contenant 2 champs de date et 2 clé étrangère
     public function insertPeriodeIntervention(string $table, string $debut, string $fin, string $fk, string $fk2) {
         return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?,?)", [$debut, $fin, $fk, $fk2]);
-    }  
-
-    // Transforme les données reçue et les transforme afin de correspondre au noms des accesseurs correspondants
-    public function hydrate($donnees){
-        foreach($donnees as $key => $value){
-            // On récupère le nom du setter correspondant à la clé
-            // Nom -> setNomFormateur
-            $setter = 'set'.ucwords($key, '_');
-            $setter = str_replace(ucwords('_' . $this->table, '_'), '' ,$setter);
-            $setter = str_replace('_', '', $setter);
-
-            // On vérifie si le setter existe
-            if(method_exists($this, $setter)){
-                // On appelle le setter
-                $this->$setter($value);
-            }
-        }
-        return $this;
     }
 
     // Supprime une ligne de la bdd avec son id
@@ -183,9 +241,8 @@ class Model extends Db{
         //id dans un array car requete prend comme 2eme argument un array.
         return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
     }
-
    
-
+    // Effectue une requête préparées avec des arguments optionnels
     public function requete(string $sql, array $attributs = null){
         //On récupère l'instance de DB
         $this->db = Db::getInstance();
@@ -196,7 +253,8 @@ class Model extends Db{
             try {
                 $query->execute($attributs);
             } catch (\PDOException $e) {
-                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
             }
             
             return $query;
@@ -207,7 +265,8 @@ class Model extends Db{
             try {
                 $query->execute();
             } catch (\PDOException $e) {
-                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
             }
 
             return $query;

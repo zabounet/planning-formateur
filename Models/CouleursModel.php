@@ -30,29 +30,15 @@ class CouleursModel extends Model
         return $this;
     }
 
-
+    // Récupère les couleurs actuellements inscrites en base de données afin de les restituer dans la page.
     public function setSessionCoulors(): void{
        $_SESSION['color'] = $this->requete("SELECT * FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
+       // Supprime l'id car il est inutile.
        unset($_SESSION['color']['couleur_id']);
-        // $_SESSION['color'] = 
-        // [
-        //     'id' => $this->couleur_id,
-        //     'centre' => $this->couleur_centre,
-        //     'pae' => $this->couleur_pae,
-        //     'certif' => $this->couleur_certif,
-        //     'ran' => $this->couleur_ran,
-        //     'vacance_demandees' => $this->couleur_vacance_demandees,
-        //     'vacance_validee' => $this->couleur_vacance_validee,
-        //     'couleur_tt' => $this->couleur_tt,
-        //     'ferie' => $this->couleur_ferie,
-        //     'weekend' => $this->couleur_weekend,
-        //     'interruption' => $this->couleur_interruption,
-        //     'MNSP' => $this->couleur_MNSP,
-        //     'itinerant' => $this->couleur_itinerant ];
     }
 
     
-
+    // Récupère l'ensemble des couleurs et mets à jour l'ensemble des enregistrements en base de données
     public function updateCouleur(string $couleur_centre, 
                                   string $couleur_pae, 
                                   string $couleur_certif, 

@@ -11,7 +11,8 @@ abstract class Controller{
         extract($data);
 
         // On démarre le buffer de sortie
-        // A partir de maintenant, garde en mémoire tous les output et mes les dans une variable
+        // A partir de maintenant, garde en mémoire tous les output et mets les dans une variable
+        // Nécessaire, autrement le contenu du body est chargé en tout premier et déforme complêtement la page.
         ob_start();
 
         // On créé le chemin vers la vue

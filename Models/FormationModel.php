@@ -32,76 +32,7 @@ class FormationModel extends Model{
         ];
     }
 
-    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = []){
-       
-        $nbChamps = count($champsSelect);
-        $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
-
-            $sql .= $writeComma . $champsSelect[$z];
-        }
-        $sql .= " FROM " . $table;
-
-        if(!empty($tablesJointures) && !empty($colonnesJointures)){
-            $nbJoin = count($tablesJointures);
-            for($i = 0; $i < $nbJoin; $i++){
-                $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
-            }
-        }
-
-        $nbCond = count($searchCond);
-
-        if($nbCond > 0){
-            $sql .= " WHERE ";
-            for($j = 0; $j < $nbCond; $j++){
-                if($j == 0){$writeOr = "";}
-                else{$writeOr = " OR ";}
-
-                $sql .= $writeOr . $searchCond[$j] . " LIKE " . "'%$search%'";
-            }
-        }else{
-            $sql .= " WHERE " . $searchCond[0] . " LIKE " . "'%$search%'";
-        }
-        return $this->requete($sql)->fetchAll();
-    
-    }
-
-    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
-    {
-        $nbChamps = count($champsSelect);
-        $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
-
-            $sql .= $writeComma . $champsSelect[$z];
-        }
-
-        $sql .= " FROM " . $table;
-        $nbJoin = count($tablesJointures);
-        for($i = 0; $i < $nbJoin; $i++){
-            $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
-        }
-        if(!empty($champCondJointures) && !empty($CondJointures)){
-            $nbCond = count($champCondJointures);
-
-            if($nbCond > 0){
-                $sql .= " WHERE ";
-                for($j = 0; $j < $nbCond; $j++){
-                    if($j == 0){$writeAnd = "";}
-                    else{$writeAnd = " AND ";}
-
-                    $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
-                }
-            }else{
-                $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
-            }
-        }
-        return $this->requete($sql)->fetchAll();
-    }
-
+    // Insère les données d'une formation dans la base de données
     public function insertFormation(
         string $nom,
         string $acronyme,
@@ -139,11 +70,6 @@ class FormationModel extends Model{
             ]
         );
     }
-
-    // Insère une période de dates dans une table données contenant 2 champs de date et 1 une clé étrangère
-    public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
-        return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
-     }  
     
     /**
      * Get the value of id_formation
