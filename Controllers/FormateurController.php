@@ -277,12 +277,11 @@ class FormateurController extends Controller
                  $teletravail = new TeletravailModel();
                  $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement ,$idFormateur);
                  if ($resultat) {
-                     $_SESSION['succes'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                     $_SESSION['success'] = "Les jours de télétravail ont été enregistrés avec succès.";
                  } else {
-                     $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                     $_SESSION['error'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                  }
             }
-            $_SESSION['success'] = "votre demande a bien envoyer";
             Refresh::refresh('/planning/public/formateur/profil');
             exit;
         }

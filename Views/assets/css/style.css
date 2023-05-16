@@ -119,7 +119,7 @@ header{
     }
     80%{
         background-color:#343A35;
-        top: 69px;
+        top: 10vh;
         opacity: 0.8;
     }
     100%{
@@ -132,6 +132,7 @@ header nav#dropnav{
     left: 0;
     width: 100%;
     border-radius: 0 0 15px 15px;
+    opacity: 0;
     transition: ease-out .5s;
 }
 header nav#dropnav ul{
@@ -144,7 +145,7 @@ header nav#dropnav ul li{
     justify-content: center;
     cursor: pointer;
     padding: 1.5rem 0;
-    transition: ease-out .4s 
+    transition: ease .2s 
 }
 header nav#dropnav ul li:last-child{
     border-radius: 0 0 12px 12px;
@@ -153,7 +154,7 @@ header nav#dropnav ul li a{
     text-decoration: none;
     color: #EFFFE2;
     font-size: 1.3rem;
-    transition: ease-in .4s 
+    transition: ease .2s 
 }
 header nav#dropnav ul li:hover{
     background-color: #ddd;
@@ -168,7 +169,7 @@ header img{
 }
 
 main{
-    height: 90vh;
+    height: 90%;
     width: 100%;
     overflow: scroll;
 }
