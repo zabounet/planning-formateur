@@ -33,6 +33,7 @@ header{
     justify-content: center;
     width: 100%;
     height: 10vh;
+    z-index: 1;
 }
 .header-content{
     position: relative;
@@ -43,14 +44,16 @@ header{
     height: 100%;
     background-color: #00FF99;
     border-radius: 15px 15px 0 0;
+    box-shadow: 0px 10px 4px 0 rgba(0, 0, 0, .32);
+    z-index: 2;
 }
-.nav-content{
+.menu{
     position: absolute;
     left: 0;
     height: 100%;
     width: 30%;
 }
-.burger-button{
+.nav-button{
     position: relative;
     height: 100%;
     background-color: transparent;
@@ -92,16 +95,15 @@ header{
     top: 11px;
 }
 
-.burger-button .burger-box.active .burger{
+.burger-button.active .burger-box .burger{
     transform: rotate(-45deg);
     top: 50%;
 }
-.burger-button .burger-box.active .burger::before{
+.burger-button.active .burger-box .burger::before{
     bottom: 0;
     transform: rotate(90deg);
-    opacity: 0;
 }
-.burger-button .burger-box.active .burger::after{
+.burger-button.active .burger-box .burger::after{
     top: 0;
     transform: rotate(90deg);
 
@@ -109,6 +111,113 @@ header{
 .active-nav{
     animation: dropDown .75s;
 }
+header .dropmenu{
+    position: absolute;
+    background-color:#343A35;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 15px 15px;
+    opacity: 0;
+    transition: ease-out .5s;
+    z-index: 2;
+}
+header .dropmenu ul{
+    list-style: none;
+}
+header .dropmenu ul li{
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 1.5rem 0;
+    transition: ease .2s 
+}
+header .dropmenu ul li:last-child{
+    border-radius: 0 0 12px 12px;
+}
+header .dropmenu ul li a{
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    color: #EFFFE2;
+    font-size: 1.3rem;
+    transition: ease .2s 
+}
+header .dropmenu ul li:hover{
+    background-color: #ddd;
+}
+header .dropmenu ul li:hover a{
+    color: #333;
+}
+header .alert-menu{
+    left: 10%;
+}
+header .alert-menu .dropmenu{
+    background-color: #9EB4A0;
+}
+header .alert-menu .bell-box{
+    position: relative;
+}
+header .alert-menu .bell-box .bell-img{
+    height: 100%;
+    width: 100%;
+    transition: ease-out .5s;
+}
+header .alert-menu .bell-box .badge{
+    vertical-align: top;
+    right: -5px;
+    top: -5px;
+    position: absolute;
+    border-radius: 50%;
+    background-color: red;
+    padding: .2rem .45rem;
+}
+header .bell-button.active .bell-box .bell-img{
+    transform: rotate(-45deg);
+    transition: ease-out .5s;
+}
+
+header .flower-img{
+    position: absolute;
+    right: 0;
+    padding-right: 1rem;
+}
+
+header .flower-img.spin-flower{
+    transform: rotate(1125deg);
+    transform-origin: center;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    transition: ease-out 1s;
+}
+main{
+    height: 90%;
+    width: 100%;
+    overflow: scroll;
+}
+
+form{
+    position: relative;
+    z-index: 1;
+    height: 100%;
+}
+
+form.main-form #part1{
+    height: 100%;
+}
+form.main-form #part2.dropmenu{
+    opacity: 1;
+    width: 71.5vw;
+    height: 40vh;
+    left: -60%;
+    color: white;
+    background-color: #84AE70;
+    z-index: 1;
+    box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, .25);
+}
+
+
 @keyframes dropDown{
     0%{
         top: -123px;
@@ -118,58 +227,10 @@ header{
         opacity: 0.5;
     }
     80%{
-        background-color:#343A35;
         top: 10vh;
         opacity: 0.8;
     }
     100%{
         opacity: 1;
     }
-}
-header nav#dropnav{
-    position: absolute;
-    background-color:#343A35;
-    left: 0;
-    width: 100%;
-    border-radius: 0 0 15px 15px;
-    opacity: 0;
-    transition: ease-out .5s;
-}
-header nav#dropnav ul{
-    list-style: none;
-}
-header nav#dropnav ul li{
-    height: 5vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 1.5rem 0;
-    transition: ease .2s 
-}
-header nav#dropnav ul li:last-child{
-    border-radius: 0 0 12px 12px;
-}
-header nav#dropnav ul li a{
-    text-decoration: none;
-    color: #EFFFE2;
-    font-size: 1.3rem;
-    transition: ease .2s 
-}
-header nav#dropnav ul li:hover{
-    background-color: #ddd;
-}
-header nav#dropnav ul li:hover a{
-    color: #333;
-}
-header img{
-    position: absolute;
-    right: 0;
-    padding-right: 1rem;
-}
-
-main{
-    height: 90%;
-    width: 100%;
-    overflow: scroll;
 }

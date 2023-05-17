@@ -16,15 +16,15 @@
 
     <header>
         <div class="header-content">
-            <div class="nav-content">
-                <button class="burger-button">
+            <div class="nav-content menu">
+                <button class="nav-button burger-button">
                     <span class="burger-box">
                         <span class="burger">
 
                         </span>
                     </span>
                 </button>
-                <nav id="dropnav">
+                <nav id="dropnav" class="dropmenu">
                     <ul>
                         <?php if ($link !== "Formateur home") : ?>
                             <li><a href="/planning/public">Home</a></li>
@@ -37,7 +37,7 @@
                     </ul>
                 </nav>
             </div>
-            <form method="post">
+            <form class="activite-form" method="post">
                 <input type="date" name="date_debut" id="date_debut">
                 <input type="date" name="date_fin" id="date_fin">
                 <label for="referent-formateur"> Formateur :
