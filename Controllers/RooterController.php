@@ -130,8 +130,18 @@ class RooterController extends Controller
                 // Compteur utilisés pour arrêter différentes boucles dans certaines situations
                 $count = 0;
                 $countFormateurs = count($formateurs);
-                $countDates = count($dates_interventions_formateurs[0]);
-                $countDatesVacences = count($dates_vacences_formateurs[0]);
+
+                if(!isset($dates_interventions_formateurs[0])){
+                    $countDates = 0;
+                } else{
+                    $countDates = count($dates_interventions_formateurs[0]);
+                }
+    
+                if(!isset($dates_vacences_formateurs[0])){
+                    $countDatesVacences = 0;
+                } else{
+                    $countDatesVacences = count($dates_vacences_formateurs[0]);
+                }
 
                 // Ouverture du tableau
                 $html .= " 
@@ -415,15 +425,16 @@ class RooterController extends Controller
                         }
 
                         // Vérification si le jour en cours est compris dans les dates de formation en cours
-                        $formation_en_cours = true;
+                        $formation_en_cours = false;
                         if ($periode >= $formations[$x]->date_debut_formation && $periode <= $formations[$x]->date_fin_formation) {
-                            $formation_en_cours = false;
+                            $formation_en_cours = true;
                         }
 
-                        if ($formation_en_cours) {
+                        // Si la date actuelle n'est pas comprise dans les dates de formations
+                        if (!$formation_en_cours) {
                             $html .= "<th style='background-color: black;'></th> ";
                         } else {
-                            // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
+                            // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
                             if ($formateurAvoirVacances !== 0) {
                                 if ($formateurAvoirVacances == 2) {
                                     $html .= "<th style='background-color: var(--vacancesCell);'></th>";
@@ -431,7 +442,9 @@ class RooterController extends Controller
                                     $html .= "<th style='background-color: goldenrod;'></th> ";
                                 }
                             } else {
+                                // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
                                 if ($formateurAvoirPeriode) {
+                                    // Si la date actuelle est un jour férié
                                     if (
                                         in_array($periodeJourFeries, $joursFeries)
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
@@ -439,6 +452,7 @@ class RooterController extends Controller
                                     ) {
                                         $html .= "<th style='background-color: #050F29;'></th> ";
                                     } else {
+                                        // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
                                             $html .= "<th style='background-color: var(--weekendCell);'></th> ";
                                         } else {
@@ -447,12 +461,14 @@ class RooterController extends Controller
                                     }
                                 } else {
                                     if (
+                                        // Si la date actuelle est un jour férié
                                         in_array($periodeJourFeries, $joursFeries)
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                         || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                     ) {
                                         $html .= "<th style='background-color: #050F29;'></th> ";
                                     } else {
+                                        // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
                                             $html .= "<th style='background-color: var(--weekendCell);'></th> ";
                                         } else {
@@ -468,11 +484,12 @@ class RooterController extends Controller
                     // Fermeture de la ligne correspondant au formateur en cours
                     $html .= "</tr>";
                 }
+                // Fermeture de la table
                 $html .= "</tbody> </table>";
             }
             $nbformation == 0 ? $html = "Aucun résultat." : $html .= " </div> </div>";
         } else {
-            $html = "Veuillez entrer des informations dans les champs de recherche afin de consulter les formations.";
+            $html = "<div style='height: 80vh; display:flex; align-items:center; justify-content:center;'> <h1 style='text-align:center'> Veuillez entrer des informations dans les champs de recherche afin de consulter les formations. </h1> </div>";
         }
         
         $formation = new FormationModel;
@@ -482,10 +499,6 @@ class RooterController extends Controller
         $villes = $formation->getAll('ville');
         !isset($html) ? $html = "Aucun résultat." : '';
         isset($_POST['rechercher']) ? $data = $_POST : $data = "";
-
-        
-
-    
 
         $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data'), 'main');
     }
