@@ -710,8 +710,17 @@ class AdminController extends Controller
             // Compteur utilisés pour arrêter différentes boucles dans certaines situations
             $count = 0;
             $countFormateurs = count($formateurs);
-            $countDates = count($dates_interventions_formateurs[0]);
-            $countDatesVacences = count($dates_vacences_formateurs[0]);
+            if(!isset($dates_interventions_formateurs[0])){
+                $countDates = 0;
+            } else{
+                $countDates = count($dates_interventions_formateurs[0]);
+            }
+
+            if(!isset($dates_vacences_formateurs[0])){
+                $countDatesVacences = 0;
+            } else{
+                $countDatesVacences = count($dates_vacences_formateurs[0]);
+            }
 
             // Ouverture du tableau
             $html = "
@@ -732,7 +741,7 @@ class AdminController extends Controller
                     // Le nombre d'itérations est égal à 366 ou le jour actuel de la boucle est le 31 décembre 
                     if ($count == 366 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
                         // Créé une ligne de taille équivalente au compteur.
-                        $html .= "<th colspan='$count'>" . $annee . "</th> ";
+                        $html .= "<th class='sticky-container' colspan='$count'> <span>" . $annee . "</span> </th> ";
 
                         $count = 0;
                     }
@@ -741,7 +750,7 @@ class AdminController extends Controller
                     // Le nombre d'itérations est égal à 365 ou le jour actuel de la boucle est le 31 décembre 
                     if ($count == 365 || ($i + 1) == $nbJours || $dernierJour === "12-31") {
                         // Créé une ligne de taille équivalente au compteur.
-                        $html .= "<th colspan='$count'>" . $annee . "</th> ";
+                        $html .= "<th class='sticky-container' colspan='$count'> <span>" . $annee . "</span> </th> ";
 
                         $count = 0;
                     }
@@ -796,7 +805,7 @@ class AdminController extends Controller
                                 }
                         }
 
-                        $html .= "<th class='sticky-container' colspan='$count'>" . $mois . "</th> ";
+                        $html .= "<th class='sticky-container' colspan='$count'> <span>" . $mois . "<span> </th> ";
                         // Le jour est remis au bon format
                         // Le compteur est remis à 0
                         $count = 0;
@@ -829,7 +838,7 @@ class AdminController extends Controller
                                     break;
                                 }
                         }
-                        $html .= "<th class='sticky-container' colspan='$count'>" . $mois . "</th> ";
+                        $html .= "<th class='sticky-container' colspan='$count'> <span>" . $mois . "</span> </th> ";
                         // Le jour est remis au bon format
                         $numeroJour = $current_date_dayForMonths->format('j');
                         // Le compteur est remis à 0
@@ -848,7 +857,7 @@ class AdminController extends Controller
                             // Le mois est égal à Février
                             // La largeur de la case dépend du nombre d'itérations
                             $mois = "Février";
-                            $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                            $html .= "<th class='sticky-container' colspan='$count'><span>" . $mois . "</span> </th> ";
 
                             $numeroJour = $current_date_dayForMonths->format('j');
                             $count = 0;
@@ -859,7 +868,7 @@ class AdminController extends Controller
                             // Le mois est égal à Février
                             // La largeur de la case dépend du nombre d'itérations
                             $mois = "Février";
-                            $html .= "<th colspan='$count'>" . $mois . "</th> ";
+                            $html .= "<th class='sticky-container' colspan='$count'> <span>" . $mois . "</span> </th> ";
 
                             // Le jour est remis au bon format
                             $numeroJour = $current_date_dayForMonths->format('j');
@@ -932,7 +941,7 @@ class AdminController extends Controller
                 $current_date_dayForFormateurs = clone $date_debut_tableau;
 
                 // Ajout du nom et prénom du formateur dans la première colonne du tableau
-                $html .= "<th>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</th> ";
+                $html .= "<th class='sticky-formateur-container'> <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span></th> ";
 
                 // Création d'un tableau vide pour stocker les périodes du formateur en cours
                 $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
@@ -972,9 +981,9 @@ class AdminController extends Controller
 
                     // Vérification si le formateur a une période pour le jour en cours
                     $formateurAvoirPeriode = false;
-                    foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $period) {
-                        if ($periode >= $period['debut'] && $periode <= $period['fin']) {
-                            $trainer_has_period = true;
+                    foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $periodeFormateur) {
+                        if ($periode >= $periodeFormateur['debut'] && $periode <= $periodeFormateur['fin']) {
+                            $formateurAvoirPeriode = true;
                             break;
                         }
                     }
@@ -991,40 +1000,45 @@ class AdminController extends Controller
                         }
                     }
 
-                    // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période pour le formateur
+                    // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
                     if ($formateurAvoirVacances !== 0) {
                         if ($formateurAvoirVacances == 2) {
-                            $html .= "<th style='background-color: var(--vacancesCell);'></th>";
+                            $html .= "<td style='background-color: var(--vacancesCell);'></td>";
                         } else if ($formateurAvoirVacances == 1) {
-                            $html .= "<th style='background-color: goldenrod;'></th> ";
+                            $html .= "<td style='background-color: goldenrod;'></td> ";
                         }
                     } else {
+                        // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
                         if ($formateurAvoirPeriode) {
+                            // Si la date actuelle est un jour férié
                             if (
                                 in_array($periodeJourFeries, $joursFeries)
                                 || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                 || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                             ) {
-                                $html .= "<th style='background-color: #050F29;'></th> ";
+                                $html .= "<td style='background-color: #050F29;'></td> ";
                             } else {
+                                // Si le jour de la semaine est égal à 6 ou 7
                                 if ($weekend === "6" || $weekend === "7") {
-                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                    $html .= "<td style='background-color: var(--weekendCell);'></td> ";
                                 } else {
-                                    $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                    $html .= "<td style='background-color: var(--greenCell);'></td> ";
                                 }
                             }
                         } else {
                             if (
+                                // Si la date actuelle est un jour férié
                                 in_array($periodeJourFeries, $joursFeries)
                                 || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                 || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                             ) {
-                                $html .= "<th style='background-color: #050F29;'></th> ";
+                                $html .= "<td style='background-color: #050F29;'></td> ";
                             } else {
+                                // Si le jour de la semaine est égal à 6 ou 7
                                 if ($weekend === "6" || $weekend === "7") {
-                                    $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                    $html .= "<td style='background-color: var(--weekendCell);'></td> ";
                                 } else {
-                                    $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                    $html .= "<td style='background-color: var(--emptyCell);'></td> ";
                                 }
                             }
                         }
@@ -1035,6 +1049,7 @@ class AdminController extends Controller
                 // Fermeture de la ligne correspondant au formateur en cours
                 $html .= "</tr>";
             }
+            // Fermeture de la table
             $html .= "</tbody> </table> </div> </div>";
         }
         $infosFormateur = $FormateurModel->getFormateur();
