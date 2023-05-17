@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <header>
+    <header style="display:none;">
         <div class="header-content">
             <div class="nav-content">
                 <button class="burger-button">

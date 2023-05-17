@@ -134,13 +134,22 @@ class RooterController extends Controller
                 if(!isset($dates_interventions_formateurs[0])){
                     $countDates = 0;
                 } else{
+                    if(!isset($dates_interventions_formateurs[0])){
+                    $countDates = 0;
+                } else {
                     $countDates = count($dates_interventions_formateurs[0]);
                 }
     
                 if(!isset($dates_vacences_formateurs[0])){
                     $countDatesVacences = 0;
                 } else{
+                    }
+
+                if(!isset($dates_vacences_formateurs[0])){
+                    $countDatesVacences = 0;
+                } else {
                     $countDatesVacences = count($dates_vacences_formateurs[0]);
+                }
                 }
 
                 // Ouverture du tableau

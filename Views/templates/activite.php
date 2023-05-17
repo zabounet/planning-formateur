@@ -38,25 +38,30 @@
                 </nav>
             </div>
             <form class="activite-form" method="post">
-                <input type="date" name="date_debut" id="date_debut">
-                <input type="date" name="date_fin" id="date_fin">
+                <input required type="date" name="date_debut" id="date_debut" <?php if (isset($data['date_debut'])) {echo 'value="' . $data['date_debut'] . '"'; }  ?>>
+                <input required type="date" name="date_fin" id="date_fin" <?php if (isset($data['date_fin'])) {echo 'value="' . $data['date_fin'] . '"'; } ?>>
                 <label for="referent-formateur"> Formateur :
                     <?php
                     $iterations = 0;
-                    foreach ($infosFormateur['Formateurs'] as $formateurs) {
-                        if ($iterations == 0 || $iterations == 1) {
-                            $iterations++;
+                    foreach ($infosFormateur['Formateurs'] as $formateurs) :
+                        if ($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2) {
                             continue;
                         };
                     ?>
-                        <label for="formateur"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></label>
-                        <input type="checkbox" name="formateur[]" value="<?= $formateurs->id_formateur; ?>" />
+                    <?php if (empty($_POST)) :?>
+                        <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                    <?php elseif(!empty($_POST) && !empty($_POST['formateurs']) && in_array($formateurs->id_formateur, $data['formateurs'])) : ?>
+                        <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                    <?php else : ?>
+                        <input class="formateurCheckbox" type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                    <?php endif; ?>
                     <?php
                         $iterations++;
-                    };
+                    endforeach;
                     ?>
+                    <input type="hidden" name="nbFormateur" value="<?= $iterations; ?>">
                 </label>
-                <input type="submit" value="envoyer" name="valider">
+                <input id="submit-btn" type="submit" value="envoyer" name="valider">
             </form>
             <img src="/planning/Views/assets/image/flower.svg">
         </div>

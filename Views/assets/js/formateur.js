@@ -114,8 +114,6 @@ addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
-
 // function submitForm(event) {
 //     const nomValid = checkNomValidity();
 //     const prenomValid = checkPrenomValidity();
