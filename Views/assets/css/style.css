@@ -1,4 +1,4 @@
-:root{
+:root {
     --greenCell: #00FF99;
     --weekendCell: gray;
     --emptyCell: #ddd;
@@ -7,35 +7,39 @@
     --vacencesCell: #def41d;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-html{
+
+html {
     scroll-behavior: smooth;
 }
-body{
+
+body {
     height: 100vh;
     width: 100vw;
     padding: 2rem;
     background-color: #EFFFE2;
     box-shadow: inset 0px 0px 27px 10px rgba(153, 211, 126, 0.69);
 }
-header{
+
+header {
     /* position: fixed; */
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 10vh;
-    z-index: 1;
+    height: 15vh;
 }
-.header-content{
+
+.header-content {
     position: relative;
     display: flex;
     align-items: center;
@@ -44,16 +48,16 @@ header{
     height: 100%;
     background-color: #00FF99;
     border-radius: 15px 15px 0 0;
-    box-shadow: 0px 10px 4px 0 rgba(0, 0, 0, .32);
-    z-index: 2;
 }
-.menu{
+
+.menu {
     position: absolute;
     left: 0;
     height: 100%;
     width: 30%;
 }
-.nav-button{
+
+.nav-button {
     position: relative;
     height: 100%;
     background-color: transparent;
@@ -64,6 +68,7 @@ header{
     align-items: center;
     padding-left: 1rem;
 }
+
 .burger-button .burger-box {
     position: relative;
     width: 30px;
@@ -71,49 +76,61 @@ header{
     display: inline-block;
     vertical-align: middle;
 }
+
 .burger-button .burger-box .burger,
 .burger-button .burger-box .burger::before,
-.burger-button .burger-box .burger::after{
+.burger-button .burger-box .burger::after {
     width: 30px;
     height: 5px;
     background-color: black;
     position: absolute;
-    transition: .75s ease;
+    transition: .5s ease;
 }
-.burger-button .burger-box .burger{
+
+.burger-button .burger-box .burger {
     display: block;
     top: 50%;
 }
-.burger-button .burger-box .burger::before{
+
+.burger-button .burger-box .burger::before {
     display: block;
     content: "";
     bottom: 11px;
 }
-.burger-button .burger-box .burger::after{
+
+.burger-button .burger-box .burger::after {
     display: block;
     content: "";
     top: 11px;
 }
 
-.burger-button.active .burger-box .burger{
+.burger-button.active .burger-box .burger {
     transform: rotate(-45deg);
     top: 50%;
 }
-.burger-button.active .burger-box .burger::before{
+
+.burger-button.active .burger-box .burger::before {
     bottom: 0;
     transform: rotate(90deg);
 }
-.burger-button.active .burger-box .burger::after{
+
+.burger-button.active .burger-box .burger::after {
     top: 0;
     transform: rotate(90deg);
 
 }
-.active-nav{
-    animation: dropDown .75s;
+
+.active-nav {
+    animation: dropDown .5s;
 }
-header .dropmenu{
+
+.unactive-nav {
+    animation: liftUp .5s;
+}
+
+header .dropmenu {
     position: absolute;
-    background-color:#343A35;
+    background-color: #343A35;
     left: 0;
     width: 100%;
     border-radius: 0 0 15px 15px;
@@ -121,51 +138,61 @@ header .dropmenu{
     transition: ease-out .5s;
     z-index: 2;
 }
-header .dropmenu ul{
+
+header .dropmenu ul {
     list-style: none;
 }
-header .dropmenu ul li{
+
+header .dropmenu ul li {
     height: 5vh;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     padding: 1.5rem 0;
-    transition: ease .2s 
+    transition: ease .2s
 }
-header .dropmenu ul li:last-child{
+
+header .dropmenu ul li:last-child {
     border-radius: 0 0 12px 12px;
 }
 
-header .dropmenu ul li a{
+header .dropmenu ul li a {
     width: 100%;
     text-align: center;
     text-decoration: none;
     color: #EFFFE2;
     font-size: 1.3rem;
-    transition: ease .2s 
+    transition: ease .2s
 }
-header .dropmenu ul li:hover{
+
+header .dropmenu ul li:hover {
     background-color: #ddd;
 }
-header .dropmenu ul li:hover a{
+
+header .dropmenu ul li:hover a {
     color: #333;
 }
-header .alert-menu{
-    left: 10%;
+
+header .alert-menu {
+    left: 7%;
 }
-header .alert-menu .dropmenu{
+
+header .alert-menu .dropmenu {
     background-color: #9EB4A0;
 }
-header .alert-menu .bell-box{
+
+header .alert-menu .bell-box {
     position: relative;
 }
-header .alert-menu .bell-box .bell-img{
+
+header .alert-menu .bell-box .bell-img {
     height: 100%;
     width: 100%;
     transition: ease-out .5s;
 }
-header .alert-menu .bell-box .badge{
+
+header .alert-menu .bell-box .badge {
     vertical-align: top;
     right: -5px;
     top: -5px;
@@ -174,64 +201,256 @@ header .alert-menu .bell-box .badge{
     background-color: red;
     padding: .2rem .45rem;
 }
-header .bell-button.active .bell-box .bell-img{
+
+header .bell-button.active .bell-box .bell-img {
     transform: rotate(-45deg);
     transition: ease-out .5s;
 }
 
-header .flower-img{
+header .flower-img {
     position: absolute;
     right: 0;
     padding-right: 1rem;
 }
 
-header .flower-img.spin-flower{
+header .flower-img.spin-flower {
     transform: rotate(1125deg);
     transform-origin: center;
     padding-right: 1rem;
     padding-top: 1rem;
     transition: ease-out 1s;
 }
-main{
+
+main {
     height: 90%;
     width: 100%;
     overflow: scroll;
 }
 
-form{
+form {
     position: relative;
     z-index: 1;
     height: 100%;
+    width: 60%;
 }
 
-form.main-form #part1{
+/******** Form Main page ********/
+form.main-form #part1 {
     height: 100%;
+    display: grid;
+    gap: 5px 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+        "debut fin ville"
+        "grid1 input grid2"
+        "grid3 avance grid4";
+    align-items: center;
 }
-form.main-form #part2.dropmenu{
+
+form.main-form #part1 #debut {
+    grid-area: debut;
+}
+
+form.main-form #part1 #fin {
+    grid-area: fin;
+}
+
+form.main-form #part1 #ville {
+    grid-area: ville;
+}
+
+form.main-form #part1 #submit+span {
+    cursor: pointer;
+    grid-area: avance;
+    text-align: center;
+    color: #10617d;
+    font-weight: 900;
+    transition: .2s ease;
+}
+
+form.main-form #part1 #submit+span:hover {
+    color: #333;
+    font-size: 1.2rem;
+}
+
+form.main-form #part1 #submit {
+    padding: .4rem 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #EEA538;
+    color: white;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    font-family: Alice, 'sans-serif';
+    grid-area: input;
+    transition: ease-in .2s;
+}
+
+form.main-form #part1 #submit:hover {
+    background-color: #be8d44;
+    box-shadow: -3px 3px 5px 1px #04c175;
+}
+
+.grid-filling1 {
+    grid-area: grid1
+}
+
+.grid-filling2 {
+    grid-area: grid2
+}
+
+.grid-filling3 {
+    grid-area: grid3
+}
+
+.grid-filling4 {
+    grid-area: grid4
+}
+
+form.main-form #part2 {
+    display: flex;
+    flex-direction: column;
+}
+
+form.main-form #part2.dropmenu {
     opacity: 1;
     width: 71.5vw;
-    height: 40vh;
-    left: -60%;
+    height: max-content;
+    left: -33.4%;
+    padding-bottom: 1rem;
     color: white;
     background-color: #84AE70;
     z-index: 1;
     box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, .25);
 }
 
+.shadow {
+    height: 5px;
+    box-shadow: 0px 15px 29px 2px #000;
+    width: 100%;
+    background-color: #3cd799ba;
+}
 
-@keyframes dropDown{
-    0%{
+form.main-form #part2 .sect h2 {
+    margin: 2rem 0;
+    text-decoration: underline;
+    text-align: center;
+    font-family: DejaVuSerif, sans-serif;
+}
+
+form.main-form #part2 .sect .grns,
+form.main-form #part2 .sect .formateurs {
+    width: 60%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem 3rem;
+    margin-bottom: 12px;
+}
+
+form.main-form #part2 .sect .formateurs {
+    width: 40%;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+form.main-form #part2 label {
+    display: grid;
+    grid-template-columns: .2fr 1fr;
+    grid-template-areas: "checkmark input";
+    flex-direction: row-reverse;
+    gap: 5px;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: max-content;
+}
+
+form.main-form #part2 .sect input+span {
+    grid-area: input;
+}
+
+form.main-form #part2 .sect input {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    grid-area: checkmark;
+}
+
+form.main-form #part2 .checkmark {
+    position: relative;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 5px;
+    grid-area: checkmark;
+}
+
+form.main-form #part2 .checkmark:hover {
+    background-color: #41ccfb52;
+}
+
+form.main-form #part2 input:checked~.checkmark {
+    background-color: #41ccfb;
+}
+
+form.main-form #part2 .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 20px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+form.main-form #part2 input:checked~.checkmark:after {
+    display: block;
+}
+
+form.main-form #part2 .submit-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes dropDown {
+    0% {
         top: -123px;
         opacity: 0;
     }
-    60%{
-        opacity: 0.5;
+
+    80% {
+        top: 15vh;
     }
-    80%{
-        top: 10vh;
-        opacity: 0.8;
-    }
-    100%{
+
+    100% {
         opacity: 1;
+    }
+}
+
+@keyframes liftUp {
+
+
+    0% {
+        top: 15vh;
+        opacity: 1;
+    }
+
+    100% {
+        top: -123px;
+        opacity: 0;
     }
 }

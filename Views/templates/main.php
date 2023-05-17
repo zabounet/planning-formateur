@@ -70,16 +70,18 @@
                 </menu>
             </div>
             <form class="main-form" method="post">
-                <div id="part1">
-                    <label for="">periode du</label>
-                    <input type="date" name="date_debut" id="debut" <?php if (isset($data['date_debut'])) {
-                                                                        echo 'value="' . $data['date_debut'] . '"';
-                                                                    }  ?>>
-                    <label for="">au</label>
-                    <input type="date" name="date_fin" id="fin" <?php if (isset($data['date_fin'])) {
-                                                                    echo 'value="' . $data['date_fin'] . '"';
-                                                                } ?>>
-                    <select name="lieu" id="">
+                <div id="part1" id="debut">
+                    <label for="date_debut">Début : 
+                        <input type="date" name="date_debut" <?php if (isset($data['date_debut'])) {
+                                                                            echo 'value="' . $data['date_debut'] . '"';
+                                                                        }  ?>>
+                    </label>
+                    <label for="date_fin" id="fin">Fin : 
+                        <input type="date" name="date_fin" <?php if (isset($data['date_fin'])) {
+                                                                        echo 'value="' . $data['date_fin'] . '"';
+                                                                    } ?>>
+                    </label>
+                    <select name="lieu" id="ville">
                         <?php if (empty($_POST)) : ?>
                             <option selected value="default">Blois - Tours</option>
                         <?php else : ?>
@@ -95,44 +97,72 @@
                             <?php endif; ?>
                         <?php endforeach ?>
                     </select>
+                    <div class="grid-filling1"></div>
+                    <div class="grid-filling2"></div>
+                    <input id="submit" type="submit" name="rechercher" value="rechercher">
+                    <span id="advanced">Recherche avancée</span>
+                    <div class="grid-filling3"></div>
+                    <div class="grid-filling4"></div>
                 </div>
+
                 <div id="part2" class="dropmenu">
-                    <div>
-                        <h2>Selectionnez des GRN.</h2>
-                        <label for="">GRN : </label>
-                        <?php $nb = 0;
-                        foreach ($GRNs as $GRN) : ?>
-                            <?php if (empty($_POST)) : ?>
-                                <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?>
-                            <?php elseif (!empty($_POST) && in_array($GRN->numero_grn, $data['grns'])) : ?>
-                                <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?>
-                            <?php else : ?>
-                                <input type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?>
-                            <?php endif; ?>
-                        <?php $nb++;
-                        endforeach ?>
-                        <input type="hidden" name="nbGRNs" value="<?= $nb; ?>">
+                    <div class="shadow"></div>
+                    <div class="sect">
+                        <h2>Selectionnez un ou plusieurs GRN</h2>
+                        <div class="grns">
+                            <?php $nb = 0;
+                            foreach ($GRNs as $GRN) : ?>
+                                <?php if (empty($_POST)) : ?>
+                                    <label for="grns">
+                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php elseif (!empty($_POST) && in_array($GRN->numero_grn, $data['grns'])) : ?>
+                                    <label for="grns">
+                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php else : ?>
+                                    <label for="grns">
+                                        <input type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php endif; ?>
+                            <?php $nb++;
+                            endforeach ?>
+                            <input type="hidden" name="nbGRNs" value="<?= $nb; ?>">
+                        </div>
                     </div>
 
-                    <div>
-                        <label for="">Formateur : </label>
-                        <?php $nombre = 0;
-                        foreach ($formateurs['Formateurs'] as $formateur) : ?>
-                            <?php if ($formateur->id_formateur == 2) {
-                                continue;
-                            }; ?>
-                            <?php if (empty($_POST)) : ?>
-                                <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?>
-                            <?php elseif (!empty($_POST) && in_array($formateur->id_formateur, $data['formateurs'])) : ?>
-                                <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?>
-                            <?php else : ?>
-                                <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?>
-                            <?php endif; ?>
-                        <?php $nombre++;
-                        endforeach ?>
-                        <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
+                    <div class="sect">
+                        <h2>Selectionnez un ou plusieurs formateurs</h2>
+                        <div class="formateurs">
+                            <?php $nombre = 0;
+                            foreach ($formateurs['Formateurs'] as $formateur) : ?>
+                                <?php if ($formateur->id_formateur == 2) {
+                                    continue;
+                                }; ?>
+                                <?php if (empty($_POST)) : ?>
+                                    <label for="formateurs">
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php elseif (!empty($_POST) && in_array($formateur->id_formateur, $data['formateurs'])) : ?>
+                                    <label for="formateurs">
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php else : ?>
+                                    <label for="formateurs">
+                                        <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php endif; ?>
+                            <?php $nombre++;
+                            endforeach ?>
+                            <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
+                        </div>
                     </div>
-                    <input id="submit" type="submit" name="rechercher" value="rechercher">
                 </div>
             </form>
             <img onload="<?php if (!empty($data)) : ?> spin() <?php endif; ?>" class="flower-img" src="/planning/Views/assets/image/flower.svg">
