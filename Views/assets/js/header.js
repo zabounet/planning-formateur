@@ -1,5 +1,5 @@
-function spin(){
-    setTimeout(function(){
+function spin() {
+    setTimeout(function () {
         document.querySelector('.flower-img').classList.add('spin-flower')
     }, 100)
 }
@@ -13,29 +13,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('#advanced');
     const part2 = document.getElementById('part2');
 
-    part2.style.display = "none";
+    if (part2) {
+        part2.style.display = "none";
+    }
 
-    form.addEventListener("click", function(){
-        if(part2.style.display === "none"){
-            part2.classList.remove('unactive-nav');
-            part2.classList.add('active-nav');
-            part2.style.display = "block";
-        }
-        else{
-            part2.classList.remove('active-nav');
-            part2.classList.add('unactive-nav')
-            setTimeout(function(){
-                part2.style.display = "none";
-            }, 450);
-            
-        }
-    })
+    if (form) {
+        form.addEventListener("click", function () {
+            if (part2.style.display === "none") {
+                part2.classList.remove('unactive-nav');
+                part2.classList.add('active-nav');
+                part2.style.display = "block";
+            }
+            else {
+                part2.classList.remove('active-nav');
+                part2.classList.add('unactive-nav')
+                setTimeout(function () {
+                    part2.style.display = "none";
+                }, 450);
 
-    if(dropmenu){
+            }
+        })
+
+    }
+
+    if (dropmenu) {
         dropmenu.style.display = "none";
     }
     dropnav.style.display = "none";
-    if(bell){
+    if (bell) {
         bell.addEventListener('click', function () {
             if (dropmenu.style.display === "none") {
                 bell.classList.add('active');
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 bell.classList.remove('active');
                 dropmenu.classList.remove('active-nav')
                 dropmenu.classList.add('unactive-nav');
-                setTimeout(function(){
+                setTimeout(function () {
                     dropmenu.style.display = "none";
                     dropmenu.style.opacity = 0
                 }, 450);
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             burger.classList.remove('active');
             dropnav.classList.remove('active-nav')
             dropnav.classList.add('unactive-nav');
-            setTimeout(function(){
+            setTimeout(function () {
                 dropnav.style.display = "none";
                 dropnav.style.opacity = 0;
             }, 450);

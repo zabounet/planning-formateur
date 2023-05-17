@@ -227,7 +227,8 @@ main {
     overflow: scroll;
 }
 
-form {
+form.main-form,
+form.activite-form {
     position: relative;
     z-index: 1;
     height: 100%;
