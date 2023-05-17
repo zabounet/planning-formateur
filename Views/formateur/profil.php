@@ -34,7 +34,7 @@
                     <span>Mail :</span>
                     <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
                         <input type="email" name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail'] ?>" />
-                        <input  type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider"/>
+                        <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider" />
                     <?php else : ?>
                         <span id="mailProfil"><?= $_SESSION['formateur']['mail'] ?></span>
                         <a href="?id=3">Modifier</a>
@@ -66,12 +66,26 @@
                     <?php endif; ?>
                 </form>
             </div>
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_profil'])) {
+                    echo $_SESSION['error_profil'];
+                    unset($_SESSION['error_profil']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_profil'])) {
+                    echo $_SESSION['success_profil'];
+                    unset($_SESSION['success_profil']);
+                }
+                ?>
+            </span>
         </div>
     </div>
 
-<hr>
+    <hr>
 
-    <div class="vacances" >
+    <div class="vacances">
         <span class="vacances-text">Demande de vacances</span>
         <span class="titre titre-demande-vacances">Sélectionnez une période</span>
         <div class="demande-vacances">
@@ -79,54 +93,82 @@
                 <div class="date-demande-vacances">
                     <div class="date date-debut date-debut-vacance">
                         <p>Date de début</p>
-                        <input type="date" name="date_debut" id="" min="<?= date('Y-m-d'); ?>">
+                        <input type="date" name="date_debut" id="" required min="<?= date('Y-m-d'); ?> ">
                     </div>
                     <div class="date date-fin date-fin-vacance">
                         <p>Date de fin</p>
-                        <input type="date" name="date_fin" id="">
+                        <input type="date" name="date_fin" id="" min="" required>
                     </div>
                 </div>
                 <div class="btn btn-validation-vacance">
-                    <input type="submit" value="envoyer la demande" name="vacances" class="valider">
+                    <input type="submit" value="envoyer la demande" name="vacances" class="valider" >
                 </div>
             </form>
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_vacance'])) {
+                    echo $_SESSION['error_vacance'];
+                    unset($_SESSION['error_vacance']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_vacance'])) {
+                    echo $_SESSION['success_vacance'];
+                    unset($_SESSION['success_vacance']);
+                }
+                ?>
+            </span>
         </div>
     </div>
-<hr>
+    <hr>
     <div class="teletravail">
         <span class="teletravail-text">Demande de teletravail</span>
         <div class="demande-teletravail">
             <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
-            <span class="notif notif-demande-teletravail">Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
-            <p>Les jours pour teletravail :</p>
+            <span class="notif notif-demande-teletravail"><i class='fas fa-exclamation-circle' style='font-size:30px;color:red'></i> Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
+            <span style="margin-left: 30Px;">Les jours pour teletravail :</span>
             <form method="post" class="container-teletravail">
                 <div>
                     <section class="app">
-                    <?php
-                        $jourSemaine = array('lundi','mardi','mercredi','jeudi','vendredi'); 
-                        $jourTeletravail = explode("," , $_SESSION['teletravail']['jour_teletravail']);
+                        <?php
+                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
+                        $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
 
-                        foreach($jourSemaine as $jour) :
-                    ?>
+                        foreach ($jourSemaine as $jour) :
+                        ?>
 
-                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = "";?>
+                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = ""; ?>
 
                             <article class="features">
-                                <input <?= $checked ;?> type="checkbox" id="<?= $jour ;?>" name="<?= $jour ;?>" />
+                                <input <?= $checked; ?> type="checkbox" id="<?= $jour; ?>" name="<?= $jour; ?>" />
                                 <div>
                                     <span>
-                                        <?= $jour ;?>
+                                        <?= $jour; ?>
                                     </span>
                                 </div>
                             </article>
 
-                        <?php endforeach;?>
+                        <?php endforeach; ?>
                     </section>
                 </div>
                 <div>
                     <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
                 </div>
             </form>
+            </span>
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_teletravail'])) {
+                    echo $_SESSION['error_teletravail'];
+                    unset($_SESSION['error_teletravail']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_teletravail'])) {
+                    echo $_SESSION['success_teletravail'];
+                    unset($_SESSION['success_teletravail']);
+                }
+                ?>
 
         </div>
     </div>
@@ -174,6 +216,20 @@
                 <?php endif; ?>
             </form>
         </div>
+        <span class="error" style="color: red;">
+            <?php if (isset($_SESSION['error_profil'])) {
+                echo $_SESSION['error_profil'];
+                unset($_SESSION['error_profil']);
+            }
+            ?>
+        </span>
+        <span class="success" style="color: green; ">
+            <?php if (isset($_SESSION['success_profil'])) {
+                echo $_SESSION['success_profil'];
+                unset($_SESSION['success_profil']);
+            }
+            ?>
+        </span>
     </div>
 
 
@@ -248,24 +304,20 @@
         </div>
         <input class="valider" type="submit" value="valider" name="send-color">
     </form>
+    <span class="error" style="color: red;">
+        <?php if (isset($_SESSION['error_color'])) {
+            echo $_SESSION['error_color'];
+            unset($_SESSION['error_color']);
+        }
+        ?>
+    </span>
+    <span class="success" style="color: green; ">
+        <?php if (isset($_SESSION['success_color'])) {
+            echo $_SESSION['success_color'];
+            unset($_SESSION['success_color']);
+        }
+        ?>
+    </span>
 
 
 <?php endif; ?>
-<div>
-    <span style="color:red;">
-        <?php if (isset($_SESSION['error'])) {
-            echo $_SESSION['error'];
-            unset($_SESSION['error']);
-        }
-        ?>
-    </span>
-</div>
-<div>
-    <span style="color:green;">
-        <?php if (isset($_SESSION['success'])) {
-            echo $_SESSION['success'];
-            unset($_SESSION['success']);
-        }
-        ?>
-    </span>
-</div>

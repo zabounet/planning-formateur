@@ -8,6 +8,10 @@
     margin-bottom: 20px;
 }
 
+span{
+  font-size: x-large;
+}
+
 input[type="date"]{
   height: 35px;
   width: 9em;
@@ -144,7 +148,7 @@ input[type="submit"]{
 /* les jours de semain */
 
 .teletravail{
-   height: 24em;
+   height: 35em;
 }
 .demande-teletravail{
   display: flex;
@@ -240,5 +244,12 @@ article {
   }
 
 
-/* input style */
+/* error et suc */
+.error{
+  background-color: rosybrown;
+  width: fit-content;
+  color: red;
+}
+
+
   
