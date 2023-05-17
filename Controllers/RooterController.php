@@ -130,8 +130,17 @@ class RooterController extends Controller
                 // Compteur utilisés pour arrêter différentes boucles dans certaines situations
                 $count = 0;
                 $countFormateurs = count($formateurs);
-                $countDates = count($dates_interventions_formateurs[0]);
-                $countDatesVacences = count($dates_vacences_formateurs[0]);
+                if(!isset($dates_interventions_formateurs[0])){
+                    $countDates = 0;
+                } else {
+                    $countDates = count($dates_interventions_formateurs[0]);
+                }
+
+                if(!isset($dates_vacences_formateurs[0])){
+                    $countDatesVacences = 0;
+                } else {
+                    $countDatesVacences = count($dates_vacences_formateurs[0]);
+                }
 
                 // Ouverture du tableau
                 $html .= " 
@@ -482,10 +491,6 @@ class RooterController extends Controller
         $villes = $formation->getAll('ville');
         !isset($html) ? $html = "Aucun résultat." : '';
         isset($_POST['rechercher']) ? $data = $_POST : $data = "";
-
-        
-
-    
 
         $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data'), 'main');
     }

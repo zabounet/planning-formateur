@@ -1,24 +1,23 @@
-
-
 /* general css */
-.titre{
-    display: flex;
-    justify-content: center;
-    font-size: 30px;
-    margin-bottom: 20px;
+.titre {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 20px;
 }
 
-span{
+span {
   font-size: x-large;
 }
 
-input[type="date"]{
+input[type="date"] {
   height: 35px;
   width: 9em;
 }
 
-.container-info hr, .container-vacances hr{
-    border: 1px solid black;
+.container-info hr,
+.container-vacances hr {
+  border: 1px solid black;
 }
 
 .valider {
@@ -29,54 +28,66 @@ input[type="date"]{
   font-size: x-large;
   height: fit-content;
 }
-input[type="submit"]{
+
+input[type="submit"] {
   float: right;
 }
+
 /* profile css */
 
-.profil-text{
-  outline: solid #50f29e;
-  width: fit-content;
-  padding: 2em;
-  border-radius: 1.5rem;
-  margin: 1em 0 0 1em;
-  position: absolute;
-}
-.info-personel{
-    display: flex;
-    flex-direction: column;
-    width: 60vw;
-    margin-right: auto;
-    margin-left: auto; 
-    margin-top: 5em; 
-    margin-bottom: 5em; 
+.profil-text {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 
+.profil-text span {
+  font-size: 3rem;
+  font-weight: 400;
+  font-family: DejaVuSerif, sans-serif;
+}
 
-
-.container-info{
-    border: solid black;
-    border-radius: 30px;
-    padding: 10px 20px;
-    background-color: aquamarine;
+.info-personel {
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 5em;
+  margin-bottom: 5em;
 }
 
 
-.profil{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    font-size: 25px;
-    margin: 35px 0;
-    align-items: center;
+
+.container-info {
+  border: solid black;
+  border-radius: 30px;
+  padding: 10px 20px;
+  background-color: aquamarine;
 }
 
-.profil input[type="text"],.profil input[type="email"]{
+
+.profil {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  font-size: 25px;
+  margin: 35px 0;
+  align-items: center;
+}
+
+.profil input[type="text"],
+.profil input[type="email"] {
   height: 35px;
   width: 30%;
 }
-.mdp-container{
+
+.mdp-container {
   display: flex;
   flex-direction: column;
   height: 150px;
@@ -86,42 +97,44 @@ input[type="submit"]{
 
 .mdp-container div {
   display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
-.mdp-container div input{
+
+.mdp-container div input {
   height: 35px;
   width: 30%;
 }
 
-.profil a{
-    text-decoration: none;
-    background: ghostwhite;
-    border: solid 1px;
-    width: 120PX;
-    text-align: center;
-    font-size: x-large;
-    font-family: sans-serif;
+.profil a {
+  text-decoration: none;
+  background: ghostwhite;
+  border: solid 1px;
+  width: 120PX;
+  text-align: center;
+  font-size: x-large;
+  font-family: sans-serif;
 }
 
 
 
 /* vacances css */
 
-.vacances{
+.vacances {
   height: 24em;
 }
-.demande-vacances{
-    display: flex;
-    flex-direction: column;
-    width: 60vw;
-    margin-right: auto;
-    margin-left: auto;
+
+.demande-vacances {
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 
-.date-demande-vacances{
+.date-demande-vacances {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -134,7 +147,7 @@ input[type="submit"]{
   font-size: x-large;
 }
 
-.date{
+.date {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -147,10 +160,11 @@ input[type="submit"]{
 
 /* les jours de semain */
 
-.teletravail{
-   height: 35em;
+.teletravail {
+  height: 35em;
 }
-.demande-teletravail{
+
+.demande-teletravail {
   display: flex;
   flex-direction: column;
   width: 60vw;
@@ -160,96 +174,105 @@ input[type="submit"]{
   justify-content: space-between;
 }
 
-.app{
-    display: flex;
-    margin-bottom: 2em;
-    justify-content: center;
+.app {
+  display: flex;
+  margin-bottom: 2em;
+  justify-content: center;
 }
 
 
 article {
-    position: relative;
-    width: 140px;
-    height: 100px;
-    margin: 5px;
-    float: left;
-    border: 2px solid black;
-    box-sizing: border-box;
+  position: relative;
+  width: 140px;
+  height: 100px;
+  margin: 5px;
+  float: left;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+article div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+}
+
+article input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 140px;
+  height: 100px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type=checkbox]:checked~div {
+  background-color: #50f29e;
+}
+
+
+@keyframes slidein {
+  from {
+    margin-top: 100%;
+    width: 300%;
   }
-  
-  article div {
+
+  to {
+    margin: 0%;
     width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 25px;
-    transition: .5s ease;
   }
-  
-  article input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 140px;
-    height: 100px;
-    opacity: 0;
-    cursor: pointer;
-  }
-  
-  input[type=checkbox]:checked ~ div {
-    background-color: #50f29e;
-  }
-  
+}
 
-  @keyframes slidein {
-    from {
-      margin-top: 100%;
-      width: 300%;
-    }
-  
-    to {
-      margin: 0%;
-      width: 100%;
-    }
-  }
+/* style admin list color */
+.list-color form{
+  margin-top: 2em;
+}
 
-  /* style admin list color */
+.list-color-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+}
 
-  .list-color{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 80%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .cloumn{
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 280px;
-    min-width: fit-content;
-  }
-  .cloumn div {
-    position: relative;
-    display: flex;
-    width: auto;
-    justify-content: space-between;
-    outline: solid black 2px;
-    align-items: center;
-    padding-left: 20px;
-    font-size: large;
-  }
+.cloumn {
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30em;
+  min-width: fit-content;
+}
+
+.cloumn div {
+  position: relative;
+  display: flex;
+  width: auto;
+  justify-content: space-between;
+  outline: solid #84AE70 2px;
+  align-items: center;
+  padding-left: 20px;
+  font-size: large;
+}
+
+
+input[type="color"] {
+  border: none;
+  width: 35px;
+  border-radius: 3px;
+}
 
 
 /* error et suc */
-.error{
+.error {
   background-color: rosybrown;
   width: fit-content;
   color: red;
 }
-
-
-  

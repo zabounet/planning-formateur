@@ -61,7 +61,7 @@ class FormateurController extends Controller
             ->ajoutInput('submit', 'login', ['class' => 'form-control'])
             ->finForm();
 
-        $this->render('/formateur/login', ['loginForm' => $form->create()]);
+        $this->render('/formateur/login', ['loginForm' => $form->create()],'login');
     }
 
     // logout de session
@@ -89,7 +89,7 @@ class FormateurController extends Controller
             } elseif (isset($_SESSION['formateur'])) {
                 $idFormateur = $_SESSION['formateur']['id'];
             }
-            if (isset($_POST['modifNom']) && !empty($_POST['nom'])) {
+            if (isset($_POST['modifNom']) && !empty(trim($_POST['nom']))) {
 
                 $new_nom = $_POST['nom'];
                 $profil = new FormateurModel();
@@ -119,7 +119,7 @@ class FormateurController extends Controller
             } elseif (isset($_SESSION['formateur'])) {
                 $idFormateur = $_SESSION['formateur']['id'];
             }
-            if (isset($_POST['modifPrenom'])  && !empty($_POST['prenom'])) {
+            if (isset($_POST['modifPrenom'])  && !empty(trim($_POST['prenom']))) {
 
                 $new_prenom = $_POST['prenom'];
                 $profil = new FormateurModel();

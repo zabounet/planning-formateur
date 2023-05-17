@@ -624,11 +624,20 @@ class AdminController extends Controller
         $html = "<div style='display:flex;justify-content:center;'> <h1 style='width:60%;text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1> </div>";
         $FormateurModel = new FormateurModel;
 
-        if (Form::validate($_POST, ['valider'])) {
+        if (Form::validate($_POST, ['valider','formateurs'])) {
             // Récupérer les dates saisies par l'utilisateur
             $date_debut_calendrier = $_POST['date_debut'];
             $date_fin_calendrier = $_POST['date_fin'];
-            $id_formateur = $_POST['formateur'];
+            // Si aucun formateur n'est selectionné, demande à l'utilisateur d'en selectionner au moins 1
+            if (is_null($_POST['formateurs'])) {
+                echo "Veuillez choisir au moins un formateur";
+                exit;
+            } else {
+                $_POST['formateurs'] === $_POST['nbFormateur']? $id_formateur = "Aucun" : $id_formateur = $_POST['formateurs'];
+            }
+            var_dump($_POST['formateurs']);
+            var_dump($_POST['nbFormateur']);
+            // $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
 
             //recupere les date de vacances pour chaque formateur et les place dans un tableau
@@ -710,8 +719,17 @@ class AdminController extends Controller
             // Compteur utilisés pour arrêter différentes boucles dans certaines situations
             $count = 0;
             $countFormateurs = count($formateurs);
-            $countDates = count($dates_interventions_formateurs[0]);
-            $countDatesVacences = count($dates_vacences_formateurs[0]);
+            if(!isset($dates_interventions_formateurs[0])){
+                $countDates = 0;
+            } else {
+                $countDates = count($dates_interventions_formateurs[0]);
+            }
+
+            if(!isset($dates_vacences_formateurs[0])){
+                $countDatesVacences = 0;
+            } else {
+                $countDatesVacences = count($dates_vacences_formateurs[0]);
+            }
 
             // Ouverture du tableau
             $html = "
@@ -1038,6 +1056,7 @@ class AdminController extends Controller
             $html .= "</tbody> </table> </div> </div>";
         }
         $infosFormateur = $FormateurModel->getFormateur();
-        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html'), 'activite');
+        isset($_POST['valider']) ? $data = $_POST : $data = "";
+        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html','data'), 'activite');
     }
 }

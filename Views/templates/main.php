@@ -43,9 +43,9 @@
                     <div>
                         <div>
                             <label for="">periode du</label>
-                            <input type="date" name="date_debut" <?php if (isset($data['date_debut'])) {echo 'value="' . $data['date_debut'] . '"'; }  ?>>
+                            <input required type="date" name="date_debut" <?php if (isset($data['date_debut'])) {echo 'value="' . $data['date_debut'] . '"'; }  ?>>
                             <label for="">au</label>
-                            <input type="date" name="date_fin" <?php if (isset($data['date_fin'])) {echo 'value="' . $data['date_fin'] . '"'; } ?>>
+                            <input required type="date" name="date_fin" <?php if (isset($data['date_fin'])) {echo 'value="' . $data['date_fin'] . '"'; } ?>>
                             <select name="lieu" id="">
                                 <?php if (empty($_POST)):?>
                                     <option selected value="default">Blois - Tours</option>
@@ -84,7 +84,7 @@
                                 <label for="">Formateur : </label>
                                 <?php $nombre = 0;
                                 foreach ($formateurs['Formateurs'] as $formateur) : ?>
-                                    <?php if ($formateur->id_formateur == 2) {
+                                    <?php if ($formateur->id_formateur == 1 || $formateur->id_formateur == 2) {
                                         continue;
                                     }; ?>
                                     <?php if (empty($_POST)) :?>
