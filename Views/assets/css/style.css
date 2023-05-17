@@ -151,6 +151,8 @@ header nav#dropnav ul li:last-child{
     border-radius: 0 0 12px 12px;
 }
 header nav#dropnav ul li a{
+    width: 100%;
+    text-align: center;
     text-decoration: none;
     color: #EFFFE2;
     font-size: 1.3rem;
@@ -172,4 +174,7 @@ main{
     height: 90%;
     width: 100%;
     overflow: scroll;
+}
+form{
+    z-index: 1;
 }

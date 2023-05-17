@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css?<?= time(); ?>">
     <?php if($link === 'Profil'):?>
         <link rel="stylesheet" href="/planning/Views/assets/css/profil.css?<?= time(); ?>">
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <?php endif;?>
     <script src="/planning/Views/assets/js/header.js?<?= time(); ?>"></script>
 </head>
