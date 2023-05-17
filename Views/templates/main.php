@@ -72,12 +72,12 @@
             <form class="main-form" method="post">
                 <div id="part1" id="debut">
                     <label for="date_debut">Début : 
-                        <input type="date" name="date_debut" <?php if (isset($data['date_debut'])) {
+                        <input required type="date" name="date_debut" <?php if (isset($data['date_debut'])) {
                                                                             echo 'value="' . $data['date_debut'] . '"';
                                                                         }  ?>>
                     </label>
                     <label for="date_fin" id="fin">Fin : 
-                        <input type="date" name="date_fin" <?php if (isset($data['date_fin'])) {
+                        <input required type="date" name="date_fin" <?php if (isset($data['date_fin'])) {
                                                                         echo 'value="' . $data['date_fin'] . '"';
                                                                     } ?>>
                     </label>
