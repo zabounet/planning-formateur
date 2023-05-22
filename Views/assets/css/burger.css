@@ -1,0 +1,151 @@
+.menu {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 30%;
+}
+
+.nav-button {
+    position: relative;
+    height: 100%;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+}
+
+.burger-button .burger-box {
+    position: relative;
+    width: 30px;
+    height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.burger-button .burger-box .burger,
+.burger-button .burger-box .burger::before,
+.burger-button .burger-box .burger::after {
+    width: 30px;
+    height: 5px;
+    background-color: black;
+    position: absolute;
+    transition: .5s ease;
+}
+
+.burger-button .burger-box .burger {
+    display: block;
+    top: 50%;
+}
+
+.burger-button .burger-box .burger::before {
+    display: block;
+    content: "";
+    bottom: 11px;
+}
+
+.burger-button .burger-box .burger::after {
+    display: block;
+    content: "";
+    top: 11px;
+}
+
+.burger-button.active .burger-box .burger {
+    transform: rotate(-45deg);
+    top: 50%;
+}
+
+.burger-button.active .burger-box .burger::before {
+    bottom: 0;
+    transform: rotate(90deg);
+}
+
+.burger-button.active .burger-box .burger::after {
+    top: 0;
+    transform: rotate(90deg);
+
+}
+
+.active-nav {
+    animation: dropDown .5s;
+}
+
+.unactive-nav {
+    animation: liftUp .5s;
+}
+
+header .dropmenu {
+    position: absolute;
+    background-color: #343A35;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 15px 15px;
+    transition: ease-out .5s;
+    z-index: 2;
+}
+
+header .dropmenu ul {
+    list-style: none;
+}
+
+header .dropmenu ul li {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 1.5rem 0;
+    transition: ease .2s
+}
+
+header .dropmenu ul li:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+header .dropmenu ul li a {
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    color: #EFFFE2;
+    font-size: 1.3rem;
+    transition: ease .2s
+}
+
+header .dropmenu ul li:hover {
+    background-color: #ddd;
+}
+
+header .dropmenu ul li:hover a {
+    color: #333;
+}
+
+@keyframes dropDown {
+    0% {
+        top: -123px;
+        opacity: 0;
+    }
+
+    80% {
+        top: 15vh;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes liftUp {
+
+
+    0% {
+        top: 15vh;
+        opacity: 1;
+    }
+
+    100% {
+        top: -123px;
+        opacity: 0;
+    }
+}

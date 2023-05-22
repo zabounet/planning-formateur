@@ -8,40 +8,50 @@
     <title><?= $link; ?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/side-burger.css">
+    <script src="/planning/Views/assets/js/header.js"></script>
 
     <?php
-    
+
     if ($link === "Activité des formateurs") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">';
     }
-
+    if ($link === "Profil") {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">';
+    }
     if ($link === "Formateur home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
     }
-    if(isset($infosCurrent)){
+    if (isset($infosCurrent)) {
         if ($link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur || $link === "Inscripton formateur") {
             echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
-        }; 
+        };
     };
-    
+
     ?>
 </head>
 
 <body>
-
     <header>
-        <nav>
-            <ul>
-                <?php if ($link === "Formateur home") : ?>
-                    <li><a href="/planning/public">Home</a></li>
-                    <li><a href="/planning/public/admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
-                    <li><a href="/planning/public/admin/inscriptionFormateur">Ajouter un formateur</a></li>
-                <?php else : ?>
-                    <li><a href="/planning/public/admin/formateursHome">Retour à la liste des formateurs</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+        <div class="menu nav-content">
+            <button class="nav-button burger-button">
+                <span class="burger-box">
+                    <span class="burger">
+
+                    </span>
+                </span>
+            </button>
+            <nav id="dropnav" class="dropmenu">
+                <ul>
+                    <li><a href="/planning/public/">Home</a></li>
+                    <li><a href="/planning/public/formateur/profil">Profil </a></li>
+                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
+                    <li><a href="/planning/public/admin/formationsHome">Gérer les formations</a></li>
+                    <li><a href="/planning/public/admin/inscriptionFormateur">Inscrire un nouveau formateur</a></li>
+                    <li><a href="/planning/public/admin/activiteFormateur">Consulter l'activité des formateurs</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
         <div>

@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (part2) {
         part2.style.display = "none";
     }
-
     if (form) {
         form.addEventListener("click", function () {
             if (part2.style.display === "none") {
@@ -47,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropmenu.classList.remove('unactive-nav');
                 dropmenu.classList.add('active-nav')
                 dropmenu.style.display = "block";
-                dropmenu.style.opacity = 1;
             }
             else {
                 bell.classList.remove('active');
@@ -55,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropmenu.classList.add('unactive-nav');
                 setTimeout(function () {
                     dropmenu.style.display = "none";
-                    dropmenu.style.opacity = 0
                 }, 450);
             }
         })
@@ -76,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () {
                 dropnav.style.display = "none";
                 dropnav.style.opacity = 0;
-            }, 450);
+            }, 250);
         }
     })
 })

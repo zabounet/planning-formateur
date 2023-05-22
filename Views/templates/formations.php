@@ -8,38 +8,48 @@
     <title><?= $link; ?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <?php
-    if(!isset($infosCurrent))$infosCurrent['acronyme_formation'] = "";
+    <link rel="stylesheet" href="/planning/Views/assets/css/side-burger.css">
+    <script src="/planning/Views/assets/js/header.js"></script>
 
-    if ($link === "Formateur home") {
+    <?php
+    if (!isset($infosCurrent)) $infosCurrent['acronyme_formation'] = "";
+
+    if ($link === "Formation home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
     }
-    if ($link === "Profil") {
-        echo '<link rel="stylesheet" href="/planning/Views/assets/css/styleprofil.css">';
+    if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css">';
     }
     if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
-        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css?' . time() . '">' ;
-    }
-    if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
-        echo '<script src="/planning/Views/assets/js/formation.js?' . time() . '"></script>';
+        echo '<script src="/planning/Views/assets/js/formation.js"></script>';
     }; ?>
 </head>
 
 <body>
-
     <header>
-        <nav>
-            <ul>
-                <?php if ($link === "Formation home") : ?>
-                    <li><a href="/planning/public">Home</a></li>
-                    <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
-                <?php else : ?>
-                    <li><a href="/planning/public/admin/formationsHome">Retour à la liste des formations</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+        <div class="menu nav-content">
+            <button class="nav-button burger-button">
+                <span class="burger-box">
+                    <span class="burger">
+
+                    </span>
+                </span>
+            </button>
+            <nav id="dropnav" class="dropmenu">
+                <ul>
+                    <li><a href="/planning/public/">Home</a></li>
+                    <li><a href="/planning/public/formateur/profil">Profil </a></li>
+                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
+                    <li><a href="/planning/public/admin/formateursHome">Gérer les formateurs</a></li>
+                    <?php if($link === "Formation home"):?>
+                        <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
+                    <?php else:?>
+                        <li><a href="/planning/public/admin/formationsHome">Retourner au menu des formations</a></li>
+                    <?php endif ;?>
+            </nav>
+        </div>
     </header>
-    <main>
+    <main <?php if($link === "Ajouter une formation"): echo "class='fixed-height'";?><?php endif;?>>
         <?= $contenu; ?>
     </main>
 </body>

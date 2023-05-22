@@ -1,13 +1,16 @@
-<?php 
-    $disassemble = explode(" ",$infosCurrent['nom_formation']);
-    $reassemble = $disassemble[2] . " " . $disassemble[3] . " ";
+<?php
+// Explose chaque mots du nom dans un array afin de ne récupèrer que les informations nécessaires
+$disassemble = explode(" ", $infosCurrent['nom_formation']);
+$reassemble = $disassemble[2] . " " . $disassemble[3] . " ";
 
-    $link = "Modifier la formation " . $infosCurrent['acronyme_formation']; 
+$link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
 ?>
 
-<h1>Modifier la formation : <?= $infosCurrent['nom_formation']; ?></h1>
-
 <form method="post">
+    <div class="title-container">
+        <h1 class="head-title">Modifier la formation <?= $infosCurrent['acronyme_formation'] . " " . $reassemble ?></h1>
+    </div>
+
     <fieldset id="part1">Informations sur la formation
 
         <label for="type">Catégorie de formation :
@@ -16,11 +19,11 @@
 
                 <?php foreach ($infosFormation['Types'] as $types) : ?>
 
-                    <?php if($types->id_type_formation === $infosCurrent['id_type_formation']):?>
+                    <?php if ($types->id_type_formation === $infosCurrent['id_type_formation']) : ?>
                         <option selected value="<?= $types->id_type_formation ?>"><?= $types->designation_type_formation; ?></option>
-                    <?php else:?>
+                    <?php else : ?>
                         <option value="<?= $types->id_type_formation ?>"><?= $types->designation_type_formation; ?></option>
-                    <?php endif;?>
+                    <?php endif; ?>
 
                 <?php endforeach; ?>
 
@@ -32,11 +35,11 @@
                 <option disabled>Choisir un GRN</option>
 
                 <?php foreach ($infosFormation['GRNS'] as $grn) : ?>
-                    <?php if($grn->numero_grn === $infosCurrent['numero_grn']):?>
+                    <?php if ($grn->numero_grn === $infosCurrent['numero_grn']) : ?>
                         <option selected value="<?= $grn->numero_grn; ?>"><?= $grn->numero_grn . ' - ' . $grn->nom_grn; ?></option>
-                    <?php else:?>
+                    <?php else : ?>
                         <option value="<?= $grn->numero_grn; ?>"><?= $grn->numero_grn . ' - ' . $grn->nom_grn; ?></option>
-                    <?php endif;?>
+                    <?php endif; ?>
 
                 <?php endforeach; ?>
 
@@ -44,22 +47,22 @@
         </label>
 
         <label for="acronyme"> Acronyme de formation :
-            <input value="<?=$infosCurrent['acronyme_formation'];?>" name="acronyme" type="text" placeholder="Exemple : CDA">
+            <input value="<?= $infosCurrent['acronyme_formation']; ?>" name="acronyme" type="text" placeholder="Exemple : CDA">
         </label>
 
         <label for="description"> Description
-            <textarea name="description" style="resize : none;"> <?=$infosCurrent['description_formation'];?></textarea>
+            <textarea name="description" style="resize : none;"> <?= $infosCurrent['description_formation']; ?></textarea>
         </label>
 
         <label for="offre"> Numéro d'offre :
-            <input value="<?=$reassemble;?>" name="offre" type="text" placeholder="Exemple : offre 1234">
+            <input value="<?= $reassemble; ?>" name="offre" type="text" placeholder="Exemple : offre 1234">
         </label>
 
         <label for="date-debut-formation"> Date de début :
-            <input value="<?=$infosCurrent['date_debut_formation'];?>" name="date-debut-formation" type="date">
+            <input value="<?= $infosCurrent['date_debut_formation']; ?>" name="date-debut-formation" type="date">
         </label>
         <label for="date-fin-formation"> Date de fin :
-            <input value="<?=$infosCurrent['date_fin_formation'];?>" name="date-fin-formation" type="date">
+            <input value="<?= $infosCurrent['date_fin_formation']; ?>" name="date-fin-formation" type="date">
         </label>
 
         <label for="ville"> Ville :
@@ -68,14 +71,14 @@
 
                 <?php foreach ($infosFormation['Villes'] as $villes) : ?>
 
-                    <?php if($villes->id_ville === $infosCurrent['id_ville']): ?>
+                    <?php if ($villes->id_ville === $infosCurrent['id_ville']) : ?>
                         <option selected value="<?= $villes->id_ville; ?>"><?= $villes->nom_ville; ?></option>
-                    <?php else :?>
+                    <?php else : ?>
                         <option value="<?= $villes->id_ville; ?>"><?= $villes->nom_ville; ?></option>
-                    <?php endif;?>
+                    <?php endif; ?>
 
                 <?php endforeach; ?>
-                
+
             </select>
         </label>
     </fieldset>
@@ -176,16 +179,16 @@
                 <option disabled>Choisir un formateur</option>
 
                 <?php foreach ($infosFormation['Formateurs'] as $formateurs) : ?>
-                
-                    <?php if($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2){
-                        continue;
-                    };?>
 
-                    <?php if($formateurs->id_formateur === $infosCurrent->id_formateur): ?>
+                    <?php if ($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2) {
+                        continue;
+                    }; ?>
+
+                    <?php if ($formateurs->id_formateur === $infosCurrent->id_formateur) : ?>
                         <option selected value="<?= $formateurs->id_formateur ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
-                    <?php else :?>
+                    <?php else : ?>
                         <option selected value="<?= $formateurs->id_formateur; ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
-                    <?php endif;?>
+                    <?php endif; ?>
 
                 <?php endforeach; ?>
 

@@ -1,10 +1,12 @@
 /**************************************************
 ************* Ajouter une formation ***************
 **************************************************/
-header {
-    display: none;
+header{
+    height: 6vh;
 }
-
+.fixed-height{
+    height: 84vh;
+}
 form {
     height: 100%;
     position: relative;
@@ -54,7 +56,6 @@ hr {
     width: 100%;
     border-color: #84AE70;
 }
-
 label {
     font-size: 1.45rem;
     font-family: Alice, sans-serif;
@@ -79,10 +80,15 @@ select {
     border-radius: 5px;
     background-color: #D9D9D9;
     outline: none;
+    cursor: ;
+}
+select{
+    cursor: pointer;
 }
 
 input[type="date"] {
     flex-direction: row;
+    cursor: text;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -90,6 +96,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 20px;
     padding-right: 30px;
     content: url('/planning/Views/assets/image/calendar.svg');
+    cursor: pointer;
 }
 
 input[type="button"],
@@ -191,6 +198,9 @@ fieldset{
     display: flex;
     justify-content: space-between;
 }
+.part1-sect label{
+    height: 6rem;
+}
 
 /************* Part 2 **************/
 .part2-container {
@@ -236,6 +246,7 @@ fieldset{
 
 .add-date-fields {
     margin-top: .4rem;
+    cursor: pointer;
 }
 
 .delete-date-fields {
@@ -245,6 +256,7 @@ fieldset{
     font-family: Hack-Regular, 'sans-serif';
     background-color: #b22233;
     color: whitesmoke;
+    cursor: pointer;
 }
 
 .date-periode {
@@ -279,6 +291,7 @@ fieldset{
     margin: 0 0 0 1rem;
     border: 0.15rem solid #8AA48D;
     border-radius: 5px;
+    cursor: pointer;
     transform: translateY(-0.075em);
 }
 
@@ -314,11 +327,11 @@ label[for="referent-formateur"] {
 .addbtn-title{
     position: absolute;
     left: 0;
+    margin-top: .5rem   ;
 }
 .addbtn{
     position: absolute;
-    left: 0;
-    margin-top: 1.5rem;
+    left: 13rem;
 }
 
 .intervention-container {
@@ -332,7 +345,6 @@ label[for="referent-formateur"] {
 
 .intervention-container .date-fields {
     width: 40%;
-    padding: 1rem 1rem;
 }
 .delete-date-fields[data="intervention"]{
     margin: 0.4rem auto;
