@@ -49,19 +49,19 @@ class FormateurController extends Controller
             }
         }
         // formulaire login
-        $form = new Form;
+        // $form = new Form;
 
-        $form->debutForm()
-            ->labelFor('email', 'Inserez votre adresse mail')
-            ->ajoutInput('email', 'email', ['class' => 'form-control', 'id' => 'email'])
-            ->closeLabel()
-            ->labelFor('password', 'Inserez votre mot de pass')
-            ->ajoutInput('password', 'password', ['class' => 'form-control', 'id' => 'pass'])
-            ->closeLabel()
-            ->ajoutInput('submit', 'login', ['class' => 'form-control'])
-            ->finForm();
+        // $form->debutForm()
+        //     ->labelFor('email', 'E-mail :')
+        //     ->ajoutInput('email', 'email', ['class' => 'form-control', 'id' => 'email'])
+        //     ->closeLabel()
+        //     ->labelFor('password', 'Mot de passe :')
+        //     ->ajoutInput('password', 'password', ['class' => 'form-control', 'id' => 'pass'])
+        //     ->closeLabel()
+        //     ->ajoutInput('submit', 'login', ['class' => 'form-control'])
+        //     ->finForm();
 
-        $this->render('/formateur/login', ['loginForm' => $form->create()],'login');
+        $this->render('/formateur/login', ['loginForm'],'login');
     }
 
     // logout de session
