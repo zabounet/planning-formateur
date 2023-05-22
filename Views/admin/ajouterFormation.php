@@ -18,44 +18,44 @@
                     <?php foreach ($infosFormation['Types'] as $types) : ?>
                         <option value="<?= $types->id_type_formation ?>"><?= $types->designation_type_formation; ?></option>
                     <?php endforeach; ?>
-                </select><span class="legend">*</span></label>
+                </select></label>
 
-            <label for="grn"> GRN :
+            <label for="grn"> GRN : *
                 <select name="grn" id="grn">
                     <option disabled selected>Choisir un GRN</option>
                     <?php foreach ($infosFormation['GRNS'] as $grn) : ?>
                         <option value="<?= $grn->numero_grn; ?>"><?= $grn->numero_grn . ' - ' . $grn->nom_grn; ?></option>
                     <?php endforeach; ?>
-                </select><span class="legend">*</span>
+                </select>
             </label>
-            <label for="ville"> Ville :
+            <label for="ville"> Ville : *
                 <select name="ville" id="ville">
                     <option disabled selected>Choisir une ville</option>
                     <?php foreach ($infosFormation['Villes'] as $villes) : ?>
                         <option value="<?= $villes->id_ville; ?>"><?= $villes->nom_ville; ?></option>
                     <?php endforeach; ?>
-                </select><span class="legend">*</span>
+                </select>
             </label>
         </div>
         <div class="part1-sect">
-            <label for="acronyme"> Acronyme :
-                <input id="acronyme" name="acronyme" type="text" placeholder="Exemple : CDA"><span class="legend">*</span>
+            <label for="acronyme"> Acronyme : *
+                <input id="acronyme" name="acronyme" type="text" placeholder="Exemple : CDA">
             </label>
 
-            <label for="description"> Description :
-                <textarea id="description" name="description" style="resize : none;"></textarea><span class="legend">*</span>
+            <label for="description"> Description : *
+                <textarea id="description" name="description" style="resize : none;"></textarea>
             </label>
 
-            <label for="offre"> Offre :
-                <input id="offre" name="offre" type="text" placeholder="Exemple : offre 1234"><span class="legend">*</span>
+            <label for="offre"> Offre : *
+                <input id="offre" name="offre" type="text" placeholder="Exemple : offre 1234">
             </label>
         </div>
         <div class="part1-sect">
-            <label for="date-debut-formation"> Date de début :
-                <input id="date-debut" name="date-debut-formation" type="date"><span class="legend">*</span>
+            <label for="date-debut-formation"> Date de début : *
+                <input id="date-debut" name="date-debut-formation" type="date">
             </label>
-            <label for="date-fin-formation"> Date de fin :
-                <input id="date-fin" name="date-fin-formation" type="date"><span class="legend">*</span>
+            <label for="date-fin-formation"> Date de fin : *
+                <input id="date-fin" name="date-fin-formation" type="date">
             </label>
         </div>
     </fieldset>

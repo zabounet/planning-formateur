@@ -482,7 +482,7 @@ class AdminController extends Controller
             //     $_SESSION['error'] = "email pas bon";
             // }
 
-        } else {
+        } else if(!empty($_POST) && !Form::validate($_POST, ['inscription'])) {
             $_SESSION['error'] = "Formulaire incomplet";
             Refresh::refresh('/planning/public/admin/inscriptionFormateur');
             exit;

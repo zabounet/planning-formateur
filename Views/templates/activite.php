@@ -8,13 +8,15 @@
     <title><?= $link; ?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/header.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/burger.css">    
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <script src="/planning/Views/assets/js/header.js"></script>
 </head>
 
 <body>
 
-    <header>
+    <header class="big">
         <div class="header-content">
             <div class="nav-content menu">
                 <button class="nav-button burger-button">

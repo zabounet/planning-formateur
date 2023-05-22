@@ -132,8 +132,44 @@ addEventListener('DOMContentLoaded', () => {
     const nextButton = document.getElementById('nextButton');
     const submitButton = document.getElementById('submitButton');
 
-    // Show the first fieldset
+    let isChecked = false; // Vérifie si une case a été cochée ou non dans la partie 3
+
+    // Shows the first fieldset
     part1.style.display = 'flex';
+
+    //Créés une nouvelle instance de MutationObserver
+    const observer = new MutationObserver((mutationsList, observer) => {
+        // Pour chaque mutations dans la liste des mutations
+        for (const mutation of mutationsList) {
+            // Vérifie si le type de mutation est 'attributes' et l'attribut changé est 'style'
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                const displayValue = part3.style.display;
+
+                // Check if the element's display property changed to 'flex'
+                if (displayValue === 'flex') {
+
+                    Array.from(interruptions).forEach(function (interruption) {
+                        if (interruption.value !== "addInterruptions" || interruption.value !== "noInterruptions") {
+                            isChecked = true;
+                            nextButton.style.opacity = .1;
+                        }
+
+                        interruption.addEventListener('change', () => {
+                            if (interruption.value === "addInterruptions") {
+                                isChecked = true;
+                                interruptionsDates.style.display = "block";
+                                nextButton.style.opacity = 1;
+                            } else {
+                                isChecked = true;
+                                interruptionsDates.style.display = "none";
+                                nextButton.style.opacity = 1;
+                            }
+                        });
+                    });
+                }
+            }
+        }
+    });
 
     // Add a click event listener to the next button
     nextButton.addEventListener('click', function () {
@@ -251,15 +287,15 @@ addEventListener('DOMContentLoaded', () => {
             else {
                 alert("merci de remplir tous les champs.")
             }
-            
+
             return;
         }
         if (part3.style.display === "flex") {
-            if(nextButton.style.opacity == .1){
+            if (nextButton.style.opacity == .1) {
                 alert("Veuillez cocher l'une des deux cases avant de continuer.");
             }
-            else{
-                if(interruptionsDates.style.display === "none"){
+            else {
+                if (interruptionsDates.style.display === "none") {
                     part3.animate(
                         [
                             {
@@ -310,84 +346,69 @@ addEventListener('DOMContentLoaded', () => {
                     step4.style.backgroundColor = "#58d665";
                     return;
                 }
-                else if(interruptionsDates.style.display === "block"){
-                    if(document.getElementById('date-debut-interruption') && document.getElementById('date-fin-interruption')){
-                        part3.animate(
-                            [
-                                {
-                                    transform: "translate(0, 0)",
-                                    display: "flex",
-                                },
-                                {
-                                    transform: "translate(-1200px, 0)",
-                                    display: "none"
-                                }
-                            ],
-                            {
-                                duration: 700,
-                                iterations: 1,
-                                direction: 'normal',
-                            }
-                        );
-        
-                        part4.animate(
-                            [
-                                {
-                                    position: "absolute",
-                                    left: "1300px",
-                                    top: "73.3px",
-                                    display: "none",
-                                },
-                                {
-                                    position: "absolute",
-                                    left: "0",
-                                    top: "73.3px",
-                                    display: "flex"
-                                }
-                            ],
-                            {
-                                duration: 700,
-                                iterations: 1,
-                                direction: 'normal',
-                            }
-                        );
-                        part4.style.display = 'flex';
-                        setTimeout(function () {
-                            part3.style.display = 'none';
-                        }, 700);
-        
-                        nextButton.style.display = "none";
-                        submitButton.style.display = "inline-block"
-        
-                        step4.style.backgroundColor = "#58d665";
-                        return;
+                else if (interruptionsDates.style.display === "block") {
+                    if (!document.getElementById('date-debut-interruption' || document.getElementById('date-fin-interruption'))) {
+                        alert("Veuillez ajouter au moins une période ou cocher \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
                     }
                     else {
-                        alert("Veuillez renseigner au moins une période ou cocher \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
+
+                        if (document.getElementById('date-debut-interruption').value && document.getElementById('date-fin-interruption').value) {
+                            part3.animate(
+                                [
+                                    {
+                                        transform: "translate(0, 0)",
+                                        display: "flex",
+                                    },
+                                    {
+                                        transform: "translate(-1200px, 0)",
+                                        display: "none"
+                                    }
+                                ],
+                                {
+                                    duration: 700,
+                                    iterations: 1,
+                                    direction: 'normal',
+                                }
+                            );
+
+                            part4.animate(
+                                [
+                                    {
+                                        position: "absolute",
+                                        left: "1300px",
+                                        top: "73.3px",
+                                        display: "none",
+                                    },
+                                    {
+                                        position: "absolute",
+                                        left: "0",
+                                        top: "73.3px",
+                                        display: "flex"
+                                    }
+                                ],
+                                {
+                                    duration: 700,
+                                    iterations: 1,
+                                    direction: 'normal',
+                                }
+                            );
+                            part4.style.display = 'flex';
+                            setTimeout(function () {
+                                part3.style.display = 'none';
+                            }, 700);
+
+                            nextButton.style.display = "none";
+                            submitButton.style.display = "inline-block"
+
+                            step4.style.backgroundColor = "#58d665";
+                            return;
+                        } else {
+                            alert("Veuillez renseigner une date de début et une date de fin \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
+                        }
                     }
                 }
             }
         }
     });
-    nextButton.addEventListener('click', function () {
-        if (part3.style.display === "flex") {
-            Array.from(interruptions).forEach(function (interruption){
-                // nextButton.setAttribute('disabled', '');
-                nextButton.style.opacity = .1;
-
-                interruption.addEventListener('change', () =>{
-                    if(interruption.value === "addInterruptions"){
-                        interruptionsDates.style.display = "block";
-                        // nextButton.removeAttribute('disabled');
-                        nextButton.style.opacity = 1;
-                    }
-                    else if(interruption.value === "noInterruptions"){
-                        interruptionsDates.style.display = "none";
-                        // nextButton.removeAttribute('disabled');
-                        nextButton.style.opacity = 1;
-                    }
-                })
-            });
-        };
-    })
+    observer.observe(part3, { attributes: true });
 })
