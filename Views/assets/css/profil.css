@@ -238,6 +238,7 @@ input[type=checkbox]:checked~div {
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
+  height: 18em;
   margin-right: auto;
   margin-left: auto;
 }
@@ -258,7 +259,7 @@ input[type=checkbox]:checked~div {
   justify-content: space-between;
   outline: solid #84AE70 2px;
   align-items: center;
-  padding-left: 20px;
+  padding: 10px 20px;
   font-size: large;
 }
 
@@ -266,7 +267,14 @@ input[type=checkbox]:checked~div {
 input[type="color"] {
   border: none;
   width: 35px;
-  border-radius: 3px;
+  height: 35px;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 

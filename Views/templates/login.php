@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/login.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
+    <script src="/planning/Views/assets/js/login.js"></script>
 </head>
 
 <body>
