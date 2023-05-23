@@ -70,6 +70,157 @@ class FormationModel extends Model{
             ]
         );
     }
+
+    public function getDatesById(array $id_list)
+{
+    $this->requete("SET sql_mode='';");
+
+    $sql = "SELECT f.id_formation,
+            GROUP_CONCAT(dr.date_debut_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_debut_ran,
+            GROUP_CONCAT(dr.date_fin_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_fin_ran,
+            GROUP_CONCAT(dcf.date_debut_certif ORDER BY dcf.date_debut_certif SEPARATOR ',') AS date_debut_certif,
+            GROUP_CONCAT(dcf.date_fin_certif ORDER BY dcf.date_debut_certif SEPARATOR ',') AS date_fin_certif,
+            GROUP_CONCAT(dc.date_debut_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_debut_centre,
+            GROUP_CONCAT(dc.date_fin_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_fin_centre,
+            GROUP_CONCAT(dp.date_debut_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_debut_pae,
+            GROUP_CONCAT(dp.date_fin_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_fin_pae
+            FROM formation f 
+            LEFT JOIN Date_ran dr ON f.id_formation = dr.id_formation
+            LEFT JOIN Date_certif dcf ON f.id_formation = dcf.id_formation
+            LEFT JOIN Date_centre dcent ON f.id_formation = dc.id_formation
+            LEFT JOIN Date_pae dp ON f.id_formation = dp.id_formation
+            WHERE f.id_formation IN (";
+
+    $nbId = count($id_list);
+    for ($i = 0; $i < $nbId; $i++) {
+        if ($i == 0) {
+            $virgule = "";
+        } else {
+            $virgule = ",";
+        }
+        $sql .= $virgule . $id_list[$i];
+    }
+
+    $sql .= ") GROUP BY f.id_formation";
+
+    $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    return $result;
+}
+
+
+    // le requet en haut fait le meme chose que 4 requete en bas
+
+
+
+    // public function getRanById(array $id_list)
+    // {
+    //     $this->requete("SET sql_mode='';");
+
+    //     $sql = "SELECT f.id_formation,
+    //     GROUP_CONCAT(dr.date_debut_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_debut_ran,
+    //     GROUP_CONCAT(dr.date_fin_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_fin_ran
+    //     FROM formation f 
+    //     JOIN Date_ran dr ON f.id_formation = dr.id_formation
+    //     WHERE f.id_formation IN (";
+
+    //     $nbId = count($id_list);
+    //     for ($i = 0; $i < $nbId; $i++) {
+    //         if ($i == 0) {
+    //             $virgule = "";
+    //         } else {
+    //             $virgule = ",";
+    //         }
+    //         $sql .= $virgule . $id_list[$i];
+    //     }
+
+    //     $sql .= ") GROUP BY f.id_formation";
+
+    //     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    //     return $result;
+    // }
+
+    // public function getCertifById(array $id_list)
+    // {
+    //     $this->requete("SET sql_mode='';");
+
+    //     $sql = "SELECT f.id_formation,
+    //     GROUP_CONCAT(dc.date_debut_certif ORDER BY dc.date_debut_certif SEPARATOR ',') AS date_debut_certif,
+    //     GROUP_CONCAT(dc.date_fin_certif ORDER BY dc.date_debut_certif SEPARATOR ',') AS date_fin_certif
+    //     FROM formation f 
+    //     JOIN Date_certif dc ON f.id_formation = dc.id_formation
+    //     WHERE f.id_formation IN (";
+
+    //     $nbId = count($id_list);
+    //     for ($i = 0; $i < $nbId; $i++) {
+    //         if ($i == 0) {
+    //             $virgule = "";
+    //         } else {
+    //             $virgule = ",";
+    //         }
+    //         $sql .= $virgule . $id_list[$i];
+    //     }
+
+    //     $sql .= ") GROUP BY f.id_formation";
+
+    //     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    //     return $result;
+    // }
+
+    // public function getCentreById(array $id_list)
+    // {
+    //     // Nécessaire afin de pouvoir contourner la règle du group by forcant à y mettre l'ensemble des champs du select
+    //     $this->requete("SET sql_mode='';");
+
+    //     // Effectues une concaténation de toute les lignes de la table où l'id du formation correspond
+    //     // afin de ne retourner qu'une seule ligne par formateurs.
+    //     $sql = "SELECT f.id_formation, 
+    //     GROUP_CONCAT(dc.date_debut_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_debut_centre, 
+    //     GROUP_CONCAT(dc.date_fin_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_fin_centre
+    //     FROM formation f 
+    //     JOIN Date_centre dc ON f.id_formation = dc.id_formation 
+    //     WHERE f.id_formation IN (";
+
+    //     $nbId = count($id_list);
+    //     for ($i = 0; $i < $nbId; $i++) {
+    //         if ($i == 0) {
+    //             $virgule = "";
+    //         } else {
+    //             $virgule = ",";
+    //         }
+    //         $sql .= $virgule . $id_list[$i];
+    //     }
+
+    //     $sql .= ") GROUP BY f.id_formation";
+
+    //     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    //     return $result;
+    // }
+    // public function getPaeById(array $id_list)
+    // {
+    //     $this->requete("SET sql_mode='';");
+
+    //     $sql = "SELECT f.id_formation,
+    //     GROUP_CONCAT(dp.date_debut_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_debut_pae, 
+    //     GROUP_CONCAT(dp.date_fin_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_fin_pae,
+    //     FROM formation f 
+    //     JOIN Date_pae dp ON f.id_formation = dp.id_formation
+    //     WHERE f.id_formation IN (";
+
+    //     $nbId = count($id_list);
+    //     for ($i = 0; $i < $nbId; $i++) {
+    //         if ($i == 0) {
+    //             $virgule = "";
+    //         } else {
+    //             $virgule = ",";
+    //         }
+    //         $sql .= $virgule . $id_list[$i];
+    //     }
+
+    //     $sql .= ") GROUP BY f.id_formation";
+
+    //     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    //     return $result;
+    // }
     
     /**
      * Get the value of id_formation

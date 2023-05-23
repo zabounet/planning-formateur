@@ -40,10 +40,19 @@ class RooterController extends Controller
             // Récupère l'ensemble des champs de la table formation où les numero_grn, id_formateur et id_ville sont respectivements égaux à $grn, $_POST['formateurs] et $centre. 
             $formations = $databaseFormation->getByIn(['*'], 'formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
+
+            
+                // Création de tableaux vides pour stocker les périodes diferents de chaque formation
+                $formation_centres = array();
+                $formation_certifs = array();
+                $formation_PAEs = array();
+                $formation_RANs = array();
             // Initialisation de la variable $html.
+            // var_dump($formations);
             $html = "
                 <div class='main-container'> 
                     <div class='tableau-container'> ";
+            
 
             // Compte le nombre de formations récupérées
             $nbformation = count($formations);
@@ -360,6 +369,7 @@ class RooterController extends Controller
                     $html .= "<th>" . $jour . "</th> ";
                 }
                 $html .= "</tr> <tbody> <tr> ";
+
 
                 // Création de tableaux vides pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
