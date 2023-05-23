@@ -10,9 +10,7 @@
                 <label class="mail-label label" for="email">E-mail :</label>
                 <div class="mail-container">
                     <img class="icon" src="/planning/Views/assets/image/user_icon.svg" alt="">
-                    <div class="form-input">
-                        <input type="email" name="email" id="email">
-                    </div>
+                        <input class="form-input" type="email" name="email" id="email">
                 </div>
             </div>
             <div class="pass-box box">
@@ -25,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" name="login" class="form-btn">
+            <input type="submit" name="login" class="form-btn" value="Login">
         </form>
         <span class="error">
             <?php if (isset($_SESSION['erreur'])) {
