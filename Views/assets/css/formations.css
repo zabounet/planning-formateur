@@ -204,10 +204,8 @@ fieldset {
     margin: 1rem 0;
 }
 
-.part1-sect:last-child {
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
+.part1-sect:last-child label:first-child:after{
+    content: "";
 }
 
 .part1-sect label {

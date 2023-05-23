@@ -45,10 +45,13 @@
                 <ul>
                     <li><a href="/planning/public/">Home</a></li>
                     <li><a href="/planning/public/formateur/profil">Profil </a></li>
-                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
                     <li><a href="/planning/public/admin/formationsHome">Gérer les formations</a></li>
                     <li><a href="/planning/public/admin/inscriptionFormateur">Inscrire un nouveau formateur</a></li>
-                    <li><a href="/planning/public/admin/activiteFormateur">Consulter l'activité des formateurs</a></li>
+                    <li><a href="/planning/public/admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
+                    <?php if (isset($infosCurrent) && $link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur) : ?>
+                        <li><a href="/planning/public/admin/formateursHome">Retourner à la liste des formateurs</a></li>
+                    <?php endif; ?>
+                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
                 </ul>
             </nav>
         </div>

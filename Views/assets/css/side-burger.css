@@ -108,7 +108,7 @@ header .dropmenu ul li {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    padding: 2rem 0;
+    padding: 2rem 1rem;
     transition: ease .2s
 }
 
