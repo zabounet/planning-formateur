@@ -82,6 +82,9 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
             </label>
         </div>
         <div class="part1-sect">
+            <label for="candidats"> Places / Candidats :
+                <input type="text" name="candidats" value="<?= $infosCurrent['candidats_formation'];?>" placeholder="Nb places / Nb candidats">
+            </label>
             <label for="date-debut-formation"> Date de début :
                 <input id="date-debut" value="<?= $infosCurrent['date_debut_formation']; ?>" name="date-debut-formation" type="date">
             </label>

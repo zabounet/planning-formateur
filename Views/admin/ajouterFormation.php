@@ -43,7 +43,7 @@
             </label>
 
             <label for="description"> Description : 
-                <textarea id="description" name="description" style="resize : none;"></textarea>
+                <textarea id="description" name="description" placeholder="Exemple: Concepteur Developpeur d'Applications" style="resize : none;"></textarea>
             </label>
 
             <label for="offre"> Offre : 
@@ -51,6 +51,9 @@
             </label>
         </div>
         <div class="part1-sect">
+            <label for="candidats"> Places / Candidats :
+                <input type="text" name="candidats" placeholder="Nb places / Nb candidats">
+            </label>
             <label for="date-debut-formation"> Date de début : 
                 <input id="date-debut" name="date-debut-formation" type="date">
             </label>

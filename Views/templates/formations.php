@@ -39,13 +39,13 @@
                 <ul>
                     <li><a href="/planning/public/">Home</a></li>
                     <li><a href="/planning/public/formateur/profil">Profil </a></li>
-                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
                     <li><a href="/planning/public/admin/formateursHome">Gérer les formateurs</a></li>
                     <?php if($link === "Formation home"):?>
                         <li><a href="/planning/public/admin/ajouterFormation">Ajouter une nouvelle formation</a></li>
                     <?php else:?>
                         <li><a href="/planning/public/admin/formationsHome">Retourner au menu des formations</a></li>
                     <?php endif ;?>
+                    <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
             </nav>
         </div>
     </header>

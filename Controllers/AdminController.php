@@ -34,6 +34,7 @@ class AdminController extends Controller
                 'id_formation',
                 'nom_formation',
                 'description_formation',
+                'candidats_formation',
                 'date_debut_formation',
                 'date_fin_formation',
                 'Formation.numero_grn',
@@ -62,6 +63,7 @@ class AdminController extends Controller
                     'id_formation',
                     'nom_formation',
                     'description_formation',
+                    'candidats_formation',
                     'date_debut_formation',
                     'date_fin_formation',
                     'Formation.numero_grn',
@@ -156,6 +158,7 @@ class AdminController extends Controller
                     'nom_formation',
                     'acronyme_formation',
                     'description_formation',
+                    'candidats_formation',
                     'date_debut_formation',
                     'date_fin_formation',
                     'id_type_formation',
@@ -167,6 +170,7 @@ class AdminController extends Controller
                     $nomFormation,
                     $_POST['acronyme'],
                     $_POST['description'],
+                    $_POST['candidats'],
                     $_POST['date-debut-formation'],
                     $_POST['date-fin-formation'],
                     $_POST['type'],
@@ -227,6 +231,7 @@ class AdminController extends Controller
         }
 
         $formation = new FormationModel;
+        $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
 
@@ -241,9 +246,34 @@ class AdminController extends Controller
         $infosPae = $formation->getBy(['date_debut_pae', 'date_fin_pae'], 'Date_pae', ['id_formation'], [$currentId]);
         $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'], 'Date_certif', ['id_formation'], [$currentId]);
         $infosCentre = $formation->getBy(['date_debut_centre', 'date_fin_centre'], 'Date_centre', ['id_formation'], [$currentId]);
-        $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'], 'Interruption ', ['id_formation'], [$currentId]);
+        $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'], 'Interruption', ['id_formation'], [$currentId]);
+        $idInterventions = $formation->getBy(['date_debut_intervention', 'date_fin_intervention', 'id_formateur'], 'date_intervention', ['id_formation'], [$currentId]);
+        
+        $interventions_formateurs = array();
+        for($i = 0; $i < count($idInterventions); $i++){
+            $formateurs = [
+                "id" => $idInterventions[$i]->id_formateur
+            ];
+            $interventions_formateurs[] = $formateurs['id'];
+        };
 
-        $this->render('admin/modifierFormation', compact('infosCurrent', 'infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre',  'infosInterruption'), 'formations');
+        $dates_interventions_formateurs = $formateur->getInterventionById($interventions_formateurs);
+
+        $infosInterventions = array();
+        for($j = 0; $j < count($dates_interventions_formateurs); $j++){
+            $debutIntervention = explode(",",$dates_interventions_formateurs[$j]['date_debut']);
+            $finIntervention = explode(",",$dates_interventions_formateurs[$j]['date_fin']);
+            for($z = 0; $z < count($debutIntervention); $z++){
+                $interventions = [
+                    "debut" => $debutIntervention[$z],
+                    "fin" => $finIntervention[$z],
+                    "id" => $dates_interventions_formateurs[$j]['id_formateur']
+                ];
+                $infosInterventions[] = $interventions;
+            }
+        }
+        
+        $this->render('admin/modifierFormation', compact('infosCurrent', 'infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre', 'infosInterruption', 'infosInterventions'), 'formations');
     }
 
     // Ajouter une nouvelle formation 
@@ -268,6 +298,7 @@ class AdminController extends Controller
                 'ville'
             ],
             [
+                'candidats',
                 'date-debut-ran',
                 'date-fin-ran',
                 'date-debut-entreprise',
@@ -302,6 +333,7 @@ class AdminController extends Controller
                 $nomFormation,
                 $_POST['acronyme'],
                 $_POST['description'],
+                $_POST['candidats'],
                 $_POST['date-debut-formation'],
                 $_POST['date-fin-formation'],
                 $_POST['type'],
@@ -345,10 +377,10 @@ class AdminController extends Controller
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation);
+                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            Refresh::refresh('/planning/public/admin/ajouterFormation');
+            // Refresh::refresh('/planning/public/admin/ajouterFormation');
         }
 
         $infos = new FormationModel;
