@@ -71,44 +71,60 @@ class FormationModel extends Model{
         );
     }
 
-    public function getDatesById(array $id_list)
+    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $id_list)
 {
     $this->requete("SET sql_mode='';");
 
-    $sql = "SELECT f.id_formation,
-            GROUP_CONCAT(dr.date_debut_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_debut_ran,
-            GROUP_CONCAT(dr.date_fin_ran ORDER BY dr.date_debut_ran SEPARATOR ',') AS date_fin_ran,
-            GROUP_CONCAT(dcf.date_debut_certif ORDER BY dcf.date_debut_certif SEPARATOR ',') AS date_debut_certif,
-            GROUP_CONCAT(dcf.date_fin_certif ORDER BY dcf.date_debut_certif SEPARATOR ',') AS date_fin_certif,
-            GROUP_CONCAT(dc.date_debut_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_debut_centre,
-            GROUP_CONCAT(dc.date_fin_centre ORDER BY dc.date_debut_centre SEPARATOR ',') AS date_fin_centre,
-            GROUP_CONCAT(dp.date_debut_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_debut_pae,
-            GROUP_CONCAT(dp.date_fin_pae ORDER BY dp.date_debut_pae SEPARATOR ',') AS date_fin_pae
-            FROM formation f 
-            LEFT JOIN Date_ran dr ON f.id_formation = dr.id_formation
-            LEFT JOIN Date_certif dcf ON f.id_formation = dcf.id_formation
-            LEFT JOIN Date_centre dcent ON f.id_formation = dc.id_formation
-            LEFT JOIN Date_pae dp ON f.id_formation = dp.id_formation
-            WHERE f.id_formation IN (";
-
+    $nbChamps = count($champSelect);
+    $nbDates = count($date);
+    
+    $sql = "SELECT ";
+    
+    // Ajouter les champs de sélection à la requête
+    for ($i = 0; $i < $nbChamps; $i++) {
+        $sql .= $table . "." . $champSelect[$i];
+        
+        if ($i < $nbChamps - 1) {
+            $sql .= ", ";
+        }
+    }
+    
+    // Ajouter les group_concat pour les dates
+    for ($i = 0; $i < $nbDates; $i++) {
+        $sql .= ", GROUP_CONCAT(" . $joinTable[$i] . "." . $date[$i] . " ORDER BY " . $joinTable[$i] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
+    }
+    
+    // Ajouter la clause FROM avec les tables et les jointures
+    $sql .= " FROM " . $table;
+    
+    $nbJoin = count($joinTable);
+    for ($i = 0; $i < $nbJoin; $i++) {
+        $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $id_list[$i] . " = " . $joinTable[$i] . "." . $id_list[$i];
+    }
+    
+    // Ajouter la clause WHERE avec la liste d'identifiants
+    $sql .= " WHERE " . $table . "." . $champSelect[0] . " IN (";
+    
     $nbId = count($id_list);
     for ($i = 0; $i < $nbId; $i++) {
-        if ($i == 0) {
-            $virgule = "";
-        } else {
-            $virgule = ",";
+        if ($i > 0) {
+            $sql .= ",";
         }
-        $sql .= $virgule . $id_list[$i];
+        $sql .= $id_list[$i];
     }
+    
+    $sql .= ") GROUP BY " . $table . "." . $champSelect[0];
 
-    $sql .= ") GROUP BY f.id_formation";
-
+    echo $sql;
+    
     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+    
     return $result;
 }
 
 
-    // le requet en haut fait le meme chose que 4 requete en bas
+
+    // le requet au haut fait le meme chose que 4 requete en bas
 
 
 
