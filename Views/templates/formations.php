@@ -49,7 +49,7 @@
             </nav>
         </div>
     </header>
-    <main <?php if($link === "Ajouter une formation"): echo "class='fixed-height'";?><?php endif;?>>
+    <main <?php if(in_array($link, ["Ajouter une formation","Modifier la formation " . $infosCurrent['acronyme_formation']])): echo "class='fixed-height'";?><?php endif;?>>
         <?= $contenu; ?>
     </main>
 </body>
