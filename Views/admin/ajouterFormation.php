@@ -12,7 +12,7 @@
         <hr>
 
         <div class="part1-sect">
-        <label for="type">Catégorie :
+            <label for="type">Catégorie :
                 <select name="type" id="type">
                     <option disabled selected>Choisir un type de formation</option>
                     <?php foreach ($infosFormation['Types'] as $types) : ?>
@@ -20,7 +20,7 @@
                     <?php endforeach; ?>
                 </select></label>
 
-            <label for="grn"> GRN : *
+            <label for="grn"> GRN : 
                 <select name="grn" id="grn">
                     <option disabled selected>Choisir un GRN</option>
                     <?php foreach ($infosFormation['GRNS'] as $grn) : ?>
@@ -28,7 +28,7 @@
                     <?php endforeach; ?>
                 </select>
             </label>
-            <label for="ville"> Ville : *
+            <label for="ville"> Ville : 
                 <select name="ville" id="ville">
                     <option disabled selected>Choisir une ville</option>
                     <?php foreach ($infosFormation['Villes'] as $villes) : ?>
@@ -38,23 +38,23 @@
             </label>
         </div>
         <div class="part1-sect">
-            <label for="acronyme"> Acronyme : *
+            <label for="acronyme"> Acronyme : 
                 <input id="acronyme" name="acronyme" type="text" placeholder="Exemple : CDA">
             </label>
 
-            <label for="description"> Description : *
+            <label for="description"> Description : 
                 <textarea id="description" name="description" style="resize : none;"></textarea>
             </label>
 
-            <label for="offre"> Offre : *
+            <label for="offre"> Offre : 
                 <input id="offre" name="offre" type="text" placeholder="Exemple : offre 1234">
             </label>
         </div>
         <div class="part1-sect">
-            <label for="date-debut-formation"> Date de début : *
+            <label for="date-debut-formation"> Date de début : 
                 <input id="date-debut" name="date-debut-formation" type="date">
             </label>
-            <label for="date-fin-formation"> Date de fin : *
+            <label for="date-fin-formation"> Date de fin : 
                 <input id="date-fin" name="date-fin-formation" type="date">
             </label>
         </div>
@@ -68,7 +68,7 @@
 
         <div class="part2-container">
             <div class="col1">
-                <h3>Période de RAN</h3>
+                <h3>Périodes de RAN</h3>
                 <div class="date-container">
                     <button type="button" class="add-date-fields" data="ran">+</button>
                 </div>
@@ -102,11 +102,11 @@
         <div class="part3-container">
             <div class="checkbox-choice">
                 <div class="separate">
-                    <label for="">Aucune interruption</label>
+                    <label for="interruption">Aucune interruption</label>
                     <input type="radio" name="interruption" value="noInterruptions">
                 </div>
                 <div class="separate">
-                    <label for="">Ajouter une interruption</label>
+                    <label for="interruption">Ajouter une interruption</label>
                     <input type="radio" name="interruption" value="addInterruptions">
                 </div>
             </div>
@@ -145,8 +145,8 @@
         <div id="step2"></div>
         <div id="step3"></div>
         <div id="step4"></div>
-    </div>    
+    </div>
     <input id="nextButton" type="button" value="Suivant">
     <input id="submitButton" type="submit" value="Valider">
-    <span class="legend">* champs obligatoires</span>  
+    <span class="legend">* champs obligatoires</span>
 </form>
