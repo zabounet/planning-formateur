@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : mer. 24 mai 2023 à 10:32
+-- Généré le : mer. 24 mai 2023 à 17:01
 -- Version du serveur :  5.7.34
 -- Version de PHP : 8.0.8
 
@@ -48,7 +48,7 @@ CREATE TABLE `Couleurs` (
 --
 
 INSERT INTO `Couleurs` (`couleur_id`, `couleur_centre`, `couleur_pae`, `couleur_certif`, `couleur_ran`, `couleur_vacance_demandees`, `couleur_vacance_validee`, `couleur_tt`, `couleur_ferie`, `couleur_weekend`, `couleur_interruption`, `couleur_MNSP`, `couleur_itinerant`) VALUES
-(1, '#a10c0c', '#000000', '#000000', '#000000', '#000000', '#6d5775', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000');
+(1, '#a10c0c', '#ffb3b3', '#32266e', '#0bb116', '#0fe1f0', '#007b94', '#9c69e8', '#f07f24', '#cce5f0', '#cbec55', '#d3d714', '#e0a6e8');
 
 -- --------------------------------------------------------
 
@@ -69,15 +69,15 @@ CREATE TABLE `Date_centre` (
 
 INSERT INTO `Date_centre` (`id_centre`, `date_debut_centre`, `date_fin_centre`, `id_formation`) VALUES
 (7, '2023-06-01', '2023-06-30', 3),
-(8, '2023-05-01', '2023-11-15', 1),
-(9, '2024-03-15', '2024-07-25', 1),
 (11, '2023-05-01', '2023-07-23', 2),
 (12, '2024-01-10', '2025-03-05', 4),
 (13, '2023-06-17', '2023-07-13', 4),
 (14, '0001-01-01', '0001-01-01', 4),
 (15, '2023-06-16', '2023-08-06', 4),
 (16, '2024-12-07', '2024-09-08', 4),
-(17, '2024-06-10', '2024-06-20', 5);
+(17, '2024-06-10', '2024-06-20', 5),
+(22, '2023-05-01', '2023-11-15', 1),
+(23, '2024-03-15', '2024-07-25', 1);
 
 -- --------------------------------------------------------
 
@@ -98,8 +98,8 @@ CREATE TABLE `Date_certif` (
 
 INSERT INTO `Date_certif` (`id_certif`, `date_debut_certif`, `date_fin_certif`, `id_formation`) VALUES
 (4, '2023-07-01', '2023-07-07', 3),
-(5, '2024-08-06', '2024-08-10', 1),
-(7, '2023-11-01', '2023-11-09', 2);
+(7, '2023-11-01', '2023-11-09', 2),
+(10, '2024-08-06', '2024-08-10', 1);
 
 -- --------------------------------------------------------
 
@@ -123,14 +123,42 @@ INSERT INTO `Date_intervention` (`id_intervention`, `date_debut_intervention`, `
 (1, '2023-05-11', '2023-08-24', 4, 1),
 (3, '2023-08-25', '2023-09-01', 4, 2),
 (4, '2023-09-11', '2024-01-11', 4, 3),
-(5, '2023-05-01', '2023-08-17', 3, 2),
-(6, '2023-08-24', '2024-02-17', 3, 1),
 (7, '2023-05-11', '2023-05-26', 5, 3),
-(8, '2024-01-09', '2024-01-15', 3, 4),
 (9, '2024-05-10', '2024-05-12', 3, 4),
 (10, '2023-06-21', '2023-06-23', 4, 4),
-(11, '2023-06-09', '2023-06-19', 3, 4),
-(12, '2024-05-29', '2024-09-08', 3, 5);
+(19, '2023-05-11', '2023-08-24', 4, 1),
+(20, '2023-06-21', '2023-06-23', 4, 1),
+(21, '2023-08-25', '2023-09-01', 4, 1),
+(22, '2023-09-11', '2024-01-11', 4, 1),
+(26, '2023-06-09', '2023-06-19', 3, 1),
+(28, '2023-08-24', '2024-02-17', 3, 1),
+(30, '2024-01-09', '2024-01-15', 3, 1),
+(34, '2024-05-29', '2024-09-08', 3, 1),
+(35, '2023-05-11', '2023-08-24', 4, 1),
+(36, '2023-05-11', '2023-08-24', 4, 1),
+(37, '2023-06-21', '2023-06-23', 4, 1),
+(38, '2023-06-21', '2023-06-23', 4, 1),
+(39, '2023-08-25', '2023-09-01', 4, 1),
+(40, '2023-08-25', '2023-09-01', 4, 1),
+(41, '2023-09-11', '2024-01-11', 4, 1),
+(42, '2023-09-11', '2024-01-11', 4, 1),
+(44, '2023-05-01', '2023-08-17', 3, 1),
+(67, '2023-05-11', '2023-08-24', 4, 1),
+(68, '2023-05-11', '2023-08-24', 4, 1),
+(69, '2023-05-11', '2023-08-24', 4, 1),
+(70, '2023-05-11', '2023-08-24', 4, 1),
+(71, '2023-06-21', '2023-06-23', 4, 1),
+(72, '2023-06-21', '2023-06-23', 4, 1),
+(73, '2023-06-21', '2023-06-23', 4, 1),
+(74, '2023-06-21', '2023-06-23', 4, 1),
+(75, '2023-08-25', '2023-09-01', 4, 1),
+(76, '2023-08-25', '2023-09-01', 4, 1),
+(77, '2023-08-25', '2023-09-01', 4, 1),
+(78, '2023-08-25', '2023-09-01', 4, 1),
+(79, '2023-09-11', '2024-01-11', 4, 1),
+(80, '2023-09-11', '2024-01-11', 4, 1),
+(81, '2023-09-11', '2024-01-11', 4, 1),
+(82, '2023-09-11', '2024-01-11', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -151,11 +179,11 @@ CREATE TABLE `Date_pae` (
 
 INSERT INTO `Date_pae` (`id_date_pae`, `date_debut_pae`, `date_fin_pae`, `id_formation`) VALUES
 (9, '2023-05-01', '2023-05-31', 3),
-(10, '2024-07-26', '2024-08-05', 1),
-(11, '2023-11-16', '2024-03-14', 1),
 (15, '2023-08-30', '2023-10-07', 2),
 (16, '2023-05-10', '2023-06-11', 2),
-(17, '2023-06-26', '2023-07-15', 2);
+(17, '2023-06-26', '2023-07-15', 2),
+(22, '2024-07-26', '2024-08-05', 1),
+(23, '2023-11-16', '2024-03-14', 1);
 
 -- --------------------------------------------------------
 
@@ -176,8 +204,8 @@ CREATE TABLE `Date_ran` (
 
 INSERT INTO `Date_ran` (`id_ran`, `date_debut_ran`, `date_fin_ran`, `id_formation`) VALUES
 (4, '2023-04-26', '2023-05-07', 3),
-(5, '2023-04-26', '2023-04-30', 1),
-(7, '2023-04-30', '2023-05-07', 2);
+(7, '2023-04-30', '2023-05-07', 2),
+(10, '2023-04-26', '2023-04-30', 1);
 
 -- --------------------------------------------------------
 
@@ -229,7 +257,7 @@ CREATE TABLE `Formateur` (
   `prenom_formateur` varchar(64) NOT NULL,
   `mail_formateur` varchar(128) NOT NULL,
   `mdp_formateur` varchar(255) NOT NULL,
-  `type_contrat_formateur` char(3) NOT NULL,
+  `type_contrat_formateur` varchar(10) NOT NULL,
   `date_debut_contrat` date DEFAULT NULL,
   `date_fin_contrat` date DEFAULT NULL,
   `permissions_utilisateur` tinyint(4) NOT NULL,
@@ -243,10 +271,12 @@ CREATE TABLE `Formateur` (
 
 INSERT INTO `Formateur` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `mail_formateur`, `mdp_formateur`, `type_contrat_formateur`, `date_debut_contrat`, `date_fin_contrat`, `permissions_utilisateur`, `numero_grn`, `id_ville`) VALUES
 (1, 'Non', 'Attribue', '', '', '', NULL, NULL, 0, 164, 1),
-(2, 'Veronique', 'Veronique', 'veronique@veronique.veronique', '$argon2id$v=19$m=65536,t=4,p=2$N2M3VWl3TEJOMDU5TmhocQ$cC3Y9GMdi52uOX7F/4ckLo9gil7MxnIor+UU3fudVHs', 'AUTRE', NULL, NULL, 1, 164, 1),
+(2, 'Veronique', 'Veronique', 'veronique@veronique.veronique', '$argon2id$v=19$m=65536,t=4,p=2$N2M3VWl3TEJOMDU5TmhocQ$cC3Y9GMdi52uOX7F/4ckLo9gil7MxnIor+UU3fudVHs', 'AUT', NULL, NULL, 1, 164, 1),
 (3, 'Bezault', 'Sandy', 'bezo@sendi.afpa', '$argon2id$v=19$m=65536,t=4,p=2$a1NuMWdhQTFnZEhLMkdBbw$FW6Z35tEyozZ4oOQ8r1WIaHcLhJsUhog5hTZ+sC7Qq4', 'CDI', '2014-04-17', '0001-01-01', 0, 164, 1),
 (4, 'akbari', 'ali', '110.akbari.98@gmail.com', '$argon2id$v=19$m=65536,t=4,p=2$LzBxZmI4bDdHLzJuNVJEQw$3fjk+b06PEas2BHkfJYJBZ7Kd2jCYwM0zY7kLEPa1TA', 'CDI', '2023-05-02', '0001-01-01', 0, 165, 1),
-(5, 'bezo', 'sendi', 'bezo@sendi@affpa.fere', '$argon2id$v=19$m=65536,t=4,p=2$SlprOWFhZldBVHFMbkNsRA$sGKVDFBKPhG28zimfZhFdxLx1AM9XTRt7IpxdjwE3Wo', 'CDD', '2014-04-17', '2023-04-27', 0, 164, 1);
+(5, 'bezo', 'sendi', 'bezo@sendi@affpa.fere', '$argon2id$v=19$m=65536,t=4,p=2$SlprOWFhZldBVHFMbkNsRA$sGKVDFBKPhG28zimfZhFdxLx1AM9XTRt7IpxdjwE3Wo', 'CDD', '2014-04-17', '2023-04-27', 0, 164, 1),
+(6, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$TllKcU8yNmxXZnFyd0c0Ug$jS6FF3v4ZvHEAe6EiC0JbbvvzHWgXO/mYDQAxtCZ36k', 'INTRIME', '2023-12-10', '2024-02-10', 0, 166, 2),
+(7, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$YU5MVElCZFZ6QVJvYzQzQQ$iJRpfq/kcm4L+oESviWEIoPcRhv7N5H4k51rzSWOYOk', 'INTRIME', '2023-12-10', '2024-02-10', 0, 166, 2);
 
 -- --------------------------------------------------------
 
@@ -273,7 +303,7 @@ CREATE TABLE `Formation` (
 --
 
 INSERT INTO `Formation` (`id_formation`, `nom_formation`, `acronyme_formation`, `description_formation`, `candidats_formation`, `date_debut_formation`, `date_fin_formation`, `numero_grn`, `id_type_formation`, `id_formateur`, `id_ville`) VALUES
-(1, '164 CDA offre 1099  : 2023-04-30 - 2023-11-09 Tours', 'CDA', ' CDACDACDA', '', '2023-04-30', '2023-11-09', 164, 4, 3, 2),
+(1, '164 CDA offre 1099  : 30-04-2023 - 09-11-2023 Tours', 'CDA', '    CDACDACDA', '', '2023-04-30', '2023-11-09', 164, 2, 7, 2),
 (2, '164 GUC offre 1983  : 2023-04-26 - 2024-08-10 Tours', 'GUC', ' GUCGUCGUC', '', '2023-04-26', '2024-08-10', 164, 1, 5, 2),
 (3, '166 B3 offre 1060 : 2023-04-30 - 2023-11-09 Tours', 'B3', 'B3B3B3B3', '', '2023-04-30', '2023-11-09', 166, 3, 1, 2),
 (4, '164 1 1 : 0001-01-01 - 0001-01-01 Blois', '1', '1', '', '0001-01-01', '0001-01-01', 164, 1, 1, 1),
@@ -322,6 +352,57 @@ INSERT INTO `Interruption` (`id_interruption`, `date_debut_interruption`, `date_
 (9, '2023-05-31', '2023-06-11', 2),
 (10, '2023-08-09', '2023-08-14', 4),
 (11, '2024-07-07', '2024-07-07', 5);
+
+--
+-- Déchargement des données de la table `Logs`
+--
+
+INSERT INTO `Logs` (`id`, `user_email`, `activity_type`, `success`, `activity_time`) VALUES
+(135, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:22:56'),
+(136, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:24:09'),
+(137, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:24:32'),
+(138, 'veronique@veronique.veronique', 'DELETE', 1, '2023-05-24 14:35:16'),
+(139, 'veronique@veronique.veronique', 'Array Dans 1', 1, '2023-05-24 14:39:30'),
+(140, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:14'),
+(141, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:16'),
+(142, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:17'),
+(143, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:18'),
+(144, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:19'),
+(145, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:20'),
+(146, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:20'),
+(147, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:22'),
+(148, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:22'),
+(149, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:24'),
+(150, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:26'),
+(151, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:27'),
+(152, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:29'),
+(153, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:31'),
+(154, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:32'),
+(155, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:34'),
+(156, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:36'),
+(157, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:37'),
+(158, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:39'),
+(159, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:41'),
+(160, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:43'),
+(161, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:45'),
+(162, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:47'),
+(163, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:48'),
+(164, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:50'),
+(165, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:51'),
+(166, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:53'),
+(167, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:53'),
+(168, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:54'),
+(169, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:56'),
+(170, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:58'),
+(171, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:59'),
+(172, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:59:55'),
+(173, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:59:58'),
+(174, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:02'),
+(175, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:05'),
+(176, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:09'),
+(177, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:13'),
+(178, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:15'),
+(179, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:23');
 
 -- --------------------------------------------------------
 
@@ -480,31 +561,31 @@ ALTER TABLE `Couleurs`
 -- AUTO_INCREMENT pour la table `Date_centre`
 --
 ALTER TABLE `Date_centre`
-  MODIFY `id_centre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_centre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT pour la table `Date_certif`
 --
 ALTER TABLE `Date_certif`
-  MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `Date_intervention`
 --
 ALTER TABLE `Date_intervention`
-  MODIFY `id_intervention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_intervention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT pour la table `Date_pae`
 --
 ALTER TABLE `Date_pae`
-  MODIFY `id_date_pae` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_date_pae` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT pour la table `Date_ran`
 --
 ALTER TABLE `Date_ran`
-  MODIFY `id_ran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_ran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `Date_teletravail`
@@ -522,7 +603,7 @@ ALTER TABLE `Date_vacance`
 -- AUTO_INCREMENT pour la table `Formateur`
 --
 ALTER TABLE `Formateur`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `Formation`
