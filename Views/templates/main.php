@@ -29,18 +29,18 @@
                     <ul>
                         <?php if (isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) : ?>
                             <li><a href="/planning/public/">Home</a></li>
-                            <li><a href="/planning/public/formateur/profil">Profil </a></li>
-                            <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/profil">Profil </a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/logout">Deconnexion</a></li>
 
                         <?php elseif (isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])) : ?>
                             <li><a href="/planning/public/">Home</a></li>
-                            <li><a href="/planning/public/formateur/profil">Profil </a></li>
-                            <li><a href="/planning/public/admin/formationsHome">Gérer les formations</a></li>
-                            <li><a href="/planning/public/admin/formateursHome">Gérer les formateurs</a></li>
-                            <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/profil">Profil </a></li>
+                            <li><a href="/planning/public/index.php?p=admin/formationsHome">Gérer les formations</a></li>
+                            <li><a href="/planning/public/index.php?p=admin/formateursHome">Gérer les formateurs</a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/logout">Deconnexion</a></li>
 
                         <?php else : ?>
-                            <li><a href="/planning/public/formateur/login">Login </a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/login">Login </a></li>
 
                         <?php endif; ?>
                     </ul>

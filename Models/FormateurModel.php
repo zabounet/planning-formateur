@@ -36,7 +36,7 @@ class FormateurModel extends Model
     public function getFormateur()
     {
         return $infos = [
-            'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`, `prenom_formateur` FROM `Formateur`")->fetchAll(),
+            'Formateurs' => $this->requete("SELECT `id_formateur`, `nom_formateur`, `prenom_formateur` FROM `Formateur`")->fetchAll(),
         ];
     }
 
@@ -109,7 +109,7 @@ class FormateurModel extends Model
     // Insère une demande de jours de télétravail dans la table date_teletravail
     public function createJoursTeletravail(string $jour_teletravail, string $date_demande_changement, int $id_formateur): bool
     {
-        $sql = "INSERT INTO date_teletravail (jour_teletravail, date_demande_changement, date_prise_effet, validation, id_formateur)
+        $sql = "INSERT INTO Date_teletravail (jour_teletravail, date_demande_changement, date_prise_effet, validation, id_formateur)
         VALUES (?, ?, NULL, 0, ?)";
 
         $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $id_formateur]);
@@ -131,11 +131,11 @@ class FormateurModel extends Model
     {
         $_SESSION['formateur'] =
             [
-                'id' => $formateur->id_formateur,
-                'mail' => $formateur->mail_formateur,
-                'prenom' => $formateur->prenom_formateur,
-                'nom' => $formateur->nom_formateur,
-                'permissions_utilisateur' => $formateur->permissions_utilisateur
+                'id' => $formateur['id_formateur'],
+                'mail' => $formateur['mail_formateur'],
+                'prenom' => $formateur['prenom_formateur'],
+                'nom' => $formateur['nom_formateur'],
+                'permissions_utilisateur' => $formateur['permissions_utilisateur']
             ];
     }
 
@@ -144,11 +144,11 @@ class FormateurModel extends Model
     {
         $_SESSION['admin'] =
             [
-                'id' => $formateur->id_formateur,
-                'mail' => $formateur->mail_formateur,
-                'prenom' => $formateur->prenom_formateur,
-                'nom' => $formateur->nom_formateur,
-                'permissions_utilisateur' => $formateur->permissions_utilisateur
+                'id' => $formateur['id_formateur'],
+                'mail' => $formateur['mail_formateur'],
+                'prenom' => $formateur['prenom_formateur'],
+                'nom' => $formateur['nom_formateur'],
+                'permissions_utilisateur' => $formateur['permissions_utilisateur']
             ];
     }
 

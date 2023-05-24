@@ -13,7 +13,7 @@
         </button>
     </div>
 </form> 
-<?php if(!empty($search)){echo "<button style='text-align: center;'><a href='/planning/public/admin/formationsHome'>Afficher tout</a></button>";} ?>
+<?php if(!empty($search)){echo "<button style='text-align: center;'><a href='/planning/public/index.php?p=admin/formationsHome'>Afficher tout</a></button>";} ?>
 <h1>Liste des formations</h1>
 
 
@@ -23,7 +23,7 @@ foreach($infosFormation as $formation) {
     $disassemble = explode(' ' , $formation->nom_formation); 
     $reassemble = $disassemble[1] . ' ' . $disassemble[2] . ' ' . $disassemble[3];
 
-    $placesCandidats = explode(' / ', $formation->candidats_formation);
+    $placesCandidats = explode('/', $formation->candidats_formation);
     $places = $placesCandidats[0];
     $candidats = $placesCandidats[1];
 ?>
@@ -39,7 +39,7 @@ foreach($infosFormation as $formation) {
     <p>Fin le : <span style="font-weight: 800;"><?php $fin = new DateTime($formation->date_fin_formation); echo $fin->format('d-m-Y') ;?></span></p>
     <p>Formateur référent : <?= $formation->nom_formateur . " " . $formation->prenom_formateur;?></p>
     
-    <a href="/planning/public/admin/modifierFormation?id=<?=$formation->id_formation;?>">Modifier les informations de la formation</a>
+    <a href="/planning/public/index.php?p=admin/modifierFormation&?id=<?=$formation->id_formation;?>">Modifier les informations de la formation</a>
     <a href="#">Supprimer la formation</a>
     <hr>
 <?php 

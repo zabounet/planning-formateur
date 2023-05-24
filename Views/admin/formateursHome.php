@@ -14,7 +14,7 @@
         </button>
     </div>
 </form> 
-<?php if(!empty($search)){echo "<button style='text-align: center;'><a href='/planning/public/admin/formateursHome'>Afficher tout</a></button>";} ?>
+<?php if(!empty($search)){echo "<button style='text-align: center;'><a href='/planning/public/index.php?p=admin/formateursHome'>Afficher tout</a></button>";} ?>
 
 
 <h1>Liste des formateurs</h1>
@@ -33,7 +33,7 @@ foreach($infosFormateur as $formateur):
     <p>Date de fin du contrat : <?= $formateur->date_fin_contrat ;?></p>
 <?php endif;?>
 
-<a href="/planning/public/admin/modifierFormateur?id=<?= $formateur->id_formateur ;?>">Modifier les informations du formateur</a>
+<a href="/planning/public/index.php?p=admin/modifierFormateur&?id=<?= $formateur->id_formateur ;?>">Modifier les informations du formateur</a>
 <a href="#">Supprimer le formateur</a>
 
 <hr>
