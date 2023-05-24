@@ -30,9 +30,14 @@ class Form{
     }
 
     
-    public function passwordVerify(string $password): bool
+    static function Argon2IDOptions(): array
     {
-        return $password;
+        $options = [
+            'memory_cost' => 64 * 1024,   // 64MB memory cost
+            'time_cost' => 4,             // 4 iterations
+            'threads' => 2,               // 2 threads
+        ];
+        return $options;
     }
 
     public function ajoutAttributs(array $attributs): string{

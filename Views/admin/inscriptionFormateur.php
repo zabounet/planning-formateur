@@ -2,15 +2,15 @@
 
 <h1>Inscription formateur</h1>
 <section>
-    <form style="text-transform: capitalize;" method="post" onsubmit="submitForm(event)" name="validation">
+    <form style="text-transform: capitalize;" method="post" name="validation">
         <span>nom</span>
-        <input type="text" name="nom" id="nom-input" oninput="checkNomValidity()">
+        <input type="text" name="nom" id="nom-input">
 
         <span>prenom</span>
-        <input type="text" name="prenom" id="prenom-input" oninput="checkPrenomValidity()">
+        <input type="text" name="prenom" id="prenom-input">
 
         <span>mail</span>
-        <input type="mail" name="mail" id="mail-input" oninput="checkMailValidity()">
+        <input type="mail" name="mail" id="mail-input">
 
         <label for="type_contrat"> type contrat :
             <select name="type_contrat" id="type_contrat">

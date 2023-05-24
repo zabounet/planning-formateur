@@ -80,7 +80,7 @@ addEventListener('DOMContentLoaded', () => {
              });
 
          };
-         xhr.open('GET', '/planning/public/admin/modifierFormateur?id=0');
+         xhr.open('GET', '/planning/public/index.php?p=admin/modifierFormateur&?id=0');
          xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
          xhr.send();
 

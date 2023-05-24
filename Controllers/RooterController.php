@@ -38,7 +38,7 @@ class RooterController extends Controller
             }
 
             // Récupère l'ensemble des champs de la table formation où les numero_grn, id_formateur et id_ville sont respectivements égaux à $grn, $_POST['formateurs] et $centre. 
-            $formations = $databaseFormation->getByIn(['*'], 'formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
+            $formations = $databaseFormation->getByIn(['*'], 'Formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
 
             
@@ -515,7 +515,7 @@ class RooterController extends Controller
         $formateur = new FormateurModel;
         $formateurs = $formateur->getFormateur();
         $GRNs = $formateur->getAll('GRN');
-        $villes = $formation->getAll('ville');
+        $villes = $formation->getAll('Ville');
         !isset($html) ? $html = "Aucun résultat." : '';
         isset($_POST['rechercher']) ? $data = $_POST : $data = "";
 
