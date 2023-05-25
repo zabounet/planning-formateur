@@ -547,7 +547,7 @@ class AdminController extends Controller
             exit;
         }
 
-        if (Form::validate($_POST, ['inscription'])) {
+        if (Form::validate($_POST, ['inscription', 'delete'])) {
 
             $database = new FormateurModel;
             $permissions_utilisateur = 0;
@@ -592,6 +592,43 @@ class AdminController extends Controller
             exit;
         }
 
+
+        if (Form::validate($_POST, ['intervention', 'delete'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("Date_intervention", "id_intervention", $_POST['intervention'][0]);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+        
+        if (Form::validate($_POST, ['MNSP', 'delete'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
+        if (Form::validate($_POST, ['perfectionnement'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
         if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention'])) {
 
             $database = new FormateurModel;
@@ -606,16 +643,38 @@ class AdminController extends Controller
             }
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
-            exit;
+            exit; 
         }
 
-        if (Form::validate($_POST, ['intervention'])) {
+        if (Form::validate($_POST, ['date-debut-MNSP', 'date-fin-MNSP'])) {
 
             $database = new FormateurModel;
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
-            $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
+            if (isset($_POST['date-debut-MNSP'])) {
+                $periodesFormateurs = count($_POST['date-debut-MNSP']);
+                for ($i = 0; $i < $periodesFormateurs; $i++) {
+                    $database->insertPeriode("Date_MNSP", $_POST['date-debut-MNSP'][$i], $_POST['date-fin-MNSP'][$i], $currentId);
+                }
+            }
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
+        if (Form::validate($_POST, ['date-debut-perfectionnement', 'date-fin-perfectionnement'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            if (isset($_POST['date-debut-perfectionnement'])) {
+                $periodesFormateurs = count($_POST['date-debut-perfectionnement']);
+                for ($i = 0; $i < $periodesFormateurs; $i++) {
+                    $database->insertPeriode("Date_perfectionnement", $_POST['date-debut-perfectionnement'][$i], $_POST['date-fin-perfectionnement'][$i], $currentId);
+                }
+            }
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
@@ -643,7 +702,9 @@ class AdminController extends Controller
             ['id_formateur'],
             [$currentId]
         );
-        $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention'], 'Date_intervention', ['id_formateur'], [$currentId]);
+        $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention', 'id_formation'], 'Date_intervention', ['id_formateur'], [$currentId]);
+        $infosMNSP = $formateur->getBy(['id_MNSP', 'date_debut_MNSP', 'date_fin_MNSP'], 'Date_MNSP', ['id_formateur'], [$currentId]);
+        $infosPerfectionnement = $formateur->getBy(['id_perfectionnement', 'date_debut_perfectionnement', 'date_fin_perfectionnement'], 'Date_perfectionnement', ['id_formateur'], [$currentId]);
 
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
@@ -653,7 +714,7 @@ class AdminController extends Controller
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormateur', 'infosInterventions'), 'formateurs');
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement'), 'formateurs');
         };
     }
 

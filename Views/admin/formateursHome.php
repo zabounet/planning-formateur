@@ -34,6 +34,10 @@ foreach($infosFormateur as $formateur):
 <?php endif;?>
 
 <a href="/planning/public/index.php?p=admin/modifierFormateur&?id=<?= $formateur->id_formateur ;?>">Modifier les informations du formateur</a>
+<form action="" method="post">
+    <input type="button" value="">
+    <input type="submit" name="Delete" value="Confirmer">
+</form>
 <a href="#">Supprimer le formateur</a>
 
 <hr>
