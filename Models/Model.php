@@ -304,11 +304,20 @@ class Model extends Db
                 $result = false;
             }
 
+           
             $type = explode(" ", $sql);
-            $pattern = '/\bFROM\s+`?(\w+)`?(?:\s+|,|$)/i';
+            $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
             preg_match_all($pattern, $sql, $match);
 
-            $table = $match[1][0];
+            if(!isset($match[2][0])){
+                $table = "Inconnu";
+            } else {
+                $table = $match[2][0];
+            }
+
+            if($type[0] === "INSERT"){
+                $table = $type[2];
+            } 
             $activite = $type[0] . " Dans " . $table;
 
             if (!isset($_SESSION)) {
@@ -343,16 +352,24 @@ class Model extends Db
             try {
                 $query->execute();
             } catch (\PDOException $e) {
-                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
-                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                // echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
                 $result = false;
             }
 
             $type = explode(" ", $sql);
-            $pattern = '/\bFROM\s+`?(\w+)`?(?:\s+|,|$)/i';
+            $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
             preg_match_all($pattern, $sql, $match);
 
-            $table = $match[1][0];
+            if(!isset($match[2][0])){
+                $table = "Inconnu";
+            } else {
+                $table = $match[2][0];
+            }
+
+            if($type[0] === "INSERT"){
+                $table = $type[2];
+            } 
             $activite = $type[0] . " Dans " . $table;
 
             if (!isset($_SESSION)) {

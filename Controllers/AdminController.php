@@ -192,7 +192,7 @@ class AdminController extends Controller
             $deletePae = $database->delete('Date_pae', 'id_formation', $currentId);
             $deleteCentre = $database->delete('Date_centre', 'id_formation', $currentId);
             $deleteCertif = $database->delete('Date_certif', 'id_formation', $currentId);
-            $deleteInterventions = $database->delete('Date_certif', 'id_formation', $currentId);
+            $deleteInterventions = $database->delete('Date_intervention', 'id_formation', $currentId);
             $deleteInterruptions = $database->delete('Interruption', 'id_formation', $currentId);
 
             // Boucles d'insertion de chaque périodes 
