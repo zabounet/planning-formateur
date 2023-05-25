@@ -297,8 +297,8 @@ class Model extends Db
             try {
                 $query->execute($attributs);
             } catch (\PDOException $e) {
-                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
-                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                // echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
                 $result = false;
             }
 

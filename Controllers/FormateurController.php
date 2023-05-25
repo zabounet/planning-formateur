@@ -65,6 +65,7 @@ class FormateurController extends Controller
 
     public function profil()
     {
+
         if((isset($_SESSION["admin"])) || isset($_SESSION["formateur"])){
             // modif profil
             if (Form::validate($_POST, ['modifNom'])) {
@@ -74,6 +75,7 @@ class FormateurController extends Controller
                     $idFormateur = $_SESSION['formateur']['id'];
                 }
                 if (isset($_POST['modifNom']) && !empty(trim($_POST['nom']))) {
+
 
                     $new_nom = $_POST['nom'];
                     $profil = new FormateurModel();
@@ -239,36 +241,45 @@ class FormateurController extends Controller
                 // initialisation du compteur de jours sélectionnés
                 $nbreJours = 0;
 
-                $idFormateur = $_SESSION['formateur']['id'];
-                // date de jour pour la date de demande
-                $dateDemandeChangement = date('Y-m-d');
 
-                // vérification des jours sélectionnés
-                if (isset($_POST['lundi'])) {
-                    $jours[] = "lundi";
-                    $nbreJours++;
-                }
-                if (isset($_POST['mardi'])) {
-                    $jours[] = "mardi";
-                    $nbreJours++;
-                }
-                if (isset($_POST['mercredi'])) {
-                    $jours[] = "mercredi";
-                    $nbreJours++;
-                }
-                if (isset($_POST['jeudi'])) {
-                    $jours[] = "jeudi";
-                    $nbreJours++;
-                }
-                if (isset($_POST['vendredi'])) {
-                    $jours[] = "vendredi";
-                    $nbreJours++;
-                }
+            $idFormateur = $_SESSION['formateur']['id'];
+            // date de jour pour la date de demande
+            $dateDemandeChangement = date('Y-m-d');
+            
+            // vérification des jours sélectionnés
+            if (isset($_POST['lundi'])) {
+                $jours[] = "lundi";
+                $nbreJours++;
+            }
+            if (isset($_POST['mardi'])) {
+                $jours[] = "mardi";
+                $nbreJours++;
+            }
+            if (isset($_POST['mercredi'])) {
+                $jours[] = "mercredi";
+                $nbreJours++;
+            }
+            if (isset($_POST['jeudi'])) {
+                $jours[] = "jeudi";
+                $nbreJours++;
+            }
+            if (isset($_POST['vendredi'])) {
+                $jours[] = "vendredi";
+                $nbreJours++;
+            }
+            
+            if ($nbreJours == 0 && empty($_SESSION['teletravail']['jour_teletravail'])) {
+                $_SESSION['error_teletravail'] = "Vous avez choisi 0 jours";
+            } elseif ($nbreJours > 2) {
+                $_SESSION['error_teletravail'] = "non le max est 2 jours";
+            } else {
+                $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
+                $date_prise_effet = $_POST['date_prise_effet'];
+                $teletravail = new FormateurModel();
+                $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                if ($resultat) {
+                    $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
 
-                if ($nbreJours == 0) {
-                    $_SESSION['error_teletravail'] = "vous avez 0 jour choisi";
-                } elseif ($nbreJours > 2) {
-                    $_SESSION['error_teletravail'] = "non le max est 2 jours";
                 } else {
                     $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
                     $teletravail = new FormateurModel();

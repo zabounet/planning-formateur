@@ -1153,9 +1153,9 @@ class AdminController extends Controller
                     // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
                     if ($formateurAvoirVacances !== 0) {
                         if ($formateurAvoirVacances == 2) {
-                            $html .= "<td style='background-color: var(--vacancesCell);'></td>";
+                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></td>";
                         } else if ($formateurAvoirVacances == 1) {
-                            $html .= "<td style='background-color: goldenrod;'></td> ";
+                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . " ;'></td> ";
                         }
                     } else {
                         // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
@@ -1170,9 +1170,10 @@ class AdminController extends Controller
                             } else {
                                 // Si le jour de la semaine est égal à 6 ou 7
                                 if ($weekend === "6" || $weekend === "7") {
-                                    $html .= "<td style='background-color: var(--weekendCell);'></td> ";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                 } else {
                                     $html .= "<td style='background-color: var(--greenCell);'></td> ";
+                                    //faut ajouter le color pour ca 
                                 }
                             }
                         } else {
@@ -1186,7 +1187,7 @@ class AdminController extends Controller
                             } else {
                                 // Si le jour de la semaine est égal à 6 ou 7
                                 if ($weekend === "6" || $weekend === "7") {
-                                    $html .= "<td style='background-color: var(--weekendCell);'></td> ";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                 } else {
                                     $html .= "<td style='background-color: var(--emptyCell);'></td> ";
                                 }
