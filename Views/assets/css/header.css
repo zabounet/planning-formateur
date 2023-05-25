@@ -194,8 +194,8 @@ form.main-form #part2 .sect .formateurs {
 }
 
 form.main-form #part2 .sect .formateurs {
-    width: 40%;
-    grid-template-columns: repeat(2, 1fr);
+    width: 80%;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 form.main-form #part2 label {

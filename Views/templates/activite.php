@@ -30,13 +30,13 @@
                     <ul>
                         <?php if ($link !== "Formateur home") : ?>
                             <li><a href="/planning/public">Home</a></li>
-                            <li><a href="/planning/public/formateur/profil">Profil</a></li>
-                            <li><a href="/planning/public/admin/formateurHome">Gérer les formateurs</a></li>
-                            <li><a href="/planning/public/admin/formationHome">Gérer les formations</a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/profil">Profil</a></li>
+                            <li><a href="/planning/public/index.php?p=admin/formateursHome">Gérer les formateurs</a></li>
+                            <li><a href="/planning/public/index.php?p=admin/formationsHome">Gérer les formations</a></li>
                         <?php else : ?>
-                            <li><a href="/planning/public/admin/formateursHome">Retour à la liste des formateurs</a></li>
+                            <li><a href="/planning/public/index.php?p=admin/formateursHome">Retour à la liste des formateurs</a></li>
                         <?php endif; ?>
-                            <li><a href="/planning/public/formateur/logout">Deconnexion</a></li>
+                            <li><a href="/planning/public/index.php?p=formateur/logout">Deconnexion</a></li>
                     </ul>
                 </nav>
             </div>

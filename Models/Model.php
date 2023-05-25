@@ -1,28 +1,35 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\Db;
 
-class Model extends Db{
+class Model extends Db
+{
 
     // Table de la base de données
     protected $table;
     // Instance de Db
     private $db;
 
-    public function getAll(string $table){
+    public function getAll(string $table)
+    {
         $query = $this->requete('SELECT * FROM ' . $table);
         return $query->fetchAll();
     }
 
     // Retourne les résultats de la table correspondants au critères 
-    public function getBy(array $rows,string $table, array $conditionCol, array $valeur){
+    public function getBy(array $rows, string $table, array $conditionCol, array $valeur)
+    {
 
         $nbChamps = count($rows);
         $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
 
             $sql .= $writeComma . $rows[$z];
         }
@@ -30,22 +37,29 @@ class Model extends Db{
 
         $nbCond = count($conditionCol);
         $sql .= " WHERE ";
-        for($i = 0; $i < $nbCond; $i++){
-            if($i == 0){$writeAnd = "";}
-            else{$writeAnd = " AND ";}
+        for ($i = 0; $i < $nbCond; $i++) {
+            if ($i == 0) {
+                $writeAnd = "";
+            } else {
+                $writeAnd = " AND ";
+            }
 
             $sql .= $writeAnd . $conditionCol[$i] . " = " . $valeur[$i];
         }
         return $this->requete($sql)->fetchAll();
     }
     // Retourne les résultats de la table correspondants au multiples critères
-    public function getByIn(array $rows,string $table, array $conditionCol, array $valeur){
+    public function getByIn(array $rows, string $table, array $conditionCol, array $valeur)
+    {
 
         $nbChamps = count($rows);
         $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
 
             $sql .= $writeComma . $rows[$z];
         }
@@ -57,25 +71,31 @@ class Model extends Db{
 
         // var_dump($valeur); echo "<br><br>";
 
-        for($i = 0; $i < $nbCond; $i++){
-            if($valeur[$i] !== "Aucun"){
-                if($i == 0 || $iterations == 0){$writeAnd = "";}
-                else{$writeAnd = " AND ";}
+        for ($i = 0; $i < $nbCond; $i++) {
+            if ($valeur[$i] !== "Aucun") {
+                if ($i == 0 || $iterations == 0) {
+                    $writeAnd = "";
+                } else {
+                    $writeAnd = " AND ";
+                }
 
                 $sql .= $writeAnd . $conditionCol[$i] . " IN (";
 
-                if(is_array($valeur[$i])) {
+                if (is_array($valeur[$i])) {
                     $nbValues = count($valeur[$i]);
-                } else{
+                } else {
                     $nbValues = 1;
                 }
-                for($j = 0; $j < $nbValues; $j++){
-                    if($j == 0){$virgule = "";}
-                    else{$virgule = ",";}
+                for ($j = 0; $j < $nbValues; $j++) {
+                    if ($j == 0) {
+                        $virgule = "";
+                    } else {
+                        $virgule = ",";
+                    }
 
-                    if(is_array($valeur[$i])){
+                    if (is_array($valeur[$i])) {
                         $sql .= $virgule . $valeur[$i][$j];
-                    }else{
+                    } else {
                         $sql .= $virgule . $valeur[$i];
                     }
                 }
@@ -83,35 +103,39 @@ class Model extends Db{
                 $iterations++;
             }
         }
-   
+
         return $this->requete($sql)->fetchAll();
     }
 
     // Retourne les résultats d'une colonne
-    public function getColumn(string $col, string $table){
+    public function getColumn(string $col, string $table)
+    {
         return $this->requete("SELECT " . $col . " FROM " . $table)->fetchAll(Db::FETCH_ASSOC);
     }
 
-    // Retourne un seul résultat basé sur un ID, un nom de colonne et une colonne de condition dans une table donnée
-    public function getOne(string $col, string $table, string $conditionCol, string $id){
-        return $this->requete("SELECT " . $col . " FROM " . $table . " WHERE " . $conditionCol . " = '$id'")->fetch(Db::FETCH_ASSOC);
+    // Retourne un seul résultat basé sur une condition, un nom de colonne et une colonne de condition dans une table donnée
+    public function getOne(string $col, string $table, string $conditionCol, string $id)
+    {
+        return $this->requete("SELECT " . $col . " FROM " . $table . " WHERE " . $conditionCol . " = ?", [$id])->fetch(Db::FETCH_ASSOC);
     }
 
     // Retourne la valeur de l'id le plus grand en prenant le champ d'id en paramètre
-    public function getLastId(string $idRow){
-        return $this->requete("SELECT MAX(". $idRow .") FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
+    public function getLastId(string $idRow)
+    {
+        return $this->requete("SELECT MAX(" . $idRow . ") FROM " . $this->table)->fetch(Db::FETCH_ASSOC);
     }
 
     // Créé une ligne de données via les informations reçues
-    public function create(){
+    public function create()
+    {
         $champs = [];
         $inter = [];
         $valeurs = [];
 
         // On boucle pour éclater le tableau
-        foreach($this as $champ => $valeur){
+        foreach ($this as $champ => $valeur) {
             // Insert into participants 
-            if($valeur !== null && $champ != 'db' && $champ != 'table'){
+            if ($valeur !== null && $champ != 'db' && $champ != 'table') {
                 $champs[] = $champ;
                 $inter[] = "?";
                 $valeurs[] = $valeur;
@@ -121,18 +145,22 @@ class Model extends Db{
         $liste_champs = implode(', ', $champs);
         $liste_inter = implode(', ', $inter);
 
-        return $this->requete('INSERT INTO ' . $this->table . '(' . $liste_champs . ') VALUES (' . $liste_inter .')', $valeurs);
+        return $this->requete('INSERT INTO ' . $this->table . '(' . $liste_champs . ') VALUES (' . $liste_inter . ')', $valeurs);
     }
 
     // Met à jour les informations d'une ligne depuis un ID et les informations reçue
-    public function update(string $table, array $updateCol, array $updateFields, string $updateCond, string $id){
-        
+    public function update(string $table, array $updateCol, array $updateFields, string $updateCond, string $id)
+    {
+
         $sql = "UPDATE " . $table . " SET ";
 
         $nbChamps = count($updateCol);
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
 
             $sql .= $writeComma . $updateCol[$z] . " = '$updateFields[$z]'";
         }
@@ -149,46 +177,52 @@ class Model extends Db{
         $sql .= " WHERE " . $updateCond . " = '$id'";
 
         // echo $sql;die;
-        return $this->requete($sql);    
+        return $this->requete($sql);
     }
     // Effectue une requête sur un certain nombre de champs, sur une table, 
     // une chaîne de caractère à chercher et les champs dans lesquels chercher.
     // Possibilité d'effectuer une ou plusieurs jointures afin d'étendre la recherche à plusieurs tables.
-    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = []){
-       
+    public function search(array $champsSelect, string $table, string $search, array $searchCond, array $tablesJointures = [], array $colonnesJointures = [])
+    {
+
         $nbChamps = count($champsSelect);
         $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
 
             $sql .= $writeComma . $champsSelect[$z];
         }
         $sql .= " FROM " . $table;
 
-        if(!empty($tablesJointures) && !empty($colonnesJointures)){
+        if (!empty($tablesJointures) && !empty($colonnesJointures)) {
             $nbJoin = count($tablesJointures);
-            for($i = 0; $i < $nbJoin; $i++){
+            for ($i = 0; $i < $nbJoin; $i++) {
                 $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
             }
         }
 
         $nbCond = count($searchCond);
 
-        if($nbCond > 0){
+        if ($nbCond > 0) {
             $sql .= " WHERE ";
-            for($j = 0; $j < $nbCond; $j++){
-                if($j == 0){$writeOr = "";}
-                else{$writeOr = " OR ";}
+            for ($j = 0; $j < $nbCond; $j++) {
+                if ($j == 0) {
+                    $writeOr = "";
+                } else {
+                    $writeOr = " OR ";
+                }
 
                 $sql .= $writeOr . $searchCond[$j] . " LIKE " . "'%$search%'";
             }
-        }else{
+        } else {
             $sql .= " WHERE " . $searchCond[0] . " LIKE " . "'%$search%'";
         }
-       
+
         return $this->requete($sql)->fetchAll();
-    
     }
 
     // Effectue une requete sur une liste de champs, à partir d'une table, une liste des tables à joindres et la colonne à utiliser
@@ -197,30 +231,36 @@ class Model extends Db{
     {
         $nbChamps = count($champsSelect);
         $sql = "SELECT ";
-        for($z = 0; $z < $nbChamps; $z++){
-            if($z == 0){$writeComma = "";}
-            else{$writeComma = ", ";}
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
 
             $sql .= $writeComma . $champsSelect[$z];
         }
 
         $sql .= " FROM " . $table;
         $nbJoin = count($tablesJointures);
-        for($i = 0; $i < $nbJoin; $i++){
+        for ($i = 0; $i < $nbJoin; $i++) {
             $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
         }
-        if(!empty($champCondJointures) && !empty($CondJointures)){
+        if (!empty($champCondJointures) && !empty($CondJointures)) {
             $nbCond = count($champCondJointures);
 
-            if($nbCond > 0){
+            if ($nbCond > 0) {
                 $sql .= " WHERE ";
-                for($j = 0; $j < $nbCond; $j++){
-                    if($j == 0){$writeAnd = "";}
-                    else{$writeAnd = " AND ";}
+                for ($j = 0; $j < $nbCond; $j++) {
+                    if ($j == 0) {
+                        $writeAnd = "";
+                    } else {
+                        $writeAnd = " AND ";
+                    }
 
                     $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
                 }
-            }else{
+            } else {
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
@@ -228,45 +268,114 @@ class Model extends Db{
     }
 
     // Insère une période de dates dans une table données contenant 2 champs de date et 1 clé étrangère
-    public function insertPeriode(string $table, string $debut, string $fin, string $fk) {
+    public function insertPeriode(string $table, string $debut, string $fin, string $fk)
+    {
         return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?)", [$debut, $fin, $fk]);
-    }  
+    }
     // Insère une période de dates dans une table données contenant 2 champs de date et 2 clé étrangère
-    public function insertPeriodeIntervention(string $table, string $debut, string $fin, string $fk, string $fk2) {
+    public function insertPeriodeIntervention(string $table, string $debut, string $fin, string $fk, string $fk2)
+    {
         return $this->requete("INSERT INTO " . $table . " VALUES(NULL,?,?,?,?)", [$debut, $fin, $fk, $fk2]);
     }
 
     // Supprime une ligne de la bdd avec son id
-    public function delete(string $table, string $delCond, string $id){
+    public function delete(string $table, string $delCond, string $id)
+    {
         //id dans un array car requete prend comme 2eme argument un array.
         return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
     }
-   
+
     // Effectue une requête préparées avec des arguments optionnels
-    public function requete(string $sql, array $attributs = null){
+    public function requete(string $sql, array $attributs = null)
+    {
         //On récupère l'instance de DB
         $this->db = Db::getInstance();
 
-        if($attributs !== null){
+        if ($attributs !== null) {
             // Requete préparée
             $query = $this->db->prepare($sql);
+            $result = true;
+
             try {
                 $query->execute($attributs);
             } catch (\PDOException $e) {
-                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
-                // echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                $result = false;
             }
-            
-            return $query;
 
-        } else{
+            $type = explode(" ", $sql);
+            $pattern = '/\bFROM\s+`?(\w+)`?(?:\s+|,|$)/i';
+            preg_match_all($pattern, $sql, $match);
+
+            $table = $match[1][0];
+            $activite = $type[0] . " Dans " . $table;
+
+            if (!isset($_SESSION)) {
+                $email = $_POST["email"];
+                $type[0] = "Connexion";
+
+                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                $prepLog = $this->db->prepare($log);
+                $execLog = $prepLog->execute();
+            }
+
+            else if ($type[0] !== "SELECT") {
+
+                if (isset($_SESSION['formateur'])) {
+                    $email = $_SESSION['formateur']['mail'];
+
+                } else if(isset($_SESSION['admin'])) {
+                    $email = $_SESSION['admin']['mail'];
+                }
+
+                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                $prepLog = $this->db->prepare($log);
+                $execLog = $prepLog->execute();
+            }
+
+            return $query;
+        } else {
             // Requete simple
             $query = $this->db->prepare($sql);
+            $result = true;
+
             try {
                 $query->execute();
             } catch (\PDOException $e) {
-                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
-                // echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                $result = false;
+            }
+
+            $type = explode(" ", $sql);
+            $pattern = '/\bFROM\s+`?(\w+)`?(?:\s+|,|$)/i';
+            preg_match_all($pattern, $sql, $match);
+
+            $table = $match[1][0];
+            $activite = $type[0] . " Dans " . $table;
+
+            if (!isset($_SESSION)) {
+                $email = $_POST["email"];
+                $type[0] = "Connexion";
+
+                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                $prepLog = $this->db->prepare($log);
+                $execLog = $prepLog->execute();
+            }
+
+            else if ($type[0] !== "SELECT") {
+
+                if (isset($_SESSION['formateur'])) {
+                    $email = $_SESSION['formateur']['mail'];
+
+                } else if(isset($_SESSION['admin'])) {
+                    $email = $_SESSION['admin']['mail'];
+                }
+
+                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                $prepLog = $this->db->prepare($log);
+                $execLog = $prepLog->execute();
             }
 
             return $query;

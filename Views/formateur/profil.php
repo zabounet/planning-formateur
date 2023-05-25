@@ -10,7 +10,7 @@
 
                 <form class="profil nom-profil" method="post">
                     <span>Nom :</span>
-                    <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=1") : ?>
+                    <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=1") : ?>
                         <input type='text' name="nom" class="nomProfil" value="<?= $_SESSION['formateur']['nom'] ?>" />
                         <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
                     <?php else : ?>
@@ -21,7 +21,7 @@
                 <hr>
                 <form class="profil prenom-profil" method="post">
                     <span>Prenom :</span>
-                    <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=2") : ?>
+                    <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=2") : ?>
                         <input type='text' name="prenom" class="prenomProfil" value="<?= $_SESSION['formateur']['prenom'] ?>" />
                         <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
                     <?php else : ?>
@@ -32,7 +32,7 @@
                 <hr>
                 <form class="profil mail-profil" method="post">
                     <span>Mail :</span>
-                    <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
+                    <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
                         <input type="email" name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail'] ?>" />
                         <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider" />
                     <?php else : ?>
@@ -43,7 +43,7 @@
                 <hr>
                 <form class="profil mdp-profil" method="post">
 
-                    <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4") : ?>
+                    <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4") : ?>
                         <div class="mdp-container">
                             <div>
                                 <span>Saisir votre mot de passe actuel :</span>
@@ -184,7 +184,7 @@
 
             <form class="profil nom-profil" method="post">
                 <span>Nom :</span>
-                <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=1") : ?>
+                <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=1") : ?>
                     <input type='text' name="nom" class="nomProfil" value="<?= $_SESSION['admin']['nom'] ?>" />
                     <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
                 <?php else : ?>
@@ -195,7 +195,7 @@
             <hr>
             <form class="profil prenom-profil" method="post">
                 <span>Prenom :</span>
-                <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=2") : ?>
+                <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=2") : ?>
                     <input type='text' name="prenom" class="prenomProfil" value="<?= $_SESSION['admin']['prenom'] ?>" />
                     <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
                 <?php else : ?>
@@ -207,7 +207,7 @@
             <hr>
             <form class="profil mail-profil" method="post">
                 <span>Mail :</span>
-                <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
+                <?php if (str_replace('/planning/public/index.php?p=formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=3") : ?>
                     <input type='email' name="mail" class="mailProfil" value="<?= $_SESSION['admin']['mail'] ?>" />
                     <input class="valider" type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" />
                 <?php else : ?>

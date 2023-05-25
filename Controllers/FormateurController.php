@@ -17,23 +17,19 @@ class FormateurController extends Controller
         if (Form::validate($_POST, ['email', 'password'])) {
             $pass = strip_tags($_POST['password']);
             $FormateurModel = new FormateurModel;
-            $Formateur = $FormateurModel->findOneByEmail(strip_tags($_POST['email']));
+            $Formateur = $FormateurModel->getOne('*', 'Formateur', 'mail_formateur', strip_tags($_POST['email']));
 
             // si il trouve pas le mail
             if (!$Formateur) {
                 $_SESSION['erreur'] = 'l\'adresse ou pass est pas correct';
-                header('location: /planning/public/formateur/login');
-
+                header('location: /planning/public/index.php?p=formateur/login');
                 exit;
             }
-            //verifier si le mot pass est correct
-            if (sha1($pass) === $Formateur->mdp_formateur) {
-
-                var_dump($pass);
-                var_dump($Formateur->mdp_formateur);
+            // verifier si le mot pass est correct
+            if (password_verify($pass,$Formateur['mdp_formateur'])) {
 
                 // verifier si cest admin ou formateur et le mettre en session
-                if ($Formateur->permissions_utilisateur >= 1) {
+                if ($Formateur['permissions_utilisateur'] >= 1) {
                     $Formateur = $FormateurModel->setSessionAdmin($Formateur);
                 } else {
                     $Formateur = $FormateurModel->setSession($Formateur);
@@ -43,25 +39,13 @@ class FormateurController extends Controller
                 exit;
             } else {
                 $_SESSION['erreur'] = 'l\'adresse ou passs est pas correct';
-                header('location: /planning/public/formateur/login');
+                header('location: /planning/public/index.php?p=formateur/login');
 
                 exit;
             }
         }
-        // formulaire login
-        // $form = new Form;
 
-        // $form->debutForm()
-        //     ->labelFor('email', 'E-mail :')
-        //     ->ajoutInput('email', 'email', ['class' => 'form-control', 'id' => 'email'])
-        //     ->closeLabel()
-        //     ->labelFor('password', 'Mot de passe :')
-        //     ->ajoutInput('password', 'password', ['class' => 'form-control', 'id' => 'pass'])
-        //     ->closeLabel()
-        //     ->ajoutInput('submit', 'login', ['class' => 'form-control'])
-        //     ->finForm();
-
-        $this->render('/formateur/login', ['loginForm'],'login');
+        $this->render('formateur/login', ['loginForm'],'login');
     }
 
     // logout de session
@@ -69,18 +53,22 @@ class FormateurController extends Controller
     {
         if (isset($_SESSION['formateur'])) {
             unset($_SESSION['formateur']);
-            header('location: /planning/public/formateur/login');
+            header('location: /planning/public/index.php?p=formateur/login');
             exit;
         }
         if (isset($_SESSION['admin'])) {
             unset($_SESSION['admin']);
-            header('location: /planning/public/formateur/login');
+            header('location: /planning/public/index.php?p=formateur/login');
             exit;
         }
     }
 
     public function profil()
     {
+        if(!isset($_SESSION["admin"]) || !isset($_SESSION["formateur"])){
+            header('Location: /planning/public/');
+            exit();
+        }
 
         // modif profil
         if (Form::validate($_POST, ['modifNom'])) {
@@ -101,7 +89,7 @@ class FormateurController extends Controller
                         $_SESSION['formateur']['nom'] = $new_nom;
                     }
 
-                    Refresh::refresh('/planning/public/formateur/profil');
+                    Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                     exit;
                 } else {
                     //  message d'erreur
@@ -131,7 +119,7 @@ class FormateurController extends Controller
                         $_SESSION['formateur']['prenom'] = $new_prenom;
                     }
 
-                    Refresh::refresh('/planning/public/formateur/profil');
+                    Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                     exit;
                 } else {
                     //  message d'erreur
@@ -161,7 +149,7 @@ class FormateurController extends Controller
                             $_SESSION['formateur']['mail'] = $new_mail;
                         }
     
-                        Refresh::refresh('/planning/public/formateur/profil');
+                        Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                         exit;
                     } else {
                         //  message d'erreur
@@ -180,6 +168,7 @@ class FormateurController extends Controller
         if (Form::validate($_POST, ['verifierMdp'])) {
             if (isset($_POST['current_mdp']) && !empty($_POST['current_mdp'])) {
                 $FormateurModel = new FormateurModel;
+
                 if (isset($_SESSION['admin'])) {
                     $pass = $_POST['current_mdp'];
                     $Formateur  = $FormateurModel->findOneByEmail($_SESSION['admin']['mail']);
@@ -190,15 +179,19 @@ class FormateurController extends Controller
                     $idFormateur = $_SESSION['formateur']['id'];
                 }
 
+
                 //l'utilisateur existe
-                if (sha1($pass) === $Formateur->mdp_formateur) {
+                if (password_verify($pass,$Formateur['mdp_formateur'])) {
                     if (!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
-                        $new_mdp = sha1($_POST['new_mdp']);
+
+                        $idFormateur = $_SESSION['formateur']['id'];
+                        $new_mdp = password_hash($_POST['new_mdp'], PASSWORD_ARGON2ID, Form::Argon2IDOptions());
+
                         $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);
 
                         if ($resultat) {
                             $_SESSION['success_profil'] = "votre changement est bien effectué";
-                            Refresh::refresh('/planning/public/formateur/profil');
+                            Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                             exit;
                         } else {
                             $_SESSION['error_profil'] = "un error est fait pendant le enregistment merci de le saisir a nouvou";
@@ -232,7 +225,7 @@ class FormateurController extends Controller
                 if ($resultat) {
                     // message succès
                     $_SESSION['success_vacance'] = 'Votre demende de vacances a bien envoyé.';
-                    Refresh::refresh('/planning/public/formateur/profil');
+                    Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                     exit;
                 } else {
                     //  message d'erreur
@@ -291,8 +284,7 @@ class FormateurController extends Controller
                     $_SESSION['error_teletravail'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                 }
             }
-            // $teletravail->setSessionTeletravail($idFormateur);
-            Refresh::refresh('/planning/public/formateur/profil');
+            Refresh::refresh('/planning/public/index.php?p=formateur/profil');
             exit;
         }
 
@@ -319,7 +311,7 @@ class FormateurController extends Controller
                 if ($resultat) {
                     $_SESSION['color'] = $_POST;
                     $_SESSION['success_color'] = "Les colors ont été enregistrés avec succès.";
-                    Refresh::refresh('/planning/public/formateur/profil');
+                    Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                 } else {
                     $_SESSION['error_color'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
                 }

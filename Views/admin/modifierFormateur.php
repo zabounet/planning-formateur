@@ -88,4 +88,20 @@
         </div>
         <input type="submit" value="Valider">
     </form>
+
+    <form method="post">
+        <h2>Ajouter une période de MNSP pour ce formateur</h2>
+        <div>
+            <button type="button" class="add-date-fields" data="msnp">Ajouter intervention</button>
+        </div>
+        <input type="submit" value="Valider">
+    </form>
+
+    <form method="post">
+        <h2>Ajouter une période de perfectionnement pour ce formateur</h2>
+        <div>
+            <button type="button" class="add-date-fields" data="perfectionnement">Ajouter intervention</button>
+        </div>
+        <input type="submit" value="Valider">
+    </form>
 </section>

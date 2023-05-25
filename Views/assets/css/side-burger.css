@@ -108,12 +108,13 @@ header .dropmenu ul li {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    padding: 2rem 1rem;
+    padding: 2rem 0;
     transition: ease .2s
 }
 
 header .dropmenu ul li a {
     width: 100%;
+    padding: 1rem;
     text-align: center;
     text-decoration: none;
     color: #EFFFE2;

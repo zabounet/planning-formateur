@@ -139,8 +139,8 @@ class AdminController extends Controller
         )) {
             $database = new FormationModel;
 
-            // Récupère l'id à la fin de l'URL actuelle
-            $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
+            // Né récupère que l'id place à la toute fin de l'URL. L'esperluette est nécessaire afin de permettre l'utilisation de 2 paramètres dans l'URL.
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormation&?id=", "", $_SERVER['REQUEST_URI']);
 
             //Récupèration du nom de la ville pour composer l'id de la formation
             $villeNom = $database->getOne("nom_ville", "Ville", "id_ville", $_POST['ville']);
@@ -148,8 +148,12 @@ class AdminController extends Controller
             //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
             $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
 
+            // Instanciation d'objets DateTime afin de pouvoir convertir les valeurs au bon format
+            $debutFormation = new DateTime($_POST["date-debut-formation"]);
+            $finFormation = new DateTime($_POST["date-fin-formation"]);
+
             //Création de l'id de la formation
-            $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
+            $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $debutFormation->format('d-m-Y') . " - " . $finFormation->format('d-m-Y') . " " . $villeNom['nom_ville'];
 
             // Mise à jour des informations
             $database->update(
@@ -188,6 +192,7 @@ class AdminController extends Controller
             $deletePae = $database->delete('Date_pae', 'id_formation', $currentId);
             $deleteCentre = $database->delete('Date_centre', 'id_formation', $currentId);
             $deleteCertif = $database->delete('Date_certif', 'id_formation', $currentId);
+            $deleteInterventions = $database->delete('Date_certif', 'id_formation', $currentId);
             $deleteInterruptions = $database->delete('Interruption', 'id_formation', $currentId);
 
             // Boucles d'insertion de chaque périodes 
@@ -227,13 +232,14 @@ class AdminController extends Controller
                     $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $currentId);
                 }
             }
-            Refresh::refresh('formationsHome');
+            Refresh::refresh('admin/formationsHome');
         }
 
         $formation = new FormationModel;
         $formateur = new FormateurModel;
 
-        $currentId = str_replace("/planning/public/admin/modifierFormation?id=", "", $_SERVER['REQUEST_URI']);
+        // Né récupère que l'id place à la toute fin de l'URL. L'esperluette est nécessaire afin de permettre l'utilisation de 2 paramètres dans l'URL.
+        $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormation&?id=", "", $_SERVER['REQUEST_URI']);
 
         // Infos sur la formation actuelle
         $infosCurrent = $formation->getOne('*', 'Formation', 'id_formation', $currentId);
@@ -247,9 +253,12 @@ class AdminController extends Controller
         $infosCertif = $formation->getBy(['date_debut_certif', 'date_fin_certif'], 'Date_certif', ['id_formation'], [$currentId]);
         $infosCentre = $formation->getBy(['date_debut_centre', 'date_fin_centre'], 'Date_centre', ['id_formation'], [$currentId]);
         $infosInterruption = $formation->getBy(['date_debut_interruption', 'date_fin_interruption'], 'Interruption', ['id_formation'], [$currentId]);
-        $idInterventions = $formation->getBy(['date_debut_intervention', 'date_fin_intervention', 'id_formateur'], 'date_intervention', ['id_formation'], [$currentId]);
+        // Récupères les id des formateurs ayant des périodes d'activités pour cette formation.
+        // Retourne un tableau d'objet contenant chacun une ligne du résultat.
+        $idInterventions = $formation->getBy(['id_formateur'], 'Date_intervention', ['id_formation'], [$currentId]);
         
         $interventions_formateurs = array();
+        // Boucle pour récupèrer l'id formateur de chaque objets dans un seul tableau.
         for($i = 0; $i < count($idInterventions); $i++){
             $formateurs = [
                 "id" => $idInterventions[$i]->id_formateur
@@ -257,12 +266,16 @@ class AdminController extends Controller
             $interventions_formateurs[] = $formateurs['id'];
         };
 
+        //Récupère les interventions des formateurs en fonction de leur ID
         $dates_interventions_formateurs = $formateur->getInterventionById($interventions_formateurs);
 
         $infosInterventions = array();
+        // Boucle pour chacune des dates récupèrées
         for($j = 0; $j < count($dates_interventions_formateurs); $j++){
+            // Explose les chaînes de caractères date_debut et date_fin
             $debutIntervention = explode(",",$dates_interventions_formateurs[$j]['date_debut']);
             $finIntervention = explode(",",$dates_interventions_formateurs[$j]['date_fin']);
+            // Pour chaque factions créées par l'explosion, les attribue dans un tableau avec l'id du formateur correspondant.
             for($z = 0; $z < count($debutIntervention); $z++){
                 $interventions = [
                     "debut" => $debutIntervention[$z],
@@ -272,7 +285,6 @@ class AdminController extends Controller
                 $infosInterventions[] = $interventions;
             }
         }
-        
         $this->render('admin/modifierFormation', compact('infosCurrent', 'infosFormation', 'infosRan', 'infosRan', 'infosPae', 'infosCertif', 'infosCentre', 'infosInterruption', 'infosInterventions'), 'formations');
     }
 
@@ -325,8 +337,11 @@ class AdminController extends Controller
             //Si un formateur référent a été assigné, attribuer sa valeur. Sinon, donner l'id 1 (correspondant à non attribué).
             $referent = isset($_POST['referent-formateur']) ? $_POST['referent-formateur'] : 1;
 
+            $debutFormation = new DateTime($_POST["date-debut-formation"]);
+            $finFormation = new DateTime($_POST["date-fin-formation"]);
+
             //Création de l'id de la formation
-            $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $_POST["date-debut-formation"] . " - " . $_POST["date-fin-formation"] . " " . $villeNom['nom_ville'];
+            $nomFormation = $_POST["grn"] . " " . $_POST["acronyme"] . " " . $_POST["offre"] . " : " . $debutFormation->format('d-m-Y') . " - " . $finFormation->format('d-m-Y') . " " . $villeNom['nom_ville'];
 
             //Insertion des données dans la table formation
             $database->insertFormation(
@@ -380,7 +395,7 @@ class AdminController extends Controller
                     $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation['MAX(id_formation)']);
                 }
             }
-            // Refresh::refresh('/planning/public/admin/ajouterFormation');
+            Refresh::refresh('/planning/public/index.php?p=admin/ajouterFormation');
         }
 
         $infos = new FormationModel;
@@ -480,7 +495,7 @@ class AdminController extends Controller
 
             //Création de le mot de pass de la formation
             $mdp_formateur = $_POST["nom"] .  $_POST["prenom"];
-            $mdp = sha1($mdp_formateur);
+            $mdp = password_hash($mdp_formateur, PASSWORD_ARGON2ID, Form::Argon2IDOptions());
 
             //un formateur n'est pas admin
             $permissions_utilisateur = 0;
@@ -508,22 +523,19 @@ class AdminController extends Controller
 
 
             $_SESSION['success'] = "Formateur ajouté avec succès";
-            Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+            // Refresh::refresh('/planning/public/index.php?p=admin/inscriptionFormateur');
             exit;
-            // } else {
-            //     $_SESSION['error'] = "email pas bon";
-            // }
 
         } else if(!empty($_POST) && !Form::validate($_POST, ['inscription'])) {
             $_SESSION['error'] = "Formulaire incomplet";
-            Refresh::refresh('/planning/public/admin/inscriptionFormateur');
+            Refresh::refresh('/planning/public/index.php?p=admin/inscriptionFormateur');
             exit;
         }
 
         $infos = new FormateurModel;
 
         $infosFormateur = $infos->getInformations();
-        $this->render('/admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
+        $this->render('admin/inscriptionFormateur', compact('infosFormateur'), 'formateurs');
     }
 
     // Modifier les informations d'un formateur
@@ -547,7 +559,8 @@ class AdminController extends Controller
                 $date_fin_contrat =  $_POST['date_fin_contrat'];
             }
 
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
+            // Né récupère que l'id place à la toute fin de l'URL. L'esperluette est nécessaire afin de permettre l'utilisation de 2 paramètres dans l'URL.
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
             $database->update(
                 'Formateur',
@@ -575,7 +588,7 @@ class AdminController extends Controller
                 $currentId
             );
 
-            Refresh::refresh('/planning/public/admin/formateursHome');
+            Refresh::refresh('/planning/public/index.php?p=admin/formateursHome');
             exit;
         }
 
@@ -583,7 +596,7 @@ class AdminController extends Controller
 
             $database = new FormateurModel;
 
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
@@ -592,7 +605,7 @@ class AdminController extends Controller
                 }
             }
 
-            Refresh::refresh('/planning/public/admin/modifierFormateur?id=' . $currentId);
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
         }
 
@@ -600,17 +613,17 @@ class AdminController extends Controller
 
             $database = new FormateurModel;
 
-            $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
             $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
 
-            Refresh::refresh('/planning/public/admin/modifierFormateur?id=' . $currentId);
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
         }
 
         $formateur = new FormateurModel;
 
-        $currentId = str_replace("/planning/public/admin/modifierFormateur?id=", "", $_SERVER['REQUEST_URI']);
+        $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
         $infosCurrent = $formateur->joinInformations(
             [
@@ -633,7 +646,7 @@ class AdminController extends Controller
         $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention'], 'Date_intervention', ['id_formateur'], [$currentId]);
 
         $infosFormateur = $formateur->getInformations();
-        $infosFormation = $formateur->getAll('formation');
+        $infosFormation = $formateur->getAll('Formation');
 
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             header('Content-type: application/json');
@@ -667,8 +680,6 @@ class AdminController extends Controller
             } else {
                 $_POST['formateurs'] === $_POST['nbFormateur']? $id_formateur = "Aucun" : $id_formateur = $_POST['formateurs'];
             }
-            var_dump($_POST['formateurs']);
-            var_dump($_POST['nbFormateur']);
             // $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
 
@@ -1104,6 +1115,6 @@ class AdminController extends Controller
         }
         $infosFormateur = $FormateurModel->getFormateur();
         isset($_POST['valider']) ? $data = $_POST : $data = "";
-        $this->render('/admin/activiteFormateur', compact('infosFormateur', 'html','data'), 'activite');
+        $this->render('admin/activiteFormateur', compact('infosFormateur', 'html','data'), 'activite');
     }
 }
