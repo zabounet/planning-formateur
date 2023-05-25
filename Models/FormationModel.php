@@ -74,7 +74,7 @@ class FormationModel extends Model{
         );
     }
 
-    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $id_list)
+    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $joinCol, string $whereCol, string $id)
 {
     $this->requete("SET sql_mode='';");
 
@@ -85,7 +85,7 @@ class FormationModel extends Model{
     
     // Ajouter les champs de sélection à la requête
     for ($i = 0; $i < $nbChamps; $i++) {
-        $sql .= $table . "." . $champSelect[$i];
+        $sql .= $champSelect[$i];
         
         if ($i < $nbChamps - 1) {
             $sql .= ", ";
@@ -102,23 +102,13 @@ class FormationModel extends Model{
     
     $nbJoin = count($joinTable);
     for ($i = 0; $i < $nbJoin; $i++) {
-        $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $id_list[$i] . " = " . $joinTable[$i] . "." . $id_list[$i];
+        $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
     }
     
     // Ajouter la clause WHERE avec la liste d'identifiants
-    $sql .= " WHERE " . $table . "." . $champSelect[0] . " IN (";
-    
-    $nbId = count($id_list);
-    for ($i = 0; $i < $nbId; $i++) {
-        if ($i > 0) {
-            $sql .= ",";
-        }
-        $sql .= $id_list[$i];
-    }
-    
-    $sql .= ") GROUP BY " . $table . "." . $champSelect[0];
+    $sql .= " WHERE " . $table . "." . $whereCol . " = " . $id . " GROUP BY " . $table . "." . $whereCol;
 
- 
+    echo $sql;die;
     
     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
     
