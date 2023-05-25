@@ -72,6 +72,22 @@
             </form>
             <img src="/planning/Views/assets/image/flower.svg">
         </div>
+        <div class="legend">
+            <ul class="list-color">
+                <li class="color"><span>Centre</span><div style="background-color:<?= $_SESSION['color']['couleur_centre']; ?>;"></div></li>
+                <li class="color"><span>PAE</span><div style="background-color:<?= $_SESSION['color']['couleur_pae']; ?>;"></div></li>
+                <li class="color"><span>Certif</span><div style="background-color:<?= $_SESSION['color']['couleur_certif']; ?>;"></div></li>
+                <li class="color"><span>RAN</span><div style="background-color:<?= $_SESSION['color']['couleur_ran']; ?>;"></div></li>
+                <li class="color"><span>Vacs attente</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div></li>
+                <li class="color"><span>Vacs ok</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div></li>
+                <li class="color"><span>Télétravail</span><div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div></li>
+                <li class="color"><span>Férié</span><div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div></li>
+                <li class="color"><span>Week-end</span><div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div></li>
+                <li class="color"><span>Interruptions</span><div style="background-color:<?= $_SESSION['color']['couleur_interruption']; ?>;"></div></li>
+                <li class="color"><span>MNSP</span><div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div></li>
+                <li class="color"><span>Perf</span><div style="background-color:<?= $_SESSION['color']['couleur_itinerant']; ?>;"></div></li>
+            </ul>
+        </div>
     </header>
     <main>
         <div>

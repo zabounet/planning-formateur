@@ -8,8 +8,8 @@
     <title><?= $link; ?></title>
     <link rel="stylesheet" href="/planning/Views/assets/css/fonts.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
-    <link rel="stylesheet" href="/planning/Views/assets/css/header.css">   
-    <link rel="stylesheet" href="/planning/Views/assets/css/burger.css">     
+    <link rel="stylesheet" href="/planning/Views/assets/css/header.css">
+    <link rel="stylesheet" href="/planning/Views/assets/css/burger.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <script src="/planning/Views/assets/js/header.js"></script>
 </head>
@@ -73,12 +73,12 @@
             </div>
             <form class="main-form" method="post">
                 <div id="part1" id="debut">
-                    <label for="date_debut">Début : 
+                    <label for="date_debut">Début :
                         <input required type="date" name="date_debut" <?php if (isset($data['date_debut'])) {
                                                                             echo 'value="' . $data['date_debut'] . '"';
                                                                         }  ?>>
                     </label>
-                    <label for="date_fin" id="fin">Fin : 
+                    <label for="date_fin" id="fin">Fin :
                         <input required type="date" name="date_fin" <?php if (isset($data['date_fin'])) {
                                                                         echo 'value="' . $data['date_fin'] . '"';
                                                                     } ?>>
@@ -168,6 +168,22 @@
                 </div>
             </form>
             <img onload="<?php if (!empty($data)) : ?> spin() <?php endif; ?>" class="flower-img" src="/planning/Views/assets/image/flower.svg">
+        </div>
+        <div class="legend">
+            <ul class="list-color">
+                <li class="color"><span>Centre</span><div style="background-color:<?= $_SESSION['color']['couleur_centre']; ?>;"></div></li>
+                <li class="color"><span>PAE</span><div style="background-color:<?= $_SESSION['color']['couleur_pae']; ?>;"></div></li>
+                <li class="color"><span>Certif</span><div style="background-color:<?= $_SESSION['color']['couleur_certif']; ?>;"></div></li>
+                <li class="color"><span>RAN</span><div style="background-color:<?= $_SESSION['color']['couleur_ran']; ?>;"></div></li>
+                <li class="color"><span>Vacs attente</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div></li>
+                <li class="color"><span>Vacs ok</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div></li>
+                <li class="color"><span>Télétravail</span><div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div></li>
+                <li class="color"><span>Férié</span><div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div></li>
+                <li class="color"><span>Week-end</span><div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div></li>
+                <li class="color"><span>Interruptions</span><div style="background-color:<?= $_SESSION['color']['couleur_interruption']; ?>;"></div></li>
+                <li class="color"><span>MNSP</span><div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div></li>
+                <li class="color"><span>Perf</span><div style="background-color:<?= $_SESSION['color']['couleur_itinerant']; ?>;"></div></li>
+            </ul>
         </div>
     </header>
     <main>

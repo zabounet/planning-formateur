@@ -7,13 +7,15 @@ use App\Models\FormateurModel;
 use App\Models\FormationModel;
 use DateTime;
 use App\Core\AlgorithmePaques;
+use App\Models\CouleursModel;
 
 class RooterController extends Controller
 {
 
     public function index()
     {
-
+        $color = new CouleursModel;
+        $color->setSessionCoulors();
         if (Form::validate($_POST, ['rechercher'])) {
 
             $databaseFormation = new FormationModel;
@@ -456,9 +458,9 @@ class RooterController extends Controller
                             // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
                             if ($formateurAvoirVacances !== 0) {
                                 if ($formateurAvoirVacances == 2) {
-                                    $html .= "<th style='background-color: var(--vacancesCell);'></th>";
+                                    $html .= "<th style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></th>";
                                 } else if ($formateurAvoirVacances == 1) {
-                                    $html .= "<th style='background-color: goldenrod;'></th> ";
+                                    $html .= "<th style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . ";'></th> ";
                                 }
                             } else {
                                 // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
@@ -469,7 +471,7 @@ class RooterController extends Controller
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                         || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                     ) {
-                                        $html .= "<th style='background-color: #050F29;'></th> ";
+                                        $html .= "<th style='background-color: " . $_SESSION['color']['couleur_ferie'] . ";'></th> ";
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
@@ -485,7 +487,7 @@ class RooterController extends Controller
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                         || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                     ) {
-                                        $html .= "<th style='background-color: #050F29;'></th> ";
+                                        $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></th> ";
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
