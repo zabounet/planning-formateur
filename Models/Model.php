@@ -176,7 +176,6 @@ class Model extends Db
 
         $sql .= " WHERE " . $updateCond . " = '$id'";
 
-        // echo $sql;die;
         return $this->requete($sql);
     }
     // Effectue une requête sur un certain nombre de champs, sur une table, 
@@ -281,7 +280,6 @@ class Model extends Db
     // Supprime une ligne de la bdd avec son id
     public function delete(string $table, string $delCond, string $id)
     {
-        //id dans un array car requete prend comme 2eme argument un array.
         return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
     }
 

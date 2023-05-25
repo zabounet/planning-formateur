@@ -56,6 +56,20 @@ class AdminController extends Controller
             ]
         );
 
+        if (isset($_POST['Delete'])){
+
+            $formation->delete('Date_centre', 'id_formation', $_POST['ID']);
+            $formation->delete('Date_certif', 'id_formation', $_POST['ID']);
+            $formation->delete('Date_ran', 'id_formation', $_POST['ID']);
+            $formation->delete("Date_pae", "id_formation", $_POST['ID']);
+            $formation->delete("Interruption", "id_formation", $_POST['ID']);
+            $formation->delete("Date_intervention", "id_formation", $_POST['ID']);
+            $formation->delete('Formation', 'id_formation', $_POST['ID']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/formationsHome');
+            exit;
+        }
+
         // Si une recherche est effectuée, alors recupère les informations correspondantes à la recherche
         if (isset($_POST['search_d']) && !empty($_POST['search_d'])) {
             $infosFormation = $formation->search(
@@ -440,6 +454,18 @@ class AdminController extends Controller
             ['id_ville']
         );
 
+        if (isset($_POST['Delete'])){
+
+            $formateur->update('Formation', ['id_formateur'], ['1'], 'id_formateur', $_POST['ID']);
+            $formateur->delete('Date_intervention', 'id_formateur', $_POST['ID']);
+            $formateur->delete('Date_MNSP', 'id_formateur', $_POST['ID']);
+            $formateur->delete('Date_perfectionnement', 'id_formateur', $_POST['ID']);
+            $formateur->delete("Formateur", "id_formateur", $_POST['ID']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/formateursHome');
+            exit;
+        }
+
         if (isset($_POST['search_d']) && !empty($_POST['search_d'])) {
             $infosFormateur = $formateur->search(
                 [
@@ -473,8 +499,10 @@ class AdminController extends Controller
             );
             $search = $_POST['search_d'];
             $this->render('admin/formateursHome', compact('infosFormateur', 'search'), 'formateurs');
+        } else {
+            $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
         }
-        $this->render('admin/formateursHome', compact('infosFormateur'), 'formateurs');
+
     }
 
     // Ajouter un nouveau formateur dans la base de données
