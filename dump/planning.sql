@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : mer. 24 mai 2023 à 17:01
+-- Généré le : jeu. 25 mai 2023 à 13:44
 -- Version du serveur :  5.7.34
 -- Version de PHP : 8.0.8
 
@@ -75,9 +75,9 @@ INSERT INTO `Date_centre` (`id_centre`, `date_debut_centre`, `date_fin_centre`, 
 (14, '0001-01-01', '0001-01-01', 4),
 (15, '2023-06-16', '2023-08-06', 4),
 (16, '2024-12-07', '2024-09-08', 4),
-(17, '2024-06-10', '2024-06-20', 5),
-(22, '2023-05-01', '2023-11-15', 1),
-(23, '2024-03-15', '2024-07-25', 1);
+(54, '2023-05-01', '2023-11-15', 1),
+(55, '2024-03-15', '2024-07-25', 1),
+(56, '2024-06-10', '2024-06-20', 5);
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,7 @@ CREATE TABLE `Date_certif` (
 INSERT INTO `Date_certif` (`id_certif`, `date_debut_certif`, `date_fin_certif`, `id_formation`) VALUES
 (4, '2023-07-01', '2023-07-07', 3),
 (7, '2023-11-01', '2023-11-09', 2),
-(10, '2024-08-06', '2024-08-10', 1);
+(26, '2024-08-06', '2024-08-10', 1);
 
 -- --------------------------------------------------------
 
@@ -120,45 +120,32 @@ CREATE TABLE `Date_intervention` (
 --
 
 INSERT INTO `Date_intervention` (`id_intervention`, `date_debut_intervention`, `date_fin_intervention`, `id_formateur`, `id_formation`) VALUES
-(1, '2023-05-11', '2023-08-24', 4, 1),
 (3, '2023-08-25', '2023-09-01', 4, 2),
 (4, '2023-09-11', '2024-01-11', 4, 3),
 (7, '2023-05-11', '2023-05-26', 5, 3),
-(9, '2024-05-10', '2024-05-12', 3, 4),
 (10, '2023-06-21', '2023-06-23', 4, 4),
-(19, '2023-05-11', '2023-08-24', 4, 1),
-(20, '2023-06-21', '2023-06-23', 4, 1),
-(21, '2023-08-25', '2023-09-01', 4, 1),
-(22, '2023-09-11', '2024-01-11', 4, 1),
-(26, '2023-06-09', '2023-06-19', 3, 1),
-(28, '2023-08-24', '2024-02-17', 3, 1),
-(30, '2024-01-09', '2024-01-15', 3, 1),
-(34, '2024-05-29', '2024-09-08', 3, 1),
-(35, '2023-05-11', '2023-08-24', 4, 1),
-(36, '2023-05-11', '2023-08-24', 4, 1),
-(37, '2023-06-21', '2023-06-23', 4, 1),
-(38, '2023-06-21', '2023-06-23', 4, 1),
-(39, '2023-08-25', '2023-09-01', 4, 1),
-(40, '2023-08-25', '2023-09-01', 4, 1),
-(41, '2023-09-11', '2024-01-11', 4, 1),
-(42, '2023-09-11', '2024-01-11', 4, 1),
-(44, '2023-05-01', '2023-08-17', 3, 1),
-(67, '2023-05-11', '2023-08-24', 4, 1),
-(68, '2023-05-11', '2023-08-24', 4, 1),
-(69, '2023-05-11', '2023-08-24', 4, 1),
-(70, '2023-05-11', '2023-08-24', 4, 1),
-(71, '2023-06-21', '2023-06-23', 4, 1),
-(72, '2023-06-21', '2023-06-23', 4, 1),
-(73, '2023-06-21', '2023-06-23', 4, 1),
-(74, '2023-06-21', '2023-06-23', 4, 1),
-(75, '2023-08-25', '2023-09-01', 4, 1),
-(76, '2023-08-25', '2023-09-01', 4, 1),
-(77, '2023-08-25', '2023-09-01', 4, 1),
-(78, '2023-08-25', '2023-09-01', 4, 1),
-(79, '2023-09-11', '2024-01-11', 4, 1),
-(80, '2023-09-11', '2024-01-11', 4, 1),
-(81, '2023-09-11', '2024-01-11', 4, 1),
-(82, '2023-09-11', '2024-01-11', 4, 1);
+(11, '2023-05-01', '2023-05-10', 6, 1),
+(12, '2023-05-08', '2023-05-20', 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Date_MNSP`
+--
+
+CREATE TABLE `Date_MNSP` (
+  `id_MNSP` int(11) NOT NULL,
+  `date_debut_MNSP` date DEFAULT NULL,
+  `date_fin_MNSP` date DEFAULT NULL,
+  `id_formateur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Date_MNSP`
+--
+
+INSERT INTO `Date_MNSP` (`id_MNSP`, `date_debut_MNSP`, `date_fin_MNSP`, `id_formateur`) VALUES
+(1, '2023-05-01', '2023-05-10', 3);
 
 -- --------------------------------------------------------
 
@@ -182,8 +169,28 @@ INSERT INTO `Date_pae` (`id_date_pae`, `date_debut_pae`, `date_fin_pae`, `id_for
 (15, '2023-08-30', '2023-10-07', 2),
 (16, '2023-05-10', '2023-06-11', 2),
 (17, '2023-06-26', '2023-07-15', 2),
-(22, '2024-07-26', '2024-08-05', 1),
-(23, '2023-11-16', '2024-03-14', 1);
+(55, '2024-07-26', '2024-08-05', 1),
+(56, '2023-11-16', '2024-03-14', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Date_perfectionnement`
+--
+
+CREATE TABLE `Date_perfectionnement` (
+  `id_perfectionnement` int(11) NOT NULL,
+  `date_debut_perfectionnement` date DEFAULT NULL,
+  `date_fin_perfectionnement` date DEFAULT NULL,
+  `id_formateur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `Date_perfectionnement`
+--
+
+INSERT INTO `Date_perfectionnement` (`id_perfectionnement`, `date_debut_perfectionnement`, `date_fin_perfectionnement`, `id_formateur`) VALUES
+(1, '2023-05-11', '2023-05-13', 3);
 
 -- --------------------------------------------------------
 
@@ -205,7 +212,7 @@ CREATE TABLE `Date_ran` (
 INSERT INTO `Date_ran` (`id_ran`, `date_debut_ran`, `date_fin_ran`, `id_formation`) VALUES
 (4, '2023-04-26', '2023-05-07', 3),
 (7, '2023-04-30', '2023-05-07', 2),
-(10, '2023-04-26', '2023-04-30', 1);
+(26, '2023-04-26', '2023-04-30', 1);
 
 -- --------------------------------------------------------
 
@@ -271,12 +278,12 @@ CREATE TABLE `Formateur` (
 
 INSERT INTO `Formateur` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `mail_formateur`, `mdp_formateur`, `type_contrat_formateur`, `date_debut_contrat`, `date_fin_contrat`, `permissions_utilisateur`, `numero_grn`, `id_ville`) VALUES
 (1, 'Non', 'Attribue', '', '', '', NULL, NULL, 0, 164, 1),
-(2, 'Veronique', 'Veronique', 'veronique@veronique.veronique', '$argon2id$v=19$m=65536,t=4,p=2$N2M3VWl3TEJOMDU5TmhocQ$cC3Y9GMdi52uOX7F/4ckLo9gil7MxnIor+UU3fudVHs', 'AUT', NULL, NULL, 1, 164, 1),
+(2, 'Veronique', 'Veronique', 'veronique@veronique.veronique', '$argon2id$v=19$m=65536,t=4,p=2$N2M3VWl3TEJOMDU5TmhocQ$cC3Y9GMdi52uOX7F/4ckLo9gil7MxnIor+UU3fudVHs', 'AUTRE', NULL, NULL, 1, 164, 1),
 (3, 'Bezault', 'Sandy', 'bezo@sendi.afpa', '$argon2id$v=19$m=65536,t=4,p=2$a1NuMWdhQTFnZEhLMkdBbw$FW6Z35tEyozZ4oOQ8r1WIaHcLhJsUhog5hTZ+sC7Qq4', 'CDI', '2014-04-17', '0001-01-01', 0, 164, 1),
 (4, 'akbari', 'ali', '110.akbari.98@gmail.com', '$argon2id$v=19$m=65536,t=4,p=2$LzBxZmI4bDdHLzJuNVJEQw$3fjk+b06PEas2BHkfJYJBZ7Kd2jCYwM0zY7kLEPa1TA', 'CDI', '2023-05-02', '0001-01-01', 0, 165, 1),
 (5, 'bezo', 'sendi', 'bezo@sendi@affpa.fere', '$argon2id$v=19$m=65536,t=4,p=2$SlprOWFhZldBVHFMbkNsRA$sGKVDFBKPhG28zimfZhFdxLx1AM9XTRt7IpxdjwE3Wo', 'CDD', '2014-04-17', '2023-04-27', 0, 164, 1),
-(6, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$TllKcU8yNmxXZnFyd0c0Ug$jS6FF3v4ZvHEAe6EiC0JbbvvzHWgXO/mYDQAxtCZ36k', 'INTRIME', '2023-12-10', '2024-02-10', 0, 166, 2),
-(7, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$YU5MVElCZFZ6QVJvYzQzQQ$iJRpfq/kcm4L+oESviWEIoPcRhv7N5H4k51rzSWOYOk', 'INTRIME', '2023-12-10', '2024-02-10', 0, 166, 2);
+(6, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$TllKcU8yNmxXZnFyd0c0Ug$jS6FF3v4ZvHEAe6EiC0JbbvvzHWgXO/mYDQAxtCZ36k', 'INTERIM', '2023-12-10', '2024-02-10', 0, 166, 2),
+(7, 'Rabot', 'Nicolas', 'nicolas@nicolas.nicolas', '$argon2id$v=19$m=65536,t=4,p=2$YU5MVElCZFZ6QVJvYzQzQQ$iJRpfq/kcm4L+oESviWEIoPcRhv7N5H4k51rzSWOYOk', 'INTERIM', '2023-12-10', '2024-02-10', 0, 166, 2);
 
 -- --------------------------------------------------------
 
@@ -303,11 +310,11 @@ CREATE TABLE `Formation` (
 --
 
 INSERT INTO `Formation` (`id_formation`, `nom_formation`, `acronyme_formation`, `description_formation`, `candidats_formation`, `date_debut_formation`, `date_fin_formation`, `numero_grn`, `id_type_formation`, `id_formateur`, `id_ville`) VALUES
-(1, '164 CDA offre 1099  : 30-04-2023 - 09-11-2023 Tours', 'CDA', '    CDACDACDA', '', '2023-04-30', '2023-11-09', 164, 2, 7, 2),
+(1, '164 CDA offre 1099  : 30-04-2023 - 09-11-2023 Tours', 'CDA', '        CDACDACDA', '15 / 10', '2023-04-30', '2023-11-09', 164, 4, 7, 2),
 (2, '164 GUC offre 1983  : 2023-04-26 - 2024-08-10 Tours', 'GUC', ' GUCGUCGUC', '', '2023-04-26', '2024-08-10', 164, 1, 5, 2),
 (3, '166 B3 offre 1060 : 2023-04-30 - 2023-11-09 Tours', 'B3', 'B3B3B3B3', '', '2023-04-30', '2023-11-09', 166, 3, 1, 2),
 (4, '164 1 1 : 0001-01-01 - 0001-01-01 Blois', '1', '1', '', '0001-01-01', '0001-01-01', 164, 1, 1, 1),
-(5, '164 RDC offre 0394 : 2023-05-28 - 2023-09-06 Blois', 'RDC', 'Rez De Chaussée', '13 / 9', '2023-05-28', '2023-09-06', 164, 1, 5, 1);
+(5, '164 RDC offre 0394  : 28-05-2023 - 06-09-2023 Blois', 'RDC', ' Rez De Chaussée', '13 / 9', '2023-05-28', '2023-09-06', 164, 1, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -351,22 +358,25 @@ INSERT INTO `Interruption` (`id_interruption`, `date_debut_interruption`, `date_
 (8, '2023-04-28', '2023-05-07', 2),
 (9, '2023-05-31', '2023-06-11', 2),
 (10, '2023-08-09', '2023-08-14', 4),
-(11, '2024-07-07', '2024-07-07', 5);
-
---
--- Déchargement des données de la table `Logs`
---
-
+(12, '2024-07-07', '2024-07-07', 5);
 
 -- --------------------------------------------------------
 
+--
+-- Structure de la table `Logs`
+--
+
 CREATE TABLE `Logs` (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_email VARCHAR(128),
-  activity_type VARCHAR(50),
-  success TINYINT NOT NULL,
-  activity_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+  `id` int(11) NOT NULL,
+  `user_email` varchar(128) DEFAULT NULL,
+  `activity_type` varchar(50) DEFAULT NULL,
+  `success` tinyint(4) NOT NULL,
+  `activity_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Type_formation`
 --
 
@@ -437,11 +447,25 @@ ALTER TABLE `Date_intervention`
   ADD KEY `Date_intervention_formation_FK` (`id_formation`);
 
 --
+-- Index pour la table `Date_MNSP`
+--
+ALTER TABLE `Date_MNSP`
+  ADD PRIMARY KEY (`id_MNSP`),
+  ADD KEY `id_formateur` (`id_formateur`);
+
+--
 -- Index pour la table `Date_pae`
 --
 ALTER TABLE `Date_pae`
   ADD PRIMARY KEY (`id_date_pae`),
   ADD KEY `Date_pae_Formation_FK` (`id_formation`);
+
+--
+-- Index pour la table `Date_perfectionnement`
+--
+ALTER TABLE `Date_perfectionnement`
+  ADD PRIMARY KEY (`id_perfectionnement`),
+  ADD KEY `id_formateur` (`id_formateur`);
 
 --
 -- Index pour la table `Date_ran`
@@ -496,6 +520,12 @@ ALTER TABLE `Interruption`
   ADD KEY `Date_interruption_Formation_FK` (`id_formation`);
 
 --
+-- Index pour la table `Logs`
+--
+ALTER TABLE `Logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `Type_formation`
 --
 ALTER TABLE `Type_formation`
@@ -521,31 +551,43 @@ ALTER TABLE `Couleurs`
 -- AUTO_INCREMENT pour la table `Date_centre`
 --
 ALTER TABLE `Date_centre`
-  MODIFY `id_centre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_centre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT pour la table `Date_certif`
 --
 ALTER TABLE `Date_certif`
-  MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `Date_intervention`
 --
 ALTER TABLE `Date_intervention`
-  MODIFY `id_intervention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id_intervention` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT pour la table `Date_MNSP`
+--
+ALTER TABLE `Date_MNSP`
+  MODIFY `id_MNSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `Date_pae`
 --
 ALTER TABLE `Date_pae`
-  MODIFY `id_date_pae` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_date_pae` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT pour la table `Date_perfectionnement`
+--
+ALTER TABLE `Date_perfectionnement`
+  MODIFY `id_perfectionnement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `Date_ran`
 --
 ALTER TABLE `Date_ran`
-  MODIFY `id_ran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_ran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `Date_teletravail`
@@ -563,7 +605,7 @@ ALTER TABLE `Date_vacance`
 -- AUTO_INCREMENT pour la table `Formateur`
 --
 ALTER TABLE `Formateur`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `Formation`
@@ -575,7 +617,13 @@ ALTER TABLE `Formation`
 -- AUTO_INCREMENT pour la table `Interruption`
 --
 ALTER TABLE `Interruption`
-  MODIFY `id_interruption` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_interruption` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT pour la table `Logs`
+--
+ALTER TABLE `Logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `Type_formation`
@@ -613,10 +661,22 @@ ALTER TABLE `Date_intervention`
   ADD CONSTRAINT `Date_intervention_formation_FK` FOREIGN KEY (`id_formation`) REFERENCES `formation` (`id_formation`);
 
 --
+-- Contraintes pour la table `Date_MNSP`
+--
+ALTER TABLE `Date_MNSP`
+  ADD CONSTRAINT `date_mnsp_ibfk_1` FOREIGN KEY (`id_formateur`) REFERENCES `Formateur` (`id_formateur`);
+
+--
 -- Contraintes pour la table `Date_pae`
 --
 ALTER TABLE `Date_pae`
   ADD CONSTRAINT `Date_pae_Formation_FK` FOREIGN KEY (`id_formation`) REFERENCES `formation` (`id_formation`);
+
+--
+-- Contraintes pour la table `Date_perfectionnement`
+--
+ALTER TABLE `Date_perfectionnement`
+  ADD CONSTRAINT `date_perfectionnement_ibfk_1` FOREIGN KEY (`id_formateur`) REFERENCES `Formateur` (`id_formateur`);
 
 --
 -- Contraintes pour la table `Date_ran`

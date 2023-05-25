@@ -74,7 +74,7 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
             </label>
 
             <label for="description"> Description :
-                <textarea id="description" name="description" style="resize : none;"> <?= $infosCurrent['description_formation']; ?></textarea>
+                <textarea id="description" name="description" style="resize : none;"><?= trim($infosCurrent['description_formation']); ?></textarea>
             </label>
 
             <label for="offre"> Offre :
