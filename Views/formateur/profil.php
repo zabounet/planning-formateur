@@ -215,6 +215,31 @@
                     <a href="?id=3">Modifier</a>
                 <?php endif; ?>
             </form>
+            <hr>
+                <form class="profil mdp-profil" method="post">
+
+                    <?php if (str_replace('/planning/public/formateur/profil', '', $_SERVER['REQUEST_URI']) === "?id=4") : ?>
+                        <div class="mdp-container">
+                            <div>
+                                <span>Saisir votre mot de passe actuel :</span>
+                                <input type="password" name="current_mdp" class="mdpProfil" value="" />
+                            </div>
+                            <div>
+                                <span>Saisir nouveau mot de passe :</span>
+                                <input type="password" name="new_mdp" class="mdpProfil" value="" />
+                            </div>
+                            <div>
+                                <span>Saisir confirmation du nouveau mot de passe :</span>
+                                <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
+                            </div>
+                        </div>
+                        <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
+                    <?php else : ?>
+                        <span>Mot de passe :</span>
+                        <span id="mdpProfil">****</span>
+                        <a href="?id=4">Modifier</a>
+                    <?php endif; ?>
+                </form>
         </div>
         <span class="error" style="color: red;">
             <?php if (isset($_SESSION['error_profil'])) {
@@ -299,8 +324,8 @@
                     </div>
 
                     <div>
-                        <span>Itinerant</span>
-                        <input type="color" name="itinerant" value="<?= $_SESSION['color']['couleur_itinerant']; ?>" id="">
+                        <span>Perfectionment</span>
+                        <input type="color" name="perfectionment" value="<?= $_SESSION['color']['couleur_perfectionment']; ?>" id="">
                     </div>
                 </div>
             </div>

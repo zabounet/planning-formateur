@@ -17,7 +17,7 @@ class CouleursModel extends Model
     protected $couleur_weekend;           
     protected $couleur_interruption;      
     protected $couleur_MNSP;              
-    protected $couleur_itinerant; 
+    protected $couleur_Perfectionment; 
 
     public function __construct()
     {
@@ -50,7 +50,7 @@ class CouleursModel extends Model
                                   string $couleur_weekend ,
                                   string $couleur_interruption ,
                                   string $couleur_MNSP ,
-                                  string $couleur_itinerant){
+                                  string $couleur_Perfectionment){
     $result = $this->requete("UPDATE " . $this->table . " SET
         `couleur_centre` = ?, 
         `couleur_pae` = ?, 
@@ -63,7 +63,7 @@ class CouleursModel extends Model
         `couleur_weekend` = ?, 
         `couleur_interruption` = ?, 
         `couleur_MNSP` = ?, 
-        `couleur_itinerant` = ?
+        `couleur_Perfectionment` = ?
         WHERE couleur_id = 1" 
         ,[  $couleur_centre,
             $couleur_pae,
@@ -76,7 +76,7 @@ class CouleursModel extends Model
             $couleur_weekend ,
             $couleur_interruption ,
             $couleur_MNSP ,
-            $couleur_itinerant]);
+            $couleur_Perfectionment]);
 
             if ($result !== false) {
                 // The update was successful
@@ -183,13 +183,13 @@ class CouleursModel extends Model
         return $this->couleur_MNSP;
     }
 
-    public function setCouleurItinerant($couleur_itinerant){
-        $this->couleur_itinerant = $couleur_itinerant;
+    public function setCouleurPerfectionment($couleur_Perfectionment){
+        $this->couleur_Perfectionment = $couleur_Perfectionment;
         return $this;
     }
     
-    public function getCouleurItinerant(){
-        return $this->couleur_itinerant;
+    public function getCouleurPerfectionment(){
+        return $this->couleur_Perfectionment;
     }
 
 

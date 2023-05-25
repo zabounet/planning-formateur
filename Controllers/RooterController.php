@@ -60,7 +60,7 @@ class RooterController extends Controller
                 // Récupère le formateur référent
                 $referent = $databaseFormateur->getBy(['nom_formateur', 'prenom_formateur'], 'Formateur', ['id_formateur'], [$formations[$x]->id_formateur]);
                 //recupere les date de vacances pour chaque formateur et les place dans un tableau
-                $formateurs = $databaseFormation->getDatesById( ['id_formation'],['date_debut_pae','date_fin_pae'],'formation',['date_pae','date_certif'],$formateursSelectionnes);
+                // $formateurs = $databaseFormation->getDatesById( ['$formations[$x]->id_formateur'],['date_debut','date_fin'],'formation',['date_pae','date_certif'],$formateursSelectionnes);
                 $formateurs = $databaseFormateur->getVacancesById($formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
                     $date_debut_vacences = $formateur['date_debut_vacences'];
