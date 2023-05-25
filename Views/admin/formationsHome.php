@@ -28,7 +28,7 @@ foreach ($infosFormation as $formation) {
         $placesCandidats = explode('/', $formation->candidats_formation);
         $places = $placesCandidats[0];
         $candidats = $placesCandidats[1];
-    } else{
+    } else {
         $places = $candidats = "Indéfini";
     }
 
@@ -48,7 +48,14 @@ foreach ($infosFormation as $formation) {
     <p>Formateur référent : <?= $formation->nom_formateur . " " . $formation->prenom_formateur; ?></p>
 
     <a href="/planning/public/index.php?p=admin/modifierFormation&?id=<?= $formation->id_formation; ?>">Modifier les informations de la formation</a>
-    <a href="#">Supprimer la formation</a>
+    <form action="" method="post">
+        <input class="delete" type="button" value="Supprimer">
+        <div class="confirm"> 
+            <h4>Êtes-vous sûr ?</h4>
+            <input type="submit" name="Delete" value="Confirmer">
+        </div>
+        <input type="hidden" name="ID" value="<?= $formation->id_formation; ?>">
+    </form>
     <hr>
 <?php
     $iterations++;
