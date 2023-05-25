@@ -118,7 +118,7 @@ class FormationModel extends Model{
     
     $sql .= ") GROUP BY " . $table . "." . $champSelect[0];
 
-    echo $sql;
+ 
     
     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
     

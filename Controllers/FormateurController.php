@@ -167,15 +167,26 @@ class FormateurController extends Controller
         // modif pass
         if (Form::validate($_POST, ['verifierMdp'])) {
             if (isset($_POST['current_mdp']) && !empty($_POST['current_mdp'])) {
-                $pass = $_POST['current_mdp'];
                 $FormateurModel = new FormateurModel;
-                $Formateur  = $FormateurModel->getOne('*','Formateur','mail_formateur',$_SESSION['formateur']['mail']);
+
+                if (isset($_SESSION['admin'])) {
+                    $pass = $_POST['current_mdp'];
+                    $Formateur  = $FormateurModel->findOneByEmail($_SESSION['admin']['mail']);
+                    $idFormateur = $_SESSION['admin']['id'];
+                } elseif (isset($_SESSION['formateur'])) {
+                    $Formateur  = $FormateurModel->findOneByEmail($_SESSION['formateur']['mail']);
+                    $pass = $_POST['current_mdp'];
+                    $idFormateur = $_SESSION['formateur']['id'];
+                }
+
 
                 //l'utilisateur existe
                 if (password_verify($pass,$Formateur['mdp_formateur'])) {
                     if (!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
+
                         $idFormateur = $_SESSION['formateur']['id'];
                         $new_mdp = password_hash($_POST['new_mdp'], PASSWORD_ARGON2ID, Form::Argon2IDOptions());
+
                         $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);
 
                         if ($resultat) {
@@ -293,10 +304,10 @@ class FormateurController extends Controller
                 $couleur_weekend = $_POST['weekend'];
                 $couleur_interruption = $_POST['interruption'];
                 $couleur_MNSP = $_POST['MNSP'];
-                $couleur_itinerant = $_POST['itinerant'];
+                $couleur_Perfectionment = $_POST['perfectionment'];
 
                 $Couleurs = new CouleursModel();
-                $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_itinerant);
+                $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_Perfectionment);
                 if ($resultat) {
                     $_SESSION['color'] = $_POST;
                     $_SESSION['success_color'] = "Les colors ont été enregistrés avec succès.";
