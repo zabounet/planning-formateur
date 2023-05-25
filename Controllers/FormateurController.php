@@ -184,7 +184,6 @@ class FormateurController extends Controller
                 if (password_verify($pass,$Formateur['mdp_formateur'])) {
                     if (!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
 
-                        $idFormateur = $_SESSION['formateur']['id'];
                         $new_mdp = password_hash($_POST['new_mdp'], PASSWORD_ARGON2ID, Form::Argon2IDOptions());
 
                         $resultat = $FormateurModel->updateMdpProfil($new_mdp, $idFormateur);

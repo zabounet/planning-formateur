@@ -357,56 +357,16 @@ INSERT INTO `Interruption` (`id_interruption`, `date_debut_interruption`, `date_
 -- Déchargement des données de la table `Logs`
 --
 
-INSERT INTO `Logs` (`id`, `user_email`, `activity_type`, `success`, `activity_time`) VALUES
-(135, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:22:56'),
-(136, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:24:09'),
-(137, 'veronique@veronique.veronique', 'INSERT', 1, '2023-05-24 14:24:32'),
-(138, 'veronique@veronique.veronique', 'DELETE', 1, '2023-05-24 14:35:16'),
-(139, 'veronique@veronique.veronique', 'Array Dans 1', 1, '2023-05-24 14:39:30'),
-(140, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:14'),
-(141, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:16'),
-(142, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:17'),
-(143, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:18'),
-(144, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:19'),
-(145, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:20'),
-(146, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:20'),
-(147, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:22'),
-(148, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:22'),
-(149, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:24'),
-(150, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:26'),
-(151, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:27'),
-(152, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:29'),
-(153, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:31'),
-(154, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:32'),
-(155, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:34'),
-(156, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:36'),
-(157, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:37'),
-(158, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:39'),
-(159, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:41'),
-(160, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:43'),
-(161, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:45'),
-(162, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:47'),
-(163, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:48'),
-(164, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:50'),
-(165, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:51'),
-(166, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:53'),
-(167, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:53'),
-(168, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:54'),
-(169, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:56'),
-(170, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:58'),
-(171, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:55:59'),
-(172, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:59:55'),
-(173, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 14:59:58'),
-(174, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:02'),
-(175, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:05'),
-(176, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:09'),
-(177, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:13'),
-(178, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:15'),
-(179, 'veronique@veronique.veronique', 'DELETE Dans Date_intervention', 1, '2023-05-24 15:00:23');
 
 -- --------------------------------------------------------
 
---
+CREATE TABLE `Logs` (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_email VARCHAR(128),
+  activity_type VARCHAR(50),
+  success TINYINT NOT NULL,
+  activity_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 -- Structure de la table `Type_formation`
 --
 
