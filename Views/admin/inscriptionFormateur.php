@@ -17,7 +17,7 @@
                 <option disabled selected>Choisir type contat</option>
                     <option value="CDI">CDI</option>
                     <option value="CDD">CDD</option>
-                    <option value="intrime">intrime</option>
+                    <option value="interim">intrime</option>
                     <option value="autre">autre</option>
             </select>
         </label>

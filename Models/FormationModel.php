@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\Db;
 
-class FormationModel extends Model{
+class FormationModel extends Model
+{
 
     protected $id_formation;
     protected $nom_formation;
@@ -18,12 +20,13 @@ class FormationModel extends Model{
 
     public function __construct()
     {
-        $class = str_replace(__NAMESPACE__.'\\', '',__CLASS__);
+        $class = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
         $this->table = strtolower(str_replace('Model', '', $class));
     }
 
     // Recupère Les GRN, Villes, Types de formation, acronymes de formation et les formateurs
-    public function getInformations(){
+    public function getInformations()
+    {
         return $infos = [
             'GRNS' => $this->requete("SELECT * FROM `GRN`")->fetchAll(),
             'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`,`prenom_formateur`,`date_debut_contrat`,`date_fin_contrat` FROM `Formateur`")->fetchAll(),
@@ -75,45 +78,46 @@ class FormationModel extends Model{
     }
 
     public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $joinCol, string $whereCol, string $id)
-{
-    $this->requete("SET sql_mode='';");
+    {
+        $this->requete("SET sql_mode='';");
 
-    $nbChamps = count($champSelect);
-    $nbDates = count($date);
-    
-    $sql = "SELECT ";
-    
-    // Ajouter les champs de sélection à la requête
-    for ($i = 0; $i < $nbChamps; $i++) {
-        $sql .= $champSelect[$i];
-        
-        if ($i < $nbChamps - 1) {
-            $sql .= ", ";
+        $nbChamps = count($champSelect);
+        $nbDates = count($date);
+
+        $sql = "SELECT ";
+
+        // Ajouter les champs de sélection à la requête
+        for ($i = 0; $i < $nbChamps; $i++) {
+            $sql .= $champSelect[$i];
+
+            if ($i < $nbChamps - 1) {
+                $sql .= ", ";
+            }
         }
-    }
-    
-    // Ajouter les group_concat pour les dates
-    for ($i = 0; $i < $nbDates; $i++) {
-        $sql .= ", GROUP_CONCAT(" . $joinTable[$i] . "." . $date[$i] . " ORDER BY " . $joinTable[$i] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
-    }
-    
-    // Ajouter la clause FROM avec les tables et les jointures
-    $sql .= " FROM " . $table;
-    
-    $nbJoin = count($joinTable);
-    for ($i = 0; $i < $nbJoin; $i++) {
-        $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
-    }
-    
-    // Ajouter la clause WHERE avec la liste d'identifiants
-    $sql .= " WHERE " . $table . "." . $whereCol . " = " . $id . " GROUP BY " . $table . "." . $whereCol;
 
-    echo $sql;die;
-    
-    $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
-    
-    return $result;
-}
+        // Ajouter les group_concat pour les dates
+        for ($i = 0; $i < $nbDates; $i++) {
+            $sql .= ", GROUP_CONCAT(" . $joinTable[$i] . "." . $date[$i] . " ORDER BY " . $joinTable[$i] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
+        }
+
+        // Ajouter la clause FROM avec les tables et les jointures
+        $sql .= " FROM " . $table;
+
+        $nbJoin = count($joinTable);
+        for ($i = 0; $i < $nbJoin; $i++) {
+            $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
+        }
+
+        // Ajouter la clause WHERE avec la liste d'identifiants
+        $sql .= " WHERE " . $table . "." . $whereCol . " = " . $id . " GROUP BY " . $table . "." . $whereCol;
+
+        echo $sql;
+        die;
+
+        $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+
+        return $result;
+    }
 
 
 
@@ -230,31 +234,35 @@ class FormationModel extends Model{
     //     $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
     //     return $result;
     // }
-    
+
     /**
      * Get the value of id_formation
      */
-    public function getIdFormation() {
+    public function getIdFormation()
+    {
         return $this->id_formation;
     }
 
     /**
      * Set the value of id_formation
      */
-    public function setIdFormation($id_formation): self {
+    public function setIdFormation($id_formation): self
+    {
         $this->id_formation = $id_formation;
         return $this;
     }
 
 
-    public function getNomFormation() {
+    public function getNomFormation()
+    {
         return $this->nom_formation;
     }
 
     /**
      * Set the value of nom_formation
      */
-    public function setNomformation($nom_formation): self {
+    public function setNomformation($nom_formation): self
+    {
         $this->nom_formation = $nom_formation;
         return $this;
     }
@@ -262,14 +270,16 @@ class FormationModel extends Model{
     /**
      * Get the value of description_formation
      */
-    public function getDescriptionFormation() {
+    public function getDescriptionFormation()
+    {
         return $this->description_formation;
     }
 
     /**
      * Set the value of description_formation
      */
-    public function setDescriptionFormation($description_formation): self {
+    public function setDescriptionFormation($description_formation): self
+    {
         $this->description_formation = $description_formation;
         return $this;
     }
@@ -277,14 +287,16 @@ class FormationModel extends Model{
     /**
      * Get the value of date_debut_formation
      */
-    public function getDateDebutFormation() {
+    public function getDateDebutFormation()
+    {
         return $this->date_debut_formation;
     }
 
     /**
      * Set the value of date_debut_formation
      */
-    public function setDateDebutFormation($date_debut_formation): self {
+    public function setDateDebutFormation($date_debut_formation): self
+    {
         $this->date_debut_formation = $date_debut_formation;
         return $this;
     }
@@ -292,14 +304,16 @@ class FormationModel extends Model{
     /**
      * Get the value of date_fin_formation
      */
-    public function getDateFinFormation() {
+    public function getDateFinFormation()
+    {
         return $this->date_fin_formation;
     }
 
     /**
      * Set the value of date_fin_formation
      */
-    public function setDateFinFormation($date_fin_formation): self {
+    public function setDateFinFormation($date_fin_formation): self
+    {
         $this->date_fin_formation = $date_fin_formation;
         return $this;
     }
@@ -307,14 +321,16 @@ class FormationModel extends Model{
     /**
      * Get the value of numero_grn
      */
-    public function getNumeroGrn() {
+    public function getNumeroGrn()
+    {
         return $this->numero_grn;
     }
 
     /**
      * Set the value of numero_grn
      */
-    public function setNumeroGrn($numero_grn): self {
+    public function setNumeroGrn($numero_grn): self
+    {
         $this->numero_grn = $numero_grn;
         return $this;
     }
@@ -322,14 +338,16 @@ class FormationModel extends Model{
     /**
      * Get the value of id_type_formation
      */
-    public function getIdTypeFormation() {
+    public function getIdTypeFormation()
+    {
         return $this->id_type_formation;
     }
 
     /**
      * Set the value of id_type_formation
      */
-    public function setIdTypeFormation($id_type_formation): self {
+    public function setIdTypeFormation($id_type_formation): self
+    {
         $this->id_type_formation = $id_type_formation;
         return $this;
     }
@@ -337,14 +355,16 @@ class FormationModel extends Model{
     /**
      * Get the value of id_formateur
      */
-    public function getIdFormateur() {
+    public function getIdFormateur()
+    {
         return $this->id_formateur;
     }
 
     /**
      * Set the value of id_formateur
      */
-    public function setIdFormateur($id_formateur): self {
+    public function setIdFormateur($id_formateur): self
+    {
         $this->id_formateur = $id_formateur;
         return $this;
     }
@@ -352,14 +372,16 @@ class FormationModel extends Model{
     /**
      * Get the value of id_ville
      */
-    public function getIdVille() {
+    public function getIdVille()
+    {
         return $this->id_ville;
     }
 
     /**
      * Set the value of id_ville
      */
-    public function setIdVille($id_ville): self {
+    public function setIdVille($id_ville): self
+    {
         $this->id_ville = $id_ville;
         return $this;
     }
@@ -367,16 +389,17 @@ class FormationModel extends Model{
     /**
      * Get the value of id_acronyme_formation
      */
-    public function getIdAcronymeFormation() {
+    public function getIdAcronymeFormation()
+    {
         return $this->acronyme_formation;
     }
 
     /**
      * Set the value of id_acronyme_formation
      */
-    public function setIdAcronymeFormation($acronyme_formation): self {
+    public function setIdAcronymeFormation($acronyme_formation): self
+    {
         $this->acronyme_formation = $acronyme_formation;
         return $this;
     }
-}
-;
+};

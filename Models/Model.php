@@ -304,43 +304,47 @@ class Model extends Db
                 $result = false;
             }
 
-           
             $type = explode(" ", $sql);
-            $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
-            preg_match_all($pattern, $sql, $match);
 
-            if(!isset($match[2][0])){
-                $table = "Inconnu";
-            } else {
-                $table = $match[2][0];
-            }
+            for($i = 0; $i != 1; $i++){
+                if($type[0] !== "SET"){
+                    $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
+                    preg_match_all($pattern, $sql, $match);
 
-            if($type[0] === "INSERT"){
-                $table = $type[2];
-            } 
-            $activite = $type[0] . " Dans " . $table;
+                    if(!isset($match[2][0])){
+                        $table = "Inconnu";
+                    } else {
+                        $table = $match[2][0];
+                    }
 
-            if (!isset($_SESSION)) {
-                $email = $_POST["email"];
-                $type[0] = "Connexion";
+                    if($type[0] === "INSERT"){
+                        $table = $type[2];
+                    } 
+                    $activite = $type[0] . " Dans " . $table;
 
-                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
-                $prepLog = $this->db->prepare($log);
-                $execLog = $prepLog->execute();
-            }
+                    if (!isset($_SESSION)) {
+                        $email = $_POST["email"];
+                        $type[0] = "Connexion";
 
-            else if ($type[0] !== "SELECT") {
+                        $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                        $prepLog = $this->db->prepare($log);
+                        $execLog = $prepLog->execute();
+                    }
 
-                if (isset($_SESSION['formateur'])) {
-                    $email = $_SESSION['formateur']['mail'];
+                    else if ($type[0] !== "SELECT") {
 
-                } else if(isset($_SESSION['admin'])) {
-                    $email = $_SESSION['admin']['mail'];
+                        if (isset($_SESSION['formateur'])) {
+                            $email = $_SESSION['formateur']['mail'];
+
+                        } else if(isset($_SESSION['admin'])) {
+                            $email = $_SESSION['admin']['mail'];
+                        }
+
+                        $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                        $prepLog = $this->db->prepare($log);
+                        $execLog = $prepLog->execute();
+                    }
                 }
-
-                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
-                $prepLog = $this->db->prepare($log);
-                $execLog = $prepLog->execute();
             }
 
             return $query;
@@ -352,49 +356,53 @@ class Model extends Db
             try {
                 $query->execute();
             } catch (\PDOException $e) {
-                echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
-                // echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
+                // echo "PDOException: " . $e->getMessage() . " (Code " . $e->getCode() . ")";
+                echo "Une erreur lors du traitement des données est survenue. Veuillez contacter l'administrateur du site.";
                 $result = false;
             }
 
             $type = explode(" ", $sql);
-            $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
-            preg_match_all($pattern, $sql, $match);
 
-            if(!isset($match[2][0])){
-                $table = "Inconnu";
-            } else {
-                $table = $match[2][0];
-            }
+            for($i = 0; $i != 1; $i++){
+                if($type[0] !== "SET"){
+                    $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
+                    preg_match_all($pattern, $sql, $match);
 
-            if($type[0] === "INSERT"){
-                $table = $type[2];
-            } 
-            $activite = $type[0] . " Dans " . $table;
+                    if(!isset($match[2][0])){
+                        $table = "Inconnu";
+                    } else {
+                        $table = $match[2][0];
+                    }
 
-            if (!isset($_SESSION)) {
-                $email = $_POST["email"];
-                $type[0] = "Connexion";
+                    if($type[0] === "INSERT"){
+                        $table = $type[2];
+                    } 
+                    $activite = $type[0] . " Dans " . $table;
 
-                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
-                $prepLog = $this->db->prepare($log);
-                $execLog = $prepLog->execute();
-            }
+                    if (!isset($_SESSION)) {
+                        $email = $_POST["email"];
+                        $type[0] = "Connexion";
 
-            else if ($type[0] !== "SELECT") {
+                        $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                        $prepLog = $this->db->prepare($log);
+                        $execLog = $prepLog->execute();
+                    }
 
-                if (isset($_SESSION['formateur'])) {
-                    $email = $_SESSION['formateur']['mail'];
+                    else if ($type[0] !== "SELECT") {
 
-                } else if(isset($_SESSION['admin'])) {
-                    $email = $_SESSION['admin']['mail'];
+                        if (isset($_SESSION['formateur'])) {
+                            $email = $_SESSION['formateur']['mail'];
+
+                        } else if(isset($_SESSION['admin'])) {
+                            $email = $_SESSION['admin']['mail'];
+                        }
+
+                        $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
+                        $prepLog = $this->db->prepare($log);
+                        $execLog = $prepLog->execute();
+                    }
                 }
-
-                $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
-                $prepLog = $this->db->prepare($log);
-                $execLog = $prepLog->execute();
             }
-
             return $query;
         }
     }
