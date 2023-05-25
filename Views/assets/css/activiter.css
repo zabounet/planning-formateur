@@ -1,3 +1,44 @@
+  .legend{    
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+
+  }
+
+  .list-color{
+    /* border-radius: 15px; */
+    list-style-type: none;
+    display: flex;
+    width: 75%;
+    padding: 0.5rem;
+    background-color: #00FF99;
+    justify-content: space-between;
+  }
+
+  .color{
+    width: 8%;
+    height: 4vh;
+    background-color: #d4ffcc;
+    border-radius: 10px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .color div{
+    width: 100%;
+    height: 50%;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .color span{
+    font-size: 1em;
+  }
+  
+  
+  
   .main-container{
     width: 100%;
     display: flex;
