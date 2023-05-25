@@ -85,7 +85,7 @@
                 <li class="color"><span>Week-end</span><div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div></li>
                 <li class="color"><span>Interruptions</span><div style="background-color:<?= $_SESSION['color']['couleur_interruption']; ?>;"></div></li>
                 <li class="color"><span>MNSP</span><div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div></li>
-                <li class="color"><span>Perf</span><div style="background-color:<?= $_SESSION['color']['couleur_itinerant']; ?>;"></div></li>
+                <li class="color"><span>Perf</span><div style="background-color:<?= $_SESSION['color']['couleur_perfectionment']; ?>;"></div></li>
             </ul>
         </div>
     </header>

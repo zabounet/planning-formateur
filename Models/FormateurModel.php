@@ -107,12 +107,12 @@ class FormateurModel extends Model
     }
 
     // Insère une demande de jours de télétravail dans la table date_teletravail
-    public function createJoursTeletravail(string $jour_teletravail, string $date_demande_changement, int $id_formateur): bool
+    public function createJoursTeletravail(string $jour_teletravail, string $date_demande_changement,string $date_prise_effet ,int $id_formateur): bool
     {
         $sql = "INSERT INTO Date_teletravail (jour_teletravail, date_demande_changement, date_prise_effet, validation, id_formateur)
-        VALUES (?, ?, NULL, 0, ?)";
+        VALUES (?, ?, ?, 0, ?)";
 
-        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $id_formateur]);
+        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $date_prise_effet, $id_formateur]);
 
         if ($result) {
             return true;

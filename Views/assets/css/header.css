@@ -4,7 +4,8 @@ header.big {
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    height: 15vh;
+    height: 17vh;
+    margin-bottom: 1rem;
 }
 
 .header-content {
@@ -66,7 +67,7 @@ header .flower-img.spin-flower {
 }
 
 main {
-    height: 90%;
+    height: 80%;
     width: 100%;
     overflow: scroll;
 }

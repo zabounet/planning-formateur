@@ -150,12 +150,16 @@
 
                         <?php endforeach; ?>
                     </section>
+                    <div>
+                        <label for="">a partir de : </label>
+                        <input name="date_prise_effet" type="date" required>
+                    </div>
                 </div>
                 <div>
                     <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
                 </div>
             </form>
-            </span>
+            
             <span class="error" style="color: red;">
                 <?php if (isset($_SESSION['error_teletravail'])) {
                     echo $_SESSION['error_teletravail'];

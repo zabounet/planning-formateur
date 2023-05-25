@@ -475,9 +475,9 @@ class RooterController extends Controller
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
-                                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></th> ";
                                         } else {
-                                            $html .= "<th style='background-color: var(--greenCell);'></th> ";
+                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></th> ";
                                         }
                                     }
                                 } else {
@@ -491,7 +491,7 @@ class RooterController extends Controller
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
                                         if ($weekend === "6" || $weekend === "7") {
-                                            $html .= "<th style='background-color: var(--weekendCell);'></th> ";
+                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></th> ";
                                         } else {
                                             $html .= "<th style='background-color: var(--emptyCell);'></th> ";
                                         }
