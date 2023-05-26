@@ -42,7 +42,11 @@ input[type="submit"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 4em  auto;
+}
+
+.section-titre {
+  margin: 0em  auto ;
 }
 
 .profil-text span {
@@ -231,6 +235,7 @@ input[type=checkbox]:checked~div {
 /* style admin list color */
 .list-color form{
   margin-top: 2em;
+  height: 27rem;
 }
 
 .list-color-container {
@@ -244,7 +249,6 @@ input[type=checkbox]:checked~div {
 }
 
 .cloumn {
-  height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

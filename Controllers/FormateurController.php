@@ -66,7 +66,7 @@ class FormateurController extends Controller
     public function profil()
     {
 
-        if((isset($_SESSION["admin"])) || isset($_SESSION["formateur"])){
+        if ((isset($_SESSION["admin"])) || isset($_SESSION["formateur"])) {
             // modif profil
             if (Form::validate($_POST, ['modifNom'])) {
                 if (isset($_SESSION['admin'])) {
@@ -136,8 +136,8 @@ class FormateurController extends Controller
                     $idFormateur = $_SESSION['formateur']['id'];
                 }
                 if (isset($_POST['modifMail']) && !empty($_POST['mail'])) {
-                    if(filter_var($_POST['mail'],FILTER_VALIDATE_EMAIL)){
-                        $new_mail = filter_var($_POST['mail'],FILTER_VALIDATE_EMAIL);
+                    if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
+                        $new_mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
                         $profil = new FormateurModel();
                         $resultat = $profil->updateMailProfil($new_mail, $idFormateur);
                         if ($resultat) {
@@ -146,7 +146,7 @@ class FormateurController extends Controller
                             } elseif (isset($_SESSION['formateur'])) {
                                 $_SESSION['formateur']['mail'] = $new_mail;
                             }
-        
+
                             Refresh::refresh('/planning/public/index.php?p=formateur/profil');
                             exit;
                         } else {
@@ -179,7 +179,7 @@ class FormateurController extends Controller
 
 
                     //l'utilisateur existe
-                    if (password_verify($pass,$Formateur['mdp_formateur'])) {
+                    if (password_verify($pass, $Formateur['mdp_formateur'])) {
                         if (!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
 
                             $new_mdp = password_hash($_POST['new_mdp'], PASSWORD_ARGON2ID, Form::Argon2IDOptions());
@@ -242,56 +242,56 @@ class FormateurController extends Controller
                 $nbreJours = 0;
 
 
-            $idFormateur = $_SESSION['formateur']['id'];
-            // date de jour pour la date de demande
-            $dateDemandeChangement = date('Y-m-d');
-            
-            // vérification des jours sélectionnés
-            if (isset($_POST['lundi'])) {
-                $jours[] = "lundi";
-                $nbreJours++;
-            }
-            if (isset($_POST['mardi'])) {
-                $jours[] = "mardi";
-                $nbreJours++;
-            }
-            if (isset($_POST['mercredi'])) {
-                $jours[] = "mercredi";
-                $nbreJours++;
-            }
-            if (isset($_POST['jeudi'])) {
-                $jours[] = "jeudi";
-                $nbreJours++;
-            }
-            if (isset($_POST['vendredi'])) {
-                $jours[] = "vendredi";
-                $nbreJours++;
-            }
-            
-            if ($nbreJours == 0 && empty($_SESSION['teletravail']['jour_teletravail'])) {
-                $_SESSION['error_teletravail'] = "Vous avez choisi 0 jours";
-            } elseif ($nbreJours > 2) {
-                $_SESSION['error_teletravail'] = "non le max est 2 jours";
-            } else {
-                $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
-                $date_prise_effet = $_POST['date_prise_effet'];
-                $teletravail = new FormateurModel();
-                $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
-                if ($resultat) {
-                    $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                $idFormateur = $_SESSION['formateur']['id'];
+                // date de jour pour la date de demande
+                $dateDemandeChangement = date('Y-m-d');
 
+                // vérification des jours sélectionnés
+                if (isset($_POST['lundi'])) {
+                    $jours[] = "lundi";
+                    $nbreJours++;
+                }
+                if (isset($_POST['mardi'])) {
+                    $jours[] = "mardi";
+                    $nbreJours++;
+                }
+                if (isset($_POST['mercredi'])) {
+                    $jours[] = "mercredi";
+                    $nbreJours++;
+                }
+                if (isset($_POST['jeudi'])) {
+                    $jours[] = "jeudi";
+                    $nbreJours++;
+                }
+                if (isset($_POST['vendredi'])) {
+                    $jours[] = "vendredi";
+                    $nbreJours++;
+                }
+
+                if ($nbreJours == 0 && empty($_SESSION['teletravail']['jour_teletravail'])) {
+                    $_SESSION['error_teletravail'] = "Vous avez choisi 0 jours";
+                } elseif ($nbreJours > 2) {
+                    $_SESSION['error_teletravail'] = "non le max est 2 jours";
                 } else {
                     $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
+                    $date_prise_effet = $_POST['date_prise_effet'];
                     $teletravail = new FormateurModel();
-                    $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $idFormateur);
+                    $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
                     if ($resultat) {
                         $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
                     } else {
-                        $_SESSION['error_teletravail'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                        $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
+                        $teletravail = new FormateurModel();
+                        $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                        if ($resultat) {
+                            $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                        } else {
+                            $_SESSION['error_teletravail'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
+                        }
                     }
+                    Refresh::refresh('/planning/public/index.php?p=formateur/profil');
+                    exit;
                 }
-                Refresh::refresh('/planning/public/index.php?p=formateur/profil');
-                exit;
             }
 
 
@@ -332,8 +332,7 @@ class FormateurController extends Controller
                 $colors->setSessionCoulors();
             }
             $this->render('/formateur/profil');
-        }
-        else {
+        } else {
             header("Location: /planning/public/");
             exit();
         }
