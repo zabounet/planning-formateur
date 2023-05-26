@@ -77,49 +77,6 @@ class FormationModel extends Model
         );
     }
 
-    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $joinCol, string $whereCol, string $id)
-    {
-        $this->requete("SET sql_mode='';");
-
-        $nbChamps = count($champSelect);
-        $nbDates = count($date);
-
-        $sql = "SELECT ";
-
-        // Ajouter les champs de sélection à la requête
-        for ($i = 0; $i < $nbChamps; $i++) {
-            $sql .= $champSelect[$i];
-
-            if ($i < $nbChamps - 1) {
-                $sql .= ", ";
-            }
-        }
-
-        // Ajouter les group_concat pour les dates
-        for ($i = 0; $i < $nbDates; $i++) {
-            $sql .= ", GROUP_CONCAT(" . $joinTable[$i] . "." . $date[$i] . " ORDER BY " . $joinTable[$i] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
-        }
-
-        // Ajouter la clause FROM avec les tables et les jointures
-        $sql .= " FROM " . $table;
-
-        $nbJoin = count($joinTable);
-        for ($i = 0; $i < $nbJoin; $i++) {
-            $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
-        }
-
-        // Ajouter la clause WHERE avec la liste d'identifiants
-        $sql .= " WHERE " . $table . "." . $whereCol . " = " . $id . " GROUP BY " . $table . "." . $whereCol;
-
-        echo $sql;
-        die;
-
-        $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
-
-        return $result;
-    }
-
-
 
     // le requet au haut fait le meme chose que 4 requete en bas
 

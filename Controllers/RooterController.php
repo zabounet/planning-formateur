@@ -61,14 +61,21 @@ class RooterController extends Controller
 
                 // Récupère le formateur référent
                 $referent = $databaseFormateur->getBy(['nom_formateur', 'prenom_formateur'], 'Formateur', ['id_formateur'], [$formations[$x]->id_formateur]);
+
                 //recupere les date de vacances pour chaque formateur et les place dans un tableau
-                // $formateurs = $databaseFormation->getDatesById( ['$formations[$x]->id_formateur'],['date_debut','date_fin'],'formation',['date_pae','date_certif'],$formateursSelectionnes);
-                $formateurs = $databaseFormateur->getVacancesById($formateursSelectionnes);
+                $formateurs = $databaseFormateur->getDatesById(
+                    ['Formateur.id_formateur'],
+                    ['date_debut_vacances', 'date_fin_vacances', 'validation'],
+                    'Formateur',
+                    ['Date_vacance'],
+                    ['id_formateur'],
+                    'id_formateur',
+                    $formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
-                    $date_debut_vacences = $formateur['date_debut_vacences'];
+                    $date_debut_vacences = $formateur['date_debut_vacances'];
                     $date_debut_vacences_array = explode(",", $date_debut_vacences);
 
-                    $date_fin_vacences = $formateur['date_fin_vacences'];
+                    $date_fin_vacences = $formateur['date_fin_vacances'];
                     $date_fin_vacences_array = explode(",", $date_fin_vacences);
 
                     $validation = $formateur['validation'];
@@ -88,7 +95,14 @@ class RooterController extends Controller
                     $dates_vacences_formateurs[] = $dates_vacences_formateur;
                 }
                 // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
-                $formateurs = $databaseFormateur->getInterventionById($formateursSelectionnes);
+                $formateurs = $databaseFormateur->getDatesById(
+                    ['date_debut_intervention', 'date_fin_intervention', 'id_formateur'],
+                    ['date_debut_intervention', 'date_fin_intervention'],
+                    'Formateur',
+                    ['Date_intervention'],
+                    ['id_formateur'],
+                    'id_formateur',
+                    $formateursSelectionnes);
                 foreach ($formateurs as $formateur) {
                     $date_debut_activite = $formateur['date_debut'];
                     $date_debut_array = explode(",", $date_debut_activite);

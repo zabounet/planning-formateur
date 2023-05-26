@@ -224,6 +224,65 @@ class Model extends Db
         return $this->requete($sql)->fetchAll();
     }
 
+    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $joinCol, string $whereCol, array $id)
+    {
+        // Nécessaire afin de pouvoir contourner la règle du group by forcant à y mettre l'ensemble des champs du select
+        $this->requete("SET sql_mode='';");
+
+        $nbChamps = count($champSelect);
+        $nbDates = count($date);
+
+        $sql = " SELECT ";
+
+        // Ajouter les champs de sélection à la requête
+        for ($i = 0; $i < $nbChamps; $i++) {
+
+            if ($i == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
+            
+            $sql .= $writeComma . $champSelect[$i];
+        }
+        
+        // Effectues une concaténation de toute les lignes de la table "date_intervention" où l'id du formateur correspond
+        // afin de ne retourner qu'une seule ligne par formateurs.
+        for ($i = 0; $i < $nbDates; $i++) {
+            $sql .= ", GROUP_CONCAT(" . $joinTable[0] . "." . $date[$i] . " ORDER BY " . $joinTable[0] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
+        }
+
+        // Ajouter la clause FROM avec les tables et les jointures
+        $sql .= " FROM " . $table;
+
+        $nbJoin = count($joinTable);
+        for ($i = 0; $i < $nbJoin; $i++) {
+            $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
+        }
+
+        // Ajouter la clause WHERE avec la liste d'identifiants
+        $sql .= " WHERE " . $table . "." . $whereCol . " IN (";
+
+        for ($i = 0; $i < count($id); $i++) {
+            if ($i == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
+
+            $sql .= $writeComma . $id[$i];
+        }
+        
+        $sql .= ") GROUP BY " . $table . "." . $whereCol;
+
+        // echo $sql;die;
+
+        $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
     // Effectue une requete sur une liste de champs, à partir d'une table, une liste des tables à joindres et la colonne à utiliser
     // ainsi qu'une liste de conditions supplémentaires et les colonnes qui doivent remplir ces conditions
     public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
