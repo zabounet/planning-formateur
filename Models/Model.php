@@ -224,7 +224,7 @@ class Model extends Db
         return $this->requete($sql)->fetchAll();
     }
 
-    public function getDatesById(array $champSelect, array $date, string $table, array $concatTable, array $tableToJoin, array $joinTable, array $joinCol, string $whereCol, array $id)
+    public function getDatesById(array $champSelect, array $date, string $table, array $concatTable, array $tableToJoin, array $joinTable, array $joinCol, string $whereCol, array $id = [])
     {
         // Nécessaire afin de pouvoir contourner la règle du group by forcant à y mettre l'ensemble des champs du select
         $this->requete("SET sql_mode='';");
@@ -242,10 +242,10 @@ class Model extends Db
             } else {
                 $writeComma = ", ";
             }
-            
+
             $sql .= $writeComma . $champSelect[$i];
         }
-        
+
         // Effectues une concaténation de toute les lignes de la table "date_intervention" où l'id du formateur correspond
         // afin de ne retourner qu'une seule ligne par formateurs.
         for ($i = 0; $i < $nbDates; $i++) {
@@ -262,21 +262,26 @@ class Model extends Db
             $sql .= " JOIN " . $tableToJoin[$i] . " ON " . $joinTable[$i] . "." . $joinCol[$i] . " = " . $tableToJoin[$i] . "." . $joinCol[$i];
         }
 
-        // Ajouter la clause WHERE avec la liste d'identifiants
-        $sql .= " WHERE " . $table . "." . $whereCol . " IN (";
+        if (count($id) > 0) {
 
-        for ($i = 0; $i < count($id); $i++) {
-            if ($i == 0) {
-                $writeComma = "";
-            } else {
-                $writeComma = ", ";
+            // Ajouter la clause WHERE avec la liste d'identifiants
+            $sql .= " WHERE " . $table . "." . $whereCol . " IN (";
+
+            for ($i = 0; $i < count($id); $i++) {
+                if ($i == 0) {
+                    $writeComma = "";
+                } else {
+                    $writeComma = ", ";
+                }
+
+                $sql .= $writeComma . $id[$i];
             }
 
-            $sql .= $writeComma . $id[$i];
+            $sql .= ") GROUP BY " . $table . "." . $whereCol;
         }
-        
-        $sql .= ") GROUP BY " . $table . "." . $whereCol;
-
+        else{
+            $sql .= " GROUP BY " . $table . "." . $whereCol;
+        }
 
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
 
@@ -320,10 +325,10 @@ class Model extends Db
 
                     $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
                 }
-            }else if ($nbChampsCond > 0 && $nbConds > $nbChampsCond){
+            } else if ($nbChampsCond > 0 && $nbConds > $nbChampsCond) {
                 $sql .= " WHERE " . $champCondJointures[0] . " IN (";
 
-                for($x = 0; $x < $nbConds; $x++){
+                for ($x = 0; $x < $nbConds; $x++) {
                     if ($x == 0) {
                         $writeComma = "";
                     } else {
@@ -332,8 +337,7 @@ class Model extends Db
                     $sql .= $writeComma . $CondJointures[$x];
                 }
                 $sql .= ")";
-            }
-            else {
+            } else {
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
@@ -379,20 +383,20 @@ class Model extends Db
 
             $type = explode(" ", $sql);
 
-            for($i = 0; $i != 1; $i++){
-                if($type[0] !== "SET"){
+            for ($i = 0; $i != 1; $i++) {
+                if ($type[0] !== "SET") {
                     $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
                     preg_match_all($pattern, $sql, $match);
 
-                    if(!isset($match[2][0])){
+                    if (!isset($match[2][0])) {
                         $table = "Inconnu";
                     } else {
                         $table = $match[2][0];
                     }
 
-                    if($type[0] === "INSERT"){
+                    if ($type[0] === "INSERT") {
                         $table = $type[2];
-                    } 
+                    }
                     $activite = $type[0] . " Dans " . $table;
 
                     if (!isset($_SESSION)) {
@@ -402,14 +406,11 @@ class Model extends Db
                         $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
                         $prepLog = $this->db->prepare($log);
                         $execLog = $prepLog->execute();
-                    }
-
-                    else if ($type[0] !== "SELECT") {
+                    } else if ($type[0] !== "SELECT") {
 
                         if (isset($_SESSION['formateur'])) {
                             $email = $_SESSION['formateur']['mail'];
-
-                        } else if(isset($_SESSION['admin'])) {
+                        } else if (isset($_SESSION['admin'])) {
                             $email = $_SESSION['admin']['mail'];
                         }
 
@@ -436,20 +437,20 @@ class Model extends Db
 
             $type = explode(" ", $sql);
 
-            for($i = 0; $i != 1; $i++){
-                if($type[0] !== "SET"){
+            for ($i = 0; $i != 1; $i++) {
+                if ($type[0] !== "SET") {
                     $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
                     preg_match_all($pattern, $sql, $match);
 
-                    if(!isset($match[2][0])){
+                    if (!isset($match[2][0])) {
                         $table = "Inconnu";
                     } else {
                         $table = $match[2][0];
                     }
 
-                    if($type[0] === "INSERT"){
+                    if ($type[0] === "INSERT") {
                         $table = $type[2];
-                    } 
+                    }
                     $activite = $type[0] . " Dans " . $table;
 
                     if (!isset($_SESSION)) {
@@ -459,14 +460,11 @@ class Model extends Db
                         $log = "INSERT INTO `Logs`(`user_email`, `activity_type`, `success`) VALUES('$email','$activite',$result)";
                         $prepLog = $this->db->prepare($log);
                         $execLog = $prepLog->execute();
-                    }
-
-                    else if ($type[0] !== "SELECT") {
+                    } else if ($type[0] !== "SELECT") {
 
                         if (isset($_SESSION['formateur'])) {
                             $email = $_SESSION['formateur']['mail'];
-
-                        } else if(isset($_SESSION['admin'])) {
+                        } else if (isset($_SESSION['admin'])) {
                             $email = $_SESSION['admin']['mail'];
                         }
 

@@ -39,184 +39,344 @@ class RooterController extends Controller
                 $_POST['formateurs'] === $_POST['nbFormateurs'] ? $formateursSelectionnes = "Aucun" : $formateursSelectionnes = $_POST['formateurs'];
             }
 
+            //recupere les date de vacances pour chaque formateur et les place dans un tableau
+            $formateurs = $databaseFormateur->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                ['date_debut_vacances', 'date_fin_vacances', 'validation'],
+                'Formateur',
+                ['Date_vacance', 'Date_vacance', 'Date_vacance'],
+                ['Date_vacance'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_vacences = $formateur['date_debut_vacances'];
+                $date_debut_vacences_array = explode(",", $date_debut_vacences);
+
+                $date_fin_vacences = $formateur['date_fin_vacances'];
+                $date_fin_vacences_array = explode(",", $date_fin_vacences);
+
+                $validation = $formateur['validation'];
+                $validation_array = explode(",", $validation);
+
+                $dates_vacences_formateurs = array();
+                $nbVacs = count($date_debut_vacences_array);
+                for ($i = 0; $i < $nbVacs; $i++) {
+                    $dates_vacences_formateur[] = [
+                        "id_formateur" => $formateur['id_formateur'],
+                        "debut_vacences" => $date_debut_vacences_array[$i],
+                        "fin_vacences" => $date_fin_vacences_array[$i],
+                        "validation_vacences" => $validation_array[$i]
+                    ];
+                }
+
+                $dates_vacences_formateurs[] = $dates_vacences_formateur;
+            }
+
+            //recupere les date de MNSP pour chaque formateur et les place dans un tableau
+            $formateurs = $databaseFormateur->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                ['date_debut_MNSP', 'date_fin_MNSP'],
+                'Formateur',
+                ['Date_MNSP', 'Date_MNSP'],
+                ['Date_MNSP'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_MNSP = $formateur['date_debut_MNSP'];
+                $date_debut_MNSP_array = explode(",", $date_debut_MNSP);
+
+                $date_fin_MNSP = $formateur['date_fin_MNSP'];
+                $date_fin_MNSP_array = explode(",", $date_fin_MNSP);
+
+                $dates_MNSP_formateurs = array();
+                $nbMNSP = count($date_debut_MNSP_array);
+                for ($i = 0; $i < $nbMNSP; $i++) {
+                    $dates_MNSP_formateur[] = [
+                        "id_formateur" => $formateur['id_formateur'],
+                        "debut_MNSP" => $date_debut_MNSP_array[$i],
+                        "fin_MNSP" => $date_fin_MNSP_array[$i],
+                    ];
+                }
+
+                $dates_MNSP_formateurs[] = $dates_MNSP_formateur;
+            }
+
+            //recupere les date de perfectionnement pour chaque formateur et les place dans un tableau
+            $formateurs = $databaseFormateur->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                ['date_debut_perfectionnement', 'date_fin_perfectionnement'],
+                'Formateur',
+                ['Date_perfectionnement', 'Date_perfectionnement'],
+                ['Date_perfectionnement'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_perfectionnement = $formateur['date_debut_perfectionnement'];
+                $date_debut_perfectionnement_array = explode(",", $date_debut_perfectionnement);
+
+                $date_fin_perfectionnement = $formateur['date_fin_perfectionnement'];
+                $date_fin_perfectionnement_array = explode(",", $date_fin_perfectionnement);
+
+                $dates_perfectionnement_formateurs = array();
+                $nbPerfs = count($date_debut_perfectionnement_array);
+                for ($i = 0; $i < $nbPerfs; $i++) {
+                    $dates_perfectionnement_formateur[] = [
+                        "id_formateur" => $formateur['id_formateur'],
+                        "debut_perfectionnement" => $date_debut_perfectionnement_array[$i],
+                        "fin_perfectionnement" => $date_fin_perfectionnement_array[$i]
+                    ];
+                }
+
+                $dates_perfectionnement_formateurs[] = $dates_perfectionnement_formateur;
+            }
+
+            // Récupérer les dates de télétravail pour chaque formateurs et les place dans un tableau
+            $formateurs = $databaseFormateur->joinInformations(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'jour_teletravail', 'date_prise_effet', 'validation'],
+                'Formateur',
+                ['Date_teletravail'],
+                ['id_formateur'],
+                ['Formateur.id_formateur'],
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $teletravail_formateurs = [
+                    "jours" => $formateur->jour_teletravail,
+                    "prise_effet" => $formateur->date_prise_effet,
+                    "validation" => $formateur->validation,
+                    "id_formateur" => $formateur->id_formateur
+                ];
+
+                $dates_teletravail_formateurs[] = $teletravail_formateurs;
+            }
+
+            // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
+            $formateurs = $databaseFormateur->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'Formation.id_formation'],
+                ['date_debut_intervention', 'date_fin_intervention', 'id_formation'],
+                'Formateur',
+                ['Date_intervention', 'Date_intervention', 'Formation'],
+                ['Date_intervention', 'Formation'],
+                ['Formateur', 'Date_intervention'],
+                ['id_formateur', 'id_formation'],
+                'id_formateur',
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_activite = $formateur['date_debut_intervention'];
+                $date_debut_array = explode(",", $date_debut_activite);
+                $date_fin_activite = $formateur['date_fin_intervention'];
+                $date_fin_array = explode(",", $date_fin_activite);
+                $formation_intervention = $formateur['id_formation'];
+                $formation_intervention_array = explode(",", $formation_intervention);
+
+                $dates_interventions_formateurs = array();
+
+                $nbInter = count($date_debut_array);
+                for ($i = 0; $i < $nbInter; $i++) {
+                    $dates_formateur[] = [
+                        "debut" => $date_debut_array[$i],
+                        "fin" => $date_fin_array[$i],
+                        "id_formation" => $formation_intervention_array[$i],
+                        "id_formateur" => $formateur['id_formateur']
+                    ];
+                }
+
+                $dates_interventions_formateurs[] = $dates_formateur;
+            }
+
+            //recupere les période en centre pour chaque formation et les place dans un tableau
+            $periodes = $databaseFormation->getDatesById(
+                ['Formation.id_formation'],
+                ['date_debut_centre', 'date_fin_centre'],
+                'Formation',
+                ['Date_centre', 'Date_centre'],
+                ['Date_centre'],
+                ['Formation'],
+                ['id_formation'],
+                'id_formation'
+            );
+            foreach ($periodes as $formation) {
+                $date_debut_centre = $formation['date_debut_centre'];
+                $date_debut_centre_array = explode(",", $date_debut_centre);
+
+                $date_fin_centre = $formation['date_fin_centre'];
+                $date_fin_centre_array = explode(",", $date_fin_centre);
+
+                $dates_centre_formations = array();
+                $nbCentre = count($date_debut_centre_array);
+                for ($i = 0; $i < $nbCentre; $i++) {
+                    $dates_centre_formation[] = [
+                        "id_formation" => $formation['id_formation'],
+                        "debut_centre" => $date_debut_centre_array[$i],
+                        "fin_centre" => $date_fin_centre_array[$i],
+                    ];
+                }
+
+                $dates_centre_formations[] = $dates_centre_formation;
+            }
+
+            //recupere les période de ran pour chaque formation et les place dans un tableau
+            $periodes = $databaseFormation->getDatesById(
+                ['Formation.id_formation'],
+                ['date_debut_ran', 'date_fin_ran'],
+                'Formation',
+                ['Date_ran', 'Date_ran'],
+                ['Date_ran'],
+                ['Formation'],
+                ['id_formation'],
+                'id_formation'
+            );
+            foreach ($periodes as $formation) {
+                $date_debut_ran = $formation['date_debut_ran'];
+                $date_debut_ran_array = explode(",", $date_debut_ran);
+
+                $date_fin_ran = $formation['date_fin_ran'];
+                $date_fin_ran_array = explode(",", $date_fin_ran);
+
+                $dates_ran_formations = array();
+                $nbRan = count($date_debut_ran_array);
+                for ($i = 0; $i < $nbRan; $i++) {
+                    $dates_ran_formation[] = [
+                        "id_formation" => $formation['id_formation'],
+                        "debut_ran" => $date_debut_ran_array[$i],
+                        "fin_ran" => $date_fin_ran_array[$i],
+                    ];
+                }
+
+                $dates_ran_formations[] = $dates_ran_formation;
+            }
+
+            //recupere les période en entreprise pour chaque formation et les place dans un tableau
+            $periodes = $databaseFormation->getDatesById(
+                ['Formation.id_formation'],
+                ['date_debut_pae', 'date_fin_pae'],
+                'Formation',
+                ['Date_pae', 'Date_pae'],
+                ['Date_pae'],
+                ['Formation'],
+                ['id_formation'],
+                'id_formation'
+            );
+            foreach ($periodes as $formation) {
+                $date_debut_pae = $formation['date_debut_pae'];
+                $date_debut_pae_array = explode(",", $date_debut_pae);
+
+                $date_fin_pae = $formation['date_fin_pae'];
+                $date_fin_pae_array = explode(",", $date_fin_pae);
+
+                $dates_pae_formations = array();
+                $nbPae = count($date_debut_pae_array);
+                for ($i = 0; $i < $nbPae; $i++) {
+                    $dates_pae_formation[] = [
+                        "id_formation" => $formation['id_formation'],
+                        "debut_pae" => $date_debut_pae_array[$i],
+                        "fin_pae" => $date_fin_pae_array[$i],
+                    ];
+                }
+
+                $dates_pae_formations[] = $dates_pae_formation;
+            }
+
+            //recupere les période de certification pour chaque formation et les place dans un tableau
+            $periodes = $databaseFormation->getDatesById(
+                ['Formation.id_formation'],
+                ['date_debut_certif', 'date_fin_certif'],
+                'Formation',
+                ['Date_certif', 'Date_certif'],
+                ['Date_certif'],
+                ['Formation'],
+                ['id_formation'],
+                'id_formation'
+            );
+            foreach ($periodes as $formation) {
+                $date_debut_certif = $formation['date_debut_certif'];
+                $date_debut_certif_array = explode(",", $date_debut_certif);
+
+                $date_fin_certif = $formation['date_fin_certif'];
+                $date_fin_certif_array = explode(",", $date_fin_certif);
+
+                $dates_certif_formations = array();
+                $nbCertif = count($date_debut_certif_array);
+                for ($i = 0; $i < $nbCertif; $i++) {
+                    $dates_certif_formation[] = [
+                        "id_formation" => $formation['id_formation'],
+                        "debut_certif" => $date_debut_certif_array[$i],
+                        "fin_certif" => $date_fin_certif_array[$i],
+                    ];
+                }
+
+                $dates_certif_formations[] = $dates_certif_formation;
+            }
+
+            //recupere les période d'interruptions pour chaque formation et les place dans un tableau
+            $periodes = $databaseFormation->getDatesById(
+                ['Formation.id_formation'],
+                ['date_debut_interruption', 'date_fin_interruption'],
+                'Formation',
+                ['Interruption', 'Interruption'],
+                ['Interruption'],
+                ['Formation'],
+                ['id_formation'],
+                'id_formation'
+            );
+            foreach ($periodes as $formation) {
+                $date_debut_interruption = $formation['date_debut_interruption'];
+                $date_debut_interruption_array = explode(",", $date_debut_interruption);
+
+                $date_fin_interruption = $formation['date_fin_interruption'];
+                $date_fin_interruption_array = explode(",", $date_fin_interruption);
+
+                $dates_interruption_formations = array();
+                $nbInterruption = count($date_debut_interruption_array);
+                for ($i = 0; $i < $nbInterruption; $i++) {
+                    $dates_interruption_formation[] = [
+                        "id_formation" => $formation['id_formation'],
+                        "debut_interruption" => $date_debut_interruption_array[$i],
+                        "fin_interruption" => $date_fin_interruption_array[$i],
+                    ];
+                }
+
+                $dates_interruption_formations[] = $dates_interruption_formation;
+            }
+
+
+            // Tableau contenant les mois de 31 et 30 jours en nombre
+            $mois31 = array('1', '3', '5', '7', '8', '10', '12');
+            $mois30 = array('4', '6', '9', '11');
+
+            // Tableau contenant les jours fériées franças fixes
+            $joursFeries = array('01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25');
+
+            // Tableau contenant le nom des jours de la semaine en anglais et leur numéro
+            $joursSemaine = [
+                "lundi" => "1",
+                "mardi" => "2",
+                "mercredi" => "3",
+                "jeudi" => "4",
+                "vendredi" => "5",
+            ];
+
             // Récupère l'ensemble des champs de la table formation où les numero_grn, id_formateur et id_ville sont respectivements égaux à $grn, $_POST['formateurs] et $centre. 
             $formations = $databaseFormation->getByIn(['*'], 'Formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
-
-
-            // Création de tableaux vides pour stocker les périodes diferents de chaque formation
-            $formation_centres = array();
-            $formation_certifs = array();
-            $formation_PAEs = array();
-            $formation_RANs = array();
             // Initialisation de la variable $html.
             $html = "
                 <div class='main-container'> 
                     <div class='tableau-container'> ";
 
-
             // Compte le nombre de formations récupérées
             $nbformation = count($formations);
             for ($x = 0; $x < $nbformation; $x++) {
-
-                // Récupère le formateur référent
-                $referent = $databaseFormateur->getBy(['nom_formateur', 'prenom_formateur'], 'Formateur', ['id_formateur'], [$formations[$x]->id_formateur]);
-
-                //recupere les date de vacances pour chaque formateur et les place dans un tableau
-                $formateurs = $databaseFormateur->getDatesById(
-                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
-                    ['date_debut_vacances', 'date_fin_vacances', 'validation'],
-                    'Formateur',
-                    ['Date_vacance', 'Date_vacance', 'Date_vacance'],
-                    ['Date_vacance'],
-                    ['Formateur'],
-                    ['id_formateur'],
-                    'id_formateur',
-                    $formateursSelectionnes
-                );
-                foreach ($formateurs as $formateur) {
-                    $date_debut_vacences = $formateur['date_debut_vacances'];
-                    $date_debut_vacences_array = explode(",", $date_debut_vacences);
-
-                    $date_fin_vacences = $formateur['date_fin_vacances'];
-                    $date_fin_vacences_array = explode(",", $date_fin_vacences);
-
-                    $validation = $formateur['validation'];
-                    $validation_array = explode(",", $validation);
-
-                    $dates_vacences_formateurs = array();
-                    $nbVacs = count($date_debut_vacences_array);
-                    for ($i = 0; $i < $nbVacs; $i++) {
-                        $dates_vacences_formateur[] = [
-                            "id_formateur" => $formateur['id_formateur'],
-                            "debut_vacences" => $date_debut_vacences_array[$i],
-                            "fin_vacences" => $date_fin_vacences_array[$i],
-                            "validation_vacences" => $validation_array[$i]
-                        ];
-                    }
-
-                    $dates_vacences_formateurs[] = $dates_vacences_formateur;
-                }
-
-                //recupere les date de MNSP pour chaque formateur et les place dans un tableau
-                $formateurs = $databaseFormateur->getDatesById(
-                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
-                    ['date_debut_MNSP', 'date_fin_MNSP'],
-                    'Formateur',
-                    ['Date_MNSP', 'Date_MNSP'],
-                    ['Date_MNSP'],
-                    ['Formateur'],
-                    ['id_formateur'],
-                    'id_formateur',
-                    $formateursSelectionnes
-                );
-                foreach ($formateurs as $formateur) {
-                    $date_debut_MNSP = $formateur['date_debut_MNSP'];
-                    $date_debut_MNSP_array = explode(",", $date_debut_MNSP);
-
-                    $date_fin_MNSP = $formateur['date_fin_MNSP'];
-                    $date_fin_MNSP_array = explode(",", $date_fin_MNSP);
-
-                    $dates_MNSP_formateurs = array();
-                    $nbMNSP = count($date_debut_MNSP_array);
-                    for ($i = 0; $i < $nbMNSP; $i++) {
-                        $dates_MNSP_formateur[] = [
-                            "id_formateur" => $formateur['id_formateur'],
-                            "debut_MNSP" => $date_debut_MNSP_array[$i],
-                            "fin_MNSP" => $date_fin_MNSP_array[$i],
-                        ];
-                    }
-
-                    $dates_MNSP_formateurs[] = $dates_MNSP_formateur;
-                }
-
-                //recupere les date de perfectionnement pour chaque formateur et les place dans un tableau
-                $formateurs = $databaseFormateur->getDatesById(
-                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
-                    ['date_debut_perfectionnement', 'date_fin_perfectionnement'],
-                    'Formateur',
-                    ['Date_perfectionnement', 'Date_perfectionnement'],
-                    ['Date_perfectionnement'],
-                    ['Formateur'],
-                    ['id_formateur'],
-                    'id_formateur',
-                    $formateursSelectionnes
-                );
-                foreach ($formateurs as $formateur) {
-                    $date_debut_perfectionnement = $formateur['date_debut_perfectionnement'];
-                    $date_debut_perfectionnement_array = explode(",", $date_debut_perfectionnement);
-
-                    $date_fin_perfectionnement = $formateur['date_fin_perfectionnement'];
-                    $date_fin_perfectionnement_array = explode(",", $date_fin_perfectionnement);
-
-                    $dates_perfectionnement_formateurs = array();
-                    $nbPerfs = count($date_debut_perfectionnement_array);
-                    for ($i = 0; $i < $nbPerfs; $i++) {
-                        $dates_perfectionnement_formateur[] = [
-                            "id_formateur" => $formateur['id_formateur'],
-                            "debut_perfectionnement" => $date_debut_perfectionnement_array[$i],
-                            "fin_perfectionnement" => $date_fin_perfectionnement_array[$i]
-                        ];
-                    }
-
-                    $dates_perfectionnement_formateurs[] = $dates_perfectionnement_formateur;
-                }
-
-                // Récupérer les dates de télétravail pour chaque formateurs et les place dans un tableau
-                $formateurs = $databaseFormateur->joinInformations(
-                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'jour_teletravail', 'date_prise_effet', 'validation'],
-                    'Formateur',
-                    ['Date_teletravail'],
-                    ['id_formateur'],
-                    ['Formateur.id_formateur'],
-                    $formateursSelectionnes
-                );
-                foreach ($formateurs as $formateur) {
-                    $teletravail_formateurs = [
-                        "jours" => $formateur->jour_teletravail,
-                        "prise_effet" => $formateur->date_prise_effet,
-                        "validation" => $formateur->validation,
-                        "id_formateur" => $formateur->id_formateur
-                    ];
-
-                    $dates_teletravail_formateurs[] = $teletravail_formateurs;
-                }
-
-
-                // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
-                $formateurs = $databaseFormateur->getDatesById(
-                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'Formation.id_formation'],
-                    ['date_debut_intervention', 'date_fin_intervention', 'id_formation'],
-                    'Formateur',
-                    ['Date_intervention', 'Date_intervention', 'Formation'],
-                    ['Date_intervention', 'Formation'],
-                    ['Formateur', 'Date_intervention'],
-                    ['id_formateur', 'id_formation'],
-                    'id_formateur',
-                    $formateursSelectionnes
-                );
-                foreach ($formateurs as $formateur) {
-                    $date_debut_activite = $formateur['date_debut_intervention'];
-                    $date_debut_array = explode(",", $date_debut_activite);
-                    $date_fin_activite = $formateur['date_fin_intervention'];
-                    $date_fin_array = explode(",", $date_fin_activite);
-                    $formation_intervention = $formateur['id_formation'];
-                    $formation_intervention_array = explode(",", $formation_intervention);
-
-                    $dates_interventions_formateurs = array();
-
-                    $nbInter = count($date_debut_array);
-                    for ($i = 0; $i < $nbInter; $i++) {
-                        $dates_formateur[] = [
-                            "debut" => $date_debut_array[$i],
-                            "fin" => $date_fin_array[$i],
-                            "id_formation" => $formation_intervention_array[$i],
-                            "id_formateur" => $formateur['id_formateur']
-                        ];
-                    }
-
-                    $dates_interventions_formateurs[] = $dates_formateur;
-                }
 
                 // création d'un objet DateTime avec la date de début entrée
                 $date_debut_tableau = new DateTime($_POST['date_debut']);
@@ -225,10 +385,6 @@ class RooterController extends Controller
 
                 // Calcul du nombre de jours séparant les 2 dates, + 1 pour ajouter le jour actuel à la différence.
                 $nbJours = $date_fin_tableau->diff($date_debut_tableau)->days + 1;
-
-                // Tableau contenant les mois de 31 et 30 jours en nombre
-                $mois31 = array('1', '3', '5', '7', '8', '10', '12');
-                $mois30 = array('4', '6', '9', '11');
 
                 // Clonage des dates de début et fin afin de savoir si l'année est bisextile ou non
                 $current_date_year = clone $date_debut_tableau;
@@ -240,20 +396,9 @@ class RooterController extends Controller
                 $current_date_month = clone $date_debut_tableau;
                 $current_date_dayName = clone $date_debut_tableau;
                 $current_date_day = clone $date_debut_tableau;
+                $current_date_dayForPeriods = clone $date_debut_tableau;
                 $current_date_dayForYears = clone $date_debut_tableau;
                 $current_date_dayForMonths = clone $date_debut_tableau;
-
-                // Tableau contenant les jours fériées franças fixes
-                $joursFeries = array('01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25');
-
-                // Tableau contenant le nom des jours de la semaine et leur numéro
-                $joursSemaine = [
-                    "lundi" => "1",
-                    "mardi" => "2",
-                    "mercredi" => "3",
-                    "jeudi" => "4",
-                    "vendredi" => "5",
-                ];
 
                 // Compteur utilisés pour arrêter différentes boucles dans certaines situations
                 $count = 0;
@@ -283,6 +428,9 @@ class RooterController extends Controller
                 } else {
                     $countDatesVacences = count($dates_vacences_formateurs[0]);
                 }
+
+                // Récupère le formateur référent
+                $referent = $databaseFormateur->getBy(['nom_formateur', 'prenom_formateur'], 'Formateur', ['id_formateur'], [$formations[$x]->id_formateur]);
 
                 // Ouverture du tableau
                 $html .= " 
@@ -491,8 +639,100 @@ class RooterController extends Controller
                     $current_date_day->modify("+1 day");
                     $html .= "<th>" . $jour . "</th> ";
                 }
-                $html .= "</tr> <tbody> <tr> ";
 
+                $html .= '</tr> <tr> <th> Periodes </th>';
+                for ($i = 0; $i < $nbJours; $i++) {
+                    $periode_actuelle = $current_date_dayForPeriods->format('Y-m-d');
+
+                    $interruption = false;
+                    $centre = false;
+                    $pae = false;
+                    $certif = false;
+                    $ran = false;
+
+
+                    if (isset($dates_centre_formations[0])) {
+                        for ($c = 0; $c < count($dates_centre_formations); $c++) {
+                            foreach ($dates_centre_formations[$c] as $date_centre) {
+                                if ($date_centre['id_formation'] === $formations[$x]->id_formation) {
+                                    if ($periode_actuelle >= $date_centre['debut_centre'] && $periode_actuelle <= $date_centre['fin_centre']) {
+                                        $centre = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (isset($dates_ran_formations[0])) {
+                        for ($r = 0; $r < count($dates_ran_formations); $r++) {
+                            foreach ($dates_ran_formations[$r] as $date_ran) {
+                                // var_dump($date_ran);
+                                if ($date_ran['id_formation'] === $formations[$x]->id_formation) {
+                                    if ($periode_actuelle >= $date_ran['debut_ran'] && $periode_actuelle <= $date_ran['fin_ran']) {
+                                        $ran = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (isset($dates_pae_formations[0])) {
+                        for ($p = 0; $p < count($dates_pae_formations); $p++) {
+                            foreach ($dates_pae_formations[$p] as $date_pae) {
+                                if ($date_pae['id_formation'] === $formations[$x]->id_formation) {
+
+                                    if ($periode_actuelle >= $date_pae['debut_pae'] && $periode_actuelle <= $date_pae['fin_pae']) {
+                                        $pae = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (isset($dates_certif_formations[0])) {
+                        for ($ce = 0; $ce < count($dates_certif_formations); $ce++) {
+                            foreach ($dates_certif_formations[$ce] as $date_certif) {
+                                if ($date_certif['id_formation'] === $formations[$x]->id_formation) {
+                                    if ($periode_actuelle >= $date_certif['debut_certif'] && $periode_actuelle <= $date_certif['fin_certif']) {
+                                        $certif = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (isset($dates_interruption_formations[0])) {
+                        for ($in = 0; $in < count($dates_interruption_formations); $in++) {
+                            foreach ($dates_interruption_formations[$in] as $date_interruptions) {
+                                if ($date_interruptions['id_formation'] === $formations[$x]->id_formation) {
+                                    if ($periode_actuelle >= $date_interruptions['debut_interruption'] && $periode_actuelle <= $date_interruptions['fin_interruption']) {
+                                        $interruption = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ($interruption) {
+                        $html .= "<th style='background-color:" . $_SESSION['color']['couleur_interruption'] . ";'></th> ";
+                    } else {
+                        if ($centre) {
+                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
+                        } else if ($ran) {
+                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ran'] . ";'></th> ";
+                        } else if ($certif) {
+                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
+                        } else if ($pae) {
+                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
+                        } else {
+                            $html .= "<th style='background-color: var(--emptyCell);'></th>";
+                        }
+                    }
+
+                    $current_date_dayForPeriods->modify("+1 day");
+                }
+
+                $html .= "</tr> <tbody> <tr> ";
 
                 // Création de tableaux vides pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
@@ -554,6 +794,7 @@ class RooterController extends Controller
                                 );
                             }
                         }
+
                         for ($y = 0; $y < $countDatesPerf; $y++) {
                             if ($dates_perfectionnement_formateurs[0][$y]['id_formateur'] == $formateurs[$z]['id_formateur']) {
                                 $formateur_perfectionnement[$formateurs[$z]['id_formateur']][] = array(
@@ -579,18 +820,16 @@ class RooterController extends Controller
 
                         $formateurAvoirTeletravail = 0;
                         foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                            if ($periode_teletravail['validation'] === "1") {
-                                $priseEffet = new DateTime($periode_teletravail['prise_effet']);
-                                if ($priseEffet >= $date_debut_tableau) {
+                            if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] === "1") {
+                                if ($periode_teletravail['prise_effet'] <= $periode) {
                                     $jours_array = explode(',', $periode_teletravail['jours']);
-                                    for($i = 0; $i <= count($joursSemaine); $i++){
-                                        if (in_array($jours_array, array_flip($joursSemaine))) {
+                                    foreach ($jours_array as $jour) {
+                                        if ($jourLettre === $joursSemaine[$jour]) {
                                             $formateurAvoirTeletravail = 1;
                                             break;
                                         }
                                     }
                                 }
-                                break;
                             }
                         }
 
@@ -656,8 +895,7 @@ class RooterController extends Controller
                                         } else {
                                             if ($formateurAvoirTeletravail) {
                                                 $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'> T </td> ";
-                                            }
-                                            else{
+                                            } else {
                                                 $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></td> ";
                                             }
                                         }
