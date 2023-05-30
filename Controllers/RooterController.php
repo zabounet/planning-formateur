@@ -52,7 +52,7 @@ class RooterController extends Controller
             // Initialisation de la variable $html.
             $html = "
                 <div class='main-container'> 
-                    <div class='tableau-container'> ";
+                    <div class='tableau-container myTable'>  ";
 
 
             // Compte le nombre de formations récupérées

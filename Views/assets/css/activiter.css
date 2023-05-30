@@ -45,8 +45,9 @@
     justify-content: center;
   }
   .tableau-container{
-    overflow:scroll; 
-    width: 95%;
+    overflow: scroll; 
+    scroll-behavior: smooth;
+    width: 85%;
     margin: 1rem 0;
     border: solid black 1px;
   }
@@ -69,7 +70,8 @@
   th, td {
     text-align: center;
     border: 1px solid black;
-    padding: 10px;
+    padding: 1px;
+    min-width: 19px;
   }
   
   thead th {
