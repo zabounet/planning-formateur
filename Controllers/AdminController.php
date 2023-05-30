@@ -279,7 +279,7 @@ class AdminController extends Controller
             ];
             $interventions_formateurs[] = $formateurs['id'];
         };
-
+        var_dump($interventions_formateurs);
         //Récupère les interventions des formateurs en fonction de leur ID
         $dates_interventions_formateurs = $formateur->getInterventionById($interventions_formateurs);
 
@@ -773,12 +773,13 @@ class AdminController extends Controller
             // Construire une chaîne de caractères contenant les ID sous forme de liste
 
             //recupere les date de vacances pour chaque formateur et les place dans un tableau
-            $formateurs = $FormateurModel->getVacancesById($id_formateur);
+            $formateurs = $FormateurModel->getDatesById( ['Formateur.id_formateur','Date_vacance.validation'], ['date_debut_vacances','date_fin_vacances','validation'], 'Formateur', ['Date_vacance','Date_vacance','Date_vacance'], ['Date_vacance'], ['Formateur'], ['id_formateur'], 'id_formateur', $id_formateur);
             foreach ($formateurs as $formateur) {
-                $date_debut_vacences = $formateur['date_debut_vacences'];
+                
+                $date_debut_vacences = $formateur['date_debut_vacances'];
                 $date_debut_vacences_array = explode(",", $date_debut_vacences);
 
-                $date_fin_vacences = $formateur['date_fin_vacences'];
+                $date_fin_vacences = $formateur['date_fin_vacances'];
                 $date_fin_vacences_array = explode(",", $date_fin_vacences);
 
                 $validation = $formateur['validation'];
@@ -799,12 +800,14 @@ class AdminController extends Controller
             }
 
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
-            $formateurs = $FormateurModel->getInterventionById($id_formateur);
+            $formateurs = $FormateurModel->getDatesById(['Formateur.id_formateur','Formateur.nom_formateur','Formateur.prenom_formateur','Formateur.date_debut_contrat	','Formateur.date_fin_contrat'], ['date_debut_intervention','date_fin_intervention','id_formation'], 'Formateur', ['Date_intervention','Date_intervention','Date_intervention'], ['Date_intervention'], ['Formateur'], ['id_formateur'], 'id_formateur', $id_formateur);
             foreach ($formateurs as $formateur) {
-                $date_debut_activite = $formateur['date_debut'];
+                $date_debut_activite = $formateur['date_debut_intervention'];
                 $date_debut_array = explode(",", $date_debut_activite);
-                $date_fin_activite = $formateur['date_fin'];
+                $date_fin_activite = $formateur['date_fin_intervention'];
                 $date_fin_array = explode(",", $date_fin_activite);
+
+                
 
                 $dates_interventions_formateurs = array();
 
@@ -813,7 +816,9 @@ class AdminController extends Controller
                     $dates_formateur[] = [
                         "id_formateur" => $formateur['id_formateur'],
                         "debut" => $date_debut_array[$i],
-                        "fin" => $date_fin_array[$i]
+                        "fin" => $date_fin_array[$i],
+                        "fin_contrat" => $formateur['date_fin_contrat']
+                        
                     ];
                 }
 
@@ -855,21 +860,22 @@ class AdminController extends Controller
                 $countDates = 0;
             } else{
                 if(!isset($dates_interventions_formateurs[0])){
-                $countDates = 0;
-            } else {
-                $countDates = count($dates_interventions_formateurs[0]);
-            }
+                    $countDates = 0;
+                } else {
+                    $countDates = count($dates_interventions_formateurs[0]);
+                }
+                
+                if(!isset($dates_vacences_formateurs[0])){
+                    $countDatesVacences = 0;
+                } else{
 
-            if(!isset($dates_vacences_formateurs[0])){
-                $countDatesVacences = 0;
-            } else{
                 }
 
-            if(!isset($dates_vacences_formateurs[0])){
-                $countDatesVacences = 0;
-            } else {
-                $countDatesVacences = count($dates_vacences_formateurs[0]);
-            }
+                if(!isset($dates_vacences_formateurs[0])){
+                    $countDatesVacences = 0;
+                } else {
+                    $countDatesVacences = count($dates_vacences_formateurs[0]);
+                }
             }
 
             // Ouverture du tableau
@@ -1089,13 +1095,22 @@ class AdminController extends Controller
 
                 // Clonage de la date de début du tableau pour éviter de modifier l'objet original
                 $current_date_dayForFormateurs = clone $date_debut_tableau;
-
+                
+                 // Vérification si le formateur a une période pour le jour en cours
+                 $formateurAvoirPeriode = false;
+                 foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $finContratFormateur) {
+                     if ($fin_contrat > $finContratFormateur['debut']) {
+                         $formateurAvoirPeriode = true;
+                         break;
+                     }
+                 }
                 // Ajout du nom et prénom du formateur dans la première colonne du tableau
                 $html .= "<th class='sticky-formateur-container'> <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span></th> ";
 
                 // Création d'un tableau vide pour stocker les périodes du formateur en cours
                 $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
                 $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
+                
 
                 // Boucle pour parcourir tous les jours du tableau
                 for ($i = 0; $i < $nbJours; $i++) {

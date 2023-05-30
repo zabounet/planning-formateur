@@ -277,6 +277,7 @@ class Model extends Db
         
         $sql .= ") GROUP BY " . $table . "." . $whereCol;
 
+
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
 
         return $result;
