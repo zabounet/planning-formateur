@@ -281,14 +281,30 @@ class AdminController extends Controller
         };
         var_dump($interventions_formateurs);
         //Récupère les interventions des formateurs en fonction de leur ID
-        $dates_interventions_formateurs = $formateur->getInterventionById($interventions_formateurs);
+        $dates_interventions_formateurs = $formateur->getDatesById(
+              ['Formateur.id_formateur'],
+              ['date_debut_intervention','date_fin_intervention'],
+              'Formateur', 
+              ['Date_intervention','Date_intervention'], 
+              ['Date_intervention'], 
+              ['Formateur'], 
+              ['id_formateur'], 
+              'id_formateur', 
+              $interventions_formateurs);
 
         $infosInterventions = array();
         // Boucle pour chacune des dates récupèrées
         for($j = 0; $j < count($dates_interventions_formateurs); $j++){
             // Explose les chaînes de caractères date_debut et date_fin
-            $debutIntervention = explode(",",$dates_interventions_formateurs[$j]['date_debut']);
-            $finIntervention = explode(",",$dates_interventions_formateurs[$j]['date_fin']);
+
+            $date_debut_intervention = $dates_interventions_formateurs[$j]['date_debut_intervention'];
+            $debutIntervention = explode(",", $date_debut_intervention);
+
+            $date_fin_intervention = $dates_interventions_formateurs[$j]['date_fin_intervention'];
+            $finIntervention = explode(",", $date_fin_intervention);
+
+            // $debutIntervention = explode(",",$dates_interventions_formateurs[$j]['date_debut']);
+            // $finIntervention = explode(",",$dates_interventions_formateurs[$j]['date_fin']);
             // Pour chaque factions créées par l'explosion, les attribue dans un tableau avec l'id du formateur correspondant.
             for($z = 0; $z < count($debutIntervention); $z++){
                 $interventions = [
@@ -800,7 +816,7 @@ class AdminController extends Controller
             }
 
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
-            $formateurs = $FormateurModel->getDatesById(['Formateur.id_formateur','Formateur.nom_formateur','Formateur.prenom_formateur','Formateur.date_debut_contrat	','Formateur.date_fin_contrat'], ['date_debut_intervention','date_fin_intervention','id_formation'], 'Formateur', ['Date_intervention','Date_intervention','Date_intervention'], ['Date_intervention'], ['Formateur'], ['id_formateur'], 'id_formateur', $id_formateur);
+            $formateurs = $FormateurModel->getDatesById(['Formateur.id_formateur','Formateur.nom_formateur','Formateur.prenom_formateur', 'type_contrat_formateur','Formateur.date_debut_contrat','Formateur.date_fin_contrat'], ['date_debut_intervention','date_fin_intervention','id_formation'], 'Formateur', ['Date_intervention','Date_intervention','Date_intervention'], ['Date_intervention'], ['Formateur'], ['id_formateur'], 'id_formateur', $id_formateur);
             foreach ($formateurs as $formateur) {
                 $date_debut_activite = $formateur['date_debut_intervention'];
                 $date_debut_array = explode(",", $date_debut_activite);
@@ -817,11 +833,12 @@ class AdminController extends Controller
                         "id_formateur" => $formateur['id_formateur'],
                         "debut" => $date_debut_array[$i],
                         "fin" => $date_fin_array[$i],
-                        "fin_contrat" => $formateur['date_fin_contrat']
+                        "fin_contrat" => $formateur['date_fin_contrat'],
+                        "type_contrat" => $formateur['type_contrat_formateur']
                         
                     ];
                 }
-
+               
                 $dates_interventions_formateurs[] = $dates_formateur;
             }
             // création d'un objet DateTime avec la date de début entrée
@@ -1089,28 +1106,21 @@ class AdminController extends Controller
             // Création de tableaux vides pour stocker les périodes de chaque formateur
             $formateur_periodes = array();
             $formateur_vacance = array();
-
             // Boucle pour parcourir tous les formateurs
             for ($z = 0; $z < $countFormateurs; $z++) {
-
                 // Clonage de la date de début du tableau pour éviter de modifier l'objet original
                 $current_date_dayForFormateurs = clone $date_debut_tableau;
                 
-                 // Vérification si le formateur a une période pour le jour en cours
-                 $formateurAvoirPeriode = false;
-                 foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $finContratFormateur) {
-                     if ($fin_contrat > $finContratFormateur['debut']) {
-                         $formateurAvoirPeriode = true;
-                         break;
-                     }
-                 }
+                // on verifie que le formateur a bien un contrat apres le date de saisir 
+                if(!($formateurs[$z]['date_fin_contrat'] < $_POST['date_debut'] && $formateurs[$z]['type_contrat_formateur'] != "CDI") ){
+                
+              
                 // Ajout du nom et prénom du formateur dans la première colonne du tableau
                 $html .= "<th class='sticky-formateur-container'> <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span></th> ";
 
                 // Création d'un tableau vide pour stocker les périodes du formateur en cours
                 $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
                 $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
-                
 
                 // Boucle pour parcourir tous les jours du tableau
                 for ($i = 0; $i < $nbJours; $i++) {
@@ -1214,7 +1224,7 @@ class AdminController extends Controller
                 }
                 // Fermeture de la ligne correspondant au formateur en cours
                 $html .= "</tr>";
-            }
+            }}
             // Fermeture de la table
             $html .= "</tbody> </table> </div> </div>";
         }
