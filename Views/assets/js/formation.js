@@ -403,7 +403,7 @@ addEventListener('DOMContentLoaded', () => {
                             step4.style.backgroundColor = "#58d665";
                             return;
                         } else {
-                            alert("Veuillez renseigner une date de début et une date de fin \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
+                            alert("Veuillez renseigner une date de début et une date de fin ou cocher \"Aucune interruption\" si vous ne souhaitez pas en ajouter.")
                         }
                     }
                 }

@@ -25,10 +25,10 @@ class RooterController extends Controller
             $_POST['lieu'] !== "default" ? $centre = $_POST['lieu'] : $centre = "Aucun";
 
             // Si la valeur de GRN pas vide et n'est pas celle de l'option par défaut, alors $grn est égal à sa valeur, sinon il est égal à "aucun"
-            if(empty($_POST['grns'])) {
+            if (empty($_POST['grns'])) {
                 $grn = "Aucun";
             } else {
-                $_POST['grns'] !== "default" ? $grn = $_POST['grns'] : $grn = "Aucun"; 
+                $_POST['grns'] !== "default" ? $grn = $_POST['grns'] : $grn = "Aucun";
             };
 
             // Si aucun formateur n'est selectionné, demande à l'utilisateur d'en selectionner au moins 1
@@ -43,17 +43,17 @@ class RooterController extends Controller
             $formations = $databaseFormation->getByIn(['*'], 'Formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
 
-            
-                // Création de tableaux vides pour stocker les périodes diferents de chaque formation
-                $formation_centres = array();
-                $formation_certifs = array();
-                $formation_PAEs = array();
-                $formation_RANs = array();
+
+            // Création de tableaux vides pour stocker les périodes diferents de chaque formation
+            $formation_centres = array();
+            $formation_certifs = array();
+            $formation_PAEs = array();
+            $formation_RANs = array();
             // Initialisation de la variable $html.
             $html = "
                 <div class='main-container'> 
                     <div class='tableau-container'> ";
-            
+
 
             // Compte le nombre de formations récupérées
             $nbformation = count($formations);
@@ -64,13 +64,16 @@ class RooterController extends Controller
 
                 //recupere les date de vacances pour chaque formateur et les place dans un tableau
                 $formateurs = $databaseFormateur->getDatesById(
-                    ['Formateur.id_formateur'],
+                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
                     ['date_debut_vacances', 'date_fin_vacances', 'validation'],
                     'Formateur',
+                    ['Date_vacance', 'Date_vacance', 'Date_vacance'],
                     ['Date_vacance'],
+                    ['Formateur'],
                     ['id_formateur'],
                     'id_formateur',
-                    $formateursSelectionnes);
+                    $formateursSelectionnes
+                );
                 foreach ($formateurs as $formateur) {
                     $date_debut_vacences = $formateur['date_debut_vacances'];
                     $date_debut_vacences_array = explode(",", $date_debut_vacences);
@@ -94,20 +97,111 @@ class RooterController extends Controller
 
                     $dates_vacences_formateurs[] = $dates_vacences_formateur;
                 }
-                // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
+
+                //recupere les date de MNSP pour chaque formateur et les place dans un tableau
                 $formateurs = $databaseFormateur->getDatesById(
-                    ['date_debut_intervention', 'date_fin_intervention', 'id_formateur'],
-                    ['date_debut_intervention', 'date_fin_intervention'],
+                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                    ['date_debut_MNSP', 'date_fin_MNSP'],
                     'Formateur',
-                    ['Date_intervention'],
+                    ['Date_MNSP', 'Date_MNSP'],
+                    ['Date_MNSP'],
+                    ['Formateur'],
                     ['id_formateur'],
                     'id_formateur',
-                    $formateursSelectionnes);
+                    $formateursSelectionnes
+                );
                 foreach ($formateurs as $formateur) {
-                    $date_debut_activite = $formateur['date_debut'];
+                    $date_debut_MNSP = $formateur['date_debut_MNSP'];
+                    $date_debut_MNSP_array = explode(",", $date_debut_MNSP);
+
+                    $date_fin_MNSP = $formateur['date_fin_MNSP'];
+                    $date_fin_MNSP_array = explode(",", $date_fin_MNSP);
+
+                    $dates_MNSP_formateurs = array();
+                    $nbMNSP = count($date_debut_MNSP_array);
+                    for ($i = 0; $i < $nbMNSP; $i++) {
+                        $dates_MNSP_formateur[] = [
+                            "id_formateur" => $formateur['id_formateur'],
+                            "debut_MNSP" => $date_debut_MNSP_array[$i],
+                            "fin_MNSP" => $date_fin_MNSP_array[$i],
+                        ];
+                    }
+
+                    $dates_MNSP_formateurs[] = $dates_MNSP_formateur;
+                }
+
+                //recupere les date de perfectionnement pour chaque formateur et les place dans un tableau
+                $formateurs = $databaseFormateur->getDatesById(
+                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                    ['date_debut_perfectionnement', 'date_fin_perfectionnement'],
+                    'Formateur',
+                    ['Date_perfectionnement', 'Date_perfectionnement'],
+                    ['Date_perfectionnement'],
+                    ['Formateur'],
+                    ['id_formateur'],
+                    'id_formateur',
+                    $formateursSelectionnes
+                );
+                foreach ($formateurs as $formateur) {
+                    $date_debut_perfectionnement = $formateur['date_debut_perfectionnement'];
+                    $date_debut_perfectionnement_array = explode(",", $date_debut_perfectionnement);
+
+                    $date_fin_perfectionnement = $formateur['date_fin_perfectionnement'];
+                    $date_fin_perfectionnement_array = explode(",", $date_fin_perfectionnement);
+
+                    $dates_perfectionnement_formateurs = array();
+                    $nbPerfs = count($date_debut_perfectionnement_array);
+                    for ($i = 0; $i < $nbPerfs; $i++) {
+                        $dates_perfectionnement_formateur[] = [
+                            "id_formateur" => $formateur['id_formateur'],
+                            "debut_perfectionnement" => $date_debut_perfectionnement_array[$i],
+                            "fin_perfectionnement" => $date_fin_perfectionnement_array[$i]
+                        ];
+                    }
+
+                    $dates_perfectionnement_formateurs[] = $dates_perfectionnement_formateur;
+                }
+
+                // Récupérer les dates de télétravail pour chaque formateurs et les place dans un tableau
+                $formateurs = $databaseFormateur->joinInformations(
+                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'jour_teletravail', 'date_prise_effet', 'validation'],
+                    'Formateur',
+                    ['Date_teletravail'],
+                    ['id_formateur'],
+                    ['Formateur.id_formateur'],
+                    $formateursSelectionnes
+                );
+                foreach ($formateurs as $formateur) {
+                    $teletravail_formateurs = [
+                        "jours" => $formateur->jour_teletravail,
+                        "prise_effet" => $formateur->date_prise_effet,
+                        "validation" => $formateur->validation,
+                        "id_formateur" => $formateur->id_formateur
+                    ];
+
+                    $dates_teletravail_formateurs[] = $teletravail_formateurs;
+                }
+
+
+                // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
+                $formateurs = $databaseFormateur->getDatesById(
+                    ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'Formation.id_formation'],
+                    ['date_debut_intervention', 'date_fin_intervention', 'id_formation'],
+                    'Formateur',
+                    ['Date_intervention', 'Date_intervention', 'Formation'],
+                    ['Date_intervention', 'Formation'],
+                    ['Formateur', 'Date_intervention'],
+                    ['id_formateur', 'id_formation'],
+                    'id_formateur',
+                    $formateursSelectionnes
+                );
+                foreach ($formateurs as $formateur) {
+                    $date_debut_activite = $formateur['date_debut_intervention'];
                     $date_debut_array = explode(",", $date_debut_activite);
-                    $date_fin_activite = $formateur['date_fin'];
+                    $date_fin_activite = $formateur['date_fin_intervention'];
                     $date_fin_array = explode(",", $date_fin_activite);
+                    $formation_intervention = $formateur['id_formation'];
+                    $formation_intervention_array = explode(",", $formation_intervention);
 
                     $dates_interventions_formateurs = array();
 
@@ -116,14 +210,14 @@ class RooterController extends Controller
                         $dates_formateur[] = [
                             "debut" => $date_debut_array[$i],
                             "fin" => $date_fin_array[$i],
-                            "id_formateur" => $formateur['id_formateur'],
-                            "id_formation" => $formateur['id_formation']
+                            "id_formation" => $formation_intervention_array[$i],
+                            "id_formateur" => $formateur['id_formateur']
                         ];
                     }
 
                     $dates_interventions_formateurs[] = $dates_formateur;
                 }
-                
+
                 // création d'un objet DateTime avec la date de début entrée
                 $date_debut_tableau = new DateTime($_POST['date_debut']);
                 // création d'un objet DateTime avec la date de fin entrée
@@ -152,29 +246,42 @@ class RooterController extends Controller
                 // Tableau contenant les jours fériées franças fixes
                 $joursFeries = array('01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25');
 
+                // Tableau contenant le nom des jours de la semaine et leur numéro
+                $joursSemaine = [
+                    "lundi" => "1",
+                    "mardi" => "2",
+                    "mercredi" => "3",
+                    "jeudi" => "4",
+                    "vendredi" => "5",
+                ];
+
                 // Compteur utilisés pour arrêter différentes boucles dans certaines situations
                 $count = 0;
                 $countFormateurs = count($formateurs);
 
-                if(!isset($dates_interventions_formateurs[0])){
-                    $countDates = 0;
-                } else{
-                    if(!isset($dates_interventions_formateurs[0])){
+                // Si aucune date relevées, alors le compteur est à 0
+                if (!isset($dates_interventions_formateurs[0])) {
                     $countDates = 0;
                 } else {
                     $countDates = count($dates_interventions_formateurs[0]);
                 }
-    
-                if(!isset($dates_vacences_formateurs[0])){
-                    $countDatesVacences = 0;
-                } else{
-                    }
 
-                if(!isset($dates_vacences_formateurs[0])){
+                if (!isset($dates_MNSP_formateurs[0])) {
+                    $countDatesMNSP = 0;
+                } else {
+                    $countDatesMNSP = count($dates_MNSP_formateurs[0]);
+                }
+
+                if (!isset($dates_perfectionnement_formateurs[0])) {
+                    $countDatesPerf = 0;
+                } else {
+                    $countDatesPerf = count($dates_perfectionnement_formateurs[0]);
+                }
+
+                if (!isset($dates_vacences_formateurs[0])) {
                     $countDatesVacences = 0;
                 } else {
                     $countDatesVacences = count($dates_vacences_formateurs[0]);
-                }
                 }
 
                 // Ouverture du tableau
@@ -190,7 +297,7 @@ class RooterController extends Controller
                 for ($i = 0; $i < $nbJours; $i++) {
                     $annee = $current_date_year->format('Y');
                     $dernierJour = $current_date_dayForYears->format('m-d');
-                
+
                     // Si l'une des 2 années des dates renseignées est bisextile, alors passe dans cette boucle.
                     if ($yearDebut || $yearFin) {
                         $count++;
@@ -220,7 +327,7 @@ class RooterController extends Controller
                 for ($i = 0; $i < $nbJours; $i++) {
                     $mois = $current_date_month->format('n');
                     $numeroJour = $current_date_dayForMonths->format('j');
-                    
+
                     // Si le mois actuel matche avec l'un des mois présent dans le tableau $mois31
                     if (in_array($mois, $mois31)) {
                         // Compteur du nombre d'iterations
@@ -390,6 +497,9 @@ class RooterController extends Controller
                 // Création de tableaux vides pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
                 $formateur_vacance = array();
+                $formateur_MNSP = array();
+                $formateur_perfectionnement = array();
+
                 // Ajout du nom formation dans la première colonne du tableau
 
                 // Boucle pour parcourir tous les formateurs
@@ -404,6 +514,9 @@ class RooterController extends Controller
                     // Création d'un tableau vide pour stocker les périodes du formateur en cours
                     $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
                     $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
+                    $formateur_MNSP[$formateurs[$z]['id_formateur']] = array();
+                    $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
+
 
                     // Boucle pour parcourir tous les jours du tableau
                     for ($i = 0; $i < $nbJours; $i++) {
@@ -433,16 +546,50 @@ class RooterController extends Controller
                             }
                         }
 
+                        for ($w = 0; $w < $countDatesMNSP; $w++) {
+                            if ($dates_MNSP_formateurs[0][$w]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                $formateur_MNSP[$formateurs[$z]['id_formateur']][] = array(
+                                    'debut_MNSP' => $dates_MNSP_formateurs[0][$w]['debut_MNSP'],
+                                    'fin_MNSP' => $dates_MNSP_formateurs[0][$w]['fin_MNSP'],
+                                );
+                            }
+                        }
+                        for ($y = 0; $y < $countDatesPerf; $y++) {
+                            if ($dates_perfectionnement_formateurs[0][$y]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                $formateur_perfectionnement[$formateurs[$z]['id_formateur']][] = array(
+                                    'debut_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['debut_perfectionnement'],
+                                    'fin_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['fin_perfectionnement'],
+                                );
+                            }
+                        }
+
                         // Récupération de la période courante
                         $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
                         $periode = $current_date_dayForFormateurs->format('Y-m-d');
-                        $weekend = $current_date_dayForFormateurs->format('N');
+                        $jourLettre = $current_date_dayForFormateurs->format('N');
 
                         // Vérification si le formateur a une période pour le jour en cours
                         $formateurAvoirPeriode = false;
                         foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $periodeFormateur) {
                             if ($periode >= $periodeFormateur['debut'] && $periode <= $periodeFormateur['fin']) {
                                 $formateurAvoirPeriode = true;
+                                break;
+                            }
+                        }
+
+                        $formateurAvoirTeletravail = 0;
+                        foreach ($dates_teletravail_formateurs as $periode_teletravail) {
+                            if ($periode_teletravail['validation'] === "1") {
+                                $priseEffet = new DateTime($periode_teletravail['prise_effet']);
+                                if ($priseEffet >= $date_debut_tableau) {
+                                    $jours_array = explode(',', $periode_teletravail['jours']);
+                                    for($i = 0; $i <= count($joursSemaine); $i++){
+                                        if (in_array($jours_array, array_flip($joursSemaine))) {
+                                            $formateurAvoirTeletravail = 1;
+                                            break;
+                                        }
+                                    }
+                                }
                                 break;
                             }
                         }
@@ -459,6 +606,22 @@ class RooterController extends Controller
                             }
                         }
 
+                        $formateurAvoirMNSP = false;
+                        foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {
+                            if ($periode >= $MNSPFormateur['debut_MNSP'] && $periode <= $MNSPFormateur['fin_MNSP']) {
+                                $formateurAvoirMNSP = true;
+                                break;
+                            }
+                        }
+
+                        $formateurAvoirPerfectionnement = false;
+                        foreach ($formateur_perfectionnement[$formateurs[$z]['id_formateur']] as $perfectionnementFormateur) {
+                            if ($periode >= $perfectionnementFormateur['debut_perfectionnement'] && $periode <= $perfectionnementFormateur['fin_perfectionnement']) {
+                                $formateurAvoirPerfectionnement = true;
+                                break;
+                            }
+                        }
+
                         // Vérification si le jour en cours est compris dans les dates de formation en cours
                         $formation_en_cours = false;
                         if ($periode >= $formations[$x]->date_debut_formation && $periode <= $formations[$x]->date_fin_formation) {
@@ -467,14 +630,14 @@ class RooterController extends Controller
 
                         // Si la date actuelle n'est pas comprise dans les dates de formations
                         if (!$formation_en_cours) {
-                            $html .= "<th style='background-color: black;'></th> ";
+                            $html .= "<td style='background-color: black;'></td> ";
                         } else {
                             // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
                             if ($formateurAvoirVacances !== 0) {
                                 if ($formateurAvoirVacances == 2) {
-                                    $html .= "<th style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></th>";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></td>";
                                 } else if ($formateurAvoirVacances == 1) {
-                                    $html .= "<th style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . ";'></th> ";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . ";'></td> ";
                                 }
                             } else {
                                 // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
@@ -485,13 +648,18 @@ class RooterController extends Controller
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                         || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                     ) {
-                                        $html .= "<th style='background-color: " . $_SESSION['color']['couleur_ferie'] . ";'></th> ";
+                                        $html .= "<td style='background-color: " . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
-                                        if ($weekend === "6" || $weekend === "7") {
-                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></th> ";
+                                        if ($jourLettre === "6" || $jourLettre === "7") {
+                                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                         } else {
-                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></th> ";
+                                            if ($formateurAvoirTeletravail) {
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'> T </td> ";
+                                            }
+                                            else{
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></td> ";
+                                            }
                                         }
                                     }
                                 } else {
@@ -501,13 +669,19 @@ class RooterController extends Controller
                                         || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                         || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                     ) {
-                                        $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></th> ";
+                                        $html .= "<td style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
                                     } else {
                                         // Si le jour de la semaine est égal à 6 ou 7
-                                        if ($weekend === "6" || $weekend === "7") {
-                                            $html .= "<th style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></th> ";
+                                        if ($jourLettre === "6" || $jourLettre === "7") {
+                                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                         } else {
-                                            $html .= "<th style='background-color: var(--emptyCell);'></th> ";
+                                            if ($formateurAvoirMNSP) {
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_MNSP'] . " ;'></td> ";
+                                            } else if ($formateurAvoirPerfectionnement) {
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_perfectionment'] . " ;'></td> ";
+                                            } else {
+                                                $html .= "<td style='background-color: var(--emptyCell);'></td> ";
+                                            }
                                         }
                                     }
                                 }
@@ -526,7 +700,7 @@ class RooterController extends Controller
         } else {
             $html = "<div style='height: 80vh; display:flex; align-items:center; justify-content:center;'> <h1 style='text-align:center'> Veuillez entrer des informations dans les champs de recherche afin de consulter les formations. </h1> </div>";
         }
-        
+
         $formation = new FormationModel;
         $formateur = new FormateurModel;
         $formateurs = $formateur->getFormateur();
