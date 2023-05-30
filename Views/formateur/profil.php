@@ -2,9 +2,9 @@
 
 <?php if (isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) : ?>
     <div class="profile">
-    <div class="profil-text section-titre">
-        <span>Profil</span>
-    </div>
+        <div class="profil-text section-titre">
+            <span>Profil</span>
+        </div>
 
         <div class="info-personel">
             <span class="titre titre-profil">Vos informations personnelles :</span>
@@ -85,13 +85,13 @@
         </div>
     </div>
 
- 
+
 
     <div class="vacances">
         <div class="profil-text">
             <span class="vacances-text">Demande de vacances</span>
         </div>
-        
+
         <span class="titre titre-demande-vacances">Sélectionnez une période :</span>
         <div class="demande-vacances">
             <form method="POST" class="container-vacances">
@@ -129,7 +129,7 @@
         <div class="profil-text">
             <span class="teletravail-text">Demande de teletravail</span>
         </div>
-        
+
         <div class="demande-teletravail">
             <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
             <span class="notif notif-demande-teletravail"><i class='fas fa-exclamation-circle' style='font-size:30px;color:red'></i> Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
@@ -138,12 +138,15 @@
                 <div>
                     <section class="app">
                         <?php
-                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
-                        $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
 
+                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
+                        if (isset($_SESSION['teletravail']['jour_teletravail'])) {
+                            $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
+                        } else{
+                            $jourTeletravail[] = "Aucun";
+                        }
                         foreach ($jourSemaine as $jour) :
                         ?>
-
                             <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = ""; ?>
 
                             <article class="features">
@@ -166,7 +169,7 @@
                     <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
                 </div>
             </form>
-            
+
             <span class="error" style="color: red;">
                 <?php if (isset($_SESSION['error_teletravail'])) {
                     echo $_SESSION['error_teletravail'];
@@ -227,31 +230,31 @@
                 <?php endif; ?>
             </form>
             <hr>
-                <form class="profil mdp-profil" method="post">
+            <form class="profil mdp-profil" method="post">
 
-                    <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=4") : ?>
+                <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=4") : ?>
 
-                        <div class="mdp-container">
-                            <div>
-                                <span>Saisir votre mot de passe actuel :</span>
-                                <input type="password" name="current_mdp" class="mdpProfil" value="" />
-                            </div>
-                            <div>
-                                <span>Saisir nouveau mot de passe :</span>
-                                <input type="password" name="new_mdp" class="mdpProfil" value="" />
-                            </div>
-                            <div>
-                                <span>Saisir confirmation du nouveau mot de passe :</span>
-                                <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
-                            </div>
+                    <div class="mdp-container">
+                        <div>
+                            <span>Saisir votre mot de passe actuel :</span>
+                            <input type="password" name="current_mdp" class="mdpProfil" value="" />
                         </div>
-                        <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
-                    <?php else : ?>
-                        <span>Mot de passe :</span>
-                        <span id="mdpProfil">****</span>
-                        <a href="/planning/public/index.php?p=Formateur/profil&?id=4">Modifier</a>
-                    <?php endif; ?>
-                </form>
+                        <div>
+                            <span>Saisir nouveau mot de passe :</span>
+                            <input type="password" name="new_mdp" class="mdpProfil" value="" />
+                        </div>
+                        <div>
+                            <span>Saisir confirmation du nouveau mot de passe :</span>
+                            <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
+                        </div>
+                    </div>
+                    <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
+                <?php else : ?>
+                    <span>Mot de passe :</span>
+                    <span id="mdpProfil">****</span>
+                    <a href="/planning/public/index.php?p=Formateur/profil&?id=4">Modifier</a>
+                <?php endif; ?>
+            </form>
         </div>
         <span class="error" style="color: red;">
             <?php if (isset($_SESSION['error_profil'])) {
@@ -270,12 +273,12 @@
     </div>
 
     <div class="list-color">
-        
+
         <div class="profil-text">
             <span>list colors</span>
         </div>
         <form method="POST" name="list-color">
-            
+
             <span class="titre">Changer la couleur des informations apparaissant sur le calendrier</span>
             <div class="list-color-container">
                 <div class="cloumn cloumn-color1">

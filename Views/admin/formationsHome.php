@@ -19,11 +19,15 @@
 
 
 <?php
-$iterations = 1;
+// Boucle sur l'ensemble des formations récupérées
 foreach ($infosFormation as $formation) {
+    // explose le nom de la formation afin d'en retirer un nom plus court.
     $disassemble = explode(' ', $formation->nom_formation);
     $reassemble = $disassemble[1] . ' ' . $disassemble[2] . ' ' . $disassemble[3];
 
+    // Si les informations relatives au candidats ont été rentrées, 
+    // explose l'informations pour en retirer les places totales et les candidats déjà inscrits.
+    // Sinon, met la valeur sur indéfini.
     if (!empty($formation->candidats_formation)) {
         $placesCandidats = explode('/', $formation->candidats_formation);
         $places = $placesCandidats[0];
@@ -33,6 +37,7 @@ foreach ($infosFormation as $formation) {
     }
 
 ?>
+    <!-- Déchargement des données -->
     <h2>Nom de la formation : <?= $reassemble; ?></h2>
     <h3>GRN : <?= $formation->numero_grn; ?></h3>
 
@@ -41,6 +46,7 @@ foreach ($infosFormation as $formation) {
     <p>Rattachée au centre de <?= $formation->nom_ville; ?></p>
     <p>Nombre de places totales : <?= $places; ?></p>
     <p>Nombre de candidats placés : <?= $candidats; ?></p>
+    <!-- Conversion des données relatives au dates en objet DateTime afin de pouvoir les formater à la française -->
     <p>Début le : <span style="font-weight: 800;"><?php $debut = new DateTime($formation->date_debut_formation);
                                                     echo $debut->format('d-m-Y'); ?></span></p>
     <p>Fin le : <span style="font-weight: 800;"><?php $fin = new DateTime($formation->date_fin_formation);
@@ -58,7 +64,6 @@ foreach ($infosFormation as $formation) {
     </form>
     <hr>
 <?php
-    $iterations++;
 }
 if (isset($search) && empty($infosFormateur)) {
     echo "<h2 style='text-align: center;'>Aucun résultat pour '$search'.</h2>";

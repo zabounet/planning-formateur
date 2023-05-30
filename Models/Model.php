@@ -276,7 +276,7 @@ class Model extends Db
         }
         
         $sql .= ") GROUP BY " . $table . "." . $whereCol;
-    //    echo $sql . '<br><br>';
+
 
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
 
@@ -306,11 +306,12 @@ class Model extends Db
             $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
         }
         if (!empty($champCondJointures) && !empty($CondJointures)) {
-            $nbCond = count($champCondJointures);
+            $nbChampsCond = count($champCondJointures);
+            $nbConds = count($CondJointures);
 
-            if ($nbCond > 0) {
+            if ($nbChampsCond > 0 && $nbConds == $nbChampsCond) {
                 $sql .= " WHERE ";
-                for ($j = 0; $j < $nbCond; $j++) {
+                for ($j = 0; $j < $nbConds; $j++) {
                     if ($j == 0) {
                         $writeAnd = "";
                     } else {
@@ -319,10 +320,24 @@ class Model extends Db
 
                     $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
                 }
-            } else {
+            }else if ($nbChampsCond > 0 && $nbConds > $nbChampsCond){
+                $sql .= " WHERE " . $champCondJointures[0] . " IN (";
+
+                for($x = 0; $x < $nbConds; $x++){
+                    if ($x == 0) {
+                        $writeComma = "";
+                    } else {
+                        $writeComma = ", ";
+                    }
+                    $sql .= $writeComma . $CondJointures[$x];
+                }
+                $sql .= ")";
+            }
+            else {
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
+        // echo $sql;die;
         return $this->requete($sql)->fetchAll();
     }
 
