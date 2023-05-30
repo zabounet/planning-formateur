@@ -279,7 +279,7 @@ class AdminController extends Controller
             ];
             $interventions_formateurs[] = $formateurs['id'];
         };
-        var_dump($interventions_formateurs);
+       
         //Récupère les interventions des formateurs en fonction de leur ID
         $dates_interventions_formateurs = $formateur->getDatesById(
               ['Formateur.id_formateur'],
@@ -898,7 +898,7 @@ class AdminController extends Controller
             // Ouverture du tableau
             $html = "
                         <div class='main-container'> 
-                            <div class='tableau-container'> 
+                            <div class='tableau-container myTable'> 
                                 <table> 
                                     <thead> 
                                         <tr>
@@ -1062,31 +1062,31 @@ class AdminController extends Controller
                 // sa valeur est changée par le nom du jour correspondant et est inscrite dans le tableau
                 switch ($jourNom) {
                     case 1: {
-                            $jourNom = "Lun";
+                            $jourNom = "L";
                             break;
                         }
                     case 2: {
-                            $jourNom = "Mar";
+                            $jourNom = "M";
                             break;
                         }
                     case 3: {
-                            $jourNom = "Mer";
+                            $jourNom = "M";
                             break;
                         }
                     case 4: {
-                            $jourNom = "Jeu";
+                            $jourNom = "J";
                             break;
                         }
                     case 5: {
-                            $jourNom = "Ven";
+                            $jourNom = "V";
                             break;
                         }
                     case 6: {
-                            $jourNom = "Sam";
+                            $jourNom = "S";
                             break;
                         }
                     case 7: {
-                            $jourNom = "Dim";
+                            $jourNom = "D";
                             break;
                         }
                 }
