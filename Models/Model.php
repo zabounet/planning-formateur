@@ -224,7 +224,7 @@ class Model extends Db
         return $this->requete($sql)->fetchAll();
     }
 
-    public function getDatesById(array $champSelect, array $date, string $table, array $joinTable, array $joinCol, string $whereCol, array $id)
+    public function getDatesById(array $champSelect, array $date, string $table, array $concatTable, array $tableToJoin, array $joinTable, array $joinCol, string $whereCol, array $id)
     {
         // Nécessaire afin de pouvoir contourner la règle du group by forcant à y mettre l'ensemble des champs du select
         $this->requete("SET sql_mode='';");
@@ -249,15 +249,17 @@ class Model extends Db
         // Effectues une concaténation de toute les lignes de la table "date_intervention" où l'id du formateur correspond
         // afin de ne retourner qu'une seule ligne par formateurs.
         for ($i = 0; $i < $nbDates; $i++) {
-            $sql .= ", GROUP_CONCAT(" . $joinTable[0] . "." . $date[$i] . " ORDER BY " . $joinTable[0] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
+            $sql .= ", GROUP_CONCAT(" . $concatTable[$i] . "." . $date[$i] . " ORDER BY " . $concatTable[$i] . "." . $date[$i] . " SEPARATOR ',') AS " . $date[$i];
         }
 
         // Ajouter la clause FROM avec les tables et les jointures
         $sql .= " FROM " . $table;
 
         $nbJoin = count($joinTable);
+        // $tableToJoin : La table à joindre
+        // $joinTable : La table utilisée pour la jointure
         for ($i = 0; $i < $nbJoin; $i++) {
-            $sql .= " JOIN " . $joinTable[$i] . " ON " . $table . "." . $joinCol[$i] . " = " . $joinTable[$i] . "." . $joinCol[$i];
+            $sql .= " JOIN " . $tableToJoin[$i] . " ON " . $joinTable[$i] . "." . $joinCol[$i] . " = " . $tableToJoin[$i] . "." . $joinCol[$i];
         }
 
         // Ajouter la clause WHERE avec la liste d'identifiants
@@ -274,8 +276,6 @@ class Model extends Db
         }
         
         $sql .= ") GROUP BY " . $table . "." . $whereCol;
-
-        // echo $sql;die;
 
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
 
@@ -305,11 +305,12 @@ class Model extends Db
             $sql .= " JOIN " . $tablesJointures[$i] . " ON " . $table . "." . $colonnesJointures[$i] . " = " . $tablesJointures[$i] . "." . $colonnesJointures[$i];
         }
         if (!empty($champCondJointures) && !empty($CondJointures)) {
-            $nbCond = count($champCondJointures);
+            $nbChampsCond = count($champCondJointures);
+            $nbConds = count($CondJointures);
 
-            if ($nbCond > 0) {
+            if ($nbChampsCond > 0 && $nbConds == $nbChampsCond) {
                 $sql .= " WHERE ";
-                for ($j = 0; $j < $nbCond; $j++) {
+                for ($j = 0; $j < $nbConds; $j++) {
                     if ($j == 0) {
                         $writeAnd = "";
                     } else {
@@ -318,10 +319,24 @@ class Model extends Db
 
                     $sql .= $writeAnd . $champCondJointures[$j] . " = " . $CondJointures[$j];
                 }
-            } else {
+            }else if ($nbChampsCond > 0 && $nbConds > $nbChampsCond){
+                $sql .= " WHERE " . $champCondJointures[0] . " IN (";
+
+                for($x = 0; $x < $nbConds; $x++){
+                    if ($x == 0) {
+                        $writeComma = "";
+                    } else {
+                        $writeComma = ", ";
+                    }
+                    $sql .= $writeComma . $CondJointures[$x];
+                }
+                $sql .= ")";
+            }
+            else {
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
+        // echo $sql;die;
         return $this->requete($sql)->fetchAll();
     }
 
