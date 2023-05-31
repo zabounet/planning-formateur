@@ -10,17 +10,19 @@
     /* border-radius: 15px; */
     list-style-type: none;
     display: flex;
-    width: 75%;
+    width: 85%;
     padding: 0.5rem;
     background-color: #00FF99;
     justify-content: space-between;
   }
 
   .color{
-    width: 8%;
+    min-width: 8%;
+    width: 14%;
     height: 4vh;
     background-color: #d4ffcc;
     border-radius: 10px;
+    margin: 0 .1rem;
     display: flex;
     text-align: center;
     flex-direction: column;
@@ -42,7 +44,8 @@
   .main-container{
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
   .tableau-container{
     overflow: scroll; 

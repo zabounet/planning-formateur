@@ -13,7 +13,7 @@ header.big {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 75%;
+    width: 85%;
     height: 100%;
     background-color: #00FF99;
     border-radius: 15px 15px 0 0;
@@ -29,6 +29,10 @@ header .alert-menu .dropmenu {
 
 header .alert-menu .bell-box {
     position: relative;
+    width: 40px;
+    height: 50px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 header .alert-menu .bell-box .bell-img {
@@ -81,7 +85,7 @@ form.activite-form {
 }
 
 /******** Form Main page ********/
-form.main-form #part1 {
+form.main-form #part1, form.activite-form #part1{
     height: 100%;
     display: grid;
     gap: 5px 10px;
@@ -94,11 +98,27 @@ form.main-form #part1 {
     align-items: center;
 }
 
-form.main-form #part1 #debut {
+form.activite-form #part1{
+    grid-template-areas:
+        "debut grid1 fin"
+        "liste liste liste"
+        "grid2 input grid3";
+}
+form.activite-form #part1 #liste{
+    grid-area: liste;
+    display: grid;
+    width: 100%;
+    height: 75%;
+    overflow: scroll;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .2rem 0;
+}
+
+form #part1 #debut {
     grid-area: debut;
 }
 
-form.main-form #part1 #fin {
+form #part1 #fin {
     grid-area: fin;
 }
 
@@ -120,7 +140,7 @@ form.main-form #part1 #submit+span:hover {
     font-size: 1.2rem;
 }
 
-form.main-form #part1 #submit {
+form.main-form #part1 #submit, form.activite-form #part1 #submit-btn{
     padding: .4rem 0;
     border: none;
     border-radius: 10px;
@@ -161,9 +181,9 @@ form.main-form #part2 {
 
 form.main-form #part2.dropmenu {
     opacity: 1;
-    width: 71.7vw;
+    width: 81vw;
     height: max-content;
-    left: -33.4%;
+    left: -33.3%;
     padding-bottom: 1rem;
     color: white;
     background-color: #84AE70;

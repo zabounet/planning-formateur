@@ -370,9 +370,7 @@ class RooterController extends Controller
             $formations = $databaseFormation->getByIn(['*'], 'Formation', ['numero_grn', 'id_formateur', 'id_ville'], [$grn, $_POST['formateurs'], $centre]);
 
             // Initialisation de la variable $html.
-            $html = "
-                <div class='main-container'> 
-                    <div class='tableau-container myTable'>  ";
+            $html = "<div class='main-container'>";
 
             // Compte le nombre de formations récupérées
             $nbformation = count($formations);
@@ -434,6 +432,7 @@ class RooterController extends Controller
 
                 // Ouverture du tableau
                 $html .= " 
+                        <div class='tableau-container myTable'>
                             <table> 
                                 <thead> 
                                 <tr> 
@@ -600,31 +599,31 @@ class RooterController extends Controller
                     // sa valeur est changée par le nom du jour correspondant et est inscrite dans le tableau
                     switch ($jourNom) {
                         case 1: {
-                                $jourNom = "Lun";
+                                $jourNom = "L";
                                 break;
                             }
                         case 2: {
-                                $jourNom = "Mar";
+                                $jourNom = "M";
                                 break;
                             }
                         case 3: {
-                                $jourNom = "Mer";
+                                $jourNom = "M";
                                 break;
                             }
                         case 4: {
-                                $jourNom = "Jeu";
+                                $jourNom = "J";
                                 break;
                             }
                         case 5: {
-                                $jourNom = "Ven";
+                                $jourNom = "V";
                                 break;
                             }
                         case 6: {
-                                $jourNom = "Sam";
+                                $jourNom = "S";
                                 break;
                             }
                         case 7: {
-                                $jourNom = "Dim";
+                                $jourNom = "D";
                                 break;
                             }
                     }
@@ -894,7 +893,7 @@ class RooterController extends Controller
                                             $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                         } else {
                                             if ($formateurAvoirTeletravail) {
-                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'> T </td> ";
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ; box-shadow: inset 0 0 16px 2px #527cdd; background-color: #0c39a1;'> T </td> ";
                                             } else {
                                                 $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></td> ";
                                             }
@@ -932,9 +931,9 @@ class RooterController extends Controller
                     $html .= "</tr>";
                 }
                 // Fermeture de la table
-                $html .= "</tbody> </table>";
+                $html .= "</tbody> </table> </div> ";
             }
-            $nbformation == 0 ? $html = "Aucun résultat." : $html .= " </div> </div>";
+            $nbformation == 0 ? $html = "Aucun résultat." : $html .= "</div>";
         } else {
             $html = "<div style='height: 80vh; display:flex; align-items:center; justify-content:center;'> <h1 style='text-align:center'> Veuillez entrer des informations dans les champs de recherche afin de consulter les formations. </h1> </div>";
         }

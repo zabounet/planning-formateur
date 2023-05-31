@@ -12,48 +12,48 @@ class Rooter
     public function start()
     {
         // Désactive l'affichage des erreurs .
-        // ini_set('display_errors', 'off');
-        // set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
-        // register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
+        ini_set('display_errors', 'off');
+        set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
+        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
-        // Durée de vie du cookie de session (en secondes)
-        $sessionLifetime = 900;
+        // // Durée de vie du cookie de session (en secondes)
+        // $sessionLifetime = 900;
 
-        // Définit la durée de vie du cookie de session afin qu'il expire après 10 minutes d'inactivité. 
-        // Cela permet de gérer la persistance de la session dans le navigateur du client.
-        session_set_cookie_params($sessionLifetime);
+        // // Définit la durée de vie du cookie de session afin qu'il expire après 10 minutes d'inactivité. 
+        // // Cela permet de gérer la persistance de la session dans le navigateur du client.
+        // session_set_cookie_params($sessionLifetime);
 
-        // Définit la durée de vie maximale de la session côté serveur à 10 minutes. 
-        // Cela permet de gérer la suppression automatique des sessions inactives par le garbage collector de PHP.
-        ini_set('session.gc_maxlifetime', $sessionLifetime);
+        // // Définit la durée de vie maximale de la session côté serveur à 10 minutes. 
+        // // Cela permet de gérer la suppression automatique des sessions inactives par le garbage collector de PHP.
+        // ini_set('session.gc_maxlifetime', $sessionLifetime);
 
-        // Démarre la session
-        session_start();
+        // // Démarre la session
+        // session_start();
         
-        // Vérifie si la variable 'last_activity' de la session est définie
-        if (isset($_SESSION['last_activity'])) {
-            // Calcule le temps écoulé depuis la dernière activité de la session 
-            // en soustrayant le timestamp actuel du timestamp de la dernière activité.
-            $inactiveTime = time() - $_SESSION['last_activity'];
+        // // Vérifie si la variable 'last_activity' de la session est définie
+        // if (isset($_SESSION['last_activity'])) {
+        //     // Calcule le temps écoulé depuis la dernière activité de la session 
+        //     // en soustrayant le timestamp actuel du timestamp de la dernière activité.
+        //     $inactiveTime = time() - $_SESSION['last_activity'];
 
-            // Vérifie si la session a expiré
-            if ($inactiveTime > $sessionLifetime) {
+        //     // Vérifie si la session a expiré
+        //     if ($inactiveTime > $sessionLifetime) {
 
-                // La session a expiré, on la détruit
-                session_unset();
+        //         // La session a expiré, on la détruit
+        //         session_unset();
 
-                // Supprime toutes les variables de session enregistrées.
-                // Détruit complètement la session en cours, y compris l'ID de session associé.
-                session_destroy();
+        //         // Supprime toutes les variables de session enregistrées.
+        //         // Détruit complètement la session en cours, y compris l'ID de session associé.
+        //         session_destroy();
 
-                // Optionnel : Réinitialise le tableau de session à un tableau vide. 
-                // Cela permet de s'assurer que toutes les données de session sont supprimées.
-                $_SESSION = array(); // Optional: Reset the session array
-            }
-        }
-        // Met à jour la variable 'last_activity' de la session avec le timestamp actuel, 
-        // indiquant que la session a été activement utilisée à ce moment précis.
-        $_SESSION['last_activity'] = time();
+        //         // Optionnel : Réinitialise le tableau de session à un tableau vide. 
+        //         // Cela permet de s'assurer que toutes les données de session sont supprimées.
+        //         $_SESSION = array(); // Optional: Reset the session array
+        //     }
+        // }
+        // // Met à jour la variable 'last_activity' de la session avec le timestamp actuel, 
+        // // indiquant que la session a été activement utilisée à ce moment précis.
+        // $_SESSION['last_activity'] = time();
 
 
         // On gère les paramètres d'URL

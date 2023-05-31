@@ -5,15 +5,15 @@ var main = document.querySelector('main');
 Array.from(scrollables).forEach(function(scrollable){
     scrollable.addEventListener("wheel", function (e) {
         if (e.deltaY < 0) {
-            scrollable.scrollLeft -= /*150*/ 300;
+            scrollable.scrollLeft -= 300;
         } else {
-            scrollable.scrollLeft += /*150*/ 300;
+            scrollable.scrollLeft += 300;
         }
         main.style.overflow = "hidden";
     });
 
     scrollable.addEventListener("mouseleave", function () {
-        main.style.overflow = "auto";
+        main.style.overflow = "scroll";
     });
 })
 

@@ -37,56 +37,76 @@
                         <?php else : ?>
                             <li><a href="/planning/public/index.php?p=admin/formateursHome">Retour à la liste des formateurs</a></li>
                         <?php endif; ?>
-                            <li><a href="/planning/public/index.php?p=formateur/logout">Deconnexion</a></li>
+                        <li><a href="/planning/public/index.php?p=formateur/logout">Deconnexion</a></li>
                     </ul>
                 </nav>
             </div>
             <form class="activite-form" method="post">
-                <input required type="date" name="date_debut" id="date_debut" <?php if (isset($data['date_debut'])) {
-                                                                                    echo 'value="' . $data['date_debut'] . '"';
-                                                                                }  ?>>
-                <input required type="date" name="date_fin" id="date_fin" <?php if (isset($data['date_fin'])) {
-                                                                                echo 'value="' . $data['date_fin'] . '"';
-                                                                            } ?>>
-                <label for="referent-formateur"> Formateur :
-                    <?php
-                    $iterations = 0;
-                    foreach ($infosFormateur['Formateurs'] as $formateurs) :
-                        if ($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2) {
-                            continue;
-                        };
-                    ?>
-                        <?php if (empty($_POST)) : ?>
-                            <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
-                        <?php elseif (!empty($_POST) && !empty($_POST['formateurs']) && in_array($formateurs->id_formateur, $data['formateurs'])) : ?>
-                            <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
-                        <?php else : ?>
-                            <input class="formateurCheckbox" type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
-                        <?php endif; ?>
-                    <?php
-                        $iterations++;
-                    endforeach;
-                    ?>
-                    <input type="hidden" name="nbFormateur" value="<?= $iterations; ?>">
-                </label>
-                <input id="submit-btn" type="submit" value="envoyer" name="valider">
+                <div id="part1">
+                    <label for="date_debut" id="debut">Début :
+                        <input required type="date" name="date_debut" id="date_debut" <?php if (isset($data['date_debut'])) {
+                                                                                            echo 'value="' . $data['date_debut'] . '"';
+                                                                                        }  ?>></label>
+                    <label for="date_fin" id="fin">Fin :
+                        <input required type="date" name="date_fin" id="date_fin" <?php if (isset($data['date_fin'])) {
+                                                                                        echo 'value="' . $data['date_fin'] . '"';
+                                                                                    } ?>></label>
+                    <div id="liste">
+                        <?php
+                        $iterations = 0;
+                        foreach ($infosFormateur['Formateurs'] as $formateurs) :
+                            if ($formateurs->id_formateur == 1 || $formateurs->id_formateur == 2) {
+                                continue;
+                            };
+                        ?>
+                            <?php if (empty($_POST)) : ?>
+                                <label for="referent-formateur">
+                                    <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                                </label>
+                            <?php elseif (!empty($_POST) && !empty($_POST['formateurs']) && in_array($formateurs->id_formateur, $data['formateurs'])) : ?>
+                                <label for="referent-formateur">
+                                    <input class="formateurCheckbox" checked type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                                </label>
+                            <?php else : ?>
+                                <label for="referent-formateur">
+                                    <input class="formateurCheckbox" type="checkbox" value="<?= $formateurs->id_formateur ?>" name="formateurs[]"> <?= strtoupper($formateurs->nom_formateur) . ' ' . $formateurs->prenom_formateur ?>
+                                </label>
+                            <?php endif; ?>
+                        <?php
+                            $iterations++;
+                        endforeach;
+                        ?>
+                        <input type="hidden" name="nbFormateur" value="<?= $iterations; ?>">
+                    </div>
+
+                    <input id="submit-btn" type="submit" value="envoyer" name="valider">
+                </div>
             </form>
-            <img src="/planning/Views/assets/image/flower.svg">
+            <img class="flower-img" src="/planning/Views/assets/image/flower.svg">
         </div>
         <div class="legend">
             <ul class="list-color">
-                <li class="color"><span>Centre</span><div style="background-color:<?= $_SESSION['color']['couleur_centre']; ?>;"></div></li>
-                <li class="color"><span>PAE</span><div style="background-color:<?= $_SESSION['color']['couleur_pae']; ?>;"></div></li>
-                <li class="color"><span>Certif</span><div style="background-color:<?= $_SESSION['color']['couleur_certif']; ?>;"></div></li>
-                <li class="color"><span>RAN</span><div style="background-color:<?= $_SESSION['color']['couleur_ran']; ?>;"></div></li>
-                <li class="color"><span>Vacs attente</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div></li>
-                <li class="color"><span>Vacs ok</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div></li>
-                <li class="color"><span>Télétravail</span><div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div></li>
-                <li class="color"><span>Férié</span><div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div></li>
-                <li class="color"><span>Week-end</span><div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div></li>
-                <li class="color"><span>Interruptions</span><div style="background-color:<?= $_SESSION['color']['couleur_interruption']; ?>;"></div></li>
-                <li class="color"><span>MNSP</span><div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div></li>
-                <li class="color"><span>Perf</span><div style="background-color:<?= $_SESSION['color']['couleur_perfectionment']; ?>;"></div></li>
+                <li class="color"><span>Vacs attente</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div>
+                </li>
+                <li class="color"><span>Vacs ok</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div>
+                </li>
+                <li class="color"><span>Télétravail</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div>
+                </li>
+                <li class="color"><span>Férié</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div>
+                </li>
+                <li class="color"><span>Week-end</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div>
+                </li>
+                <li class="color"><span>MNSP</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div>
+                </li>
+                <li class="color"><span>Perf</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_perfectionment']; ?>;"></div>
+                </li>
             </ul>
         </div>
     </header>

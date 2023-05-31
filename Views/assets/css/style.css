@@ -29,3 +29,7 @@ header {
     position: relative;
     height: 10vh;
 }
+main {
+    overflow: scroll;
+    height: 100%;
+}
