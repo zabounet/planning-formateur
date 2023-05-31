@@ -21,14 +21,17 @@
     }
     if ($link === "Formateur home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/homeS.css">';
         echo '<script src="/planning/Views/assets/js/deleteHomeS.js"></script>';
     }
     if($link === "Inscription formateur"){
-        echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
+        echo '<script src="/planning/Views/assets/js/formateur.js"></script>'; 
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/formateurs.css">';
     }
     if (isset($infosCurrent)) {
         if ($link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur) {
             echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
+            echo '<link rel="stylesheet" href="/planning/Views/assets/css/formateurs.css">';
         };
     };
 

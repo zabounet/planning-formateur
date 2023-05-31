@@ -1,5 +1,5 @@
 <?php $link = "Formation home"; ?>
-<form action="" method="post">
+<form class="search-form" method="post">
     <div class="search-wrapper">
         <input class="search-input" type="text" placeholder="Search..." name="search_d" value="<?php if (isset($search)) {
                                                                                                     echo $search;
@@ -37,31 +37,35 @@ foreach ($infosFormation as $formation) {
     }
 
 ?>
-    <!-- Déchargement des données -->
-    <h2>Nom de la formation : <?= $reassemble; ?></h2>
-    <h3>GRN : <?= $formation->numero_grn; ?></h3>
+    <div class="content-container">
+        <!-- Déchargement des données -->
+        <h2>Nom de la formation : <?= $reassemble; ?></h2>
+        <h3>GRN : <span><?= $formation->numero_grn; ?><span></h3>
 
-    <p>Type de formation : <?= $formation->designation_type_formation; ?></p>
-    <p>Description de la formation : <?= $formation->description_formation; ?></p>
-    <p>Rattachée au centre de <?= $formation->nom_ville; ?></p>
-    <p>Nombre de places totales : <?= $places; ?></p>
-    <p>Nombre de candidats placés : <?= $candidats; ?></p>
-    <!-- Conversion des données relatives au dates en objet DateTime afin de pouvoir les formater à la française -->
-    <p>Début le : <span style="font-weight: 800;"><?php $debut = new DateTime($formation->date_debut_formation);
-                                                    echo $debut->format('d-m-Y'); ?></span></p>
-    <p>Fin le : <span style="font-weight: 800;"><?php $fin = new DateTime($formation->date_fin_formation);
-                                                echo $fin->format('d-m-Y'); ?></span></p>
-    <p>Formateur référent : <?= $formation->nom_formateur . " " . $formation->prenom_formateur; ?></p>
+        <p>Type de formation : <span><?= $formation->designation_type_formation; ?></span></p>
+        <p>Description de la formation : <span><?= $formation->description_formation; ?></span></p>
+        <p>Rattachée au centre de <span><?= $formation->nom_ville; ?></span></p>
+        <p>Nombre de places totales : <span><?= $places; ?></span></p>
+        <p>Nombre de candidats placés : <span><?= $candidats; ?></span></p>
+        <!-- Conversion des données relatives au dates en objet DateTime afin de pouvoir les formater à la française -->
+        <p>Début le : <span><?php $debut = new DateTime($formation->date_debut_formation);
+                            echo $debut->format('d-m-Y'); ?></span></p>
+        <p>Fin le : <span><?php $fin = new DateTime($formation->date_fin_formation);
+                            echo $fin->format('d-m-Y'); ?></span></p>
+        <p>Formateur référent : <span><?= $formation->nom_formateur . " " . $formation->prenom_formateur; ?></span></p>
 
-    <a href="/planning/public/index.php?p=admin/modifierFormation&?id=<?= $formation->id_formation; ?>">Modifier les informations de la formation</a>
-    <form action="" method="post">
-        <input class="delete" type="button" value="Supprimer">
-        <div class="confirm"> 
-            <h4>Êtes-vous sûr ?</h4>
-            <input type="submit" name="Delete" value="Confirmer">
+        <div class="btns-box">
+            <a href="/planning/public/index.php?p=admin/modifierFormation&?id=<?= $formation->id_formation; ?>">Modifier les informations de la formation</a>
+            <form action="" method="post">
+                <input class="delete" type="button" value="Supprimer">
+                <div class="confirm">
+                    <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                    <input type="submit" name="Delete" value="Confirmer">
+                </div>
+                <input type="hidden" name="ID" value="<?= $formation->id_formation; ?>">
+            </form>
         </div>
-        <input type="hidden" name="ID" value="<?= $formation->id_formation; ?>">
-    </form>
+    </div>
     <hr>
 <?php
 }
