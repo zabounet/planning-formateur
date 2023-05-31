@@ -276,9 +276,10 @@ class FormateurController extends Controller
                     $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
                     $date_prise_effet = $_POST['date_prise_effet'];
                     $teletravail = new FormateurModel();
-                    $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
-                    if ($resultat) {
-                        $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    $resultat = $teletravail->updateJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                    // $demande = $teletravail->creatrNotification($decription, $date_notification, $role, $id_formateur);
+                    if ($resultat ) {
+                        $_SESSION['success_teletravail'] = "Lesss jours de télétravail ont été enregistrés avec succès.";
                     } else {
                         $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
                         $teletravail = new FormateurModel();
