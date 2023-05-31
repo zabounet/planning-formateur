@@ -1,197 +1,10 @@
 <?php $link = "Profil"; ?>
 
-<?php if (isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) : ?>
-    <div class="profile">
-        <div class="profil-text section-titre">
-            <span>Profil</span>
-        </div>
-
-        <div class="info-personel">
-            <span class="titre titre-profil">Vos informations personnelles :</span>
-            <div class="container-info">
-
-                <form class="profil nom-profil" method="post">
-                    <span>Nom :</span>
-                    <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=1") : ?>
-                        <input type='text' name="nom" class="nomProfil" value="<?= $_SESSION['formateur']['nom'] ?>" />
-                        <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
-                    <?php else : ?>
-                        <span id="prenomProfil"><?= $_SESSION['formateur']['nom'] ?></span>
-                        <a href="/planning/public/index.php?p=Formateur/profil&?id=1">Modifier</a>
-                    <?php endif; ?>
-                </form>
-                <hr>
-                <form class="profil prenom-profil" method="post">
-                    <span>Prenom :</span>
-                    <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=2") : ?>
-                        <input type='text' name="prenom" class="prenomProfil" value="<?= $_SESSION['formateur']['prenom'] ?>" />
-                        <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
-                    <?php else : ?>
-                        <span id="prenomProfil"><?= $_SESSION['formateur']['prenom'] ?></span>
-                        <a href="/planning/public/index.php?p=Formateur/profil&?id=2">Modifier</a>
-                    <?php endif; ?>
-                </form>
-                <hr>
-                <form class="profil mail-profil" method="post">
-                    <span>Mail :</span>
-                    <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=3") : ?>
-                        <input type="email" name="mail" class="mailProfil" value="<?= $_SESSION['formateur']['mail'] ?>" />
-                        <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider" />
-                    <?php else : ?>
-                        <span id="mailProfil"><?= $_SESSION['formateur']['mail'] ?></span>
-                        <a href="/planning/public/index.php?p=Formateur/profil&?id=3">Modifier</a>
-                    <?php endif; ?>
-                </form>
-                <hr>
-                <form class="profil mdp-profil" method="post">
-
-                    <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=4") : ?>
-                        <div class="mdp-container">
-                            <div>
-                                <span>Saisir votre mot de passe actuel :</span>
-                                <input type="password" name="current_mdp" class="mdpProfil" value="" />
-                            </div>
-                            <div>
-                                <span>Saisir nouveau mot de passe :</span>
-                                <input type="password" name="new_mdp" class="mdpProfil" value="" />
-                            </div>
-                            <div>
-                                <span>Saisir confirmation du nouveau mot de passe :</span>
-                                <input type="password" name="conf_new_mdp" class="mdpProfil" value="" />
-                            </div>
-                        </div>
-                        <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
-                    <?php else : ?>
-                        <span>Mot de passe :</span>
-                        <span id="mdpProfil">****</span>
-                        <a href="/planning/public/index.php?p=Formateur/profil&?id=4">Modifier</a>
-                    <?php endif; ?>
-                </form>
-            </div>
-            <span class="error" style="color: red;">
-                <?php if (isset($_SESSION['error_profil'])) {
-                    echo $_SESSION['error_profil'];
-                    unset($_SESSION['error_profil']);
-                }
-                ?>
-            </span>
-            <span class="success" style="color: green; ">
-                <?php if (isset($_SESSION['success_profil'])) {
-                    echo $_SESSION['success_profil'];
-                    unset($_SESSION['success_profil']);
-                }
-                ?>
-            </span>
-        </div>
-    </div>
-
-
-
-    <div class="vacances">
-        <div class="profil-text">
-            <span class="vacances-text">Demande de vacances</span>
-        </div>
-
-        <span class="titre titre-demande-vacances">Sélectionnez une période :</span>
-        <div class="demande-vacances">
-            <form method="POST" class="container-vacances">
-                <div class="date-demande-vacances">
-                    <div class="date date-debut date-debut-vacance">
-                        <p>Date de début</p>
-                        <input type="date" name="date_debut" id="" required min="<?= date('Y-m-d'); ?> ">
-                    </div>
-                    <div class="date date-fin date-fin-vacance">
-                        <p>Date de fin</p>
-                        <input type="date" name="date_fin" id="" min="" required>
-                    </div>
-                </div>
-                <div class="btn btn-validation-vacance">
-                    <input type="submit" value="envoyer la demande" name="vacances" class="valider">
-                </div>
-            </form>
-            <span class="error" style="color: red;">
-                <?php if (isset($_SESSION['error_vacance'])) {
-                    echo $_SESSION['error_vacance'];
-                    unset($_SESSION['error_vacance']);
-                }
-                ?>
-            </span>
-            <span class="success" style="color: green; ">
-                <?php if (isset($_SESSION['success_vacance'])) {
-                    echo $_SESSION['success_vacance'];
-                    unset($_SESSION['success_vacance']);
-                }
-                ?>
-            </span>
-        </div>
-    </div>
-    <div class="teletravail">
-        <div class="profil-text">
-            <span class="teletravail-text">Demande de teletravail</span>
-        </div>
-
-        <div class="demande-teletravail">
-            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
-            <span class="notif notif-demande-teletravail"><i class='fas fa-exclamation-circle' style='font-size:30px;color:red'></i> Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
-            <span style="margin-left: 30Px;">Les jours pour teletravail :</span>
-            <form method="post" class="container-teletravail">
-                <div>
-                    <section class="app">
-                        <?php
-
-                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
-                        if (isset($_SESSION['teletravail']['jour_teletravail'])) {
-                            $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
-                        } else{
-                            $jourTeletravail[] = "Aucun";
-                        }
-                        foreach ($jourSemaine as $jour) :
-                        ?>
-                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = ""; ?>
-
-                            <article class="features">
-                                <input <?= $checked; ?> type="checkbox" id="<?= $jour; ?>" name="<?= $jour; ?>" />
-                                <div>
-                                    <span>
-                                        <?= $jour; ?>
-                                    </span>
-                                </div>
-                            </article>
-
-                        <?php endforeach; ?>
-                    </section>
-                    <div>
-                        <label for="">a partir de : </label>
-                        <input name="date_prise_effet" type="date" required>
-                    </div>
-                </div>
-                <div>
-                    <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
-                </div>
-            </form>
-
-            <span class="error" style="color: red;">
-                <?php if (isset($_SESSION['error_teletravail'])) {
-                    echo $_SESSION['error_teletravail'];
-                    unset($_SESSION['error_teletravail']);
-                }
-                ?>
-            </span>
-            <span class="success" style="color: green; ">
-                <?php if (isset($_SESSION['success_teletravail'])) {
-                    echo $_SESSION['success_teletravail'];
-                    unset($_SESSION['success_teletravail']);
-                }
-                ?>
-
-        </div>
-    </div>
-
-    <!-- profil admin -->
-<?php elseif (isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])) : ?>
+<div class="profile" id="profil">
     <div class="profil-text section-titre">
         <span>Profil</span>
     </div>
+
     <div class="info-personel">
         <span class="titre titre-profil">Vos informations personnelles :</span>
         <div class="container-info">
@@ -199,10 +12,10 @@
             <form class="profil nom-profil" method="post">
                 <span>Nom :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=1") : ?>
-                    <input type='text' name="nom" class="nomProfil" value="<?= $_SESSION['admin']['nom'] ?>" />
+                    <input type='text' name="nom" class="nomProfil" value="<?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?>" />
                     <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
                 <?php else : ?>
-                    <span id="prenomProfil"><?= $_SESSION['admin']['nom'] ?></span>
+                    <span id="prenomProfil"><?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=1">Modifier</a>
                 <?php endif; ?>
             </form>
@@ -210,22 +23,21 @@
             <form class="profil prenom-profil" method="post">
                 <span>Prenom :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=2") : ?>
-                    <input type='text' name="prenom" class="prenomProfil" value="<?= $_SESSION['admin']['prenom'] ?>" />
+                    <input type='text' name="prenom" class="prenomProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?>" />
                     <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
                 <?php else : ?>
-                    <span id="prenomProfil"><?= $_SESSION['admin']['prenom'] ?></span>
+                    <span id="prenomProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=2">Modifier</a>
                 <?php endif; ?>
             </form>
-            <a href=""></a>
             <hr>
             <form class="profil mail-profil" method="post">
                 <span>Mail :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=3") : ?>
-                    <input type='email' name="mail" class="mailProfil" value="<?= $_SESSION['admin']['mail'] ?>" />
-                    <input class="valider" type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" />
+                    <input type="email" name="mail" class="mailProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?>" />
+                    <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider" />
                 <?php else : ?>
-                    <span id="mailProfil"><?= $_SESSION['admin']['mail'] ?></span>
+                    <span id="mailProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=3">Modifier</a>
                 <?php endif; ?>
             </form>
@@ -233,7 +45,6 @@
             <form class="profil mdp-profil" method="post">
 
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=4") : ?>
-
                     <div class="mdp-container">
                         <div>
                             <span>Saisir votre mot de passe actuel :</span>
@@ -271,11 +82,115 @@
             ?>
         </span>
     </div>
+</div>
+<?php if (isset($_SESSION['formateur']) && !empty($_SESSION['formateur']['id'])) : ?>
 
+    <div class="vacances" id="vacance">
+        <div class="profil-text">
+            <span class="vacances-text">Demande de vacances</span>
+        </div>
+
+        <span class="titre titre-demande-vacances">Sélectionnez une période :</span>
+        <div class="demande-vacances">
+            <form method="POST" class="container-vacances">
+                <div class="date-demande-vacances">
+                    <div class="date date-debut date-debut-vacance">
+                        <p>Date de début</p>
+                        <input type="date" name="date_debut" id="" required min="<?= date('Y-m-d'); ?> ">
+                    </div>
+                    <div class="date date-fin date-fin-vacance">
+                        <p>Date de fin</p>
+                        <input type="date" name="date_fin" id="" min="" required>
+                    </div>
+                </div>
+                <div class="btn btn-validation-vacance">
+                    <input type="submit" value="envoyer la demande" name="vacances" class="valider">
+                </div>
+            </form>
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_vacance'])) {
+                    echo $_SESSION['error_vacance'];
+                    unset($_SESSION['error_vacance']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_vacance'])) {
+                    echo $_SESSION['success_vacance'];
+                    unset($_SESSION['success_vacance']);
+                }
+                ?>
+            </span>
+        </div>
+    </div>
+    <div class="teletravail" id="teletravail">
+        <div class="profil-text">
+            <span class="teletravail-text">Demande de teletravail</span>
+        </div>
+
+        <div class="demande-teletravail">
+            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
+            <span class="notif notif-demande-teletravail"><i class='fas fa-exclamation-circle' style='font-size:30px;color:red'></i> Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
+            <span style="margin-left: 30Px;">Les jours pour teletravail :</span>
+            <form method="post" class="container-teletravail">
+                <div>
+                    <section class="app">
+                        <?php
+
+                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
+                        if (isset($_SESSION['teletravail']['jour_teletravail'])) {
+                            $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
+                        } else {
+                            $jourTeletravail[] = "Aucun";
+                        }
+                        foreach ($jourSemaine as $jour) :
+                        ?>
+                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = ""; ?>
+
+                            <article class="features">
+                                <input <?= $checked; ?> type="checkbox" id="<?= $jour; ?>" name="<?= $jour; ?>" />
+                                <div>
+                                    <span>
+                                        <?= $jour; ?>
+                                    </span>
+                                </div>
+                            </article>
+
+                        <?php endforeach; ?>
+                    </section>
+                    <div class="prise-effet">
+                        <label for="">Date de prise d'effet : </label>
+                        <input name="date_prise_effet" type="date" required>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="envoyer la demande" name="jourTeletravail" class="valider">
+                </div>
+            </form>
+
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_teletravail'])) {
+                    echo $_SESSION['error_teletravail'];
+                    unset($_SESSION['error_teletravail']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_teletravail'])) {
+                    echo $_SESSION['success_teletravail'];
+                    unset($_SESSION['success_teletravail']);
+                }
+                ?>
+
+        </div>
+    </div>
+
+    <!-- profil admin -->
+<?php elseif (isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])) : ?>
     <div class="list-color">
 
         <div class="profil-text">
-            <span>list colors</span>
+            <span>Code couleur</span>
         </div>
         <form method="POST" name="list-color">
 

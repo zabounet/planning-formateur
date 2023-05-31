@@ -1,6 +1,6 @@
 <?php $link = "Formateur home"; ?>
 
-<form action="" method="post">
+<form class="search-form" method="post">
     <div class="search-wrapper">
         <input class="search-input" type="text" placeholder="Search..." name="search_d" value="<?php if (isset($search)) {
                                                                                                     echo $search;
@@ -25,27 +25,31 @@ foreach ($infosFormateur as $formateur) :
         continue;
     }
 ?>
-    <h3>Formateur : <?= $formateur->nom_formateur . " " . $formateur->prenom_formateur; ?></h3>
-    <p>GRN de rattachement : <?= $formateur->numero_grn; ?></p>
-    <p>Ville de rattachement : <?= $formateur->nom_ville; ?></p>
-    <p>Contrat : <?= $formateur->type_contrat_formateur; ?></p>
-    <p>Date de début du contrat : <?php $debut = new DateTime($formateur->date_debut_contrat);
-                                    echo $debut->format('d-m-Y'); ?></p>
-    <?php if ($formateur->type_contrat_formateur != "CDI") : ?>
-        <p>Date de fin du contrat : <?php $fin = new DateTime($formateur->date_fin_contrat);
-                                    echo $fin->format('d-m-Y'); ?></p>
-    <?php endif; ?>
+    <div class="content-container">
 
-    <a href="/planning/public/index.php?p=admin/modifierFormateur&?id=<?= $formateur->id_formateur; ?>">Modifier les informations du formateur</a>
-    <form action="" method="post">
-        <input class="delete" type="button" value="Supprimer">
-        <div class="confirm">
-            <h4>Êtes-vous sûr ?</h4>
-            <input type="submit" name="Delete" value="Confirmer">
+        <h2>Formateur : <?= $formateur->nom_formateur . " " . $formateur->prenom_formateur; ?></h2>
+        <p>GRN : <span><?= $formateur->numero_grn; ?><span></p>
+        <p>Rattaché au centre de : <span><?= $formateur->nom_ville; ?><span></p>
+        <p>Contrat : <span><?= $formateur->type_contrat_formateur; ?><span></p>
+        <p>Date de début du contrat : <span><?php $debut = new DateTime($formateur->date_debut_contrat);
+                                            echo $debut->format('d-m-Y'); ?><span></p>
+        <?php if ($formateur->type_contrat_formateur != "CDI") : ?>
+            <p>Date de fin du contrat : <span><?php $fin = new DateTime($formateur->date_fin_contrat);
+                                                echo $fin->format('d-m-Y'); ?><span></p>
+        <?php endif; ?>
+
+        <div class="btns-box">
+            <a href="/planning/public/index.php?p=admin/modifierFormateur&?id=<?= $formateur->id_formateur; ?>">Modifier les informations du formateur</a>
+            <form action="" method="post">
+                <input class="delete" type="button" value="Supprimer">
+                <div class="confirm">
+                    <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                    <input type="submit" name="Delete" value="Confirmer">
+                </div>
+                <input type="hidden" name="ID" value="<?= $formateur->id_formateur; ?>">
+            </form>
         </div>
-        <input type="hidden" name="ID" value="<?= $formateur->id_formateur; ?>">
-    </form>
-
+    </div>
     <hr>
 
 <?php

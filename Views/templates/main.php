@@ -100,12 +100,8 @@
                             <?php endif; ?>
                         <?php endforeach ?>
                     </select>
-                    <div class="grid-filling1"></div>
-                    <div class="grid-filling2"></div>
                     <input id="submit" type="submit" name="rechercher" value="rechercher">
                     <span id="advanced">Recherche avancée</span>
-                    <div class="grid-filling3"></div>
-                    <div class="grid-filling4"></div>
                 </div>
 
                 <div id="part2" class="dropmenu">
