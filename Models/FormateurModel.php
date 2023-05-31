@@ -120,6 +120,38 @@ class FormateurModel extends Model
             return false;
         }
     }
+    public function updateJoursTeletravail(string $jour_teletravail, string $date_demande_changement,string $date_prise_effet ,int $id_formateur): bool
+    {
+        $sql = "UPDATE Date_teletravail SET 
+        `jour_teletravail` = ?,
+        `date_demande_changement` = ?,
+        `date_prise_effet` = ?
+        Where id_formateur = ? AND `validation` IS NULL " ;
+
+        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $date_prise_effet, $id_formateur]);
+        
+        if ($result->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+     // inserer une notification dans table notification a partir de un demande
+     public function creatrNotification( string $decription ,string $date_notification,string $role,INT $id_formateur )
+     {
+        $sql = "INSERT INTO Notification (description_notification, date_notification, role, id_formateur )
+        VALUES (?, ?, ?, ?)";
+
+        $result = $this->requete($sql, [$decription, $date_notification, $role, $id_formateur]);
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+     }
+ 
 
     // Récupère les couleurs actuellements inscrites en base de données afin de les restituer dans la page.
     public function setSessionTeletravail(string $id): void{
@@ -151,6 +183,8 @@ class FormateurModel extends Model
                 'permissions_utilisateur' => $formateur['permissions_utilisateur']
             ];
     }
+
+
 
     // Fonctions de gestion du profil
     public function updateNomProfil($new_nom, $idFormateur)

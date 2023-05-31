@@ -60,15 +60,15 @@
                 </button>
                 <menu id="dropmenu" class="dropmenu">
                     <ul>
-                        <?php // foreach($a as $b) :
+                        <?php foreach($teletravail_formateurs as $teletravail_formateur) :
                         ?>
-                        <!--  -->
-                        <?php // endforeach;
+                        <li>
+                            <span><?= $teletravail_formateurs->nom_formateur?> </span>
+                            <button>valider</button>
+                            <button>refuser</button>
+                        </li>
+                        <?php endforeach;
                         ?>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
                     </ul>
                 </menu>
             </div>
@@ -190,6 +190,17 @@
     <main>
         <div>
             <?= $contenu; ?>
+            <?php foreach($teletravail_formateurs as $teletravail_formateur) :
+                        ?>
+                        <li>
+                            <ul>        <?php ; ?>
+                            <span><?= $teletravail_formateur->nom_formateur?>a demender pour </span>
+                            <button>valider</button>
+                            <button>refuser</button>
+                        </li>
+                        <?php endforeach;
+                        ?>
+                    </ul>
         </div>
     </main>
 </body>

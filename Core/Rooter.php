@@ -28,7 +28,7 @@ class Rooter
         // ini_set('session.gc_maxlifetime', $sessionLifetime);
 
         // // Démarre la session
-        // session_start();
+        session_start();
         
         // // Vérifie si la variable 'last_activity' de la session est définie
         // if (isset($_SESSION['last_activity'])) {

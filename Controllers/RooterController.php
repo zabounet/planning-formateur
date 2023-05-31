@@ -946,6 +946,23 @@ class RooterController extends Controller
         !isset($html) ? $html = "Aucun résultat." : '';
         isset($_POST['rechercher']) ? $data = $_POST : $data = "";
 
-        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data'), 'main');
+        //notification de home
+        // $teletravail_formateurs = $formateur->joinInformations(
+        //     ['id_teletravail ','Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'jour_teletravail', 'date_prise_effet', 'validation'],
+        //     'Formateur',
+        //     ['Date_teletravail'],
+        //     ['id_formateur'],
+        //     ['validation'],
+        //     ['IS NULL']
+        // );
+        // $vacances_formateurs = $formateur->joinInformations( 
+        //     ['id_vacance','Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'date_debut_vacances', 'date_fin_vacances', 'validation'],
+        //     'Formateur',
+        //     ['date_vacance'],
+        //     ['id_formateur'],
+        //     ['validation'],
+        //     ['IS NULL']
+        // );
+        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data','teletravail_formateurs', 'vacances_formateurs'), 'main');
     }
 }
