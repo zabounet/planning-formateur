@@ -1,7 +1,7 @@
 .menu {
     position: absolute;
     left: 0;
-    height: 100%;
+    /* height: 100%; */
     width: 30%;
 }
 
@@ -129,7 +129,7 @@ header .dropmenu ul li:hover a {
     }
 
     80% {
-        top: 15vh;
+        top: 100%;
     }
 
     100% {
@@ -141,7 +141,7 @@ header .dropmenu ul li:hover a {
 
 
     0% {
-        top: 15vh;
+        top: 100%;
         opacity: 1;
     }
 
