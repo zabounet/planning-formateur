@@ -12,37 +12,3 @@
     font-weight: normal;
     font-style: normal;
 }
-@font-face{
-    font-family: 'Hack-Regular';
-    src: url('../Fonts/Hack-Regular-webfont.ttf');
-    src: url('../Fonts/Hack-Regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
-    font-family: 'Play';
-    src: url('../Fonts/play-regular-webfont.eot'),
-         url('../Fonts/play-regular-webfont.svg'),
-         url('../Fonts/play-regular-webfont.ttf'),
-         url('../Fonts/play-regular-webfont.woff') format('woff'),
-         url('../Fonts/play-regular-webfont.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
-    font-family: 'VeraMono';
-    src: url('../Fonts/VeraMono-webfont.ttf');
-    src: url('../Fonts/VeraMono-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face{
-    font-family: 'Orbitron';
-    src: url('../Fonts/orbitron-variablefont_wght-webfont.eot'),
-         url('../Fonts/orbitron-variablefont_wght-webfont.svg'),
-         url('../Fonts/orbitron-variablefont_wght-webfont.ttf'),
-         url('../Fonts/orbitron-variablefont_wght-webfont.woff') format('woff'),
-         url('../Fonts/orbitron-variablefont_wght-webfont.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}

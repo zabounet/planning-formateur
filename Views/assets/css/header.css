@@ -5,7 +5,7 @@ header.big {
     flex-direction: column;
     width: 100%;
     height: 17vh;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .header-content {
@@ -97,21 +97,12 @@ form.main-form #part1, form.activite-form #part1{
         "grid3 avance grid4";
     align-items: center;
 }
-
 form.activite-form #part1{
+    grid-template-columns: .5fr repeat(2, 1fr) .5fr;
     grid-template-areas:
-        "debut grid1 fin"
-        "liste liste liste"
-        "grid2 input grid3";
-}
-form.activite-form #part1 #liste{
-    grid-area: liste;
-    display: grid;
-    width: 100%;
-    height: 75%;
-    overflow: scroll;
-    grid-template-columns: repeat(3, 1fr);
-    gap: .2rem 0;
+        "gridcell debut fin gridcell3"
+        "gridcell1 input input gridcell4"
+        "gridcell2 avance avance gridcell5";
 }
 
 form #part1 #debut {
@@ -126,7 +117,7 @@ form.main-form #part1 #ville {
     grid-area: ville;
 }
 
-form.main-form #part1 #submit+span {
+form #part1 input[type="submit"]+span {
     cursor: pointer;
     grid-area: avance;
     text-align: center;
@@ -135,12 +126,12 @@ form.main-form #part1 #submit+span {
     transition: .2s ease;
 }
 
-form.main-form #part1 #submit+span:hover {
+form #part1 input[type="submit"]+span:hover {
     color: #333;
     font-size: 1.2rem;
 }
 
-form.main-form #part1 #submit, form.activite-form #part1 #submit-btn{
+form #part1 input[type="submit"]{
     padding: .4rem 0;
     border: none;
     border-radius: 10px;
@@ -158,28 +149,12 @@ form.main-form #part1 #submit:hover {
     box-shadow: -3px 3px 5px 1px #04c175;
 }
 
-.grid-filling1 {
-    grid-area: grid1
-}
-
-.grid-filling2 {
-    grid-area: grid2
-}
-
-.grid-filling3 {
-    grid-area: grid3
-}
-
-.grid-filling4 {
-    grid-area: grid4
-}
-
-form.main-form #part2 {
+form #part2 {
     display: flex;
     flex-direction: column;
 }
 
-form.main-form #part2.dropmenu {
+form #part2.dropmenu {
     opacity: 1;
     width: 81vw;
     height: max-content;
@@ -198,15 +173,15 @@ form.main-form #part2.dropmenu {
     background-color: #3cd799ba;
 }
 
-form.main-form #part2 .sect h2 {
+form #part2 .sect h2 {
     margin: 2rem 0;
     text-decoration: underline;
     text-align: center;
     font-family: DejaVuSerif, sans-serif;
 }
 
-form.main-form #part2 .sect .grns,
-form.main-form #part2 .sect .formateurs {
+form #part2 .sect .grns,
+form #part2 .sect .formateurs {
     width: 60%;
     margin: 0 auto;
     display: grid;
@@ -215,12 +190,12 @@ form.main-form #part2 .sect .formateurs {
     margin-bottom: 12px;
 }
 
-form.main-form #part2 .sect .formateurs {
+form #part2 .sect .formateurs {
     width: 80%;
     grid-template-columns: repeat(4, 1fr);
 }
 
-form.main-form #part2 label {
+form #part2 label {
     display: grid;
     grid-template-columns: .2fr 1fr;
     grid-template-areas: "checkmark input";
@@ -232,11 +207,11 @@ form.main-form #part2 label {
     height: max-content;
 }
 
-form.main-form #part2 .sect input+span {
+form #part2 .sect input+span {
     grid-area: input;
 }
 
-form.main-form #part2 .sect input {
+form #part2 .sect input {
     position: absolute;
     left: 0;
     z-index: 1;
@@ -247,7 +222,7 @@ form.main-form #part2 .sect input {
     grid-area: checkmark;
 }
 
-form.main-form #part2 .checkmark {
+form #part2 .checkmark {
     position: relative;
     height: 25px;
     width: 25px;
@@ -256,15 +231,15 @@ form.main-form #part2 .checkmark {
     grid-area: checkmark;
 }
 
-form.main-form #part2 .checkmark:hover {
+form #part2 .checkmark:hover {
     background-color: #41ccfb52;
 }
 
-form.main-form #part2 input:checked~.checkmark {
+form #part2 input:checked~.checkmark {
     background-color: #41ccfb;
 }
 
-form.main-form #part2 .checkmark:after {
+form #part2 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
@@ -282,11 +257,11 @@ form.main-form #part2 .checkmark:after {
     transform: rotate(45deg);
 }
 
-form.main-form #part2 input:checked~.checkmark:after {
+form #part2 input:checked~.checkmark:after {
     display: block;
 }
 
-form.main-form #part2 .submit-container {
+form #part2 .submit-container {
     margin-top: 1.5rem;
     display: flex;
     justify-content: center;

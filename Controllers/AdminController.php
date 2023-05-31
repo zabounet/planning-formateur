@@ -770,7 +770,7 @@ class AdminController extends Controller
         }
 
         // variable $html avant recherche
-        $html = "<div style='display:flex;justify-content:center;'> <h1 style='width:60%;text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1> </div>";
+        $html = "<div style='height: 80vh; display:flex; align-items:center; justify-content:center;'> <h1 style='width:60%;text-align:center;'>Veuillez séléctionner une période de dates ainsi que des formateurs afin de consulter leur période d'activités.</h1> </div>";
         $FormateurModel = new FormateurModel;
 
         if (Form::validate($_POST, ['valider', 'formateurs'])) {

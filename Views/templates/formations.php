@@ -16,6 +16,7 @@
 
     if ($link === "Formation home") {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/searchbar.css">';
+        echo '<link rel="stylesheet" href="/planning/Views/assets/css/homeS.css">';
         echo '<script src="/planning/Views/assets/js/deleteHomeS.js"></script>';
     }
     if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {

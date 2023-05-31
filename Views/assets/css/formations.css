@@ -1,9 +1,6 @@
 /**************************************************
 ************* Ajouter une formation ***************
 **************************************************/
-header {
-    height: 6vh;
-}
 
 .fixed-height {
     height: 84vh;
@@ -271,7 +268,7 @@ fieldset {
     padding-top: .05rem;
     margin-bottom: .4rem;
     font-size: 2.2rem;
-    font-family: Hack-Regular, 'sans-serif';
+    font-family: DejaVuSerif, 'sans-serif';
     background-color: #b22233;
     color: whitesmoke;
     cursor: pointer;
