@@ -149,7 +149,7 @@ class Model extends Db
     }
 
     // Met à jour les informations d'une ligne depuis un ID et les informations reçue
-    public function update(string $table, array $updateCol, array $updateFields, string $updateCond, string $id)
+    public function update(string $table, array $updateCol, array $updateFields, array $updateCond, array $id)
     {
 
         $sql = "UPDATE " . $table . " SET ";
@@ -165,16 +165,15 @@ class Model extends Db
             $sql .= $writeComma . $updateCol[$z] . " = '$updateFields[$z]'";
         }
 
-        // $nbCond = count($updateCond);
-        // $sql .= " WHERE ";
-        // for($i = 0; $i < $nbCond; $i++){
-        //     if($i == 0){$writeAnd = "";}
-        //     else{$writeAnd = " AND ";}
+        $nbCond = count($updateCond);
+        $sql .= " WHERE ";
+        for($i = 0; $i < $nbCond; $i++){
+            if($i == 0){$writeAnd = "";}
+            else{$writeAnd = " AND ";}
 
-        //     $sql .= $writeAnd . $updateCond[$i] . " = '$id[$i]'";
-        // }
-
-        $sql .= " WHERE " . $updateCond . " = '$id'";
+            $sql .= $writeAnd . $updateCond[$i] . " = '$id[$i]'";
+        }
+        // echo $sql;die;
 
         return $this->requete($sql);
     }

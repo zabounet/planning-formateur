@@ -137,30 +137,15 @@ class FormateurModel extends Model
         }
     }
 
-    public function updateAceptNotification(string $table ,int $id_formateur): bool
-    {
-        $sql = "UPDATE " .$table ." SET 
-        `validation` = 1,
-        Where id_formateur = ? ";
-
-        $result = $this->requete($sql, [ $table ,$id_formateur]);
-        
-        echo $sql;
-        if ($result->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
      // inserer une notification dans table notification a partir de un demande
-     public function creatrNotification( string $description ,string $date_notification,string $role,INT $id_formateur,string $type )
+     public function creatrNotification( string $description, string $date, string $date_notification,string $role,INT $id_formateur,string $type )
      {
-        $sql = "INSERT INTO Notification (description_notification, date_notification, role, id_formateur,type )
-        VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO Notification (description_notification, date, date_notification, role, id_formateur,type )
+        VALUES (?, ?, ?, ?, ?, ?)";
 
-        $result = $this->requete($sql, [$description, $date_notification, $role, $id_formateur,$type]);
+        $result = $this->requete($sql, [$description, $date, $date_notification, $role, $id_formateur,$type]);
 
         if ($result) {
             return true;

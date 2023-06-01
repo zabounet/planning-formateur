@@ -219,8 +219,9 @@ class FormateurController extends Controller
 
                     $resultat = $vacance->createDateVacance($dateDebut, $dateFin, $idFormateur);
 
+                    $dates = $_POST['date_debut'] . "," . $_POST['date_fin'];
                     $dateVacance = date('d-m-Y', strtotime($_POST['date_debut'])) . " au " . date('d-m-Y', strtotime($_POST['date_fin']));
-                    $description = " a effectué une demande de congés du " . $dateVacance;
+                    $description = htmlentities(" a effectué une demande de congés du " . $dateVacance);
                     $date_notification = date('Y-m-d H:i:s');
                     if (isset($_SESSION['formateur'])) {
                         $role = "user";
@@ -228,7 +229,9 @@ class FormateurController extends Controller
                         $role = "admin";
                     }
 
-                    $demande = $vacance->creatrNotification($description, $date_notification, $role, $idFormateur);
+                    $table = 'Date_vacance';
+
+                    $demande = $vacance->creatrNotification($description, $dates ,$date_notification, $role, $idFormateur,$table);
 
                     if ($resultat && $demande) {
                         // message succès
@@ -291,7 +294,7 @@ class FormateurController extends Controller
 
                     // manip pour envoiyer un reqeutte vers table notification
                     $jourstele = implode(" et ", $jours);
-                    $description = " demande à changer ses jours de télétravail pour " . $jourstele . " à compter du " . date('d-m-Y', strtotime($date_prise_effet));
+                    $description = htmlentities(" demande à changer ses jours de télétravail pour " . $jourstele . " à compter du " . date('d-m-Y', strtotime($date_prise_effet)));
                     $date_notification = date('Y-m-d H:i:s');
                     if (isset($_SESSION['formateur'])) {
                         $role = "user";
@@ -299,7 +302,7 @@ class FormateurController extends Controller
                         $role = "admin";
                     }
                     $table = "Date_teletravail";
-                    $demande = $teletravail->creatrNotification($description, $date_notification, $role, $idFormateur, $table);
+                    $demande = $teletravail->creatrNotification($description, $joursteletravail ,$date_notification, $role, $idFormateur, $table);
                     if ($resultat && $demande) {
                         $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
                     } else {

@@ -85,8 +85,13 @@ input[type="submit"] {
   padding: 2rem 0;
   
 }
+.profil.mdpChange{
+  grid-template-columns: 1.5fr .3fr;
+  grid-template-areas: "grid1 button"
+}
 .profil .title{grid-area: title;}
-.profil .value{grid-area: value; text-align: center;}
+.profil .value{grid-area: value; place-self: center;}
+.profil .valider{grid-area: button}
 
 .profil input[type="text"],
 .profil input[type="email"] {
@@ -114,7 +119,7 @@ input[type="submit"] {
   width: 30%;
 }
 
-.profil a {
+.profil a{
   text-decoration: none;
   background: #ff9900f3;
   color: #2d5540;
@@ -124,6 +129,12 @@ input[type="submit"] {
   font-size: 1.2rem;
   font-family: sans-serif;
   grid-area: button;
+}
+.profil .valider{
+  width: 100%;
+}
+.profil:last-of-type .valider{
+  height: 25%;
 }
 
 

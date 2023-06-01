@@ -196,8 +196,8 @@ class AdminController extends Controller
                     $referent,
                     $_POST['ville']
                 ],
-                'id_formation',
-                $currentId
+                ['id_formation'],
+               [$currentId]
             );
 
             // Supprime l'ensemble des informations existantes pour cette formation dans les tables de periodes
@@ -473,7 +473,7 @@ class AdminController extends Controller
 
         if (isset($_POST['Delete'])) {
 
-            $formateur->update('Formation', ['id_formateur'], ['1'], 'id_formateur', $_POST['ID']);
+            $formateur->update('Formation', ['id_formateur'], ['1'], ['id_formateur'], [$_POST['ID']]);
             $formateur->delete('Date_intervention', 'id_formateur', $_POST['ID']);
             $formateur->delete('Date_MNSP', 'id_formateur', $_POST['ID']);
             $formateur->delete('Date_perfectionnement', 'id_formateur', $_POST['ID']);
@@ -627,8 +627,8 @@ class AdminController extends Controller
                     $_POST['grn'],
                     $_POST['ville']
                 ],
-                'id_formateur',
-                $currentId
+                ['id_formateur'],
+                [$currentId]
             );
 
             Refresh::refresh('/planning/public/index.php?p=admin/formateursHome');
