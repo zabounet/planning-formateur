@@ -21,8 +21,6 @@
     }
     if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/formations.css">';
-    }
-    if ($link === "Ajouter une formation" || $link === "Modifier la formation " . $infosCurrent['acronyme_formation']) {
         echo '<script src="/planning/Views/assets/js/formation.js"></script>';
     }; ?>
 </head>

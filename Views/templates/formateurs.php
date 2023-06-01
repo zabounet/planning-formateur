@@ -27,11 +27,13 @@
     if($link === "Inscription formateur"){
         echo '<script src="/planning/Views/assets/js/formateur.js"></script>'; 
         echo '<link rel="stylesheet" href="/planning/Views/assets/css/formateurs.css">';
+        echo '<script src="/planning/Views/assets/js/deleteHomeS.js"></script>';
     }
     if (isset($infosCurrent)) {
         if ($link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur) {
             echo '<script src="/planning/Views/assets/js/formateur.js"></script>';
             echo '<link rel="stylesheet" href="/planning/Views/assets/css/formateurs.css">';
+            echo '<script src="/planning/Views/assets/js/deleteHomeS.js"></script>';
         };
     };
 
