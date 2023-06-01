@@ -385,7 +385,7 @@ class Model extends Db
 
             for ($i = 0; $i != 1; $i++) {
                 if ($type[0] !== "SET") {
-                    $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
+                    $pattern = '/\b(FROM|INSERT INTO|UPDATE|DELETE)\s+`?(\w+)`?(?:\s+|,|$)/i';
                     preg_match_all($pattern, $sql, $match);
 
                     if (!isset($match[2][0])) {
@@ -439,7 +439,7 @@ class Model extends Db
 
             for ($i = 0; $i != 1; $i++) {
                 if ($type[0] !== "SET") {
-                    $pattern = '/\b(FROM|INSERT INTO|UPDATE)\s+`?(\w+)`?(?:\s+|,|$)/i';
+                    $pattern = '/\b(FROM|INSERT INTO|UPDATE|DELETE)\s+`?(\w+)`?(?:\s+|,|$)/i';
                     preg_match_all($pattern, $sql, $match);
 
                     if (!isset($match[2][0])) {
