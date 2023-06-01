@@ -24,7 +24,7 @@ header .alert-menu {
 }
 
 header .alert-menu .dropmenu {
-    background-color: #9EB4A0;
+    background-color: #ffbd4e;;
 }
 
 header .alert-menu .bell-box {
@@ -54,6 +54,73 @@ header .alert-menu .bell-box .badge {
 header .bell-button.active .bell-box .bell-img {
     transform: rotate(-45deg);
     transition: ease-out .5s;
+}
+header .dropmenu.drop-notif{
+    width: max-content;
+}
+
+header .dropmenu.drop-notif li{
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    height: max-content ;
+    padding: 0.5em 0;
+}
+
+  
+.drop-notif li:last-child {
+    border-bottom: none;
+}
+
+.drop-notif li span{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 24px;
+    padding: 0.5em 3rem;
+    font-family: verdana;
+}
+.drop-notif b{
+    position: absolute;
+    right: 1rem;
+    top: .4rem;
+    color: #2d712b;
+    font-size: 1.3rem;
+}
+
+.notif-linge{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+.notif-linge .btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 50%;
+}
+
+.notif-linge .valider{
+    width: fit-content;
+    background-color: #63b262;
+    padding: 0 24PX;
+    color: white;
+    font-size: x-large;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+.notif-linge .refuser{
+    width: fit-content;
+    background-color: #bd1d1d;
+    padding: 0 24PX;
+    color: white;
+    font-size: x-large;
+    height: fit-content;
+    border-radius: 5px;
 }
 
 header .flower-img {

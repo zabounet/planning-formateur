@@ -58,33 +58,38 @@
                         <?php endif;?>
                     </div>
                 </button>
-                <menu id="dropmenu" class="dropmenu">
+                <menu id="dropmenu" class="dropmenu drop-notif">
                     <ul>
                         <?php foreach($notifs as $notification) :?>
                             <li>
-                                <span><?= $notification->nom_formateur . " " . $notification->description_notification;?> </span>
-                                <span> Le : <?= date('d-m-Y', strtotime($notification->date_notification));?>
-                                <?php if(isset($_SESSION['admin'])):?>
-                                    <form method="post">
-                                        <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
-                                        <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
-                                        <input type="hidden" name="type" value="<?=$notification->type;?>">   
-                                        <input type="hidden" name="date" value="<?=$notification->date;?>"> 
-                                        <input id="submit" type="submit" name="valider" value="valider">
-                                    </form>
-                                    <form method="post">
-                                        <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
-                                        <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
-                                        <input type="hidden" name="type" value="<?=$notification->type;?>"> 
-                                        <input type="hidden" name="date" value="<?=$notification->date;?>">   
-                                        <input id="submit" type="submit" name="refuser" value="refuser">
-                                    </form>
-                                <?php elseif(isset($_SESSION['formateur'])):?>
-                                    <form method="post">
-                                        <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
-                                        <input id="submit" type="submit" name="accept" value="OK">
-                                    </form>
-                                <?php endif;?>
+                                <span><?= strtoupper($notification->nom_formateur). " ". ucfirst($notification->prenom_formateur) . " " . $notification->description_notification;?> 
+                                </span>
+                                <div class="notif-linge">
+                                    <div class="btns">
+                                        <?php if(isset($_SESSION['admin'])):?>
+                                            <form method="post">
+                                                <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                                <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
+                                                <input type="hidden" name="type" value="<?=$notification->type;?>">   
+                                                <input type="hidden" name="date" value="<?=$notification->date;?>"> 
+                                                <input class="btn valider" id="submit" type="submit" name="valider" value="Valider">
+                                            </form>
+                                            <form method="post">
+                                                <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                                <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
+                                                <input type="hidden" name="type" value="<?=$notification->type;?>"> 
+                                                <input type="hidden" name="date" value="<?=$notification->date;?>">   
+                                                <input class="btn refuser" id="submit" type="submit" name="refuser" value="Refuser">
+                                            </form>
+                                        </div>
+                                        <b>Le : <?= date('d-m-Y', strtotime($notification->date_notification)) ;?></b>
+                                    <?php elseif(isset($_SESSION['formateur'])):?>
+                                        <form method="post">
+                                            <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
+                                            <input id="submit" type="submit" name="accept" value="OK">
+                                        </form>
+                                    <?php endif;?>
+                                </div>
                             </li>
                         <?php endforeach;?>
                     </ul>
