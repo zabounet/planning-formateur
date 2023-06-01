@@ -186,17 +186,18 @@
     <main>
         <div>
             <?= $contenu; ?>
-            <?php foreach($teletravail_formateurs as $teletravail_formateur) :
-                        ?>
-                        <li>
-                            <ul>        <?php ; ?>
-                            <span><?= $teletravail_formateur->nom_formateur?>a demender pour </span>
-                            <button>valider</button>
-                            <button>refuser</button>
-                        </li>
-                        <?php endforeach;
-                        ?>
-                    </ul>
+            
+            <ul>
+                <?php var_dump($notifications) ;?>
+                <?php foreach($notifications as $notification) :?>
+                    <li>
+                        <span><?= $notification->nom_formateur . " " . $notification->description_notification;?> </span>
+                        <span> Le : <?= $notification->date_notification;?>
+                        <button>valider</button>
+                        <button>refuser</button>
+                    </li>
+                <?php endforeach;?>
+            </ul>
         </div>
     </main>
 </body>

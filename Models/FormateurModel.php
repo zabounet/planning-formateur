@@ -138,12 +138,12 @@ class FormateurModel extends Model
     }
 
      // inserer une notification dans table notification a partir de un demande
-     public function creatrNotification( string $decription ,string $date_notification,string $role,INT $id_formateur )
+     public function creatrNotification( string $description ,string $date_notification,string $role,INT $id_formateur )
      {
         $sql = "INSERT INTO Notification (description_notification, date_notification, role, id_formateur )
         VALUES (?, ?, ?, ?)";
 
-        $result = $this->requete($sql, [$decription, $date_notification, $role, $id_formateur]);
+        $result = $this->requete($sql, [$description, $date_notification, $role, $id_formateur]);
 
         if ($result) {
             return true;

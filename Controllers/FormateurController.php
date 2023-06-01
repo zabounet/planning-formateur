@@ -277,14 +277,26 @@ class FormateurController extends Controller
                     $date_prise_effet = $_POST['date_prise_effet'];
                     $teletravail = new FormateurModel();
                     $resultat = $teletravail->updateJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
-                    // $demande = $teletravail->creatrNotification($decription, $date_notification, $role, $id_formateur);
-                    if ($resultat ) {
+                    
+                    // manip pour envoiyer un reqeutte vers table notification
+                    $jourstele = implode(" et ", $jours); 
+                    $description = " demande à changer ses jours de télétravail pour ". $jourstele . " a compter du " . $date_prise_effet;
+                    $date_notification = date('Y-m-d H:i:s');
+                    var_dump($date_notification);
+                    if(isset($_SESSION['formateur'])){
+                        $role = "user";
+                    } elseif(isset($_SESSION['admin'])){
+                        $role = "admin";
+                    }
+
+                    $demande = $teletravail->creatrNotification($description, $date_notification, $role, $idFormateur);
+                    if ($resultat && $demande) {
                         $_SESSION['success_teletravail'] = "Lesss jours de télétravail ont été enregistrés avec succès.";
                     } else {
-                        $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
+                        $joursteletravail = implode(",", $jours); 
                         $teletravail = new FormateurModel();
                         $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
-                        if ($resultat) {
+                        if ($resultat && $demande) {
                             $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
                         } else {
                             $_SESSION['error_teletravail'] = "Une erreur est survenue lors de l'enregistrement des jours de télétravail.";
