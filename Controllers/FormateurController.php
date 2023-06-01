@@ -298,8 +298,8 @@ class FormateurController extends Controller
                     } elseif (isset($_SESSION['admin'])) {
                         $role = "admin";
                     }
-
-                    $demande = $teletravail->creatrNotification($description, $date_notification, $role, $idFormateur);
+                    $table = "Date_teletravail";
+                    $demande = $teletravail->creatrNotification($description, $date_notification, $role, $idFormateur, $table);
                     if ($resultat && $demande) {
                         $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
                     } else {
