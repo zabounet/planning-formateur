@@ -938,6 +938,18 @@ class RooterController extends Controller
             $html = "<div style='height: 80vh; display:flex; align-items:center; justify-content:center;'> <h1 style='text-align:center'> Veuillez entrer des informations dans les champs de recherche afin de consulter les formations. </h1> </div>";
         }
 
+        if(Form::validate($_POST, ['valider'])){
+            $id_formateur = $_POST['formateur'];
+            var_dump($id_formateur);
+            var_dump($_POST);
+            $notif_accepter = $databaseFormateur->updateAceptNotification('Date_teletravail',$id_formateur);
+            // var_dump($notif_accepter);
+        }
+        if(Form::validate($_POST, ['refuser'])){
+            $databaseFormateur = new FormateurModel;
+            var_dump($databaseFormateur);
+            echo "dddd";
+        }
         $formation = new FormationModel;
         $formateur = new FormateurModel;
         $formateurs = $formateur->getFormateur();

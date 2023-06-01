@@ -60,15 +60,21 @@
                 </button>
                 <menu id="dropmenu" class="dropmenu">
                     <ul>
-                        <?php foreach($teletravail_formateurs as $teletravail_formateur) :
-                        ?>
-                        <li>
-                            <span><?= $teletravail_formateurs->nom_formateur?> </span>
-                            <button>valider</button>
-                            <button>refuser</button>
-                        </li>
-                        <?php endforeach;
-                        ?>
+                        <?php foreach($notifications as $notification) :?>
+                            <li>
+                                <?php var_dump($notification)?>
+                                    <span><?= $notification->nom_formateur . " " . $notification->description_notification;?> </span>
+                                    <span> Le : <?= date('d-m-Y' ,strtotime($notification->date_notification));?>
+                                <form method="post">
+                                    <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                    <input id="submit" type="submit" name="valider" value="valider">
+                                </form>
+                                <form method="post">
+                                    <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                    <input id="submit" type="submit" name="refuser" value="refuser">
+                                </form>
+                            </li>
+                        <?php endforeach;?>
                     </ul>
                 </menu>
             </div>
@@ -188,16 +194,22 @@
             <?= $contenu; ?>
             
             <ul>
-                <?php var_dump($notifications) ;?>
-                <?php foreach($notifications as $notification) :?>
-                    <li>
-                        <span><?= $notification->nom_formateur . " " . $notification->description_notification;?> </span>
-                        <span> Le : <?= $notification->date_notification;?>
-                        <button>valider</button>
-                        <button>refuser</button>
-                    </li>
-                <?php endforeach;?>
-            </ul>
+                        <?php foreach($notifications as $notification) :?>
+                            <li>
+                                <?php var_dump($notification)?>
+                                    <span><?= $notification->nom_formateur . " " . $notification->description_notification;?> </span>
+                                    <span> Le : <?= date('d-m-Y' ,strtotime($notification->date_notification));?>
+                                <form method="post">
+                                    <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                    <input id="submit" type="submit" name="valider" value="valider">
+                                </form>
+                                <form method="post">
+                                    <input type="hidden" name="formateur" value="<?=$notification->id_formateur;?>">    
+                                    <input id="submit" type="submit" name="refuser" value="refuser">
+                                </form>
+                            </li>
+                        <?php endforeach;?>
+                    </ul>
         </div>
     </main>
 </body>
