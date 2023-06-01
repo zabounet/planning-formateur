@@ -1,0 +1,95 @@
+h1 {
+    color: green;
+    text-align: center;
+    font-size: 3rem;
+    font-family: Alice, sans-serif;
+}
+
+section {
+    padding: 0 20px 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    cursor: text;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 20px;
+    height: 20px;
+    content: url('/planning/Views/assets/image/calendar.svg');
+    cursor: pointer;
+}
+select{
+    cursor: pointer
+}
+input[type="submit"][name="inscription"]{
+    display: block;
+    margin: 1.5rem auto 0;
+    width: 15rem;
+    font-size: 2rem;
+}
+
+input[type="submit"],
+input.delete,
+button.add-date-fields,
+button.delete-date-fields {
+    background-color: orange;
+    color: white;
+    border: none;
+    margin: .5rem 0;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all .2s ease;
+}
+input[type="submit"]:hover{
+    background-color: #41d60a;
+}
+button.add-date-fields:hover {
+    background-color: #ff6600;
+}
+
+button.delete-date-fields:hover,input[type="submit"][name="delete"]:hover{
+    background-color: #ff0000;
+}
+.confirm h4{
+    color: #ff0000;
+}
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+h2 {
+    color: green;
+    margin-bottom: 10px;
+}
+
+.add-date-fields {
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
