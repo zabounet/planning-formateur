@@ -58,7 +58,7 @@ input[type="submit"] {
 .info-personel {
   display: flex;
   flex-direction: column;
-  width: 60vw;
+  width: 70%;
   margin: 0 auto 2rem;
 }
 
@@ -73,14 +73,20 @@ input[type="submit"] {
 
 
 .profil {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-between; 
+  align-items: center; */
+  display: grid;
+  grid-template-columns: .5fr 2fr .5fr ;
+  grid-template-areas: "title value button";
   font-size: 25px;
   padding: 2rem 0;
-  align-items: center;
+  
 }
+.profil .title{grid-area: title;}
+.profil .value{grid-area: value; text-align: center;}
 
 .profil input[type="text"],
 .profil input[type="email"] {
@@ -110,12 +116,14 @@ input[type="submit"] {
 
 .profil a {
   text-decoration: none;
-  background: ghostwhite;
-  border: solid 1px;
-  width: 120PX;
+  background: #ff9900f3;
+  color: #2d5540;
+  border-radius: 5px;
+  padding: .5rem 1rem;
   text-align: center;
-  font-size: x-large;
+  font-size: 1.2rem;
   font-family: sans-serif;
+  grid-area: button;
 }
 
 
@@ -176,13 +184,18 @@ input[type="submit"] {
 .demande-teletravail {
   display: flex;
   flex-direction: column;
-  width: 60vw;
+  width: 70%;
   margin-right: auto;
   margin-left: auto;
   height: 21em;
   justify-content: space-between;
 }
-
+.notif-demande-teletravail{
+  text-align: center;
+}
+.notif-demande-teletravail b{
+  color: #f00;
+}
 .app {
   display: flex;
   margin-bottom: 2em;

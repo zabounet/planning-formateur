@@ -1,3 +1,7 @@
+body main{
+    height: unset;
+    overflow: visible;
+}
 input{
     border: none;
     outline: none;
@@ -5,7 +9,7 @@ input{
 }
 .form-login {
     width: 80vw;
-    height: 90vh;
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -125,6 +129,9 @@ input{
 .logo img{
     width: 35%;
     height: auto;
+}
+.logo img:last-child{
+    width: 27%;
 }
 .error{
     color: red;

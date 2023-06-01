@@ -10,34 +10,34 @@
         <div class="container-info">
 
             <form class="profil nom-profil" method="post">
-                <span>Nom :</span>
+                <span class="title">Nom :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=1") : ?>
-                    <input type='text' name="nom" class="nomProfil" value="<?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?>" />
+                    <input type='text' name="nom" class="value nomProfil" value="<?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?>" />
                     <input class="valider" type="submit" id="modifier_nom_formateur" value="Valider" name="modifNom" />
                 <?php else : ?>
-                    <span id="prenomProfil"><?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?></span>
+                    <span class="value" id="prenomProfil"><?php if (isset($_SESSION['formateur'])){ echo $_SESSION['formateur']['nom'];} else {echo $_SESSION['admin']['nom'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=1">Modifier</a>
                 <?php endif; ?>
             </form>
             <hr>
             <form class="profil prenom-profil" method="post">
-                <span>Prenom :</span>
+                <span class="title">Prenom :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=2") : ?>
-                    <input type='text' name="prenom" class="prenomProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?>" />
+                    <input type='text' name="prenom" class="value prenomProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?>" />
                     <input class="valider" type="submit" id="modifier_prenom_formateur" value="Valider" name="modifPrenom" />
                 <?php else : ?>
-                    <span id="prenomProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?></span>
+                    <span class="value" id="prenomProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['prenom']; else {echo $_SESSION['admin']['prenom'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=2">Modifier</a>
                 <?php endif; ?>
             </form>
             <hr>
             <form class="profil mail-profil" method="post">
-                <span>Mail :</span>
+                <span class="title">Mail :</span>
                 <?php if (str_replace('/planning/public/index.php?p=Formateur/profil', '', $_SERVER['REQUEST_URI']) === "&?id=3") : ?>
-                    <input type="email" name="mail" class="mailProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?>" />
+                    <input type="email" name="mail" class="value mailProfil" value="<?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?>" />
                     <input type="submit" id="modifier_mail_formateur" value="Valider" name="modifMail" class="valider" />
                 <?php else : ?>
-                    <span id="mailProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?></span>
+                    <span class="value" id="mailProfil"><?php if (isset($_SESSION['formateur'])) echo $_SESSION['formateur']['mail']; else {echo $_SESSION['admin']['mail'];} ?></span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=3">Modifier</a>
                 <?php endif; ?>
             </form>
@@ -61,8 +61,8 @@
                     </div>
                     <input type="submit" id="modifier_mdp_formateur" value="valider" name="verifierMdp" class="valider" />
                 <?php else : ?>
-                    <span>Mot de passe :</span>
-                    <span id="mdpProfil">****</span>
+                    <span class="title">Mot de passe :</span>
+                    <span class="value" id="mdpProfil">****</span>
                     <a href="/planning/public/index.php?p=Formateur/profil&?id=4">Modifier</a>
                 <?php endif; ?>
             </form>
@@ -123,15 +123,14 @@
             </span>
         </div>
     </div>
-    <div class="teletravail" id="teletravail">
+    <div class="teletravail" id="TT">
         <div class="profil-text">
             <span class="teletravail-text">Demande de teletravail</span>
         </div>
 
         <div class="demande-teletravail">
-            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine pour teletravail</span>
-            <span class="notif notif-demande-teletravail"><i class='fas fa-exclamation-circle' style='font-size:30px;color:red'></i> Vous ne pouvez pas choisir plus de 2 jour par semaine pour le teletravail !!</span>
-            <span style="margin-left: 30Px;">Les jours pour teletravail :</span>
+            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine où vous souhaitez être en télétravail</span>
+            <span class="notif notif-demande-teletravail"><b>/!\</b> Pas plus de deux jours par semaine de télétravails sont autorisés <b>/!\</b></span>
             <form method="post" class="container-teletravail">
                 <div>
                     <section class="app">
@@ -187,7 +186,7 @@
 
     <!-- profil admin -->
 <?php elseif (isset($_SESSION['admin']) && !empty($_SESSION['admin']['id'])) : ?>
-    <div class="list-color">
+    <div class="list-color" id="couleur">
 
         <div class="profil-text">
             <span>Code couleur</span>
