@@ -7,6 +7,7 @@ use App\Models\FormateurModel;
 use App\Models\FormationModel;
 use DateTime;
 use App\Core\AlgorithmePaques;
+use App\Core\Refresh;
 use App\Models\CouleursModel;
 
 class RooterController extends Controller
@@ -939,17 +940,57 @@ class RooterController extends Controller
         }
 
         if(Form::validate($_POST, ['valider'])){
+            $databaseFormateur = new FormateurModel;
+
             $id_formateur = $_POST['formateur'];
-            var_dump($id_formateur);
-            var_dump($_POST);
-            $notif_accepter = $databaseFormateur->updateAceptNotification('Date_teletravail',$id_formateur);
-            // var_dump($notif_accepter);
+            $id_notification = $_POST['notification'];
+            $type = $_POST['type'];
+            $date = $_POST['date'];
+
+            switch($type){
+                case "Date_vacance":
+                    $date_array = explode(",",$date);
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["1"], ['id_formateur','date_debut_vacance','date_fin_vacance'], [$id_formateur, $date[0], $date[1]]);
+                    $newNotif = $databaseFormateur->creatrNotification('Votre demande de congés du ' . $date[0] . ' au ' . $date[1] . ' a été acceptée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
+
+                case "Date_teletravail":
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["1"], ['id_formateur','jour_teletravail'], [$id_formateur, $date]);
+                    $newNotif = $databaseFormateur->creatrNotification('Votre demande de changements de vos jours de teletravail pour ' . $date . ' a été acceptée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
+            }
+
+            $delete_notif = $databaseFormateur->delete('Notification','id_notification', $id_notification);
+            Refresh::refresh('/planning/public/');
         }
         if(Form::validate($_POST, ['refuser'])){
             $databaseFormateur = new FormateurModel;
-            var_dump($databaseFormateur);
-            echo "dddd";
+
+            $id_formateur = $_POST['formateur'];
+            $id_notification = $_POST['notification'];
+            $type = $_POST['type'];
+            $date = $_POST['date'];
+
+            switch($type){
+                case "Date_vacance":
+                    $date_array = explode(",",$date);
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["0"], ['id_formateur','date_debut_vacance','date_fin_vacance'], [$id_formateur, $date[0], $date[1]]);
+                    $newNotif = $databaseFormateur->creatrNotification('Votre demande de congés du ' . $date[0] . ' au ' . $date[1] . ' a été refusée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
+                case "Date_teletravail":
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["0"], ['id_formateur','jour_teletravail'], [$id_formateur, $date]);
+                    $newNotif = $databaseFormateur->creatrNotification('Votre demande de changements de vos jours de teletravail pour ' . $date . ' a été refusée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
+            }
+
+            $delete_notif = $databaseFormateur->delete('Notification','id_notification', $id_notification);
+            Refresh::refresh('/planning/public/');
         }
+        if(Form::validate($_POST, ['accept'])){
+            $databaseFormateur = new FormateurModel;
+
+            $id_notification = $_POST['notification'];
+
+            $delete_notif = $databaseFormateur->delete('Notification','id_notification', $id_notification);
+            Refresh::refresh('/planning/public/');
+        }
+
         $formation = new FormationModel;
         $formateur = new FormateurModel;
         $formateurs = $formateur->getFormateur();
@@ -960,7 +1001,7 @@ class RooterController extends Controller
 
         //notification de home
          $notifications = $formateur->joinInformations(
-            ['id_notification ','Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'description_notification', 'date_notification', 'role'],
+            ['id_notification ','Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'description_notification', 'date', 'date_notification', 'role','type'],
             'Formateur',
             ['Notification'],
             ['id_formateur' ],
@@ -970,6 +1011,23 @@ class RooterController extends Controller
             "date_notification",
             'DESC'
         );
-        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data','notifications'), 'main');
+
+        $notifs = array();
+        if(isset($_SESSION['admin'])){
+            foreach($notifications as $notification){
+                if($notification->role === "user"){
+                    $notifs[] = $notification;
+                }
+            }
+        }
+        if(isset($_SESSION['formateur'])){
+            foreach($notifications as $notification){
+                if($notification->role === "admin" && $notification->id_formateur === $_SESSION['formateur']['id']){
+                    $notifs[] = $notification;
+                }
+            }
+        }
+
+        $this->render('main/index', compact('GRNs', 'formateurs', 'villes', 'html', 'data','notifs'), 'main');
     }
 }
