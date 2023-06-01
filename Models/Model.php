@@ -291,7 +291,7 @@ class Model extends Db
 
     // Effectue une requete sur une liste de champs, à partir d'une table, une liste des tables à joindres et la colonne à utiliser
     // ainsi qu'une liste de conditions supplémentaires et les colonnes qui doivent remplir ces conditions
-    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [])
+    public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [], bool $hasGroupBy = false, string $groupByField = "", string $sens = "")
     {
         $nbChamps = count($champsSelect);
         $sql = "SELECT ";
@@ -341,7 +341,9 @@ class Model extends Db
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
-        // echo $sql;die;
+        if($hasGroupBy) $sql .= " GROUP BY " . $groupByField . " " . strtoupper($sens);
+
+        echo $sql;
         return $this->requete($sql)->fetchAll();
     }
 
