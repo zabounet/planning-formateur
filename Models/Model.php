@@ -293,6 +293,7 @@ class Model extends Db
     // ainsi qu'une liste de conditions supplémentaires et les colonnes qui doivent remplir ces conditions
     public function joinInformations(array $champsSelect, string $table, array $tablesJointures, array $colonnesJointures, array $champCondJointures = [], array $CondJointures = [], bool $hasGroupBy = false, string $groupByField = "", string $sens = "")
     {
+        $this->requete("SET sql_mode='';");
         $nbChamps = count($champsSelect);
         $sql = "SELECT ";
         for ($z = 0; $z < $nbChamps; $z++) {
@@ -342,8 +343,6 @@ class Model extends Db
             }
         }
         if($hasGroupBy) $sql .= " GROUP BY " . $groupByField . " " . strtoupper($sens);
-
-        echo $sql;
         return $this->requete($sql)->fetchAll();
     }
 
