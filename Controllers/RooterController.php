@@ -950,7 +950,7 @@ class RooterController extends Controller
             switch($type){
                 case "Date_vacance":
                     $date_array = explode(",",$date);
-                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["1"], ['id_formateur','date_debut_vacance','date_fin_vacance'], [$id_formateur, $date[0], $date[1]]);
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["1"], ['id_formateur','date_debut_vacances','date_fin_vacances'], [$id_formateur, $date[0], $date[1]]);
                     $newNotif = $databaseFormateur->creatrNotification('Votre demande de congés du ' . $date[0] . ' au ' . $date[1] . ' a été acceptée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
 
                 case "Date_teletravail":
@@ -972,7 +972,7 @@ class RooterController extends Controller
             switch($type){
                 case "Date_vacance":
                     $date_array = explode(",",$date);
-                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["0"], ['id_formateur','date_debut_vacance','date_fin_vacance'], [$id_formateur, $date[0], $date[1]]);
+                    $notif_accepter = $databaseFormateur->update($type, ['validation'], ["0"], ['id_formateur','date_debut_vacances','date_fin_vacances'], [$id_formateur, $date[0], $date[1]]);
                     $newNotif = $databaseFormateur->creatrNotification('Votre demande de congés du ' . $date[0] . ' au ' . $date[1] . ' a été refusée.', "", date('Y-m-d H:i:s'), "admin", $id_formateur, "");
                 case "Date_teletravail":
                     $notif_accepter = $databaseFormateur->update($type, ['validation'], ["0"], ['id_formateur','jour_teletravail'], [$id_formateur, $date]);
