@@ -48,7 +48,8 @@
     align-items: center;
   }
   .tableau-container{
-    overflow: scroll; 
+    overflow-x: scroll;
+    overflow-y: hidden; 
     scroll-behavior: smooth;
     width: 85%;
     margin: 1rem 0;
@@ -69,11 +70,17 @@
     position: sticky;
     left: 0;
   }
+  tbody{
+    width: 100%;
+  }
+  tr{
+    position: relative;
+    width: 100%;
+  }
 
   th, td {
     text-align: center;
     border: 1px solid black;
-    padding: 1px;
     min-width: 19px;
   }
   
@@ -95,21 +102,38 @@
     background-color : crimson;
     color: whitesmoke;
   }
-  
-  tbody tr:nth-child(even) th{
-    background-color: #cac7c7;
-  }
 
-  tbody tr th:first-child{
-    background-color: crimson;
-    color: whitesmoke;
-  }
-  
-  tbody tr th:hover{
+  tbody tr th.original:hover{
     background-color: #0b0631;
   }
-  .sticky-formateur-container-clone {
+
+  tbody tr th .nomFormateurDiv{
+    width: 8rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cloneNomFormateur {
     position: absolute;
-   
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    color: unset;
+  }
+
+  
+  .cloneNomFormateur .nomFormateurDiv{
+    position: sticky;
+    left: 0;
+    width: 8rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: crimson;
+    color: whitesmoke;
+    padding: 1px;
+    min-width: 19px;
   }
   
