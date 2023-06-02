@@ -52,7 +52,7 @@
                     <div class="bell-box">
                         <?php if(count($notifs) > 0):?>
                             <img class="bell-img" src="/planning/Views/assets/image/ringing-bell.svg" alt="">
-                            <span class="badge"><?= count($notifs) ;?></span>
+                            <span class="badge"><?php if(count($notifs) > 9) echo "9+"; else{echo count($notifs);}?></span>
                         <?php else:?>
                             <img class="bell-img" src="/planning/Views/assets/image/bell.svg" alt="">
                         <?php endif;?>
@@ -86,12 +86,13 @@
                                     <?php elseif(isset($_SESSION['formateur'])):?>
                                         <form method="post">
                                             <input type="hidden" name="notification" value="<?=$notification->id_notification;?>">    
-                                            <input id="submit" type="submit" name="accept" value="OK">
+                                            <input class="btn valider" id="submit" type="submit" name="accept" value="OK">
                                         </form>
                                     <?php endif;?>
                                 </div>
                             </li>
                         <?php endforeach;?>
+                        <?php if(count($notifs) < 1){echo "<li><span> Rien à signaler ! </span></li>";};?>
                     </ul>
                 </menu>
             </div>

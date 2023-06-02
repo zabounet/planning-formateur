@@ -56,7 +56,10 @@ header .bell-button.active .bell-box .bell-img {
     transition: ease-out .5s;
 }
 header .dropmenu.drop-notif{
-    width: max-content;
+    width: 81.01vw;
+    max-height: 65vh;
+    overflow: scroll;
+    left: -5.7vw;
 }
 
 header .dropmenu.drop-notif li{
@@ -66,6 +69,7 @@ header .dropmenu.drop-notif li{
     padding-bottom: 10px;
     height: max-content ;
     padding: 0.5em 0;
+    cursor: default;
 }
 
   
@@ -77,7 +81,7 @@ header .dropmenu.drop-notif li{
     display: flex;
     justify-content: space-between;
     text-align: center;
-    font-size: 24px;
+    font-size: 1.15rem;
     padding: 0.5em 3rem;
     font-family: verdana;
 }
@@ -103,7 +107,7 @@ header .dropmenu.drop-notif li{
     width: 50%;
 }
 
-.notif-linge .valider{
+.notif-linge .valider, .notif-linge .refuser{
     width: fit-content;
     background-color: #63b262;
     padding: 0 24PX;
@@ -111,16 +115,19 @@ header .dropmenu.drop-notif li{
     font-size: x-large;
     height: fit-content;
     border-radius: 5px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+.notif-linge .valider:hover{
+    background-color: #75d574;
 }
 
 .notif-linge .refuser{
-    width: fit-content;
     background-color: #bd1d1d;
-    padding: 0 24PX;
-    color: white;
-    font-size: x-large;
-    height: fit-content;
-    border-radius: 5px;
+}
+
+.notif-linge .refuser:hover{
+    background-color: #f52323;
 }
 
 header .flower-img {

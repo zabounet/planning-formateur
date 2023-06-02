@@ -231,7 +231,7 @@ class FormateurController extends Controller
 
                     $table = 'Date_vacance';
 
-                    $demande = $vacance->creatrNotification($description, $dates ,$date_notification, $role, $idFormateur,$table);
+                    $demande = $vacance->creatrNotification($description, $dates, $date_notification, $role, $idFormateur, $table);
 
                     if ($resultat && $demande) {
                         // message succès
@@ -287,10 +287,10 @@ class FormateurController extends Controller
                 } elseif ($nbreJours > 2) {
                     $_SESSION['error_teletravail'] = "Vous ne pouvez pas selectionner plus de 2 jours.";
                 } else {
+
                     $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
                     $date_prise_effet = $_POST['date_prise_effet'];
                     $teletravail = new FormateurModel();
-                    $resultat = $teletravail->updateJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
 
                     // manip pour envoiyer un reqeutte vers table notification
                     $jourstele = implode(" et ", $jours);
@@ -301,20 +301,34 @@ class FormateurController extends Controller
                     } elseif (isset($_SESSION['admin'])) {
                         $role = "admin";
                     }
+
                     $table = "Date_teletravail";
-                    $demande = $teletravail->creatrNotification($description, $joursteletravail ,$date_notification, $role, $idFormateur, $table);
-                    if ($resultat && $demande) {
-                        $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
-                    } else {
-                        $joursteletravail = implode(",", $jours);
-                        $teletravail = new FormateurModel();
-                        $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
-                        if ($resultat && $demande) {
-                            $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    $joursteletravail = implode(",", $jours);
+                    $teletravail = new FormateurModel();
+
+                    $ttExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','IS'],[$idFormateur, 'NULL']);
+                    if($ttExists){
+                        $resultat = $teletravail->updateJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+
+                        if ($resultat) {
+                            $_SESSION['success_teletravail'] = "Votre demande a été mise à jour avec succès.";
                         } else {
                             $_SESSION['error_teletravail'] = "Une erreur s'est produite lors de l'enregistrement. Veuillez réessayer après quelques instants.";
                         }
+                        
+                        Refresh::refresh('/planning/public/index.php?p=formateur/profil#TT');
+                        exit;
                     }
+
+                    $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                    $demande = $teletravail->creatrNotification($description, $joursteletravail, $date_notification, $role, $idFormateur, $table);
+
+                    if ($resultat && $demande) {
+                        $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                    } else {
+                        $_SESSION['error_teletravail'] = "Une erreur s'est produite lors de l'enregistrement. Veuillez réessayer après quelques instants.";
+                    }
+
                     Refresh::refresh('/planning/public/index.php?p=formateur/profil#TT');
                     exit;
                 }
