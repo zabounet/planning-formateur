@@ -56,50 +56,53 @@
                     <span id="advanced">Recherche avancée</span>
                 </div>
                 <div id="part2" class="dropmenu">
-                        <div class="sect">
-                            <h2>Selectionnez un ou plusieurs formateurs</h2>
-                            <div class="formateurs" id="liste">
-                                <?php $nombre = 0;
-                                foreach ($infosFormateur['Formateurs'] as $formateur) : ?>
-                                    <?php if ($formateur->id_formateur == 2) {
-                                        continue;
-                                    }; ?>
-                                    <?php if (empty($_POST)) : ?>
-                                        <label for="formateurs">
-                                            <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    <?php elseif (!empty($_POST) && in_array($formateur->id_formateur, $data['formateurs'])) : ?>
-                                        <label for="formateurs">
-                                            <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    <?php else : ?>
-                                        <label for="formateurs">
-                                            <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    <?php endif; ?>
-                                <?php $nombre++;
-                                endforeach ?>
+                    <div class="sect">
+                        <h2>Selectionnez un ou plusieurs formateurs</h2>
+                        <div class="formateurs" id="liste">
+                            <?php $nombre = 0;
+                            foreach ($infosFormateur['Formateurs'] as $formateur) : ?>
+                                <?php if ($formateur->id_formateur == 2) {
+                                    continue;
+                                }; ?>
+                                <?php if (empty($_POST)) : ?>
+                                    <label for="formateurs">
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php elseif (!empty($_POST) && in_array($formateur->id_formateur, $data['formateurs'])) : ?>
+                                    <label for="formateurs">
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php else : ?>
+                                    <label for="formateurs">
+                                        <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                <?php endif; ?>
+                            <?php $nombre++;
+                            endforeach ?>
 
-                                <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
-                            </div>
+                            <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
                         </div>
                     </div>
+                </div>
             </form>
             <img class="flower-img" src="/planning/Views/assets/image/flower.svg">
         </div>
         <div class="legend">
             <ul class="list-color">
+                <li class="color"><span>Présentiel</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_centre']; ?>;"></div>
+                </li>
+                <li class="color"><span>Télétravail</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div>
+                </li>
                 <li class="color"><span>Vacs attente</span>
                     <div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div>
                 </li>
                 <li class="color"><span>Vacs ok</span>
                     <div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div>
-                </li>
-                <li class="color"><span>Télétravail</span>
-                    <div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div>
                 </li>
                 <li class="color"><span>Férié</span>
                     <div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div>
