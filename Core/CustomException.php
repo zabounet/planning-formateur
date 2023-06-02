@@ -75,7 +75,7 @@ class CustomException extends Exception
 			   	$Action['exit'] 	= true;
 			    $Action['display'] 	= false;
 			    $Action['notify'] 	= true;
-			    $Action['msg'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>/!\ Ce système est sur le point de s'autodétruire. /!\</h1> <h2 style='text-align:center;'> Veuillez ordonner l'évacuation immédiate des lieux dans un rayon de 1kilomètre. Autodestruction dans 30 secondes.</h2> <p style='text-align: center; font-size:1.25rem;'>Si le problème persiste, veuillez contacter l'admnistrateur.</p>";
+			    $Action['msg'] 	= "<h1 style='padding: 0; margin: 0 ;font-size: 3rem; color: red; margin-top: 45vh; text-align: center;'>/!\ Une erreur fatale s'est produite /!\</h1> <p style='text-align: center; font-size:1.25rem;'>Si le problème persiste, veuillez contacter l'admnistrateur.</p>";
 			    break;
 			}
 
