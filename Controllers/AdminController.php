@@ -817,7 +817,7 @@ class AdminController extends Controller
                         "id_formateur" => $formateur['id_formateur'],
                         "debut_vacences" => $date_debut_vacences_array[$i],
                         "fin_vacences" => $date_fin_vacences_array[$i],
-                        "validation_vacences" => $validation_array[$i]
+                        "validation_vacences" => !empty($validation_array[$i]) ? $validation_array[$i] : 0
                     ];
                 }
 
@@ -901,7 +901,7 @@ class AdminController extends Controller
                 $teletravail_formateurs = [
                     "jours" => $formateur->jour_teletravail,
                     "prise_effet" => $formateur->date_prise_effet,
-                    "validation" => $formateur->validation,
+                    "validation" => !empty($formateur->validation) ? $formateur->validation : 0,
                     "id_formateur" => $formateur->id_formateur
                 ];
 
@@ -1317,7 +1317,7 @@ class AdminController extends Controller
                         $formateurAvoirTeletravail = 0;
                         foreach ($dates_teletravail_formateurs as $periode_teletravail) {
                             if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] === "1") {
-                                if ($periode_teletravail['prise_effet'] <= $periode) {
+                                if ($periode_teletravail['prise_effet'] >= $periode) {
                                     $jours_array = explode(',', $periode_teletravail['jours']);
                                     foreach ($jours_array as $jour) {
                                         if ($jourLettre === $joursSemaine[$jour]) {
