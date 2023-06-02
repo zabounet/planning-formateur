@@ -108,3 +108,8 @@
   tbody tr th:hover{
     background-color: #0b0631;
   }
+  .sticky-formateur-container-clone {
+    position: absolute;
+   
+  }
+  
