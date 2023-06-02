@@ -56,10 +56,9 @@ header .bell-button.active .bell-box .bell-img {
     transition: ease-out .5s;
 }
 header .dropmenu.drop-notif{
-    width: 81.01vw;
+    width: 70vw;
     max-height: 65vh;
     overflow: scroll;
-    left: -5.7vw;
 }
 
 header .dropmenu.drop-notif li{

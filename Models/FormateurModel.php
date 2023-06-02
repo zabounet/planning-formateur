@@ -21,7 +21,7 @@ class FormateurModel extends Model
     public function __construct()
     {
         $class = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
-        $this->table = strtolower(str_replace('Model', '', $class));
+        $this->table = ucfirst(str_replace('Model', '', $class));
     }
 
     // Recupère Les GRN, Villes et Types de contrat
@@ -92,7 +92,7 @@ class FormateurModel extends Model
     public function createDateVacance(string $dateDebut, string $dateFin, int $id_formateur)
     {
         // Prepare the SQL query
-        $sql = "INSERT INTO date_vacance (date_debut_vacances, date_fin_vacances, id_formateur) 
+        $sql = "INSERT INTO Date_vacance (date_debut_vacances, date_fin_vacances, id_formateur) 
         VALUES (?, ?, ?)";
 
         // Execute the query with the given parameters

@@ -22,7 +22,7 @@ class CouleursModel extends Model
     public function __construct()
     {
         $class = str_replace(__NAMESPACE__.'\\', '',__CLASS__);
-        $this->table = strtolower(str_replace('Model', '', $class));
+        $this->table = ucfirst(str_replace('Model', '', $class));
     }
 
     public function setIdCouleur($couleur_id): self {
