@@ -15,22 +15,22 @@ Array.from(scrollables).forEach(function(scrollable){
     scrollable.addEventListener("mouseleave", function () {
         main.style.overflow = "scroll";
     });
-    var node = document.getElementById("nomFormateur");
-var clone = node.cloneNode(true);
-
-clone.classList.add("clonNomFormateur");
-document.getElementById('listNomFormateur').appendChild(clone);
 })
 
 
 
+let trs = document.querySelectorAll("table tbody tr")
+Array.from(trs).forEach(function(tr) {
+    
+    let node = tr.firstElementChild;
+    
+    let clone = node.cloneNode(true);
+    clone.classList.add("cloneNomFormateur");
+    tr.appendChild(clone);
+})
 
-// var node = document.getElementById("nomFormateur");
-// var clone = node.cloneNode(true);
 
-// clone.classList.add("clonNomFormateur");
-// document.getElementById('listNomFormateur').appendChild(clone);
-// console.log("rr")
+
 
 
 })
