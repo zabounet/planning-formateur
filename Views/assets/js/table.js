@@ -15,22 +15,23 @@ Array.from(scrollables).forEach(function(scrollable){
     scrollable.addEventListener("mouseleave", function () {
         main.style.overflow = "scroll";
     });
+    var node = document.getElementById("nomFormateur");
+var clone = node.cloneNode(true);
+
+clone.classList.add("clonNomFormateur");
+document.getElementById('listNomFormateur').appendChild(clone);
 })
 
 
 
-// var myTable = document.getElementById('myTable');
 
-// document.addEventListener('wheel', function(event) {
-//   if (event.ctrlKey === true) {
-//     if (event.deltaY < 0) {
-//       myTable.style.fontSize = parseInt(getComputedStyle(myTable).fontSize) - 1 + 'px';
-//     } else {
-//       myTable.style.fontSize = parseInt(getComputedStyle(myTable).fontSize) + 1 + 'px';
-//     }
-//     event.preventDefault(); // Empêche le comportement par défaut de défilement de la page
-//   }
-// }, { passive: false });
+// var node = document.getElementById("nomFormateur");
+// var clone = node.cloneNode(true);
+
+// clone.classList.add("clonNomFormateur");
+// document.getElementById('listNomFormateur').appendChild(clone);
+// console.log("rr")
+
 
 })
 

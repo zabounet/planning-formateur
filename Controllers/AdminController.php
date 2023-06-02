@@ -782,7 +782,7 @@ class AdminController extends Controller
                 echo "Veuillez choisir au moins un formateur";
                 exit;
             } else {
-                $_POST['formateurs'] === $_POST['nbFormateur'] ? $id_formateur = "Aucun" : $id_formateur = $_POST['formateurs'];
+                $_POST['formateurs'] === $_POST['nbFormateurs'] ? $id_formateur = "Aucun" : $id_formateur = $_POST['formateurs'];
             }
             // $id_formateur = $_POST['formateur'];
             // Construire une chaîne de caractères contenant les ID sous forme de liste
@@ -1218,7 +1218,7 @@ class AdminController extends Controller
                 $current_date_day->modify("+1 day");
                 $html .= "<th>" . $jour . "</th> ";
             }
-            $html .= "</tr> <tbody> <tr>";
+            $html .= "</tr> <tbody> ";
 
             // Création de tableaux vides pour stocker les périodes de chaque formateur
             $formateur_periodes = array();
@@ -1235,7 +1235,12 @@ class AdminController extends Controller
 
 
                     // Ajout du nom et prénom du formateur dans la première colonne du tableau
-                    $html .= "<th class='sticky-formateur-container'> <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span></th> ";
+                    $html .= "<tr class='linge-formateur' id='listNomFormateur'>
+                                 <th class='sticky-formateur-container' id='nomFormateur'>
+                                    <div class='nomFormateurDiv'>
+                                        <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span>
+                                    </div>
+                                </th> ";
 
                     // Création d'un tableau vide pour stocker les périodes du formateur en cours
                     $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
