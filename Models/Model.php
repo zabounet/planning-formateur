@@ -173,7 +173,7 @@ class Model extends Db
 
             $sql .= $writeAnd . $updateCond[$i] . " = '$id[$i]'";
         }
-        // echo $sql;die;
+        // echo $sql;
 
         return $this->requete($sql);
     }

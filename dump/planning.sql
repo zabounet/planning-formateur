@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 01 juin 2023 à 07:11
+-- Généré le : ven. 02 juin 2023 à 07:00
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -256,16 +256,16 @@ CREATE TABLE IF NOT EXISTS `date_teletravail` (
   `id_formateur` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_teletravail`),
   KEY `Date_teletravail_Formateur_FK` (`id_formateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `date_teletravail`
 --
 
 INSERT INTO `date_teletravail` (`id_teletravail`, `jour_teletravail`, `date_demande_changement`, `date_prise_effet`, `validation`, `id_formateur`) VALUES
-(19, 'lundi,mardi', '2023-05-31', '2023-05-31', 1, 4),
-(20, 'mardi,mercredi', '2023-05-31', '2023-06-02', NULL, 4),
-(21, 'mardi,mercredi', '2023-05-31', '2023-06-02', NULL, 4);
+(22, 'mardi,jeudi', '2023-06-01', '2023-06-01', 1, 4),
+(23, 'vendredi', '2023-06-01', '2023-05-31', 1, 4),
+(24, 'mardi', '2023-06-01', '2023-06-13', NULL, 4);
 
 -- --------------------------------------------------------
 
@@ -282,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `date_vacance` (
   `id_formateur` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_vacance`),
   KEY `Date_vacance_Formateur_FK` (`id_formateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `date_vacance`
@@ -291,7 +291,8 @@ CREATE TABLE IF NOT EXISTS `date_vacance` (
 INSERT INTO `date_vacance` (`id_vacance`, `date_debut_vacances`, `date_fin_vacances`, `validation`, `id_formateur`) VALUES
 (1, '2023-05-12', '2023-05-19', NULL, 4),
 (2, '2023-06-01', '2023-06-15', NULL, 4),
-(3, '2023-07-06', '2023-07-13', 1, 4);
+(3, '2023-07-06', '2023-07-13', 1, 4),
+(4, '2023-06-07', '2023-09-13', 0, 4);
 
 -- --------------------------------------------------------
 
@@ -430,8 +431,9 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `success` tinyint(4) NOT NULL,
   `activity_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=984 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1043 DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
 
 --
 -- Structure de la table `notification`
@@ -441,20 +443,14 @@ DROP TABLE IF EXISTS `notification`;
 CREATE TABLE IF NOT EXISTS `notification` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `description_notification` varchar(512) DEFAULT NULL,
+  `date` varchar(64) NOT NULL,
   `date_notification` datetime DEFAULT NULL,
   `role` varchar(32) DEFAULT NULL,
   `id_formateur` int(11) NOT NULL,
+  `type` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_notification`),
   KEY `Notification_Formateur_FK` (`id_formateur`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `notification`
---
-
-INSERT INTO `notification` (`id_notification`, `description_notification`, `date_notification`, `role`, `id_formateur`) VALUES
-(15, 'demand teletravail pour :mardi et mercredi a partir de2023-05-05', '2023-05-31 00:00:00', 'user', 4),
-(16, 'demand teletravail pour :mardi et mercredi a partir de2023-06-02', '2023-05-31 14:45:30', 'user', 4);
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
