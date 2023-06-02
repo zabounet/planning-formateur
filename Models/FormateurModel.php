@@ -147,6 +147,7 @@ class FormateurModel extends Model
 
         $result = $this->requete($sql, [$description, $date, $date_notification, $role, $id_formateur,$type]);
 
+        // echo $sql;
         if ($result) {
             return true;
         } else {
