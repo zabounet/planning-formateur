@@ -908,6 +908,17 @@ class AdminController extends Controller
                 $dates_teletravail_formateurs[] = $teletravail_formateurs;
             }
 
+            if(count($formateurs) < 1){
+                $teletravail_formateurs = [
+                    "jours" => "Rien",
+                    "prise_effet" => "Rien",
+                    "validation" => "Rien",
+                    "id_formateur" => "Rien"
+                ];
+
+                $dates_teletravail_formateurs[] = $teletravail_formateurs;
+            }
+
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
             $formateurs = $FormateurModel->getDatesById(
                 ['Formateur.id_formateur','Formateur.nom_formateur','Formateur.prenom_formateur', 'type_contrat_formateur','Formateur.date_debut_contrat','Formateur.date_fin_contrat'], 
@@ -1366,7 +1377,7 @@ class AdminController extends Controller
                                     || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                     || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                 ) {
-                                    $html .= "<td style='background-color: #050F29;'></td> ";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_ferie'] . " ;'></td> ";
                                 } else {
                                     // Si le jour de la semaine est égal à 6 ou 7
                                     if ($jourLettre === "6" || $jourLettre === "7") {
@@ -1386,7 +1397,7 @@ class AdminController extends Controller
                                     || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
                                     || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
                                 ) {
-                                    $html .= "<td style='background-color: #050F29;'></td> ";
+                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_ferie'] . " ;'></td> ";
                                 } else {
                                     // Si le jour de la semaine est égal à 6 ou 7
                                     if ($jourLettre === "6" || $jourLettre === "7") {

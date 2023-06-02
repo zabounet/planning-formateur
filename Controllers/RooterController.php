@@ -159,6 +159,16 @@ class RooterController extends Controller
 
                 $dates_teletravail_formateurs[] = $teletravail_formateurs;
             }
+            if(count($formateurs) < 1){
+                $teletravail_formateurs = [
+                    "jours" => "Rien",
+                    "prise_effet" => "Rien",
+                    "validation" => "Rien",
+                    "id_formateur" => "Rien"
+                ];
+
+                $dates_teletravail_formateurs[] = $teletravail_formateurs;
+            }
 
 
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
@@ -733,7 +743,7 @@ class RooterController extends Controller
                     $current_date_dayForPeriods->modify("+1 day");
                 }
 
-                $html .= "</tr> <tbody> <tr> ";
+                $html .= "</tr> <tbody>";
 
                 // Création de tableaux vides pour stocker les périodes de chaque formateur
                 $formateur_periodes = array();
@@ -750,7 +760,12 @@ class RooterController extends Controller
                     $current_date_dayForFormateurs = clone $date_debut_tableau;
 
                     // Ajout du nom et prénom du formateur dans la première colonne du tableau
-                    $html .= "<th>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</th> ";
+                    $html .= "<tr class='linge-formateur'> 
+                                <th class='sticky-formateur-container'>
+                                    <div class='nomFormateurDiv'>
+                                        <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span>
+                                    </div>
+                                </th> ";
 
                     // Création d'un tableau vide pour stocker les périodes du formateur en cours
                     $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
