@@ -1235,8 +1235,8 @@ class AdminController extends Controller
 
 
                     // Ajout du nom et prénom du formateur dans la première colonne du tableau
-                    $html .= "<tr class='linge-formateur' id='listNomFormateur'>
-                                 <th class='sticky-formateur-container' id='nomFormateur'>
+                    $html .= "<tr class='linge-formateur'>
+                                 <th class='sticky-formateur-container'>
                                     <div class='nomFormateurDiv'>
                                         <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span>
                                     </div>
