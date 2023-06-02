@@ -47,7 +47,7 @@ class AdminController extends Controller
             [
                 'Formateur',
                 'Ville',
-                'Type_Formation'
+                'Type_formation'
             ],
             [
                 'id_formateur',
@@ -99,7 +99,7 @@ class AdminController extends Controller
                 [
                     'Formateur',
                     'Ville',
-                    'Type_Formation'
+                    'Type_formation'
                 ],
                 [
                     'id_formateur',
@@ -246,7 +246,7 @@ class AdminController extends Controller
                     $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $currentId);
                 }
             }
-            Refresh::refresh('admin/formationsHome');
+            Refresh::refresh('/planning/public/index.php?p=admin/formationsHome');
         }
 
         $formation = new FormationModel;

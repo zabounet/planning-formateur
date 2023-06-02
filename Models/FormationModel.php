@@ -21,7 +21,7 @@ class FormationModel extends Model
     public function __construct()
     {
         $class = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
-        $this->table = strtolower(str_replace('Model', '', $class));
+        $this->table = ucfirst(str_replace('Model', '', $class));
     }
 
     // Recupère Les GRN, Villes, Types de formation, acronymes de formation et les formateurs
@@ -31,7 +31,7 @@ class FormationModel extends Model
             'GRNS' => $this->requete("SELECT * FROM `GRN`")->fetchAll(),
             'Formateurs' => $this->requete("SELECT `id_formateur`,`nom_formateur`,`prenom_formateur`,`date_debut_contrat`,`date_fin_contrat` FROM `Formateur`")->fetchAll(),
             'Villes' => $this->requete("SELECT * FROM `Ville`")->fetchAll(),
-            'Types' => $this->requete("SELECT * FROM `Type_Formation`")->fetchAll()
+            'Types' => $this->requete("SELECT * FROM `Type_formation`")->fetchAll()
         ];
     }
 
