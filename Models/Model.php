@@ -48,6 +48,37 @@ class Model extends Db
         }
         return $this->requete($sql)->fetchAll();
     }
+
+    public function getByCustom(array $rows, string $table, array $conditionCol, array $operators, array $valeur)
+    {
+
+        $nbChamps = count($rows);
+        $sql = "SELECT ";
+        for ($z = 0; $z < $nbChamps; $z++) {
+            if ($z == 0) {
+                $writeComma = "";
+            } else {
+                $writeComma = ", ";
+            }
+
+            $sql .= $writeComma . $rows[$z];
+        }
+        $sql .= " FROM " . $table;
+
+        $nbCond = count($conditionCol);
+        $sql .= " WHERE ";
+        for ($i = 0; $i < $nbCond; $i++) {
+            if ($i == 0) {
+                $writeAnd = "";
+            } else {
+                $writeAnd = " AND ";
+            }
+
+            $sql .= $writeAnd . $conditionCol[$i] . " " . $operators[$i] . " " . $valeur[$i];
+        }
+
+        return $this->requete($sql)->fetchAll();
+    }
     // Retourne les résultats de la table correspondants au multiples critères
     public function getByIn(array $rows, string $table, array $conditionCol, array $valeur)
     {
@@ -68,8 +99,6 @@ class Model extends Db
         $nbCond = count($conditionCol);
         $sql .= " WHERE ";
         $iterations = 0;
-
-        // var_dump($valeur); echo "<br><br>";
 
         for ($i = 0; $i < $nbCond; $i++) {
             if ($valeur[$i] !== "Aucun") {
@@ -167,9 +196,12 @@ class Model extends Db
 
         $nbCond = count($updateCond);
         $sql .= " WHERE ";
-        for($i = 0; $i < $nbCond; $i++){
-            if($i == 0){$writeAnd = "";}
-            else{$writeAnd = " AND ";}
+        for ($i = 0; $i < $nbCond; $i++) {
+            if ($i == 0) {
+                $writeAnd = "";
+            } else {
+                $writeAnd = " AND ";
+            }
 
             $sql .= $writeAnd . $updateCond[$i] . " = '$id[$i]'";
         }
@@ -277,8 +309,7 @@ class Model extends Db
             }
 
             $sql .= ") GROUP BY " . $table . "." . $whereCol;
-        }
-        else{
+        } else {
             $sql .= " GROUP BY " . $table . "." . $whereCol;
         }
 
@@ -341,7 +372,7 @@ class Model extends Db
                 $sql .= " WHERE " . $champCondJointures[0] . " = " . $CondJointures[0];
             }
         }
-        if($hasGroupBy) $sql .= " GROUP BY " . $groupByField . " " . strtoupper($sens);
+        if ($hasGroupBy) $sql .= " GROUP BY " . $groupByField . " " . strtoupper($sens);
         return $this->requete($sql)->fetchAll();
     }
 
@@ -360,6 +391,25 @@ class Model extends Db
     public function delete(string $table, string $delCond, string $id)
     {
         return $this->requete("DELETE FROM " . $table . " WHERE $delCond = '$id'");
+    }
+
+    public function deleteCustom(string $table, array $delCond, array $operators, array $id)
+    {
+        $sql = "DELETE FROM " . $table;
+
+        $nbCond = count($delCond);
+        $sql .= " WHERE ";
+        for ($i = 0; $i < $nbCond; $i++) {
+            if ($i == 0) {
+                $writeAnd = "";
+            } else {
+                $writeAnd = " AND ";
+            }
+
+            $sql .= $writeAnd . $delCond[$i] . " " . $operators[$i] . " " . $id[$i];
+        }
+
+        return $this->requete($sql);
     }
 
     // Effectue une requête préparées avec des arguments optionnels

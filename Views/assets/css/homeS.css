@@ -22,6 +22,7 @@
     font-weight: 700;
     font-family: Alice, sans-serif;
     font-size: 1rem;
+    cursor: pointer;
 }
 .content-container input[name="Delete"]{
     color: #ff0000;
