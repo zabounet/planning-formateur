@@ -250,7 +250,7 @@ class AdminController extends Controller
                 $periodesInterruption = count($_POST['date-debut-interruption']);
                 for ($i = 0; $i < $periodesInterruption; $i++) {
                     if ($_POST['date-debut-interruption'][$i] !== "" && $_POST['date-fin-interruption'][$i] !== "") {
-                        $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-in terruption'][$i], $currentId);
+                        $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $currentId);
                     }
                 }
             }
@@ -296,7 +296,7 @@ class AdminController extends Controller
             ];
             $interventions_formateurs[] = $formateurs['id'];
         };
-        if (count($interventions_formateurs) > 1) {
+        if (count($interventions_formateurs) > 0) {
 
             //Récupère les interventions des formateurs en fonction de leur ID
             $dates_interventions_formateurs = $formateur->getDatesById(

@@ -663,82 +663,91 @@ class RooterController extends Controller
                         $certif = false;
                         $ran = false;
 
+                        // Vérification si le jour en cours est compris dans les dates de formation en cours
+                        $formation_en_cours = false;
+                        if ($periode_actuelle >= $formations[$x]->date_debut_formation && $periode_actuelle <= $formations[$x]->date_fin_formation) {
+                            $formation_en_cours = true;
 
-                        if (isset($dates_centre_formations[0])) {
-                            for ($c = 0; $c < count($dates_centre_formations); $c++) {
-                                foreach ($dates_centre_formations[$c] as $date_centre) {
-                                    if ($date_centre['id_formation'] === $formations[$x]->id_formation) {
-                                        if ($periode_actuelle >= $date_centre['debut_centre'] && $periode_actuelle <= $date_centre['fin_centre']) {
-                                            $centre = true;
-                                            break;
+                            if (isset($dates_centre_formations[0])) {
+                                for ($c = 0; $c < count($dates_centre_formations); $c++) {
+                                    foreach ($dates_centre_formations[$c] as $date_centre) {
+                                        if ($date_centre['id_formation'] === $formations[$x]->id_formation) {
+                                            if ($periode_actuelle >= $date_centre['debut_centre'] && $periode_actuelle <= $date_centre['fin_centre']) {
+                                                $centre = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        if (isset($dates_ran_formations[0])) {
-                            for ($r = 0; $r < count($dates_ran_formations); $r++) {
-                                foreach ($dates_ran_formations[$r] as $date_ran) {
-                                    // var_dump($date_ran);
-                                    if ($date_ran['id_formation'] === $formations[$x]->id_formation) {
-                                        if ($periode_actuelle >= $date_ran['debut_ran'] && $periode_actuelle <= $date_ran['fin_ran']) {
-                                            $ran = true;
-                                            break;
+                            if (isset($dates_ran_formations[0])) {
+                                for ($r = 0; $r < count($dates_ran_formations); $r++) {
+                                    foreach ($dates_ran_formations[$r] as $date_ran) {
+                                        // var_dump($date_ran);
+                                        if ($date_ran['id_formation'] === $formations[$x]->id_formation) {
+                                            if ($periode_actuelle >= $date_ran['debut_ran'] && $periode_actuelle <= $date_ran['fin_ran']) {
+                                                $ran = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        if (isset($dates_pae_formations[0])) {
-                            for ($p = 0; $p < count($dates_pae_formations); $p++) {
-                                foreach ($dates_pae_formations[$p] as $date_pae) {
-                                    if ($date_pae['id_formation'] === $formations[$x]->id_formation) {
+                            if (isset($dates_pae_formations[0])) {
+                                for ($p = 0; $p < count($dates_pae_formations); $p++) {
+                                    foreach ($dates_pae_formations[$p] as $date_pae) {
+                                        if ($date_pae['id_formation'] === $formations[$x]->id_formation) {
 
-                                        if ($periode_actuelle >= $date_pae['debut_pae'] && $periode_actuelle <= $date_pae['fin_pae']) {
-                                            $pae = true;
-                                            break;
+                                            if ($periode_actuelle >= $date_pae['debut_pae'] && $periode_actuelle <= $date_pae['fin_pae']) {
+                                                $pae = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (isset($dates_certif_formations[0])) {
+                                for ($ce = 0; $ce < count($dates_certif_formations); $ce++) {
+                                    foreach ($dates_certif_formations[$ce] as $date_certif) {
+                                        if ($date_certif['id_formation'] === $formations[$x]->id_formation) {
+                                            if ($periode_actuelle >= $date_certif['debut_certif'] && $periode_actuelle <= $date_certif['fin_certif']) {
+                                                $certif = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (isset($dates_interruption_formations[0])) {
+                                for ($in = 0; $in < count($dates_interruption_formations); $in++) {
+                                    foreach ($dates_interruption_formations[$in] as $date_interruptions) {
+                                        if ($date_interruptions['id_formation'] === $formations[$x]->id_formation) {
+                                            if ($periode_actuelle >= $date_interruptions['debut_interruption'] && $periode_actuelle <= $date_interruptions['fin_interruption']) {
+                                                $interruption = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        if (isset($dates_certif_formations[0])) {
-                            for ($ce = 0; $ce < count($dates_certif_formations); $ce++) {
-                                foreach ($dates_certif_formations[$ce] as $date_certif) {
-                                    if ($date_certif['id_formation'] === $formations[$x]->id_formation) {
-                                        if ($periode_actuelle >= $date_certif['debut_certif'] && $periode_actuelle <= $date_certif['fin_certif']) {
-                                            $certif = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (isset($dates_interruption_formations[0])) {
-                            for ($in = 0; $in < count($dates_interruption_formations); $in++) {
-                                foreach ($dates_interruption_formations[$in] as $date_interruptions) {
-                                    if ($date_interruptions['id_formation'] === $formations[$x]->id_formation) {
-                                        if ($periode_actuelle >= $date_interruptions['debut_interruption'] && $periode_actuelle <= $date_interruptions['fin_interruption']) {
-                                            $interruption = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if ($interruption) {
-                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_interruption'] . ";'></th> ";
+                        if (!$formation_en_cours) {
+                            $html .= "<td style='background-color: black;'></td> ";
                         } else {
-                            if ($centre) {
-                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
-                            } else if ($ran) {
-                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ran'] . ";'></th> ";
-                            } else if ($certif) {
-                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
-                            } else if ($pae) {
-                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
+                            if ($interruption) {
+                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_interruption'] . ";'></th> ";
                             } else {
-                                $html .= "<th style='background-color: var(--emptyCell);'></th>";
+                                if ($centre) {
+                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
+                                } else if ($ran) {
+                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ran'] . ";'></th> ";
+                                } else if ($certif) {
+                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
+                                } else if ($pae) {
+                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
+                                } else {
+                                    $html .= "<th style='background-color: var(--emptyCell);'></th>";
+                                }
                             }
                         }
 
