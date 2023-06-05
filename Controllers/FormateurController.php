@@ -35,11 +35,11 @@ class FormateurController extends Controller
                     $Formateur = $FormateurModel->setSession($Formateur);
                 }
 
-                header('location: /planning/public/');
+                header('location: /planning/public/index.php');
                 exit;
             } else {
                 $_SESSION['erreur'] = 'e-mail ou mot de passe incorrect';
-                header('location: /planning/public/index.php?p=formateur/login');
+                header('location: /planning/public/index.php?p=Formateur/login');
 
                 exit;
             }

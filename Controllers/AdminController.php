@@ -197,7 +197,7 @@ class AdminController extends Controller
                     $_POST['ville']
                 ],
                 ['id_formation'],
-               [$currentId]
+                [$currentId]
             );
 
             // Supprime l'ensemble des informations existantes pour cette formation dans les tables de periodes
@@ -393,37 +393,49 @@ class AdminController extends Controller
             if (isset($_POST['date-debut-entreprise'])) {
                 $periodesEntreprise = count($_POST['date-debut-entreprise']);
                 for ($i = 0; $i < $periodesEntreprise; $i++) {
-                    $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-entreprise'][$i] !== "" && $_POST['date-fin-entreprise'][$i] !== "") {
+                        $database->insertPeriode("Date_pae", $_POST['date-debut-entreprise'][$i], $_POST['date-fin-entreprise'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             if (isset($_POST['date-debut-centre'])) {
                 $periodesCentre = count($_POST['date-debut-centre']);
                 for ($i = 0; $i < $periodesCentre; $i++) {
-                    $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-centre'][$i] !== "" && $_POST['date-fin-centre'][$i] !== "") {
+                        $database->insertPeriode("Date_centre", $_POST['date-debut-centre'][$i], $_POST['date-fin-centre'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             if (isset($_POST['date-debut-ran'])) {
                 $periodesRan = count($_POST['date-debut-ran']);
                 for ($i = 0; $i < $periodesRan; $i++) {
-                    $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-ran'][$i] !== "" && $_POST['date-fin-ran'][$i] !== "") {
+                        $database->insertPeriode("Date_ran", $_POST['date-debut-ran'][$i], $_POST['date-fin-ran'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             if (isset($_POST['date-debut-certification'])) {
                 $periodesCertif = count($_POST['date-debut-certification']);
                 for ($i = 0; $i < $periodesCertif; $i++) {
-                    $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-certification'][$i] !== "" && $_POST['date-fin-certification'][$i] !== "") {
+                        $database->insertPeriode("Date_certif", $_POST['date-debut-certification'][$i], $_POST['date-fin-certification'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             if (isset($_POST['date-debut-interruption'])) {
                 $periodesInterruption = count($_POST['date-debut-interruption']);
                 for ($i = 0; $i < $periodesInterruption; $i++) {
-                    $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-interruption'][$i] !== "" && $_POST['date-fin-interruption'][$i] !== "") {
+                        $database->insertPeriode("Interruption", $_POST['date-debut-interruption'][$i], $_POST['date-fin-interruption'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             if (isset($_POST['date-debut-intervention'])) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
-                    $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation['MAX(id_formation)']);
+                    if ($_POST['date-debut-intervention'][$i] !== "" && $_POST['date-fin-intervention'][$i] !== "") {
+                        $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $_POST['formateur'][$i], $idFormation['MAX(id_formation)']);
+                    }
                 }
             }
             Refresh::refresh('/planning/public/index.php?p=admin/ajouterFormation');
@@ -908,7 +920,7 @@ class AdminController extends Controller
                 $dates_teletravail_formateurs[] = $teletravail_formateurs;
             }
 
-            if(count($formateurs) < 1){
+            if (count($formateurs) < 1) {
                 $teletravail_formateurs = [
                     "jours" => "Rien",
                     "prise_effet" => "Rien",
@@ -921,15 +933,16 @@ class AdminController extends Controller
 
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
             $formateurs = $FormateurModel->getDatesById(
-                ['Formateur.id_formateur','Formateur.nom_formateur','Formateur.prenom_formateur', 'type_contrat_formateur','Formateur.date_debut_contrat','Formateur.date_fin_contrat'], 
-                ['date_debut_intervention','date_fin_intervention','id_formation'], 
-                'Formateur', 
-                ['Date_intervention','Date_intervention','Date_intervention'], 
-                ['Date_intervention'], 
-                ['Formateur'], 
-                ['id_formateur'], 
-                'id_formateur', 
-                $id_formateur);
+                ['Formateur.id_formateur', 'Formateur.nom_formateur', 'Formateur.prenom_formateur', 'type_contrat_formateur', 'Formateur.date_debut_contrat', 'Formateur.date_fin_contrat'],
+                ['date_debut_intervention', 'date_fin_intervention', 'id_formation'],
+                'Formateur',
+                ['Date_intervention', 'Date_intervention', 'Date_intervention'],
+                ['Date_intervention'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $id_formateur
+            );
 
             foreach ($formateurs as $formateur) {
                 $date_debut_activite = $formateur['date_debut_intervention'];
