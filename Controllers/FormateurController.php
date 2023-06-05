@@ -35,11 +35,11 @@ class FormateurController extends Controller
                     $Formateur = $FormateurModel->setSession($Formateur);
                 }
 
-                header('location: /planning/public/');
+                header('location: /planning/public/index.php');
                 exit;
             } else {
                 $_SESSION['erreur'] = 'e-mail ou mot de passe incorrect';
-                header('location: /planning/public/index.php?p=formateur/login');
+                header('location: /planning/public/index.php?p=Formateur/login');
 
                 exit;
             }
@@ -179,7 +179,7 @@ class FormateurController extends Controller
 
 
                     //l'utilisateur existe
-                    if (password_verify($pass, $Formateur['mdp_formateur'])) {
+                    if (password_verify($pass, $Formateur->mdp_formateur)) {
                         if (!empty($_POST['new_mdp']) && $_POST['new_mdp'] === $_POST['conf_new_mdp']) {
 
                             $new_mdp = password_hash($_POST['new_mdp'], PASSWORD_ARGON2ID, Form::Argon2IDOptions());
