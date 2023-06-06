@@ -101,11 +101,13 @@ class Rooter
                 }
                 // Si aucune session n'est ouverte
                 else {
+                    $formateur = new FormateurController;
+                    $formateur->login();
                 }
             }
         } else {
-            $controller = new RooterController;
-            $controller->index();
+            $home = new RooterController;
+            $home->index();
         }
     }
 }
