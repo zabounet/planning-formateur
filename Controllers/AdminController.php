@@ -460,7 +460,7 @@ class AdminController extends Controller
                     }
                 }
             }
-            Refresh::refresh('/planning/public/index.php?p=admin/ajouterFormation');
+            Refresh::refresh('/planning/public/index.php?p=admin/formationsHome');
         }
 
         $infos = new FormationModel;

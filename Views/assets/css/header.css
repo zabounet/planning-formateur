@@ -255,10 +255,10 @@ form #part2 .sect h2 {
 
 form #part2 .sect .grns,
 form #part2 .sect .formateurs {
-    width: 60%;
+    width: 85%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem 3rem;
     margin-bottom: 12px;
 }

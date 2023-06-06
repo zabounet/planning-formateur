@@ -53,8 +53,8 @@ class FormateurModel extends Model
         string $mail_formateur,
         string $mdp,
         string $type_contrat,
-        string $date_debut_contrat,
-        string $date_fin_contrat,
+        /*string|null*/ string $date_debut_contrat,
+        /*string|null*/ string $date_fin_contrat,
         string $permissions_utilisateur,
         string $numero_GRN,
         string $id_ville
