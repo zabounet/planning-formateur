@@ -76,4 +76,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 250);
         }
     })
+
+    var grnCheck = document.querySelectorAll('.grnCheck');
+    var formateurCheck = document.querySelectorAll('.formateurCheck');
+    var checkFormateurs = document.querySelector('#checkFormateurs');
+    var checkGrns = document.querySelector('#checkGrns');
+
+    if (checkFormateurs) {
+        checkFormateurs.addEventListener('click', function () {
+            for (let i = 0; i < formateurCheck.length; i++) {
+                if (formateurCheck[i].checked == true) formateurCheck[i].checked = false;
+                else if (formateurCheck[i].checked == false) formateurCheck[i].checked = true;
+            }
+        });
+    };
+
+    if (checkGrns) {
+        checkGrns.addEventListener('click', function () {
+            for (let i = 0; i < grnCheck.length; i++) {
+                if (grnCheck[i].checked == true) grnCheck[i].checked = false;
+                else if (grnCheck[i].checked == false) grnCheck[i].checked = true;
+            }
+        });
+    }
 })

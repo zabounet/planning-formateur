@@ -57,7 +57,7 @@
                     <?php if($link === "Formateur home"):?>
                         <li><a href="/planning/public/index.php?p=admin/inscriptionFormateur">Inscrire un nouveau formateur</a></li>
                         <li><a href="/planning/public/index.php?p=admin/activiteFormateurs">Consulter l'activité des formateurs</a></li>
-                    <?php elseif (isset($infosCurrent) && $link === "Modifier " . $infosCurrent[0]->prenom_formateur . " " . $infosCurrent[0]->nom_formateur) : ?>
+                    <?php elseif ($link !== "Formateur home") : ?>
                         <li><a href="/planning/public/index.php?p=admin/formateursHome">Retourner à la liste des formateurs</a></li>
                     <?php endif; ?>
                     <li><a href="/planning/public/index.php?p=admin/formationsHome">Gérer les formations</a></li>

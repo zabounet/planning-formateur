@@ -246,7 +246,10 @@ INSERT INTO `GRN` (`numero_grn`, `nom_grn`) VALUES
 (165, 'Tourisme et loisirs'),
 (166, 'Hotellerie et restauration'),
 (178, 'Metiers de la mediation-insertion-formation'),
-(179, 'Pre-professionnalisation');
+(179, 'Pre-professionnalisation'),
+(162, 'Fonction Commerciale'),
+(173, 'Conduite Routiere'),
+(177, 'Autres Services entreprises et collectivités');
 
 -- --------------------------------------------------------
 

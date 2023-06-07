@@ -82,7 +82,7 @@
                                 <?php endif; ?>
                             <?php $nombre++;
                             endforeach ?>
-
+                            <button type="button" id="checkFormateurs">Cocher/décocher tout</button>
                             <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
                         </div>
                     </div>
@@ -95,8 +95,8 @@
                 <li class="color"><span>Présentiel</span>
                     <div style="background-color:<?= $_SESSION['color']['couleur_centre']; ?>;"></div>
                 </li>
-                <li class="color"><span>Télétravail</span>
-                    <div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div>
+                <li class="color"><span>Autre</span>
+                    <div style="background-color:<?= $_SESSION['color']['couleur_autre']; ?>;"></div>
                 </li>
                 <li class="color"><span>Vacs attente</span>
                     <div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div>

@@ -230,7 +230,7 @@
 
                     <div>
                         <span>Télétravail</span>
-                        <input type="color" name="couleur_tt" value="<?= $_SESSION['color']['couleur_tt']; ?>" id="">
+                        <input type="color" name="couleur_autre" value="<?= $_SESSION['color']['couleur_autre']; ?>" id="">
                     </div>
 
                     <div>

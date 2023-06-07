@@ -137,22 +137,23 @@
                             foreach ($GRNs as $GRN) : ?>
                                 <?php if (empty($_POST)) : ?>
                                     <label for="grns">
-                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]" class="grnCheck"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php elseif (!empty($_POST) && in_array($GRN->numero_grn, $data['grns'])) : ?>
                                     <label for="grns">
-                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <input checked type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]" class="grnCheck"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php else : ?>
                                     <label for="grns">
-                                        <input type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
+                                        <input type="checkbox" value="<?= $GRN->numero_grn ?>" name="grns[]" class="grnCheck"><span> <?= $GRN->numero_grn . ' - ' . $GRN->nom_grn ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php endif; ?>
                             <?php $nb++;
                             endforeach ?>
+                            <button type="button" id="checkGrns">Cocher/décocher tout</button>
                             <input type="hidden" name="nbGRNs" value="<?= $nb; ?>">
                         </div>
                     </div>
@@ -167,22 +168,23 @@
                                 }; ?>
                                 <?php if (empty($_POST)) : ?>
                                     <label for="formateurs">
-                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]" class="formateurCheck"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php elseif (!empty($_POST) && in_array($formateur->id_formateur, $data['formateurs'])) : ?>
                                     <label for="formateurs">
-                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <input checked type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]" class="formateurCheck"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php else : ?>
                                     <label for="formateurs">
-                                        <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
+                                        <input type="checkbox" value="<?= $formateur->id_formateur ?>" name="formateurs[]" class="formateurCheck"><span> <?= strtoupper($formateur->nom_formateur) . ' ' . $formateur->prenom_formateur ?></span>
                                         <span class="checkmark"></span>
                                     </label>
                                 <?php endif; ?>
                             <?php $nombre++;
                             endforeach ?>
+                            <button type="button" id="checkFormateurs">Cocher/décocher tout</button>
                             <input type="hidden" name="nbFormateurs" value="<?= $nombre; ?>">
                         </div>
                     </div>
@@ -199,7 +201,7 @@
                 <li class="color"><span>Interruptions</span><div style="background-color:<?= $_SESSION['color']['couleur_interruption']; ?>;"></div></li>
                 <li class="color"><span>Vacs attente</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_demandees']; ?>;"></div></li>
                 <li class="color"><span>Vacs ok</span><div style="background-color:<?= $_SESSION['color']['couleur_vacance_validee']; ?>;"></div></li>
-                <li class="color"><span>Télétravail</span><div style="background-color:<?= $_SESSION['color']['couleur_tt']; ?>;"></div></li>
+                <li class="color"><span>Autre</span><div style="background-color:<?= $_SESSION['color']['couleur_autre']; ?>;"></div></li>
                 <li class="color"><span>Férié</span><div style="background-color:<?= $_SESSION['color']['couleur_ferie']; ?>;"></div></li>
                 <li class="color"><span>Week-end</span><div style="background-color:<?= $_SESSION['color']['couleur_weekend']; ?>;"></div></li>
                 <li class="color"><span>MNSP</span><div style="background-color:<?= $_SESSION['color']['couleur_MNSP']; ?>;"></div></li>

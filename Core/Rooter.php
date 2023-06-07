@@ -17,7 +17,7 @@ class Rooter
         register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
         // Durée de vie du cookie de session (en secondes)
-        $sessionLifetime = 900;
+        $sessionLifetime = 1800;
 
         // Définit la durée de vie du cookie de session afin qu'il expire après 10 minutes d'inactivité. 
         // Cela permet de gérer la persistance de la session dans le navigateur du client.
