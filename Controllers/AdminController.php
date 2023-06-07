@@ -636,19 +636,7 @@ class AdminController extends Controller
         }
 
 
-        if (Form::validate($_POST, ['intervention', 'delete'])) {
-
-            $database = new FormateurModel;
-
-            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
-
-            $database->delete("Date_intervention", "id_intervention", $_POST['intervention'][0]);
-
-            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
-            exit;
-        }
-
-        if (Form::validate($_POST, ['MNSP', 'delete'])) {
+        if (Form::validate($_POST, ['intervention', 'Delete'])) {
 
             $database = new FormateurModel;
 
@@ -660,13 +648,27 @@ class AdminController extends Controller
             exit;
         }
 
-        if (Form::validate($_POST, ['perfectionnement'])) {
+       
+
+        if (Form::validate($_POST, ['MNSP', 'Delete'])) {
 
             $database = new FormateurModel;
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
-            $database->delete("Date_intervention", "id_intervention", $_POST['intervention']);
+            $database->delete("Date_MNSP", "id_MNSP", $_POST['MNSP']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
+        if (Form::validate($_POST, ['perfectionnement', 'Delete'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("Date_perfectionnement", "id_perfectionnement ", $_POST['perfectionnement'][0]);
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
@@ -723,6 +725,24 @@ class AdminController extends Controller
             exit;
         }
 
+        if (Form::validate($_POST, ['date-debut-vacance', 'date-fin-vacance'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            if (isset($_POST['date-debut-vacance'])) {
+                $periodesFormateurs = count($_POST['date-debut-vacance']);
+                for ($i = 0; $i < $periodesFormateurs; $i++) {
+                    //ici j'ai utiliser le reqeute de inser intervention car ca fait le taf pour vacance a cause de validation j'ai besoin de 5 paramétre
+                    $database->insertPeriodeIntervention("Date_vacance", $_POST['date-debut-vacance'][$i], $_POST['date-fin-vacance'][$i], 1, $currentId);
+                }
+            }
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
         $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
@@ -748,6 +768,7 @@ class AdminController extends Controller
         $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention', 'id_formation'], 'Date_intervention', ['id_formateur'], [$currentId]);
         $infosMNSP = $formateur->getBy(['id_MNSP', 'date_debut_MNSP', 'date_fin_MNSP'], 'Date_MNSP', ['id_formateur'], [$currentId]);
         $infosPerfectionnement = $formateur->getBy(['id_perfectionnement', 'date_debut_perfectionnement', 'date_fin_perfectionnement'], 'Date_perfectionnement', ['id_formateur'], [$currentId]);
+        $infosVacances = $formateur->getBy(['id_vacance', 'date_debut_vacances', 'date_fin_vacances'], 'date_vacance', ['id_formateur','validation'], [$currentId,1]);
 
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
@@ -757,7 +778,7 @@ class AdminController extends Controller
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement'), 'formateurs');
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances'), 'formateurs');
         };
     }
 
