@@ -57,7 +57,7 @@
         <input type="submit" value="Modifier" name="inscription">
     </form>
 
-    <hr>
+    <hr class="fin-list">
 
     <h2>Liste des périodes d'intervention du formateur</h2>
     <?php foreach ($infosInterventions as $intervention) : ?>
@@ -122,27 +122,53 @@
 
     <hr>
 
+    <h2>Liste des périodes de vacance du formateur</h2>
+    
+    <?php foreach ($infosVacances as $vacance) : ?>
+        <form method="post">
+            <p>Date de début : <?php $debut = new DateTime($vacance->date_debut_vacances);
+                                echo $debut->format('d-m-Y'); ?></p>
+            <p>Date de fin : <?php $fin = new DateTime($vacance->date_fin_vacances);
+                                echo $fin->format('d-m-Y'); ?></p>
+            <input type="hidden" name="vacance" value="<?= $vacance->id_vacance; ?>">
+            <input class="delete" type="button" value="Supprimer la période">
+            <div class="confirm">
+                <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                <input type="submit" name="Delete" value="Confirmer">
+            </div>
+        </form>
+    <?php endforeach; ?>
+
+    <hr class="fin-list">
+
     <form method="post">
         <h2>Ajouter une période d'intervention pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="intervention">Ajouter intervention</button>
+            <input type="submit" value="Valider">
         </div>
-        <input type="submit" value="Valider">
     </form>
 
     <form method="post">
         <h2>Ajouter une période de MNSP pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="MNSP">Ajouter MSNP</button>
+            <input type="submit" value="Valider">
         </div>
-        <input type="submit" value="Valider">
     </form>
 
     <form method="post">
         <h2>Ajouter une période de perfectionnement pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="perfectionnement">Ajouter perfectionnement</button>
+            <input type="submit" value="Valider">
         </div>
-        <input type="submit" value="Valider">
+    </form>
+    <form method="post">
+        <h2>Ajouter une période de vacance pour ce formateur</h2>
+        <div>
+            <button type="button" class="add-date-fields" data="vacance">Ajouter vacance</button>
+            <input type="submit" value="Valider">
+        </div>
     </form>
 </section>
