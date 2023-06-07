@@ -254,10 +254,10 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
                         continue;
                     }; ?>
 
-                    <?php if ($formateurs->id_formateur === $infosCurrent->id_formateur) : ?>
+                    <?php if ($formateurs->id_formateur === $infosCurrent['id_formateur']) : ?>
                         <option selected value="<?= $formateurs->id_formateur ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
                     <?php else : ?>
-                        <option selected value="<?= $formateurs->id_formateur; ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
+                        <option value="<?= $formateurs->id_formateur; ?>"><?= $formateurs->nom_formateur . ' ' . $formateurs->prenom_formateur; ?></option>
                     <?php endif; ?>
 
                 <?php endforeach; ?>

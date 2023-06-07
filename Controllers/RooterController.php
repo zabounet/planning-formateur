@@ -172,7 +172,6 @@ class RooterController extends Controller
                     $dates_teletravail_formateurs[] = $teletravail_formateurs;
                 }
 
-
                 // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
                 $formateurs = $databaseFormateur->getDatesById(
                     ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'Formation.id_formation'],
@@ -656,6 +655,9 @@ class RooterController extends Controller
                     $html .= '</tr> <tr> <th> Periodes </th>';
                     for ($i = 0; $i < $nbJours; $i++) {
                         $periode_actuelle = $current_date_dayForPeriods->format('Y-m-d');
+                        $weekendFormation = $current_date_dayForPeriods->format('N');
+                        $periodeJourFeries = $current_date_dayForPeriods->format('m-d');
+
 
                         $interruption = false;
                         $centre = false;
@@ -734,19 +736,31 @@ class RooterController extends Controller
                         if (!$formation_en_cours) {
                             $html .= "<td style='background-color: black;'></td> ";
                         } else {
-                            if ($interruption) {
-                                $html .= "<th style='background-color:" . $_SESSION['color']['couleur_interruption'] . ";'></th> ";
+                            if (
+                                in_array($periodeJourFeries, $joursFeries)
+                                || in_array($periode_actuelle, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                || in_array($periode_actuelle, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                            ) {
+                                $html .= "<td style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
                             } else {
-                                if ($centre) {
-                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
-                                } else if ($ran) {
-                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ran'] . ";'></th> ";
-                                } else if ($certif) {
-                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
-                                } else if ($pae) {
-                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
+                                if ($weekendFormation === "6" || $weekendFormation === "7") {
+                                    $html .= "<th style='background-color:" . $_SESSION['color']['couleur_weekend'] . ";'></th>";
                                 } else {
-                                    $html .= "<th style='background-color: var(--emptyCell);'></th>";
+                                    if ($interruption) {
+                                        $html .= "<th style='background-color:" . $_SESSION['color']['couleur_interruption'] . ";'></th> ";
+                                    } else {
+                                        if ($pae) {
+                                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
+                                        } else if ($ran) {
+                                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_ran'] . ";'></th> ";
+                                        } else if ($certif) {
+                                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
+                                        } else if ($centre) {
+                                            $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
+                                        } else {
+                                            $html .= "<th style='background-color: var(--emptyCell);'></th>";
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -847,8 +861,8 @@ class RooterController extends Controller
 
                             $formateurAvoirTeletravail = 0;
                             foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] === "1") {
-                                    if ($periode_teletravail['prise_effet'] >= $periode) {
+                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
+                                    if ($periode_teletravail['prise_effet'] <= $periode) {
                                         $jours_array = explode(',', $periode_teletravail['jours']);
                                         foreach ($jours_array as $jour) {
                                             if ($jourLettre === $joursSemaine[$jour]) {
@@ -859,6 +873,7 @@ class RooterController extends Controller
                                     }
                                 }
                             }
+
 
                             // Vérification si le formateur a des vacances pour le jour en cours et si elles sont validées ou en attente
                             $formateurAvoirVacances = 0;

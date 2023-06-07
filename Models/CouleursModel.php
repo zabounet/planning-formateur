@@ -12,7 +12,7 @@ class CouleursModel extends Model
     protected $couleur_ran;               
     protected $couleur_vacance_demandees; 
     protected $couleur_vacance_validee;   
-    protected $couleur_tt;                
+    protected $couleur_autre;                
     protected $couleur_ferie;             
     protected $couleur_weekend;           
     protected $couleur_interruption;      
@@ -45,7 +45,7 @@ class CouleursModel extends Model
                                   string $couleur_ran, 
                                   string $couleur_vacance_demandees, 
                                   string $couleur_vacance_validee,
-                                  string $couleur_tt ,
+                                  string $couleur_autre ,
                                   string $couleur_ferie ,
                                   string $couleur_weekend ,
                                   string $couleur_interruption ,
@@ -58,7 +58,7 @@ class CouleursModel extends Model
         `couleur_ran` = ?, 
         `couleur_vacance_demandees` = ?, 
         `couleur_vacance_validee` = ?, 
-        `couleur_tt` = ?, 
+        `couleur_autre` = ?, 
         `couleur_ferie` = ?, 
         `couleur_weekend` = ?, 
         `couleur_interruption` = ?, 
@@ -71,7 +71,7 @@ class CouleursModel extends Model
             $couleur_ran,
             $couleur_vacance_demandees,
             $couleur_vacance_validee,
-            $couleur_tt ,
+            $couleur_autre ,
             $couleur_ferie ,
             $couleur_weekend ,
             $couleur_interruption ,
@@ -138,13 +138,13 @@ class CouleursModel extends Model
         return $this->couleur_vacance_validee;
     }
 
-    public function setCouleurTt($couleur_tt){
-        $this->couleur_tt = $couleur_tt;
+    public function setCouleurTt($couleur_autre){
+        $this->couleur_autre = $couleur_autre;
         return $this;
     }
     
     public function getCouleurTt(){
-        return $this->couleur_tt;
+        return $this->couleur_autre;
     }
 
     public function setCouleurFerie($couleur_ferie){

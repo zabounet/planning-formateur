@@ -64,7 +64,7 @@
         <form method="post">
             <p>Date de début : <?php $debut = new DateTime($intervention->date_debut_intervention);
                                 echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($intervention->date_debut_intervention);
+            <p>Date de fin : <?php $fin = new DateTime($intervention->date_fin_intervention);
                                 echo $fin->format('d-m-Y'); ?></p>
             <p>Formation :
                 <?php foreach ($infosFormation as $formation) {
@@ -91,7 +91,7 @@
         <form method="post">
             <p>Date de début : <?php $debut = new DateTime($mnsp->date_debut_MNSP);
                                 echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($mnsp->date_debut_MNSP);
+            <p>Date de fin : <?php $fin = new DateTime($mnsp->date_fin_MNSP);
                                 echo $fin->format('d-m-Y'); ?></p>
             <input type="hidden" name="MNSP" value="<?= $mnsp->id_MNSP; ?>">
             <input class="delete" type="button" value="Supprimer la période">
@@ -109,7 +109,7 @@
         <form method="post">
             <p>Date de début : <?php $debut = new DateTime($perfectionnement->date_debut_perfectionnement);
                                 echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($perfectionnement->date_debut_perfectionnement);
+            <p>Date de fin : <?php $fin = new DateTime($perfectionnement->date_fin_perfectionnement);
                                 echo $fin->format('d-m-Y'); ?></p>
             <input type="hidden" name="perfectionnement" value="<?= $perfectionnement->id_perfectionnement; ?>">
             <input class="delete" type="button" value="Supprimer la période">

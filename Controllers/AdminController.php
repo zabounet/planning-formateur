@@ -566,7 +566,7 @@ class AdminController extends Controller
         if (Form::validate($_POST, ['inscription'])) {
 
             // verifier le mail
-            $mail = $_POST['mail'];
+            $mail = $_POST['email'];
             // if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
 
             $formateur = new FormateurModel;
@@ -601,7 +601,7 @@ class AdminController extends Controller
 
 
             $_SESSION['success'] = "Formateur ajouté avec succès";
-            // Refresh::refresh('/planning/public/index.php?p=admin/inscriptionFormateur');
+            Refresh::refresh('/planning/public/index.php?p=admin/homeFormateurs');
             exit;
         } else if (!empty($_POST) && !Form::validate($_POST, ['inscription'])) {
             $_SESSION['error'] = "Formulaire incomplet";

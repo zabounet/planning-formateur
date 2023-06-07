@@ -90,7 +90,7 @@ input{
     font-size: 21px;
 }
 
-.form-container input[type="password"] {
+.form-container input#pass {
     width: 90% !important ;
     font-size: 21px;
 

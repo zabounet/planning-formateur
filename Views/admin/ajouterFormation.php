@@ -43,7 +43,7 @@
             </label>
 
             <label for="description"> Description : 
-                <textarea id="description" name="description" placeholder="Exemple: Concepteur Developpeur d'Applications" style="resize : none;"></textarea>
+                <textarea autocomplete="on" id="description" name="description" placeholder="Exemple: Concepteur Developpeur d'Applications" style="resize : none;"></textarea>
             </label>
 
             <label for="offre"> Offre : 
@@ -85,6 +85,7 @@
             <div class="col2">
                 <h3>Périodes d'activité en centre <span class="legend">*</span></h3>
                 <div class="date-container">
+                    
                     <button type="button" class="add-date-fields" data="centre"><span>+</span></button>
                 </div>
 

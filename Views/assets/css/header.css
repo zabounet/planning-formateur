@@ -231,6 +231,8 @@ form #part2.dropmenu {
     opacity: 1;
     width: 81vw;
     height: max-content;
+    max-height: 70vh;
+    overflow: scroll;
     left: -33.3%;
     padding-bottom: 1rem;
     color: white;

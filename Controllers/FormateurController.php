@@ -345,7 +345,7 @@ class FormateurController extends Controller
                     $couleur_ran = $_POST['ran'];
                     $couleur_vacance_demandees = $_POST['vacance_demandees'];
                     $couleur_vacance_validee = $_POST['vacance_validee'];
-                    $couleur_tt =  $_POST['couleur_tt'];
+                    $couleur_autre =  $_POST['couleur_autre'];
                     $couleur_ferie = $_POST['ferie'];
                     $couleur_weekend = $_POST['weekend'];
                     $couleur_interruption = $_POST['interruption'];
@@ -353,7 +353,7 @@ class FormateurController extends Controller
                     $couleur_Perfectionment = $_POST['perfectionment'];
 
                     $Couleurs = new CouleursModel();
-                    $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_tt, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_Perfectionment);
+                    $resultat = $Couleurs->updateCouleur($couleur_centre, $couleur_pae, $couleur_certif, $couleur_ran, $couleur_vacance_demandees, $couleur_vacance_validee, $couleur_autre, $couleur_ferie, $couleur_weekend, $couleur_interruption, $couleur_MNSP, $couleur_Perfectionment);
                     if ($resultat) {
                         $_SESSION['color'] = $_POST;
                         $_SESSION['success_color'] = "Les nouvelles couleurs ont bien été prise en compte.";
