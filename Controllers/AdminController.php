@@ -670,6 +670,92 @@ class AdminController extends Controller
         }
 
 
+          //choisir les jours de teletravail
+
+          if (Form::validate($_POST, ['jourTeletravail'])) {
+            // initialisation du tableau qui va contenir les jours sélectionnés
+            $jours = array();
+            // initialisation du compteur de jours sélectionnés
+            $nbreJours = 0;
+
+
+            $idFormateur = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+            // date de jour pour la date de demande
+            $dateDemandeChangement = date('Y-m-d');
+
+            // vérification des jours sélectionnés
+            if (isset($_POST['lundi'])) {
+                $jours[] = "lundi";
+                $nbreJours++;
+            }
+            if (isset($_POST['mardi'])) {
+                $jours[] = "mardi";
+                $nbreJours++;
+            }
+            if (isset($_POST['mercredi'])) {
+                $jours[] = "mercredi";
+                $nbreJours++;
+            }
+            if (isset($_POST['jeudi'])) {
+                $jours[] = "jeudi";
+                $nbreJours++;
+            }
+            if (isset($_POST['vendredi'])) {
+                $jours[] = "vendredi";
+                $nbreJours++;
+            }
+
+            if ($nbreJours == 0 && empty($teletravaiValide['jour_teletravail'])) {
+                $_SESSION['error_teletravail'] = "Vous n'avez rien selectionné.";
+            } elseif ($nbreJours > 2) {
+                $_SESSION['error_teletravail'] = "Vous ne pouvez pas selectionner plus de 2 jours.";
+            } else {
+
+                $joursteletravail = implode(",", $jours); // conversion du tableau en une chaîne de caractères séparés par des virgules
+                $date_prise_effet = $_POST['date_prise_effet'];
+                $teletravail = new FormateurModel();
+
+                // manip pour envoiyer un reqeutte vers table notification
+                $jourstele = implode(" et ", $jours);
+                $description = htmlentities(" La manager a saisi pour vouz le télétravail pour " . $jourstele . " à compter du " . date('d-m-Y', strtotime($date_prise_effet)));
+                $date_notification = date('Y-m-d H:i:s');
+
+                $table = "Date_teletravail";
+                $joursteletravail = implode(",", $jours);
+                $teletravail = new FormateurModel();
+
+                $ttValidExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','='],[$idFormateur, '1']);
+                $ttExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','IS'],[$idFormateur, 'Null']);
+
+                if(!empty($ttExists) || !empty($ttValidExists)){
+                    $resultat = $teletravail->updateJoursTeletravailParAdmin($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+
+                    if ($resultat) {
+                        $_SESSION['success_teletravail'] = "Votre demande a été mise à jour avec succès.";
+                    } else {
+                        $_SESSION['error_teletravail'] = "Une erreur s'est produite lors de l'enregistrement. Veuillez réessayer après quelques instants.";
+                    }
+                    
+                    Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $idFormateur);
+                    exit;
+                }
+                $role = 'admin';
+                $resultat = $teletravail->createJoursTeletravailParAdmin($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                $demande = $teletravail->creatrNotification($description, $joursteletravail, $date_notification, $role, $idFormateur, $table);
+
+                if ($resultat) {
+                    $_SESSION['success_teletravail'] = "Les jours de télétravail ont été enregistrés avec succès.";
+                } else {
+                    $_SESSION['error_teletravail'] = "Une erreur s'est produite lors de l'enregistrement. Veuillez réessayer après quelques instants.";
+                }
+
+                Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $idFormateur);
+            exit;
+            }
+            
+        }
+
+
         if (Form::validate($_POST, ['intervention', 'Delete'])) {
 
             $database = new FormateurModel;
@@ -707,6 +793,19 @@ class AdminController extends Controller
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
         }
+
+        if (Form::validate($_POST, ['vacance', 'Delete'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("date_vacance", "id_vacance ", $_POST['vacance']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
 
         if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention'])) {
 
@@ -803,7 +902,7 @@ class AdminController extends Controller
         $infosMNSP = $formateur->getBy(['id_MNSP', 'date_debut_MNSP', 'date_fin_MNSP'], 'Date_MNSP', ['id_formateur'], [$currentId]);
         $infosPerfectionnement = $formateur->getBy(['id_perfectionnement', 'date_debut_perfectionnement', 'date_fin_perfectionnement'], 'Date_perfectionnement', ['id_formateur'], [$currentId]);
         $infosVacances = $formateur->getBy(['id_vacance', 'date_debut_vacances', 'date_fin_vacances'], 'date_vacance', ['id_formateur','validation'], [$currentId,1]);
-
+        $teletravailActuel = $formateur->setSessionTeletravail($currentId);
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
 
@@ -812,7 +911,7 @@ class AdminController extends Controller
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances'), 'formateurs');
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances','teletravailActuel'), 'formateurs');
         };
     }
 

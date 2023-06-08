@@ -97,3 +97,85 @@ h2 {
     cursor: pointer;
     font-size: 14px;
 }
+/* les jours de semain */
+
+.teletravail {
+    height: 25rem;
+  }
+  
+  .demande-teletravail {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 21em;
+    justify-content: space-between;
+  }
+
+  .notif-demande-teletravail b{
+    color: #f00;
+  }
+  .app {
+    display: flex;
+    margin-bottom: 2em;
+    justify-content: center;
+  }
+  .prise-effet{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .prise-effet label{
+    font-size: 1.3rem;
+    margin-bottom: .2rem  ;
+  }
+  
+  
+  article {
+    position: relative;
+    width: 140px;
+    height: 100px;
+    margin: 5px;
+    float: left;
+    border: 2px solid black;
+    box-sizing: border-box;
+  }
+  
+  article div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 25px;
+    transition: .5s ease;
+  }
+  
+  article input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 140px;
+    height: 100px;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  input[type=checkbox]:checked~div {
+    background-color: #50f29e;
+  }
+  
+  
+  @keyframes slidein {
+    from {
+      margin-top: 100%;
+      width: 300%;
+    }
+  
+    to {
+      margin: 0%;
+      width: 100%;
+    }
+  }
+  
