@@ -219,7 +219,7 @@
 
     <hr>
 
-    <h2>Liste des périodes d'autre du formateur</h2>
+    <h2>Liste des autres périodes du formateur</h2>
     <?php if(!empty($infosAutres)):?>
     <?php foreach ($infosAutres as $autre) : ?>
         <form method="post">
@@ -274,7 +274,7 @@
         </div>
     </form>
     <form method="post">
-        <h2>Ajouter une période d'autre pour ce formateur</h2>
+        <h2>Ajouter une période autre pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="autre">Ajouter autre</button>
             <input type="submit" value="Valider">
