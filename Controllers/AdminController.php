@@ -601,7 +601,7 @@ class AdminController extends Controller
 
 
             $_SESSION['success'] = "Formateur ajouté avec succès";
-            Refresh::refresh('/planning/public/index.php?p=admin/homeFormateurs');
+            Refresh::refresh('/planning/public/index.php?p=admin/formateursHome');
             exit;
         } else if (!empty($_POST) && !Form::validate($_POST, ['inscription'])) {
             $_SESSION['error'] = "Formulaire incomplet";
@@ -806,6 +806,18 @@ class AdminController extends Controller
             exit;
         }
 
+        if (Form::validate($_POST, ['autre', 'Delete'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            $database->delete("date_autre", "id_autre ", $_POST['autre']);
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
 
         if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention'])) {
 
@@ -876,6 +888,25 @@ class AdminController extends Controller
             exit;
         }
 
+        if (Form::validate($_POST, ['intitule-autre','date-debut-autre', 'date-fin-autre'])) {
+
+            $database = new FormateurModel;
+
+            $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+
+            if (isset($_POST['date-debut-autre'])) {
+                $periodesFormateurs = count($_POST['date-debut-autre']);
+                for ($i = 0; $i < $periodesFormateurs; $i++) {
+                    //ici j'ai utiliser le reqeute de inser intervention car ca fait le taf pour vacance a cause de validation j'ai besoin de 5 paramétre
+                    $database->insertPeriodeIntervention("Date_autre", $_POST['date-debut-autre'][$i], $_POST['date-fin-autre'][$i], $_POST['intitule-autre'][$i], $currentId);
+                }
+            }
+
+            Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
+            exit;
+        }
+
+        
         $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
@@ -905,13 +936,14 @@ class AdminController extends Controller
         $teletravailActuel = $formateur->setSessionTeletravail($currentId);
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
+        $infosAutres = $formateur->getBy(['id_autre', 'date_debut_autre', 'date_fin_autre', 'lettre'], 'Date_autre', ['id_formateur'], [$currentId]);
 
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             header('Content-type: application/json');
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances','teletravailActuel'), 'formateurs');
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances','teletravailActuel','infosAutres'), 'formateurs');
         };
     }
 
@@ -1583,4 +1615,5 @@ class AdminController extends Controller
         isset($_POST['valider']) ? $data = $_POST : $data = "";
         $this->render('admin/activiteFormateur', compact('infosFormateur', 'html', 'data'), 'activite');
     }
+    
 }

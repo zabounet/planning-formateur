@@ -35,7 +35,7 @@ CREATE TABLE `Couleurs` (
   `couleur_ran` char(7) NOT NULL,
   `couleur_vacance_demandees` char(7) NOT NULL,
   `couleur_vacance_validee` char(7) NOT NULL,
-  `couleur_tt` char(7) NOT NULL,
+  `couleur_autre` char(7) NOT NULL,
   `couleur_ferie` char(7) NOT NULL,
   `couleur_weekend` char(7) NOT NULL,
   `couleur_interruption` char(7) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `Couleurs` (
 -- Déchargement des données de la table `Couleurs`
 --
 
-INSERT INTO `Couleurs` (`couleur_id`, `couleur_centre`, `couleur_pae`, `couleur_certif`, `couleur_ran`, `couleur_vacance_demandees`, `couleur_vacance_validee`, `couleur_tt`, `couleur_ferie`, `couleur_weekend`, `couleur_interruption`, `couleur_MNSP`, `couleur_perfectionment`) VALUES
+INSERT INTO `Couleurs` (`couleur_id`, `couleur_centre`, `couleur_pae`, `couleur_certif`, `couleur_ran`, `couleur_vacance_demandees`, `couleur_vacance_validee`, `couleur_autre`, `couleur_ferie`, `couleur_weekend`, `couleur_interruption`, `couleur_MNSP`, `couleur_perfectionment`) VALUES
 (1, '#0c39a1', '#ffb3b3', '#32266e', '#0bb116', '#d4ff00', '#b39500', '#9c69e8', '#0dd9b7', '#4f4f4f', '#5f69b4', '#d70404', '#22492a');
 
 -- --------------------------------------------------------
@@ -292,7 +292,19 @@ CREATE TABLE `Notification` (
   `role` varchar(32) DEFAULT NULL,
   `id_formateur` int(11) NOT NULL,
   `type` varchar(64) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Autre`
+--
+
+CREATE TABLE `Autre` (
+  `id_Autre` int(11) NOT NULL,
+  `description_Autre` varchar(512) DEFAULT NULL,
+  `lettre` char(2) NOT NULL,
+  `id_formateur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -304,6 +316,7 @@ CREATE TABLE `Type_formation` (
   `id_type_formation` int(11) NOT NULL,
   `designation_type_formation` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Déchargement des données de la table `Type_formation`
@@ -409,6 +422,13 @@ ALTER TABLE `Date_vacance`
   ADD KEY `Date_vacance_Formateur_FK` (`id_formateur`);
 
 --
+-- Index pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  ADD PRIMARY KEY (`id_autre`),
+  ADD KEY `Autre_Formateur_FK` (`id_formateur`);
+
+--
 -- Index pour la table `Formateur`
 --
 ALTER TABLE `Formateur`
@@ -485,6 +505,12 @@ ALTER TABLE `Date_centre`
 --
 ALTER TABLE `Date_certif`
   MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  MODIFY `id_autre` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `Date_intervention`
@@ -580,6 +606,12 @@ ALTER TABLE `Ville`
 ALTER TABLE `Date_centre`
   ADD CONSTRAINT `Date_centre_Formation_FK` FOREIGN KEY (`id_formation`) REFERENCES `Formation` (`id_formation`);
 
+--
+-- Contraintes pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  ADD CONSTRAINT `Autre_Formateur_FK` FOREIGN KEY (`id_formateur`) REFERENCES `Formateur` (`id_formateur`);
+  
 --
 -- Contraintes pour la table `Date_certif`
 --
