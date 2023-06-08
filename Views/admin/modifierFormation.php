@@ -124,7 +124,7 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
                     <button class="add-date-fields" type="button" data="ran">+</button>
                 </div>
 
-                <h3>Périodes d'activité en entreprise</h3>
+                <h3>Périodes d'activité en entreprise <span class="legend">/!\ Ne pas remplir si alternance /!\</span></h3>
                 <div class="date-container">
 
                     <?php foreach ($infosPae as $pae) : ?>
@@ -147,7 +147,7 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
                 </div>
             </div>
             <div class="col2">
-                <h3>Périodes d'activité en centre <span class="legend">*</span></h3>
+                <h3>Périodes d'activité en centre <span class="legend">/!\ Ne pas remplir sauf si alternance /!\</span></h3>
                 <div class="date-container">
 
                     <?php foreach ($infosCentre as $centre) : ?>
@@ -305,8 +305,7 @@ $link = "Modifier la formation " . $infosCurrent['acronyme_formation'];
         <div id="step3"></div>
         <div id="step4"></div>
     </div>
-    <input id="nextButton" type="button" value="Suivant">
-    <input id="submitButton" type="submit" value="Valider">
+    <input id="nextButton" type="button" value="Page suivante">
+    <input id="submitButton" class="show" type="submit" value="Valider les modifications">
     <span class="legend">* champs obligatoires</span>
-    <input type="submit" value="Modifier">
 </form>
