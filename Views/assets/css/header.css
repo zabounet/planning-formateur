@@ -133,6 +133,7 @@ header .flower-img {
     position: absolute;
     right: 0;
     padding-right: 1rem;
+    width: 5rem;
 }
 
 header .flower-img.spin-flower {

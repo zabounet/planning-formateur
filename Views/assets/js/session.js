@@ -12,10 +12,11 @@ function resetLogoutTimer() {
 }
 
 function logoutUser() {
-    alert("Your session has timed out. Please log in again.");
+    alert("Votre session a expiré. Veuillez vous reconnecter.");
     window.location.href = '/planning/public/index.php?p=formateur/logout';
 }
 document.addEventListener('mousemove', resetLogoutTimer);
 document.addEventListener('click', resetLogoutTimer);
+document.addEventListener('keydown', resetLogoutTimer);
 
 startLogoutTimer();
