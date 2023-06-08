@@ -150,7 +150,7 @@
         <div id="step3"></div>
         <div id="step4"></div>
     </div>
-    <input id="nextButton" type="button" value="Page suivante">
+    <input id="nextButton" class="no-need" type="button" value="Page suivante">
     <input id="submitButton" class="no-show" type="submit" value="Valider">
     <span class="legend">* champs obligatoires</span>
 </form>
