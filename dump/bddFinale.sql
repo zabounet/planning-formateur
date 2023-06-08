@@ -367,29 +367,6 @@ CREATE TABLE IF NOT EXISTS `logs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `logs`
---
-
-INSERT INTO `logs` (`id`, `user_email`, `activity_type`, `success`, `activity_time`) VALUES
-(1, 'veronique@veronique.veronique', 'Connexion', 1, '2023-06-08 09:04:23'),
-(2, '', 'Connexion', 1, '2023-06-08 09:11:20'),
-(3, 'veronique.brunet@afpa.fr', 'Connexion', 1, '2023-06-08 09:12:54'),
-(4, 'veronique.brunet@afpa.fr', 'INSERT Dans Formateur(\r\n', 1, '2023-06-08 09:13:31'),
-(5, 'veronique.brunet@afpa.fr', 'INSERT Dans Formateur(\r\n', 1, '2023-06-08 09:14:37'),
-(6, 'veronique.brunet@afpa.fr', 'INSERT Dans Date_autre', 1, '2023-06-08 10:02:06'),
-(7, 'veronique.brunet@afpa.fr', 'INSERT Dans Date_autre', 1, '2023-06-08 10:02:23'),
-(8, 'veronique.brunet@afpa.fr', 'DELETE Dans date_autre', 1, '2023-06-08 10:03:50'),
-(9, 'veronique.brunet@afpa.fr', 'DELETE Dans date_autre', 1, '2023-06-08 10:03:56'),
-(10, 'veronique.brunet@afpa.fr', 'DELETE Dans date_autre', 1, '2023-06-08 10:04:00'),
-(11, 'veronique.brunet@afpa.fr', 'INSERT Dans Date_autre', 1, '2023-06-08 10:04:24'),
-(12, 'veronique.brunet@afpa.fr', 'Connexion', 1, '2023-06-08 11:29:49'),
-(13, 'veronique.brunet@afpa.fr', 'DELETE Dans date_autre', 1, '2023-06-08 11:30:39'),
-(14, 'veronique.brunet@afpa.fr', 'INSERT Dans Date_teletravail', 1, '2023-06-08 11:30:54'),
-(15, 'veronique.brunet@afpa.fr', 'INSERT Dans Notification', 1, '2023-06-08 11:30:54');
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `notification`
 --
 

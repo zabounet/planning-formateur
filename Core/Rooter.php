@@ -11,10 +11,12 @@ class Rooter
 
     public function start()
     {
-        // // Désactive l'affichage des erreurs .
-        // ini_set('display_errors', 'off');
-        // set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
-        // register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
+
+        // Désactive l'affichage des erreurs .
+
+        ini_set('display_errors', 'off');
+        set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
+        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
         // Démarre la session
         session_start();

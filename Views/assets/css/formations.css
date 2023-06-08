@@ -119,9 +119,13 @@ input[type="button"]:hover {
     background-color: #58d665;
     color: black
 }
+input.no-need{
+    left: 38.5vw;
+}
 
 input.no-show{
     display: none;
+    left: 38.5vw;
 }
 input.show{
     display: inline-block;

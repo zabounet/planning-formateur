@@ -334,7 +334,7 @@ class AdminController extends Controller
                     $infosInterventions[] = $interventions;
                 }
             }
-        }else{
+        } else {
             $infosInterventions = array();
         }
 
@@ -670,9 +670,9 @@ class AdminController extends Controller
         }
 
 
-          //choisir les jours de teletravail
+        //choisir les jours de teletravail
 
-          if (Form::validate($_POST, ['jourTeletravail'])) {
+        if (Form::validate($_POST, ['jourTeletravail'])) {
             // initialisation du tableau qui va contenir les jours sélectionnés
             $jours = array();
             // initialisation du compteur de jours sélectionnés
@@ -724,10 +724,10 @@ class AdminController extends Controller
                 $joursteletravail = implode(",", $jours);
                 $teletravail = new FormateurModel();
 
-                $ttValidExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','='],[$idFormateur, '1']);
-                $ttExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','IS'],[$idFormateur, 'Null']);
+                $ttValidExists = $teletravail->getByCustom(['validation'], 'Date_teletravail', ['id_formateur', 'validation'], ['=', '='], [$idFormateur, '1']);
+                $ttExists = $teletravail->getByCustom(['validation'], 'Date_teletravail', ['id_formateur', 'validation'], ['=', 'IS'], [$idFormateur, 'Null']);
 
-                if(!empty($ttExists) || !empty($ttValidExists)){
+                if (!empty($ttExists) || !empty($ttValidExists)) {
                     $resultat = $teletravail->updateJoursTeletravailParAdmin($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
 
                     if ($resultat) {
@@ -735,7 +735,7 @@ class AdminController extends Controller
                     } else {
                         $_SESSION['error_teletravail'] = "Une erreur s'est produite lors de l'enregistrement. Veuillez réessayer après quelques instants.";
                     }
-                    
+
                     Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $idFormateur);
                     exit;
                 }
@@ -750,9 +750,8 @@ class AdminController extends Controller
                 }
 
                 Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $idFormateur);
-            exit;
+                exit;
             }
-            
         }
 
 
@@ -768,7 +767,7 @@ class AdminController extends Controller
             exit;
         }
 
-       
+
 
         if (Form::validate($_POST, ['MNSP', 'Delete'])) {
 
@@ -896,7 +895,7 @@ class AdminController extends Controller
             exit;
         }
 
-        if (Form::validate($_POST, ['intitule-autre','date-debut-autre', 'date-fin-autre'])) {
+        if (Form::validate($_POST, ['intitule-autre', 'date-debut-autre', 'date-fin-autre'])) {
 
             $database = new FormateurModel;
 
@@ -921,7 +920,7 @@ class AdminController extends Controller
             exit;
         }
 
-        
+
         $formateur = new FormateurModel;
 
         $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
@@ -947,7 +946,7 @@ class AdminController extends Controller
         $infosInterventions = $formateur->getBy(['id_intervention', 'date_debut_intervention', 'date_fin_intervention', 'id_formation'], 'Date_intervention', ['id_formateur'], [$currentId]);
         $infosMNSP = $formateur->getBy(['id_MNSP', 'date_debut_MNSP', 'date_fin_MNSP'], 'Date_MNSP', ['id_formateur'], [$currentId]);
         $infosPerfectionnement = $formateur->getBy(['id_perfectionnement', 'date_debut_perfectionnement', 'date_fin_perfectionnement'], 'Date_perfectionnement', ['id_formateur'], [$currentId]);
-        $infosVacances = $formateur->getBy(['id_vacance', 'date_debut_vacances', 'date_fin_vacances'], 'date_vacance', ['id_formateur','validation'], [$currentId,1]);
+        $infosVacances = $formateur->getBy(['id_vacance', 'date_debut_vacances', 'date_fin_vacances'], 'date_vacance', ['id_formateur', 'validation'], [$currentId, 1]);
         $teletravailActuel = $formateur->setSessionTeletravail($currentId);
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
@@ -958,7 +957,7 @@ class AdminController extends Controller
             echo json_encode($infosFormation);
             exit;
         } else {
-            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement','infosVacances','teletravailActuel','infosAutres'), 'formateurs');
+            $this->render('admin/modifierFormateur', compact('infosCurrent', 'infosFormation', 'infosFormateur', 'infosInterventions', 'infosMNSP', 'infosPerfectionnement', 'infosVacances', 'teletravailActuel', 'infosAutres'), 'formateurs');
         };
     }
 
@@ -1120,6 +1119,42 @@ class AdminController extends Controller
                 $dates_teletravail_formateurs[] = $teletravail_formateurs;
             }
 
+            // Récupérer les dates autres pour chaque formateurs et les place dans un tableau
+            $formateurs = $FormateurModel->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                ['date_debut_autre', 'date_fin_autre', 'lettre'],
+                'Formateur',
+                ['Date_autre', 'Date_autre', 'Date_autre'],
+                ['Date_autre'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $id_formateur
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_autre = $formateur['date_debut_autre'];
+                $date_debut_autre_array = explode(",", $date_debut_autre);
+                $date_fin_autre = $formateur['date_fin_autre'];
+                $date_fin_autre_array = explode(",", $date_fin_autre);
+                $date_lettre = $formateur['lettre'];
+                $date_lettre_array = explode(",", $date_lettre);
+
+                $dates_autre_formateurs = array();
+
+                $nbInter = count($date_debut_autre_array);
+                for ($i = 0; $i < $nbInter; $i++) {
+                    $dates_autre_formateur[] = [
+                        "debut" => $date_debut_autre_array[$i],
+                        "fin" => $date_fin_autre_array[$i],
+                        "lettre" => $date_lettre_array[$i],
+                        "id_formateur" => $formateur['id_formateur']
+                    ];
+                }
+
+                $dates_autre_formateurs[] = $dates_autre_formateur;
+            }
+
+
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
             $formateurs = $FormateurModel->getDatesById(
                 ['Formateur.id_formateur', 'Formateur.nom_formateur', 'Formateur.prenom_formateur', 'type_contrat_formateur', 'Formateur.date_debut_contrat', 'Formateur.date_fin_contrat'],
@@ -1132,14 +1167,11 @@ class AdminController extends Controller
                 'id_formateur',
                 $id_formateur
             );
-
             foreach ($formateurs as $formateur) {
                 $date_debut_activite = $formateur['date_debut_intervention'];
                 $date_debut_array = explode(",", $date_debut_activite);
                 $date_fin_activite = $formateur['date_fin_intervention'];
                 $date_fin_array = explode(",", $date_fin_activite);
-
-
 
                 $dates_interventions_formateurs = array();
 
@@ -1149,7 +1181,7 @@ class AdminController extends Controller
                         "id_formateur" => $formateur['id_formateur'],
                         "debut" => $date_debut_array[$i],
                         "fin" => $date_fin_array[$i],
-                        "fin_contrat" => $formateur['date_fin_contrat'],
+                        "date_fin_contrat" => $formateur['date_fin_contrat'],
                         "type_contrat" => $formateur['type_contrat_formateur']
 
                     ];
@@ -1157,6 +1189,7 @@ class AdminController extends Controller
 
                 $dates_interventions_formateurs[] = $dates_formateur;
             }
+
             // création d'un objet DateTime avec la date de début entrée
             $date_debut_tableau = new DateTime($_POST['date_debut'], new \DateTimeZone('Europe/Paris'));
             // création d'un objet DateTime avec la date de fin entrée
@@ -1222,6 +1255,12 @@ class AdminController extends Controller
                 $countDatesVacences = 0;
             } else {
                 $countDatesVacences = count($dates_vacences_formateurs[0]);
+            }
+
+            if (!isset($dates_autre_formateurs[0])) {
+                $countDatesAutres = 0;
+            } else {
+                $countDatesAutres = count($dates_autre_formateurs[0]);
             }
 
 
@@ -1438,6 +1477,8 @@ class AdminController extends Controller
             $formateur_vacance = array();
             $formateur_MNSP = array();
             $formateur_perfectionnement = array();
+            $formateur_autre = array();
+
             // Boucle pour parcourir tous les formateurs
             for ($z = 0; $z < $countFormateurs; $z++) {
                 // Clonage de la date de début du tableau pour éviter de modifier l'objet original
@@ -1460,6 +1501,7 @@ class AdminController extends Controller
                     $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
                     $formateur_MNSP[$formateurs[$z]['id_formateur']] = array();
                     $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
+                    $formateur_autre[$formateurs[$z]['id_formateur']] = array();
 
                     // Boucle pour parcourir tous les jours du tableau
                     for ($i = 0; $i < $nbJours; $i++) {
@@ -1506,6 +1548,16 @@ class AdminController extends Controller
                             }
                         }
 
+                        for ($a = 0; $a < $countDatesAutres; $a++) {
+                            if ($dates_autre_formateurs[0][$a]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                $formateur_autre[$formateurs[$z]['id_formateur']][] = array(
+                                    'debut_autre' => $dates_autre_formateurs[0][$a]['debut'],
+                                    'fin_autre' => $dates_autre_formateurs[0][$a]['fin'],
+                                    'lettre' => $dates_autre_formateurs[0][$a]['lettre']
+                                );
+                            }
+                        }
+
                         // Récupération de la période courante
                         $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
                         $jourLettre = $current_date_dayForFormateurs->format('N');
@@ -1533,19 +1585,19 @@ class AdminController extends Controller
                         }
 
                         $formateurAvoirTeletravail = 0;
-                            foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
-                                    if ($periode_teletravail['prise_effet'] <= $periode) {
-                                        $jours_array = explode(',', $periode_teletravail['jours']);
-                                        foreach ($jours_array as $jour) {
-                                            if ($jourLettre === $joursSemaine[$jour]) {
-                                                $formateurAvoirTeletravail = 1;
-                                                break;
-                                            }
+                        foreach ($dates_teletravail_formateurs as $periode_teletravail) {
+                            if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
+                                if ($periode_teletravail['prise_effet'] <= $periode) {
+                                    $jours_array = explode(',', $periode_teletravail['jours']);
+                                    foreach ($jours_array as $jour) {
+                                        if ($jourLettre === $joursSemaine[$jour]) {
+                                            $formateurAvoirTeletravail = 1;
+                                            break;
                                         }
                                     }
                                 }
                             }
+                        }
 
                         $formateurAvoirMNSP = false;
                         foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {
@@ -1630,5 +1682,4 @@ class AdminController extends Controller
         isset($_POST['valider']) ? $data = $_POST : $data = "";
         $this->render('admin/activiteFormateur', compact('infosFormateur', 'html', 'data'), 'activite');
     }
-    
 }
