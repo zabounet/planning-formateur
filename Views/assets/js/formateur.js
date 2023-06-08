@@ -85,6 +85,35 @@ addEventListener('DOMContentLoaded', () => {
         xhr.send();
 
       }
+      else if(dateType === "autre"){
+        newFields = document.createElement("div");
+        newFields.classList.add("date-fields");
+        newFields.setAttribute("data", dateType);
+        newFields.innerHTML = `
+                        <label for="intitule-${dateType}"> Intitulé :
+                        <input name="intitule-${dateType}[]" type="text">
+                        </label>
+                        <label for="date-debut-${dateType}"> Date de début de la période de ${dateType} :
+                        <input name="date-debut-${dateType}[]" type="date">
+                        </label>
+                        <label for="date-fin-${dateType}"> Date de fin de la période de ${dateType} :
+                        <input name="date-fin-${dateType}[]" type="date">
+                        </label>
+                        <button class="delete-date-fields" type="button" data="${dateType}">Supprimer la période de ${dateType}</button>
+                    `;
+        newDateBtn.before(newFields);
+
+        let deleteButtons = document.querySelectorAll(".delete-date-fields");
+        Array.from(deleteButtons).forEach(function (deleteBtn) {
+          deleteBtn.addEventListener("click", () => {
+            let fields = deleteBtn.parentNode;
+
+            if (fields) {
+              fields.remove();
+            }
+          });
+        });
+      }
       else {
         newFields = document.createElement("div");
         newFields.classList.add("date-fields");

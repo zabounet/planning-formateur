@@ -292,7 +292,19 @@ CREATE TABLE `Notification` (
   `role` varchar(32) DEFAULT NULL,
   `id_formateur` int(11) NOT NULL,
   `type` varchar(64) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Autre`
+--
+
+CREATE TABLE `Autre` (
+  `id_Autre` int(11) NOT NULL,
+  `description_Autre` varchar(512) DEFAULT NULL,
+  `lettre` char(2) NOT NULL,
+  `id_formateur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -304,6 +316,7 @@ CREATE TABLE `Type_formation` (
   `id_type_formation` int(11) NOT NULL,
   `designation_type_formation` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Déchargement des données de la table `Type_formation`
@@ -409,6 +422,13 @@ ALTER TABLE `Date_vacance`
   ADD KEY `Date_vacance_Formateur_FK` (`id_formateur`);
 
 --
+-- Index pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  ADD PRIMARY KEY (`id_autre`),
+  ADD KEY `Autre_Formateur_FK` (`id_formateur`);
+
+--
 -- Index pour la table `Formateur`
 --
 ALTER TABLE `Formateur`
@@ -485,6 +505,12 @@ ALTER TABLE `Date_centre`
 --
 ALTER TABLE `Date_certif`
   MODIFY `id_certif` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  MODIFY `id_autre` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `Date_intervention`
@@ -580,6 +606,12 @@ ALTER TABLE `Ville`
 ALTER TABLE `Date_centre`
   ADD CONSTRAINT `Date_centre_Formation_FK` FOREIGN KEY (`id_formation`) REFERENCES `Formation` (`id_formation`);
 
+--
+-- Contraintes pour la table `Autre`
+--
+ALTER TABLE `Autre`
+  ADD CONSTRAINT `Autre_Formateur_FK` FOREIGN KEY (`id_formateur`) REFERENCES `Formateur` (`id_formateur`);
+  
 --
 -- Contraintes pour la table `Date_certif`
 --

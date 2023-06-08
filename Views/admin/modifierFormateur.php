@@ -217,6 +217,30 @@
         <p>Il y a aucun date pour vacance</p>
     <?php endif ; ?>
 
+    <hr>
+
+    <h2>Liste des autres périodes du formateur</h2>
+    <?php if(!empty($infosAutres)):?>
+    <?php foreach ($infosAutres as $autre) : ?>
+        <form method="post">
+            <p> <?=$autre->lettre; ?> </p>
+            <p>Date de début : <?php $debut = new DateTime($autre->date_debut_autre);
+                                echo $debut->format('d-m-Y'); ?></p>
+            <p>Date de fin : <?php $fin = new DateTime($autre->date_fin_autre);
+                                echo $fin->format('d-m-Y'); ?></p>
+            <input type="hidden" name="autre" value="<?= $autre->id_autre; ?>">
+            <input class="delete" type="button" value="Supprimer la période">
+            <div class="confirm">
+                <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                <input type="submit" name="Delete" value="Confirmer">
+            </div>
+        </form>
+    <?php endforeach; ?>
+    <?php else : ?>
+        <p>Il y a aucun date pour vacance</p>
+    <?php endif ; ?>
+
+
     <hr class="fin-list">
 
     <form method="post">
@@ -246,6 +270,13 @@
         <h2>Ajouter une période de vacance pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="vacance">Ajouter vacance</button>
+            <input type="submit" value="Valider">
+        </div>
+    </form>
+    <form method="post">
+        <h2>Ajouter une période autre pour ce formateur</h2>
+        <div>
+            <button type="button" class="add-date-fields" data="autre">Ajouter autre</button>
             <input type="submit" value="Valider">
         </div>
     </form>
