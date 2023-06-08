@@ -149,7 +149,7 @@
         </form>
     <?php endforeach; ?>
     <?php else : ?>
-        <p>Il y a aucun date pour intervention</p>
+        <p>Il n'y a aucune date d'intervention</p>
     <?php endif ; ?>
     
 
@@ -172,7 +172,7 @@
             </form>
         <?php endforeach; ?>
     <?php else : ?>
-        <p>Il y a aucun date pour MNSP</p>
+        <p>Il n'y a aucune date de MNSP</p>
     <?php endif ; ?>
     <hr>
 
@@ -193,11 +193,11 @@
             </form>
         <?php endforeach; ?>
     <?php else : ?>
-        <p>Il y a aucun date pour perfectionnement</p>
+        <p>Il n'y a aucune date de perfectionnement</p>
     <?php endif ; ?>
     <hr>
 
-    <h2>Liste des périodes de vacance du formateur</h2>
+    <h2>Liste des périodes de vacances du formateur</h2>
     <?php if(!empty($infosVacances)):?>
     <?php foreach ($infosVacances as $vacance) : ?>
         <form method="post">
@@ -214,7 +214,7 @@
         </form>
     <?php endforeach; ?>
     <?php else : ?>
-        <p>Il y a aucun date pour vacance</p>
+        <p>Il n'y a aucune date de vacances</p>
     <?php endif ; ?>
 
     <hr>
@@ -223,7 +223,7 @@
     <?php if(!empty($infosAutres)):?>
     <?php foreach ($infosAutres as $autre) : ?>
         <form method="post">
-            <p> <?=$autre->lettre; ?> </p>
+            <p>Intitulé :  <?=$autre->lettre; ?> </p>
             <p>Date de début : <?php $debut = new DateTime($autre->date_debut_autre);
                                 echo $debut->format('d-m-Y'); ?></p>
             <p>Date de fin : <?php $fin = new DateTime($autre->date_fin_autre);
@@ -237,17 +237,26 @@
         </form>
     <?php endforeach; ?>
     <?php else : ?>
-        <p>Il y a aucun date pour vacance</p>
+        <p>Il n'y a aucune date autres</p>
     <?php endif ; ?>
 
 
     <hr class="fin-list">
+
+    <p><span>Remarque : </span>Tous les champs doivent obligatoirement être remplis.</p>
 
     <form method="post">
         <h2>Ajouter une période d'intervention pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="intervention">Ajouter intervention</button>
             <input type="submit" value="Valider">
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error-intervention'])) {
+                        echo $_SESSION['error-intervention'];
+                        unset($_SESSION['error-intervention']);
+                    }
+                ?>
+            </span>
         </div>
     </form>
 
@@ -256,6 +265,13 @@
         <div>
             <button type="button" class="add-date-fields" data="MNSP">Ajouter MSNP</button>
             <input type="submit" value="Valider">
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error-MNSP'])) {
+                        echo $_SESSION['error-MNSP'];
+                        unset($_SESSION['error-MNSP']);
+                    }
+                ?>
+            </span>
         </div>
     </form>
 
@@ -264,6 +280,13 @@
         <div>
             <button type="button" class="add-date-fields" data="perfectionnement">Ajouter perfectionnement</button>
             <input type="submit" value="Valider">
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error-perfectionnement'])) {
+                        echo $_SESSION['error-perfectionnement'];
+                        unset($_SESSION['error-perfectionnement']);
+                    }
+                ?>
+            </span>
         </div>
     </form>
     <form method="post">
@@ -271,13 +294,28 @@
         <div>
             <button type="button" class="add-date-fields" data="vacance">Ajouter vacance</button>
             <input type="submit" value="Valider">
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error-vacance'])) {
+                        echo $_SESSION['error-vacance'];
+                        unset($_SESSION['error-vacance']);
+                    }
+                ?>
+            </span>
         </div>
     </form>
     <form method="post">
         <h2>Ajouter une période autre pour ce formateur</h2>
         <div>
             <button type="button" class="add-date-fields" data="autre">Ajouter autre</button>
-            <input type="submit" value="Valider">
+            <input type="submit" value="Valider" name="valider_autre">
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error-autre'])) {
+                    echo $_SESSION['error-autre'];
+                    unset($_SESSION['error-autre']);
+                }
+                ?>
+            </span>
         </div>
+
     </form>
 </section>

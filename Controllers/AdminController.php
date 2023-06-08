@@ -818,19 +818,20 @@ class AdminController extends Controller
         }
 
 
-        if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention'])) {
+        if (Form::validate($_POST, ['date-debut-intervention', 'date-fin-intervention','intervention'])) {
 
             $database = new FormateurModel;
-
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
-
-            if (isset($_POST['date-debut-intervention'])) {
+            
+            if (isset($_POST['date-debut-intervention']) && !empty(array_filter($_POST['date-debut-intervention'])) && isset($_POST['date-fin-intervention']) && !empty(array_filter($_POST['date-fin-intervention'])) && isset($_POST['intervention']) && !empty(array_filter($_POST['intervention'])) ) {
                 $periodesFormateurs = count($_POST['date-debut-intervention']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     $database->insertPeriodeIntervention("Date_intervention", $_POST['date-debut-intervention'][$i], $_POST['date-fin-intervention'][$i], $currentId, $_POST['intervention'][$i]);
                 }
+            }elseif(empty(array_filter($_POST['date-debut-intervention'])) || empty(array_filter($_POST['date-fin-intervention'])) || empty(array_filter($_POST['intervention']))){
+                $_SESSION['error-intervention'] = "il faut remplir tout les champs";
             }
-
+            
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
         }
@@ -841,12 +842,15 @@ class AdminController extends Controller
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
-            if (isset($_POST['date-debut-MNSP'])) {
+            if (isset($_POST['date-debut-MNSP']) && !empty(array_filter($_POST['date-debut-MNSP'])) && isset($_POST['date-fin-MNSP']) && !empty(array_filter($_POST['date-fin-MNSP'])) ) {
                 $periodesFormateurs = count($_POST['date-debut-MNSP']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     $database->insertPeriode("Date_MNSP", $_POST['date-debut-MNSP'][$i], $_POST['date-fin-MNSP'][$i], $currentId);
                 }
+            }elseif(empty(array_filter($_POST['date-debut-MNSP'])) || empty(array_filter($_POST['date-fin-MNSP']))){
+                $_SESSION['error-MNSP'] = "il faut remplir tout les champs";
             }
+
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
@@ -858,11 +862,13 @@ class AdminController extends Controller
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
-            if (isset($_POST['date-debut-perfectionnement'])) {
+            if (isset($_POST['date-debut-perfectionnement']) && !empty(array_filter($_POST['date-debut-perfectionnement'])) && isset($_POST['date-fin-perfectionnement']) && !empty(array_filter($_POST['date-fin-perfectionnement'])) ) {
                 $periodesFormateurs = count($_POST['date-debut-perfectionnement']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     $database->insertPeriode("Date_perfectionnement", $_POST['date-debut-perfectionnement'][$i], $_POST['date-fin-perfectionnement'][$i], $currentId);
                 }
+            }elseif(empty(array_filter($_POST['date-debut-perfectionnement'])) || empty(array_filter($_POST['date-fin-perfectionnement']))){
+                $_SESSION['error-perfectionnement'] = "il faut remplir tout les champs";
             }
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
@@ -875,12 +881,14 @@ class AdminController extends Controller
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
 
-            if (isset($_POST['date-debut-vacance'])) {
+            if (isset($_POST['date-debut-vacance']) && !empty(array_filter($_POST['date-debut-vacance'])) && isset($_POST['date-fin-vacance']) && !empty(array_filter($_POST['date-fin-vacance'])) ) {
                 $periodesFormateurs = count($_POST['date-debut-vacance']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     //ici j'ai utiliser le reqeute de inser intervention car ca fait le taf pour vacance a cause de validation j'ai besoin de 5 paramétre
                     $database->insertPeriodeIntervention("Date_vacance", $_POST['date-debut-vacance'][$i], $_POST['date-fin-vacance'][$i], 1, $currentId);
                 }
+            }elseif(empty(array_filter($_POST['date-debut-vacance'])) || empty(array_filter($_POST['date-fin-vacance']))){
+                $_SESSION['error-vacance'] = "il faut remplir tout les champs";
             }
 
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
@@ -892,15 +900,22 @@ class AdminController extends Controller
             $database = new FormateurModel;
 
             $currentId = str_replace("/planning/public/index.php?p=admin/modifierFormateur&?id=", "", $_SERVER['REQUEST_URI']);
+            
+            $intitule = $_POST['intitule-autre'];
+            $debut = $_POST['date-debut-autre'];
+            $fin = $_POST['date-fin-autre'];
+            
 
-            if (isset($_POST['date-debut-autre'])) {
+            if (isset($_POST['date-debut-autre']) && !empty(array_filter($debut)) && isset($fin) && empty(array_filter($fin)) && isset($intitule) && empty(array_filter($intitule))) {
+                var_dump($debut);
                 $periodesFormateurs = count($_POST['date-debut-autre']);
                 for ($i = 0; $i < $periodesFormateurs; $i++) {
                     //ici j'ai utiliser le reqeute de inser intervention car ca fait le taf pour vacance a cause de validation j'ai besoin de 5 paramétre
                     $database->insertPeriodeIntervention("Date_autre", $_POST['date-debut-autre'][$i], $_POST['date-fin-autre'][$i], $_POST['intitule-autre'][$i], $currentId);
                 }
+            }elseif(empty(array_filter($intitule)) || empty(array_filter($debut)) || empty(array_filter($fin))){
+                $_SESSION['error-autre'] = "il faut remplir tout les champs";
             }
-
             Refresh::refresh('/planning/public/index.php?p=admin/modifierFormateur&?id=' . $currentId);
             exit;
         }
