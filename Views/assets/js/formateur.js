@@ -90,8 +90,8 @@ addEventListener('DOMContentLoaded', () => {
         newFields.classList.add("date-fields");
         newFields.setAttribute("data", dateType);
         newFields.innerHTML = `
-                        <label for="intitule-${dateType}"> Intitulé :
-                        <input name="intitule-${dateType}[]" type="text">
+                        <label  for="intitule-${dateType}"> Intitulé :     (2 letres )
+                        <input name="intitule-${dateType}[]" type="text" placeholder="example:AZ">
                         </label>
                         <label for="date-debut-${dateType}"> Date de début de la période de ${dateType} :
                         <input name="date-debut-${dateType}[]" type="date">
