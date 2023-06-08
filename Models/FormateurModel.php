@@ -120,6 +120,19 @@ class FormateurModel extends Model
             return false;
         }
     }
+    public function createJoursTeletravailParAdmin(string $jour_teletravail, string $date_demande_changement,string $date_prise_effet ,int $id_formateur): bool
+    {
+        $sql = "INSERT INTO Date_teletravail (jour_teletravail, date_demande_changement, date_prise_effet, id_formateur,validation)
+        VALUES (?, ?, ?, ?,1)";
+
+        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $date_prise_effet, $id_formateur]);
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function updateJoursTeletravail(string $jour_teletravail, string $date_demande_changement,string $date_prise_effet ,int $id_formateur): bool
     {
         $sql = "UPDATE Date_teletravail SET 
@@ -127,6 +140,23 @@ class FormateurModel extends Model
         `date_demande_changement` = ?,
         `date_prise_effet` = ?
         Where id_formateur = ? AND `validation` IS NULL " ;
+
+        $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $date_prise_effet, $id_formateur]);
+        
+        if ($result->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateJoursTeletravailParAdmin(string $jour_teletravail, string $date_demande_changement,string $date_prise_effet ,int $id_formateur): bool
+    {
+        $sql = "UPDATE Date_teletravail SET 
+        `jour_teletravail` = ?,
+        `date_demande_changement` = ?,
+        `date_prise_effet` = ?
+        Where id_formateur = ? AND `validation`= 1 " ;
 
         $result = $this->requete($sql, [$jour_teletravail, $date_demande_changement, $date_prise_effet, $id_formateur]);
         

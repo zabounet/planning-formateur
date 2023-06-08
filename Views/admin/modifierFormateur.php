@@ -59,7 +59,72 @@
 
     <hr class="fin-list">
 
+    <div class="teletravail" id="TT">
+        <div class="profil-text">
+            <h2>Teletravail</h2>
+        </div>
+
+        <div class="demande-teletravail">
+            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine où vous souhaitez être en télétravail</span>
+            <span class="notif notif-demande-teletravail"><b>/!\</b> Pas plus de deux jours par semaine de télétravails sont autorisés <b>/!\</b></span>
+            <form method="post" class="container-teletravail">
+                <div>
+                    <section class="app">
+                        <?php
+
+                        $jourSemaine = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi');
+                        
+                        if (isset($_SESSION['teletravail']['jour_teletravail'])) {
+                            $jourTeletravail = explode(",", $_SESSION['teletravail']['jour_teletravail']);
+                        } else {
+                            $jourTeletravail[] = "Aucun";
+                        }
+                        foreach ($jourSemaine as $jour) :
+                        ?>
+                            <?php in_array($jour, $jourTeletravail) ? $checked = "checked" : $checked = ""; ?>
+
+                            <article class="features">
+                                <input <?= $checked; ?> type="checkbox" id="<?= $jour; ?>" name="<?= $jour; ?>" />
+                                <div>
+                                    <span>
+                                        <?= $jour; ?>
+                                    </span>
+                                </div>
+                            </article>
+
+                        <?php endforeach; ?>
+                    </section>
+                    <div class="prise-effet">
+                        <label for="">Date de prise d'effet : </label>
+                        <input class="date-champe" name="date_prise_effet" type="date" required>
+                    </div>
+                </div>
+                <div class="valid-div">
+                    <input type="submit" value="Valider" name="jourTeletravail" class="valider">
+                </div>
+            </form>
+
+            <span class="error" style="color: red;">
+                <?php if (isset($_SESSION['error_teletravail'])) {
+                    echo $_SESSION['error_teletravail'];
+                    unset($_SESSION['error_teletravail']);
+                }
+                ?>
+            </span>
+            <span class="success" style="color: green; ">
+                <?php if (isset($_SESSION['success_teletravail'])) {
+                    echo $_SESSION['success_teletravail'];
+                    unset($_SESSION['success_teletravail']);
+                }
+                ?>
+
+        </div>
+    </div>
+
+    <hr class="fin-list">
+
     <h2>Liste des périodes d'intervention du formateur</h2>
+    <?php if(!empty($infosInterventions)):?>
     <?php foreach ($infosInterventions as $intervention) : ?>
         <form method="post">
             <p>Date de début : <?php $debut = new DateTime($intervention->date_debut_intervention);
@@ -83,47 +148,57 @@
             </div>
         </form>
     <?php endforeach; ?>
+    <?php else : ?>
+        <p>Il y a aucun date pour intervention</p>
+    <?php endif ; ?>
+    
 
     <hr>
 
     <h2>Liste des périodes de MNSP du formateur</h2>
-    <?php foreach ($infosMNSP as $mnsp) : ?>
-        <form method="post">
-            <p>Date de début : <?php $debut = new DateTime($mnsp->date_debut_MNSP);
-                                echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($mnsp->date_fin_MNSP);
-                                echo $fin->format('d-m-Y'); ?></p>
-            <input type="hidden" name="MNSP" value="<?= $mnsp->id_MNSP; ?>">
-            <input class="delete" type="button" value="Supprimer la période">
-            <div class="confirm">
-                <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
-                <input type="submit" name="Delete" value="Confirmer">
-            </div>
-        </form>
-    <?php endforeach; ?>
-
+    <?php if(!empty($infosMNSP)):?>
+        <?php foreach ($infosMNSP as $mnsp) : ?>
+            <form method="post">
+                <p>Date de début : <?php $debut = new DateTime($mnsp->date_debut_MNSP);
+                                    echo $debut->format('d-m-Y'); ?></p>
+                <p>Date de fin : <?php $fin = new DateTime($mnsp->date_fin_MNSP);
+                                    echo $fin->format('d-m-Y'); ?></p>
+                <input type="hidden" name="MNSP" value="<?= $mnsp->id_MNSP; ?>">
+                <input class="delete" type="button" value="Supprimer la période">
+                <div class="confirm">
+                    <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                    <input type="submit" name="Delete" value="Confirmer">
+                </div>
+            </form>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p>Il y a aucun date pour MNSP</p>
+    <?php endif ; ?>
     <hr>
 
     <h2>Liste des périodes de perfectionnement du formateur</h2>
-    <?php foreach ($infosPerfectionnement as $perfectionnement) : ?>
-        <form method="post">
-            <p>Date de début : <?php $debut = new DateTime($perfectionnement->date_debut_perfectionnement);
-                                echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($perfectionnement->date_fin_perfectionnement);
-                                echo $fin->format('d-m-Y'); ?></p>
-            <input type="hidden" name="perfectionnement" value="<?= $perfectionnement->id_perfectionnement; ?>">
-            <input class="delete" type="button" value="Supprimer la période">
-            <div class="confirm">
-                <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
-                <input type="submit" name="Delete" value="Confirmer">
-            </div>
-        </form>
-    <?php endforeach; ?>
-
+    <?php if(!empty($infosPerfectionnement)):?>
+        <?php foreach ($infosPerfectionnement as $perfectionnement) : ?>
+            <form method="post">
+                <p>Date de début : <?php $debut = new DateTime($perfectionnement->date_debut_perfectionnement);
+                                    echo $debut->format('d-m-Y'); ?></p>
+                <p>Date de fin : <?php $fin = new DateTime($perfectionnement->date_fin_perfectionnement);
+                                    echo $fin->format('d-m-Y'); ?></p>
+                <input type="hidden" name="perfectionnement" value="<?= $perfectionnement->id_perfectionnement; ?>">
+                <input class="delete" type="button" value="Supprimer la période">
+                <div class="confirm">
+                    <h4 class="confirm-text">Êtes-vous sûr(e) ?</h4>
+                    <input type="submit" name="Delete" value="Confirmer">
+                </div>
+            </form>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p>Il y a aucun date pour perfectionnement</p>
+    <?php endif ; ?>
     <hr>
 
     <h2>Liste des périodes de vacance du formateur</h2>
-    
+    <?php if(!empty($infosVacances)):?>
     <?php foreach ($infosVacances as $vacance) : ?>
         <form method="post">
             <p>Date de début : <?php $debut = new DateTime($vacance->date_debut_vacances);
@@ -138,6 +213,9 @@
             </div>
         </form>
     <?php endforeach; ?>
+    <?php else : ?>
+        <p>Il y a aucun date pour vacance</p>
+    <?php endif ; ?>
 
     <hr class="fin-list">
 
