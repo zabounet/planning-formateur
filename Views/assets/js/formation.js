@@ -237,56 +237,51 @@ addEventListener('DOMContentLoaded', () => {
             return;
         }
         if (part2.style.display === "flex") {
-            if (document.getElementById('date-debut-centre').value && document.getElementById('date-fin-centre').value) {
-                part2.animate(
-                    [
-                        {
-                            transform: "translate(0, 0)",
-                            display: "flex",
-                        },
-                        {
-                            transform: "translate(-1200px, 0)",
-                            display: "none"
-                        }
-                    ],
+            part2.animate(
+                [
                     {
-                        duration: 700,
-                        iterations: 1,
-                        direction: 'normal',
-                    }
-                );
-
-                part3.animate(
-                    [
-                        {
-                            position: "absolute",
-                            left: "1300px",
-                            top: "73.3px",
-                            display: "none",
-                        },
-                        {
-                            position: "absolute",
-                            left: "0",
-                            top: "73.3px",
-                            display: "flex"
-                        }
-                    ],
+                        transform: "translate(0, 0)",
+                        display: "flex",
+                    },
                     {
-                        duration: 700,
-                        iterations: 1,
-                        direction: 'normal',
+                        transform: "translate(-1200px, 0)",
+                        display: "none"
                     }
-                );
-                part3.style.display = 'flex';
-                setTimeout(function () {
-                    part2.style.display = 'none';
-                }, 700);
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
 
-                step3.style.backgroundColor = "#58d665";
-            }
-            else {
-                alert("merci de remplir tous les champs.")
-            }
+            part3.animate(
+                [
+                    {
+                        position: "absolute",
+                        left: "1300px",
+                        top: "73.3px",
+                        display: "none",
+                    },
+                    {
+                        position: "absolute",
+                        left: "0",
+                        top: "73.3px",
+                        display: "flex"
+                    }
+                ],
+                {
+                    duration: 700,
+                    iterations: 1,
+                    direction: 'normal',
+                }
+            );
+            part3.style.display = 'flex';
+            setTimeout(function () {
+                part2.style.display = 'none';
+            }, 700);
+
+            step3.style.backgroundColor = "#58d665";
 
             return;
         }

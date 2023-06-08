@@ -115,6 +115,7 @@ class Model extends Db
                 } else {
                     $nbValues = 1;
                 }
+
                 for ($j = 0; $j < $nbValues; $j++) {
                     if ($j == 0) {
                         $virgule = "";
@@ -123,7 +124,14 @@ class Model extends Db
                     }
 
                     if (is_array($valeur[$i])) {
-                        $sql .= $virgule . $valeur[$i][$j];
+                        if (!isset($_POST['rechercher']) && is_object($valeur[$i][$j])) {
+                            foreach($valeur[$i][$j] as $identifier => $value){
+                                $sql .= $virgule . $value;
+                                break;
+                            }
+                        } else {
+                            $sql .= $virgule . $valeur[$i][$j];
+                        }
                     } else {
                         $sql .= $virgule . $valeur[$i];
                     }
@@ -315,6 +323,7 @@ class Model extends Db
 
         $result = $this->requete($sql)->fetchAll(Db::FETCH_ASSOC);
 
+        // echo $sql; die;
         return $result;
     }
 
