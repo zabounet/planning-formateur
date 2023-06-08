@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <script src="/planning/Views/assets/js/header.js"></script>
     <script src="/planning/Views/assets/js/table.js"></script>
+    <script src="/planning/Views/assets/js/session.js"></script>
 </head>
 
 <body>
