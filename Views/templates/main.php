@@ -162,7 +162,7 @@
                         <h2>Selectionnez un ou plusieurs formateurs</h2>
                         <div class="formateurs">
                             <?php $nombre = 0;
-                            foreach ($formateurs['Formateurs'] as $formateur) : ?>
+                            foreach ($formateursList['Formateurs'] as $formateur) : ?>
                                 <?php if ($formateur->id_formateur == 2) {
                                     continue;
                                 }; ?>

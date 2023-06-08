@@ -12,16 +12,16 @@ class Rooter
     public function start()
     {
         // Désactive l'affichage des erreurs .
-        ini_set('display_errors', 'off');
-        set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
-        register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
+        // ini_set('display_errors', 'off');
+        // set_error_handler(['\App\Core\CustomException', 'PhpErrors'], E_ALL);
+        // register_shutdown_function(['\App\Core\CustomException', 'PhpFatalErrors']);
 
         // Durée de vie du cookie de session (en secondes)
         $sessionLifetime = 1800;
 
         // Définit la durée de vie du cookie de session afin qu'il expire après 10 minutes d'inactivité. 
         // Cela permet de gérer la persistance de la session dans le navigateur du client.
-        session_set_cookie_params($sessionLifetime);
+        session_set_cookie_params($sessionLifetime, true);
 
         // Définit la durée de vie maximale de la session côté serveur à 10 minutes. 
         // Cela permet de gérer la suppression automatique des sessions inactives par le garbage collector de PHP.

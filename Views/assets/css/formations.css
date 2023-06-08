@@ -104,11 +104,10 @@ input[type="button"],
 input[type="submit"] {
     position: absolute;
     bottom: 0;
-    left: 38.5vw;
+    left: 54%;
     padding: 2.5rem;
     background-color: #809382;
     border-radius: 50px;
-    font-size: 1.5rem;
     font-family: DejaVuSerif, sans-serif;
     color: whitesmoke;
     margin: 0 auto;
@@ -121,11 +120,13 @@ input[type="button"]:hover {
     color: black
 }
 
-input[type="submit"] {
+input.no-show{
     display: none;
-    background-color: #58d665;
 }
-
+input.show{
+    display: inline-block;
+    left: 28%;
+}
 input[type="submit"]:hover {
     background-color: #3D2EFF;
     color: rgb(255, 255, 255)

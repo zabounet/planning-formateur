@@ -1387,19 +1387,19 @@ class AdminController extends Controller
                         }
 
                         $formateurAvoirTeletravail = 0;
-                        foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                            if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] === "1") {
-                                if ($periode_teletravail['prise_effet'] >= $periode) {
-                                    $jours_array = explode(',', $periode_teletravail['jours']);
-                                    foreach ($jours_array as $jour) {
-                                        if ($jourLettre === $joursSemaine[$jour]) {
-                                            $formateurAvoirTeletravail = 1;
-                                            break;
+                            foreach ($dates_teletravail_formateurs as $periode_teletravail) {
+                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
+                                    if ($periode_teletravail['prise_effet'] <= $periode) {
+                                        $jours_array = explode(',', $periode_teletravail['jours']);
+                                        foreach ($jours_array as $jour) {
+                                            if ($jourLettre === $joursSemaine[$jour]) {
+                                                $formateurAvoirTeletravail = 1;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
                         $formateurAvoirMNSP = false;
                         foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {
