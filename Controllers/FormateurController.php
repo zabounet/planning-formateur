@@ -53,12 +53,12 @@ class FormateurController extends Controller
     {
         if (isset($_SESSION['formateur'])) {
             unset($_SESSION['formateur']);
-            header('location: /planning/public/index.php?p=formateur/login');
+            header('Location: /planning/public');
             exit;
         }
         if (isset($_SESSION['admin'])) {
             unset($_SESSION['admin']);
-            header('location: /planning/public/index.php?p=formateur/login');
+            header('Location: /planning/public');
             exit;
         }
     }

@@ -35,7 +35,7 @@ CREATE TABLE `Couleurs` (
   `couleur_ran` char(7) NOT NULL,
   `couleur_vacance_demandees` char(7) NOT NULL,
   `couleur_vacance_validee` char(7) NOT NULL,
-  `couleur_tt` char(7) NOT NULL,
+  `couleur_autre` char(7) NOT NULL,
   `couleur_ferie` char(7) NOT NULL,
   `couleur_weekend` char(7) NOT NULL,
   `couleur_interruption` char(7) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `Couleurs` (
 -- Déchargement des données de la table `Couleurs`
 --
 
-INSERT INTO `Couleurs` (`couleur_id`, `couleur_centre`, `couleur_pae`, `couleur_certif`, `couleur_ran`, `couleur_vacance_demandees`, `couleur_vacance_validee`, `couleur_tt`, `couleur_ferie`, `couleur_weekend`, `couleur_interruption`, `couleur_MNSP`, `couleur_perfectionment`) VALUES
+INSERT INTO `Couleurs` (`couleur_id`, `couleur_centre`, `couleur_pae`, `couleur_certif`, `couleur_ran`, `couleur_vacance_demandees`, `couleur_vacance_validee`, `couleur_autre`, `couleur_ferie`, `couleur_weekend`, `couleur_interruption`, `couleur_MNSP`, `couleur_perfectionment`) VALUES
 (1, '#0c39a1', '#ffb3b3', '#32266e', '#0bb116', '#d4ff00', '#b39500', '#9c69e8', '#0dd9b7', '#4f4f4f', '#5f69b4', '#d70404', '#22492a');
 
 -- --------------------------------------------------------

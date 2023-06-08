@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/style.css">
     <link rel="stylesheet" href="/planning/Views/assets/css/side-burger.css">
     <script src="/planning/Views/assets/js/header.js"></script>
+    <script src="/planning/Views/assets/js/session.js"></script>
 
     <?php
     if (!isset($infosCurrent)) $infosCurrent['acronyme_formation'] = "";

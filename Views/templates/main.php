@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/planning/Views/assets/css/activiter.css">
     <script src="/planning/Views/assets/js/header.js"></script>
     <script src="/planning/Views/assets/js/table.js"></script>
+    <script src="/planning/Views/assets/js/session.js"></script>
 </head>
 
 <body>
@@ -190,7 +191,8 @@
                     </div>
                 </div>
             </form>
-            <img onload="<?php if (!empty($data)) : ?> spin() <?php endif; ?>" class="flower-img" src="/planning/Views/assets/image/flower.svg">
+            <?php isset($_SESSION['admin']) && $_SESSION['admin']['nom'] === "Bezault" ? $src = "/planning/Views/assets/image/thailand.svg" : $src = "/planning/Views/assets/image/flower.svg";?>
+            <img onload="<?php if (!empty($data)) : ?> spin() <?php endif; ?>" class="flower-img" src="<?= $src ;?>">
         </div>
         <div class="legend">
             <ul class="list-color">
