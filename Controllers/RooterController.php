@@ -190,9 +190,44 @@ class RooterController extends Controller
                 $dates_teletravail_formateurs[] = $teletravail_formateurs;
             }
 
+            // Récupérer les dates autres pour chaque formateurs et les place dans un tableau
+            $formateurs = $databaseFormateur->getDatesById(
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur'],
+                ['date_debut_autre', 'date_fin_autre', 'lettre'],
+                'Formateur',
+                ['Date_autre', 'Date_autre', 'Date_autre'],
+                ['Date_autre'],
+                ['Formateur'],
+                ['id_formateur'],
+                'id_formateur',
+                $formateursSelectionnes
+            );
+            foreach ($formateurs as $formateur) {
+                $date_debut_autre = $formateur['date_debut_autre'];
+                $date_debut_autre_array = explode(",", $date_debut_autre);
+                $date_fin_autre = $formateur['date_fin_autre'];
+                $date_fin_autre_array = explode(",", $date_fin_autre);
+                $date_lettre = $formateur['lettre'];
+                $date_lettre_array = explode(",", $date_lettre);
+
+                $dates_autre_formateurs = array();
+
+                $nbInter = count($date_debut_autre_array);
+                for ($i = 0; $i < $nbInter; $i++) {
+                    $dates_autre_formateur[] = [
+                        "debut" => $date_debut_autre_array[$i],
+                        "fin" => $date_fin_autre_array[$i],
+                        "lettre" => $date_lettre_array[$i],
+                        "id_formateur" => $formateur['id_formateur']
+                    ];
+                }
+
+                $dates_autre_formateurs[] = $dates_autre_formateur;
+            }
+
             // Récupérer les dates d'interventions pour chaque formateurs et les place dans un tableau
             $formateurs = $databaseFormateur->getDatesById(
-                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'Formation.id_formation'],
+                ['Formateur.id_formateur', 'nom_formateur', 'prenom_formateur', 'type_contrat_formateur', 'Formateur.date_debut_contrat', 'Formateur.date_fin_contrat', 'Formation.id_formation'],
                 ['date_debut_intervention', 'date_fin_intervention', 'id_formation'],
                 'Formateur',
                 ['Date_intervention', 'Date_intervention', 'Formation'],
@@ -217,6 +252,8 @@ class RooterController extends Controller
                     $dates_formateur[] = [
                         "debut" => $date_debut_array[$i],
                         "fin" => $date_fin_array[$i],
+                        "date_fin_contrat" => $formateur['date_fin_contrat'],
+                        "type_contrat" => $formateur['type_contrat_formateur'],
                         "id_formation" => $formation_intervention_array[$i],
                         "id_formateur" => $formateur['id_formateur']
                     ];
@@ -224,6 +261,7 @@ class RooterController extends Controller
 
                 $dates_interventions_formateurs[] = $dates_formateur;
             }
+
 
             //recupere les période en centre pour chaque formation et les place dans un tableau
             $periodes = $databaseFormation->getDatesById(
@@ -463,6 +501,12 @@ class RooterController extends Controller
                     $countDatesVacences = 0;
                 } else {
                     $countDatesVacences = count($dates_vacences_formateurs[0]);
+                }
+
+                if (!isset($dates_autre_formateurs[0])) {
+                    $countDatesAutres = 0;
+                } else {
+                    $countDatesAutres = count($dates_autre_formateurs[0]);
                 }
 
                 // Récupère le formateur référent
@@ -768,9 +812,9 @@ class RooterController extends Controller
                                     } else if ($certif) {
                                         $html .= "<th style='background-color:" . $_SESSION['color']['couleur_certif'] . ";'></th> ";
                                     } else {
-                                        if($formations[$x]->id_type_formation == 4){
+                                        if ($formations[$x]->id_type_formation == 4) {
                                             $html .= "<th style='background-color:" . $_SESSION['color']['couleur_pae'] . ";'></th> ";
-                                        } else{
+                                        } else {
                                             $html .= "<th style='background-color:" . $_SESSION['color']['couleur_centre'] . ";'></th> ";
                                         }
                                     }
@@ -789,203 +833,234 @@ class RooterController extends Controller
                 $formateur_vacance = array();
                 $formateur_MNSP = array();
                 $formateur_perfectionnement = array();
+                $formateur_autre = array();
 
                 // Ajout du nom formation dans la première colonne du tableau
 
                 // Boucle pour parcourir tous les formateurs
                 for ($z = 0; $z < $countFormateurs; $z++) {
+                    if (!($formateurs[$z]['date_fin_contrat'] < $date_debut_tableau && $formateurs[$z]['type_contrat_formateur'] != "CDI")) {
 
-                    // Clonage de la date de début du tableau pour éviter de modifier l'objet original
-                    $current_date_dayForFormateurs = clone $date_debut_tableau;
+                        // Clonage de la date de début du tableau pour éviter de modifier l'objet original
+                        $current_date_dayForFormateurs = clone $date_debut_tableau;
 
-                    // Ajout du nom et prénom du formateur dans la première colonne du tableau
-                    $html .= "<tr class='linge-formateur'> 
+                        // Ajout du nom et prénom du formateur dans la première colonne du tableau
+                        $html .= "<tr class='linge-formateur'> 
                                 <th class='sticky-formateur-container'>
                                     <div class='nomFormateurDiv'>
                                         <span>" . $formateurs[$z]['nom_formateur'] . ' ' . $formateurs[$z]['prenom_formateur'] . "</span>
                                     </div>
                                 </th> ";
 
-                    // Création d'un tableau vide pour stocker les périodes du formateur en cours
-                    $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
-                    $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
-                    $formateur_MNSP[$formateurs[$z]['id_formateur']] = array();
-                    $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
+                        // Création d'un tableau vide pour stocker les périodes du formateur en cours
+                        $formateur_periodes[$formateurs[$z]['id_formateur']] = array();
+                        $formateur_vacance[$formateurs[$z]['id_formateur']] = array();
+                        $formateur_MNSP[$formateurs[$z]['id_formateur']] = array();
+                        $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
+                        $formateur_autre[$formateurs[$z]['id_formateur']] = array();
 
 
-                    // Boucle pour parcourir tous les jours du tableau
-                    for ($i = 0; $i < $nbJours; $i++) {
+                        // Boucle pour parcourir tous les jours du tableau
+                        for ($i = 0; $i < $nbJours; $i++) {
 
-                        // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
-                        for ($j = 0; $j < $countDates; $j++) {
+                            // Boucle pour parcourir toutes les dates d'intervention pour trouver les périodes du formateur en cours
+                            for ($j = 0; $j < $countDates; $j++) {
 
-                            // Stockage de la période dans le tableau des périodes du formateur en cours
-                            if ($dates_interventions_formateurs[0][$j]['id_formateur'] == $formateurs[$z]['id_formateur'] && $dates_interventions_formateurs[0][$j]['id_formation'] == $formations[$x]->id_formation) {
-                                $formateur_periodes[$formateurs[$z]['id_formateur']][] = array(
-                                    'debut' => $dates_interventions_formateurs[0][$j]['debut'],
-                                    'fin' => $dates_interventions_formateurs[0][$j]['fin']
-                                );
+                                // Stockage de la période dans le tableau des périodes du formateur en cours
+                                if ($dates_interventions_formateurs[0][$j]['id_formateur'] == $formateurs[$z]['id_formateur'] && $dates_interventions_formateurs[0][$j]['id_formation'] == $formations[$x]->id_formation) {
+                                    $formateur_periodes[$formateurs[$z]['id_formateur']][] = array(
+                                        'debut' => $dates_interventions_formateurs[0][$j]['debut'],
+                                        'fin' => $dates_interventions_formateurs[0][$j]['fin']
+                                    );
+                                }
                             }
-                        }
 
-                        // Boucle pour parcourir toutes les dates de vacance pour trouver les vacance du formateur en cours
-                        for ($v = 0; $v < $countDatesVacences; $v++) {
+                            // Boucle pour parcourir toutes les dates de vacance pour trouver les vacance du formateur en cours
+                            for ($v = 0; $v < $countDatesVacences; $v++) {
 
-                            // Stockage de la période dans le tableau des périodes du formateur en cours
-                            if ($dates_vacences_formateurs[0][$v]['id_formateur'] == $formateurs[$z]['id_formateur']) {
-                                $formateur_vacance[$formateurs[$z]['id_formateur']][] = array(
-                                    'debut_vacances' => $dates_vacences_formateurs[0][$v]['debut_vacences'],
-                                    'fin_vacances' => $dates_vacences_formateurs[0][$v]['fin_vacences'],
-                                    'validation' => $dates_vacences_formateurs[0][$v]['validation_vacences']
-                                );
+                                // Stockage de la période dans le tableau des périodes du formateur en cours
+                                if ($dates_vacences_formateurs[0][$v]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                    $formateur_vacance[$formateurs[$z]['id_formateur']][] = array(
+                                        'debut_vacances' => $dates_vacences_formateurs[0][$v]['debut_vacences'],
+                                        'fin_vacances' => $dates_vacences_formateurs[0][$v]['fin_vacences'],
+                                        'validation' => $dates_vacences_formateurs[0][$v]['validation_vacences']
+                                    );
+                                }
                             }
-                        }
 
-                        for ($w = 0; $w < $countDatesMNSP; $w++) {
-                            if ($dates_MNSP_formateurs[0][$w]['id_formateur'] == $formateurs[$z]['id_formateur']) {
-                                $formateur_MNSP[$formateurs[$z]['id_formateur']][] = array(
-                                    'debut_MNSP' => $dates_MNSP_formateurs[0][$w]['debut_MNSP'],
-                                    'fin_MNSP' => $dates_MNSP_formateurs[0][$w]['fin_MNSP'],
-                                );
+                            for ($w = 0; $w < $countDatesMNSP; $w++) {
+                                if ($dates_MNSP_formateurs[0][$w]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                    $formateur_MNSP[$formateurs[$z]['id_formateur']][] = array(
+                                        'debut_MNSP' => $dates_MNSP_formateurs[0][$w]['debut_MNSP'],
+                                        'fin_MNSP' => $dates_MNSP_formateurs[0][$w]['fin_MNSP'],
+                                    );
+                                }
                             }
-                        }
 
-                        for ($y = 0; $y < $countDatesPerf; $y++) {
-                            if ($dates_perfectionnement_formateurs[0][$y]['id_formateur'] == $formateurs[$z]['id_formateur']) {
-                                $formateur_perfectionnement[$formateurs[$z]['id_formateur']][] = array(
-                                    'debut_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['debut_perfectionnement'],
-                                    'fin_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['fin_perfectionnement'],
-                                );
+                            for ($y = 0; $y < $countDatesPerf; $y++) {
+                                if ($dates_perfectionnement_formateurs[0][$y]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                    $formateur_perfectionnement[$formateurs[$z]['id_formateur']][] = array(
+                                        'debut_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['debut_perfectionnement'],
+                                        'fin_perfectionnement' => $dates_perfectionnement_formateurs[0][$y]['fin_perfectionnement'],
+                                    );
+                                }
                             }
-                        }
 
-                        // Récupération de la période courante
-                        $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
-                        $periode = $current_date_dayForFormateurs->format('Y-m-d');
-                        $jourLettre = $current_date_dayForFormateurs->format('N');
-
-                        // Vérification si le formateur a une période pour le jour en cours
-                        $formateurAvoirPeriode = false;
-                        foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $periodeFormateur) {
-                            if ($periode >= $periodeFormateur['debut'] && $periode <= $periodeFormateur['fin']) {
-                                $formateurAvoirPeriode = true;
-                                break;
+                            for ($a = 0; $a < $countDatesAutres; $a++) {
+                                if ($dates_autre_formateurs[0][$a]['id_formateur'] == $formateurs[$z]['id_formateur']) {
+                                    $formateur_autre[$formateurs[$z]['id_formateur']][] = array(
+                                        'debut_autre' => $dates_autre_formateurs[0][$a]['debut'],
+                                        'fin_autre' => $dates_autre_formateurs[0][$a]['fin'],
+                                        'lettre' => $dates_autre_formateurs[0][$a]['lettre']
+                                    );
+                                }
                             }
-                        }
 
-                        $formateurAvoirTeletravail = 0;
-                        foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                            if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
-                                if ($periode_teletravail['prise_effet'] <= $periode) {
-                                    $jours_array = explode(',', $periode_teletravail['jours']);
-                                    foreach ($jours_array as $jour) {
-                                        if ($jourLettre === $joursSemaine[$jour]) {
-                                            $formateurAvoirTeletravail = 1;
-                                            break;
+                            // Récupération de la période courante
+                            $periodeJourFeries = $current_date_dayForFormateurs->format('m-d');
+                            $periode = $current_date_dayForFormateurs->format('Y-m-d');
+                            $jourLettre = $current_date_dayForFormateurs->format('N');
+
+                            // Vérification si le formateur a une période pour le jour en cours
+                            $formateurAvoirPeriode = false;
+                            foreach ($formateur_periodes[$formateurs[$z]['id_formateur']] as $periodeFormateur) {
+                                if ($periode >= $periodeFormateur['debut'] && $periode <= $periodeFormateur['fin']) {
+                                    $formateurAvoirPeriode = true;
+                                    break;
+                                }
+                            }
+
+                            $formateurAvoirTeletravail = 0;
+                            foreach ($dates_teletravail_formateurs as $periode_teletravail) {
+                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
+                                    if ($periode_teletravail['prise_effet'] <= $periode) {
+                                        $jours_array = explode(',', $periode_teletravail['jours']);
+                                        foreach ($jours_array as $jour) {
+                                            if ($jourLettre === $joursSemaine[$jour]) {
+                                                $formateurAvoirTeletravail = 1;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
 
-                        // Vérification si le formateur a des vacances pour le jour en cours et si elles sont validées ou en attente
-                        $formateurAvoirVacances = 0;
-                        foreach ($formateur_vacance[$formateurs[$z]['id_formateur']] as $periode_vacances) {
-                            if ($periode >= $periode_vacances['debut_vacances'] && $periode <= $periode_vacances['fin_vacances']) {
-                                $formateurAvoirVacances = 1;
-                                if ($periode_vacances['validation'] === "1") {
-                                    $formateurAvoirVacances = 2;
+                            // Vérification si le formateur a des vacances pour le jour en cours et si elles sont validées ou en attente
+                            $formateurAvoirVacances = 0;
+                            foreach ($formateur_vacance[$formateurs[$z]['id_formateur']] as $periode_vacances) {
+                                if ($periode >= $periode_vacances['debut_vacances'] && $periode <= $periode_vacances['fin_vacances']) {
+                                    $formateurAvoirVacances = 1;
+                                    if ($periode_vacances['validation'] === "1") {
+                                        $formateurAvoirVacances = 2;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
 
-                        $formateurAvoirMNSP = false;
-                        foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {
-                            if ($periode >= $MNSPFormateur['debut_MNSP'] && $periode <= $MNSPFormateur['fin_MNSP']) {
-                                $formateurAvoirMNSP = true;
-                                break;
-                            }
-                        }
-
-                        $formateurAvoirPerfectionnement = false;
-                        foreach ($formateur_perfectionnement[$formateurs[$z]['id_formateur']] as $perfectionnementFormateur) {
-                            if ($periode >= $perfectionnementFormateur['debut_perfectionnement'] && $periode <= $perfectionnementFormateur['fin_perfectionnement']) {
-                                $formateurAvoirPerfectionnement = true;
-                                break;
-                            }
-                        }
-
-                        // Vérification si le jour en cours est compris dans les dates de formation en cours
-                        $formation_en_cours = false;
-                        if ($periode >= $formations[$x]->date_debut_formation && $periode <= $formations[$x]->date_fin_formation) {
-                            $formation_en_cours = true;
-                        }
-
-                        // Si la date actuelle n'est pas comprise dans les dates de formations
-                        if (!$formation_en_cours) {
-                            $html .= "<td style='background-color: black;'></td> ";
-                        } else {
-                            // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
-                            if ($formateurAvoirVacances !== 0) {
-                                if ($formateurAvoirVacances == 2) {
-                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></td>";
-                                } else if ($formateurAvoirVacances == 1) {
-                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . ";'></td> ";
+                            $formateurAvoirMNSP = false;
+                            foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {
+                                if ($periode >= $MNSPFormateur['debut_MNSP'] && $periode <= $MNSPFormateur['fin_MNSP']) {
+                                    $formateurAvoirMNSP = true;
+                                    break;
                                 }
+                            }
+
+                            $formateurAvoirPerfectionnement = false;
+                            foreach ($formateur_perfectionnement[$formateurs[$z]['id_formateur']] as $perfectionnementFormateur) {
+                                if ($periode >= $perfectionnementFormateur['debut_perfectionnement'] && $periode <= $perfectionnementFormateur['fin_perfectionnement']) {
+                                    $formateurAvoirPerfectionnement = true;
+                                    break;
+                                }
+                            }
+
+                            $formateurAvoirAutre = false;
+                            foreach ($formateur_autre[$formateurs[$z]['id_formateur']] as $autreFormateur) {
+                                if ($periode >= $autreFormateur['debut_autre'] && $periode <= $autreFormateur['fin_autre']) {
+                                    $formateurAvoirAutre = true;
+                                    break;
+                                }
+                            }
+
+                            // Vérification si le jour en cours est compris dans les dates de formation en cours
+                            $formation_en_cours = false;
+                            if ($periode >= $formations[$x]->date_debut_formation && $periode <= $formations[$x]->date_fin_formation) {
+                                $formation_en_cours = true;
+                            }
+
+                            // Si la date actuelle n'est pas comprise dans les dates de formations
+                            if (!$formation_en_cours) {
+                                $html .= "<td style='background-color: black;'></td> ";
                             } else {
-                                // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
-                                if ($formateurAvoirPeriode) {
-                                    // Si la date actuelle est un jour férié
-                                    if (
-                                        in_array($periodeJourFeries, $joursFeries)
-                                        || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
-                                        || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
-                                    ) {
-                                        $html .= "<td style='background-color: " . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
-                                    } else {
-                                        // Si le jour de la semaine est égal à 6 ou 7
-                                        if ($jourLettre === "6" || $jourLettre === "7") {
-                                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
-                                        } else {
-                                            if ($formateurAvoirTeletravail) {
-                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ; box-shadow: inset 0 0 16px 2px #527cdd; background-color: #0c39a1;'> T </td> ";
-                                            } else {
-                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></td> ";
-                                            }
-                                        }
+                                // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période de vacances pour le formateur
+                                if ($formateurAvoirVacances !== 0) {
+                                    if ($formateurAvoirVacances == 2) {
+                                        $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_validee'] . " ;'></td>";
+                                    } else if ($formateurAvoirVacances == 1) {
+                                        $html .= "<td style='background-color: " . $_SESSION['color']['couleur_vacance_demandees'] . ";'></td> ";
                                     }
                                 } else {
-                                    if (
+                                    // Ajout de la case avec la couleur correspondante en fonction de la présence ou non d'une période d'intervention pour le formateur
+                                    if ($formateurAvoirPeriode) {
                                         // Si la date actuelle est un jour férié
-                                        in_array($periodeJourFeries, $joursFeries)
-                                        || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
-                                        || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
-                                    ) {
-                                        $html .= "<td style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
-                                    } else {
-                                        // Si le jour de la semaine est égal à 6 ou 7
-                                        if ($jourLettre === "6" || $jourLettre === "7") {
-                                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
+                                        if (
+                                            in_array($periodeJourFeries, $joursFeries)
+                                            || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                            || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                                        ) {
+                                            $html .= "<td style='background-color: " . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
                                         } else {
-                                            if ($formateurAvoirMNSP) {
-                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_MNSP'] . " ;'></td> ";
-                                            } else if ($formateurAvoirPerfectionnement) {
-                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_perfectionment'] . " ;'></td> ";
+                                            // Si le jour de la semaine est égal à 6 ou 7
+                                            if ($jourLettre === "6" || $jourLettre === "7") {
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
                                             } else {
-                                                $html .= "<td style='background-color: var(--emptyCell);'></td> ";
+                                                if ($formateurAvoirMNSP) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_MNSP'] . " ;'></td> ";
+                                                } else if ($formateurAvoirPerfectionnement) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_perfectionment'] . " ;'></td> ";
+                                                } else if ($formateurAvoirAutre) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_autre'] . " ; box-shadow: inset 0 0 8px 2px #ffffffbf;'>" . $formateur_autre[$formateurs[$z]['id_formateur']][0]['lettre'] . "</td> ";
+                                                } else if ($formateurAvoirTeletravail) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ; box-shadow: inset 0 0 8px 2px #ffffffbf;'> T </td> ";
+                                                } else {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_centre'] . " ;'></td> ";
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (
+                                            // Si la date actuelle est un jour férié
+                                            in_array($periodeJourFeries, $joursFeries)
+                                            || in_array($periode, AlgorithmePaques::calculatePaques($current_date_year->format('Y')))
+                                            || in_array($periode, AlgorithmePaques::calculatePaques($last_date_year->format('Y')))
+                                        ) {
+                                            $html .= "<td style='background-color:" . $_SESSION['color']['couleur_ferie'] . ";'></td> ";
+                                        } else {
+                                            // Si le jour de la semaine est égal à 6 ou 7
+                                            if ($jourLettre === "6" || $jourLettre === "7") {
+                                                $html .= "<td style='background-color: " . $_SESSION['color']['couleur_weekend'] . " ;'></td> ";
+                                            } else {
+                                                if ($formateurAvoirMNSP) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_MNSP'] . " ;'></td> ";
+                                                } else if ($formateurAvoirPerfectionnement) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_perfectionment'] . " ;'></td> ";
+                                                } else if ($formateurAvoirAutre) {
+                                                    $html .= "<td style='background-color: " . $_SESSION['color']['couleur_autre'] . " ; box-shadow: inset 0 0 8px 2px #ffffffbf;'>" . $formateur_autre[$formateurs[$z]['id_formateur']][0]['lettre'] . "</td> ";
+                                                } else {
+                                                    $html .= "<td style='background-color: var(--emptyCell);'></td> ";
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            // Incrémentation de la date pour passer au jour suivant
+                            $current_date_dayForFormateurs->modify("+1 day");
                         }
-                        // Incrémentation de la date pour passer au jour suivant
-                        $current_date_dayForFormateurs->modify("+1 day");
+
+                        // Fermeture de la ligne correspondant au formateur en cours
+                        $html .= "</tr>";
                     }
-                    // Fermeture de la ligne correspondant au formateur en cours
-                    $html .= "</tr>";
                 }
                 // Fermeture de la table
                 $html .= "</tbody> </table> </div> ";
