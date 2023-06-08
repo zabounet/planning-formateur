@@ -96,10 +96,10 @@
                     </section>
                     <div class="prise-effet">
                         <label for="">Date de prise d'effet : </label>
-                        <input name="date_prise_effet" type="date" required>
+                        <input class="date-champe" name="date_prise_effet" type="date" required>
                     </div>
                 </div>
-                <div>
+                <div class="valid-div">
                     <input type="submit" value="Valider" name="jourTeletravail" class="valider">
                 </div>
             </form>
