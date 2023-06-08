@@ -76,14 +76,14 @@
                     <button type="button" class="add-date-fields" data="ran">+</button>
                 </div>
 
-                <h3>Périodes d'activité en entreprise</h3>
+                <h3>Périodes d'activité en entreprise <span class="legend">/!\ Ne pas remplir si alternance /!\</span></h3>
                 <div class="date-container">
                     <button type="button" class="add-date-fields" data="entreprise"><span>+</span></button>
                 </div>
             </div>
 
             <div class="col2">
-                <h3>Périodes d'activité en centre <span class="legend">*</span></h3>
+                <h3>Périodes d'activité en centre  <span class="legend">/!\ Ne pas remplir sauf si alternance /!\</span></h3>
                 <div class="date-container">
                     
                     <button type="button" class="add-date-fields" data="centre"><span>+</span></button>
