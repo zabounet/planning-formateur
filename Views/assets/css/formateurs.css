@@ -97,9 +97,9 @@ h2 {
 }
 /* les jours de semain */
 
-.teletravail {
+/* .teletravail {
     height: 27rem;
-  }
+  } */
   
   .demande-teletravail {
     display: flex;
@@ -107,7 +107,7 @@ h2 {
     width: 70%;
     margin-right: auto;
     margin-left: auto;
-    height: 21em;
+    /* height: 21em; */
     justify-content: space-between;
   }
 
@@ -116,8 +116,17 @@ h2 {
   }
   .app {
     display: flex;
-    margin-bottom: 2em;
+    margin-top: 1em;
     justify-content: center;
+  }
+  .teletravail-remarqe{
+    font-size: 1.5rem;
+  }
+  .jours-teletravail{
+    font-size: 1.5REm;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
   }
   .prise-effet{
     display: flex;
@@ -185,4 +194,16 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .remarque-text {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    background-color: antiquewhite;
+}
+  .remarque{
+    color: #f00;
+  }
+  .info{
+    color: #007ad3;
   }
