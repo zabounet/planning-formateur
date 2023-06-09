@@ -65,8 +65,8 @@
         </div>
 
         <div class="demande-teletravail">
-            <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine où vous souhaitez être en télétravail</span>
-            <span class="notif notif-demande-teletravail"><b>/!\</b> Pas plus de deux jours par semaine de télétravails sont autorisés <b>/!\</b></span>
+            <span class="titre titre-demande-teletravai teletravail-remarqe">Selectionnez les jours de la semaine où vous souhaitez être en télétravail</span>
+            <span class="notif notif-demande-teletravail teletravail-remarqe"><b>/!\</b> Pas plus de deux jours par semaine de télétravails sont autorisés <b>/!\</b></span>
             
             <form method="post" class="container-teletravail">
                 <div>
@@ -96,7 +96,7 @@
                         <?php endforeach; ?>
                     </section>
 
-                    <span>Les jours colorés correspond aux jours de télétravail en vigueur</span>
+                    <span class="teletravail-remarqe jours-teletravail">Les jours colorés correspond aux jours de télétravail en vigueur</span>
         
                     <div class="prise-effet">
                         <label for="">Date de prise d'effet : </label>
@@ -131,11 +131,11 @@
     <?php if(!empty($infosInterventions)):?>
     <?php foreach ($infosInterventions as $intervention) : ?>
         <form method="post">
-            <p>Date de début : <?php $debut = new DateTime($intervention->date_debut_intervention);
-                                echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($intervention->date_fin_intervention);
-                                echo $fin->format('d-m-Y'); ?></p>
-            <p>Formation :
+            <p>Date de début : <span class="info"> <?php $debut = new DateTime($intervention->date_debut_intervention);
+                                echo $debut->format('d-m-Y'); ?></span></p>
+            <p>Date de fin : <span class="info"> <?php $fin = new DateTime($intervention->date_fin_intervention);
+                                echo $fin->format('d-m-Y'); ?></span></p>
+            <p>Formation : <span class="info">
                 <?php foreach ($infosFormation as $formation) {
                     if ($formation->id_formation === $intervention->id_formation) {
                         echo $formation->nom_formation;
@@ -143,7 +143,7 @@
                         continue;
                     }
                 } ?>
-            </p>
+            </span></p>
             <input type="hidden" name="intervention" value="<?= $intervention->id_intervention; ?>">
             <input class="delete" type="button" value="Supprimer la période">
             <div class="confirm">
@@ -163,10 +163,10 @@
     <?php if(!empty($infosMNSP)):?>
         <?php foreach ($infosMNSP as $mnsp) : ?>
             <form method="post">
-                <p>Date de début : <?php $debut = new DateTime($mnsp->date_debut_MNSP);
-                                    echo $debut->format('d-m-Y'); ?></p>
-                <p>Date de fin : <?php $fin = new DateTime($mnsp->date_fin_MNSP);
-                                    echo $fin->format('d-m-Y'); ?></p>
+                <p>Date de début : <span class="info"> <?php $debut = new DateTime($mnsp->date_debut_MNSP);
+                                    echo $debut->format('d-m-Y'); ?></span></p>
+                <p>Date de fin : <span class="info"> <?php $fin = new DateTime($mnsp->date_fin_MNSP);
+                                    echo $fin->format('d-m-Y'); ?></span></p>
                 <input type="hidden" name="MNSP" value="<?= $mnsp->id_MNSP; ?>">
                 <input class="delete" type="button" value="Supprimer la période">
                 <div class="confirm">
@@ -184,10 +184,10 @@
     <?php if(!empty($infosPerfectionnement)):?>
         <?php foreach ($infosPerfectionnement as $perfectionnement) : ?>
             <form method="post">
-                <p>Date de début : <?php $debut = new DateTime($perfectionnement->date_debut_perfectionnement);
-                                    echo $debut->format('d-m-Y'); ?></p>
-                <p>Date de fin : <?php $fin = new DateTime($perfectionnement->date_fin_perfectionnement);
-                                    echo $fin->format('d-m-Y'); ?></p>
+                <p>Date de début : <span class="info"> <?php $debut = new DateTime($perfectionnement->date_debut_perfectionnement);
+                                    echo $debut->format('d-m-Y'); ?></span></p>
+                <p>Date de fin : <span class="info"> <?php $fin = new DateTime($perfectionnement->date_fin_perfectionnement);
+                                    echo $fin->format('d-m-Y'); ?></span></p>
                 <input type="hidden" name="perfectionnement" value="<?= $perfectionnement->id_perfectionnement; ?>">
                 <input class="delete" type="button" value="Supprimer la période">
                 <div class="confirm">
@@ -205,10 +205,10 @@
     <?php if(!empty($infosVacances)):?>
     <?php foreach ($infosVacances as $vacance) : ?>
         <form method="post">
-            <p>Date de début : <?php $debut = new DateTime($vacance->date_debut_vacances);
-                                echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($vacance->date_fin_vacances);
-                                echo $fin->format('d-m-Y'); ?></p>
+            <p>Date de début : <span class="info"> <?php $debut = new DateTime($vacance->date_debut_vacances);
+                                echo $debut->format('d-m-Y'); ?></span></p>
+            <p>Date de fin : <span class="info"> <?php $fin = new DateTime($vacance->date_fin_vacances);
+                                echo $fin->format('d-m-Y'); ?></span></p>
             <input type="hidden" name="vacance" value="<?= $vacance->id_vacance; ?>">
             <input class="delete" type="button" value="Supprimer la période">
             <div class="confirm">
@@ -227,11 +227,11 @@
     <?php if(!empty($infosAutres)):?>
     <?php foreach ($infosAutres as $autre) : ?>
         <form method="post">
-            <p>Intitulé :  <?=$autre->lettre; ?> </p>
-            <p>Date de début : <?php $debut = new DateTime($autre->date_debut_autre);
-                                echo $debut->format('d-m-Y'); ?></p>
-            <p>Date de fin : <?php $fin = new DateTime($autre->date_fin_autre);
-                                echo $fin->format('d-m-Y'); ?></p>
+            <p>Intitulé : <span class="info">  <?=$autre->lettre; ?> </span></p>
+            <p>Date de début : <span class="info"> <?php $debut = new DateTime($autre->date_debut_autre);
+                                echo $debut->format('d-m-Y'); ?></span></p>
+            <p>Date de fin : <span class="info"> <?php $fin = new DateTime($autre->date_fin_autre);
+                                echo $fin->format('d-m-Y'); ?></span></p>
             <input type="hidden" name="autre" value="<?= $autre->id_autre; ?>">
             <input class="delete" type="button" value="Supprimer la période">
             <div class="confirm">
@@ -247,7 +247,7 @@
 
     <hr class="fin-list">
 
-    <p><span>Remarque : </span>Tous les champs doivent obligatoirement être remplis.</p>
+    <p class="remarque-text"><span class="remarque">Remarque : </span>Tous les champs doivent obligatoirement être remplis.</p>
 
     <form method="post">
         <h2>Ajouter une période d'intervention pour ce formateur</h2>
