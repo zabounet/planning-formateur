@@ -308,7 +308,7 @@ class FormateurController extends Controller
 
                     $ttExists = $teletravail->getByCustom(['validation'],'Date_teletravail',['id_formateur','validation'],['=','IS'],[$idFormateur, 'NULL']);
                     if($ttExists){
-                        $resultat = $teletravail->updateJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                        $resultat = $teletravail->createJoursTeletravail($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
 
                         if ($resultat) {
                             $_SESSION['success_teletravail'] = "Votre demande a été mise à jour avec succès.";
@@ -363,10 +363,10 @@ class FormateurController extends Controller
                     }
                 }
             }
-
+            $today = date('y-m-d');
             if (isset($_SESSION['formateur'])) {
                 $teletravailActuel = new FormateurModel;
-                $teletravailActuel->setSessionTeletravail($_SESSION['formateur']['id']);
+                $teletravailActuel->setSessionTeletravail($_SESSION['formateur']['id'],$today);
             } elseif (isset($_SESSION['admin'])) {
                 $colors = new CouleursModel;
                 $colors->setSessionCoulors();

@@ -67,6 +67,7 @@
         <div class="demande-teletravail">
             <span class="titre titre-demande-teletravai">Selectionnez les jours de la semaine où vous souhaitez être en télétravail</span>
             <span class="notif notif-demande-teletravail"><b>/!\</b> Pas plus de deux jours par semaine de télétravails sont autorisés <b>/!\</b></span>
+            
             <form method="post" class="container-teletravail">
                 <div>
                     <section class="app">
@@ -94,6 +95,9 @@
 
                         <?php endforeach; ?>
                     </section>
+
+                    <span>Les jours colorés correspond aux jours de télétravail en vigueur</span>
+        
                     <div class="prise-effet">
                         <label for="">Date de prise d'effet : </label>
                         <input class="date-champe" name="date_prise_effet" type="date" required>
