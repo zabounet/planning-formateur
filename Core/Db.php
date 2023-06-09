@@ -10,8 +10,8 @@ class Db extends PDO{
 
     private const DBHOST = "localhost";
     private const DBNAME = "planning";
-    private const DBUSER = "AN";
-    private const DBPASS = "projetbadge";
+    private const DBUSER = "sandy";
+    private const DBPASS = "N1B2V3c4x5";
 
     private function __construct(){
         //DSN
