@@ -567,7 +567,7 @@ ALTER TABLE `Date_vacance`
 -- AUTO_INCREMENT pour la table `Formateur`
 --
 ALTER TABLE `Formateur`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 3;
 
 --
 -- AUTO_INCREMENT pour la table `Formation`
