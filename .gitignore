@@ -4,9 +4,6 @@
 .DS_Store
 Thumbs.db
 
-# Ignore database relative files
-/dump
-
 # Ignore dependencies and package managers
 /node_modules
 /bower_components
