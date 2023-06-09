@@ -717,7 +717,7 @@ class AdminController extends Controller
 
                 // manip pour envoiyer un reqeutte vers table notification
                 $jourstele = implode(" et ", $jours);
-                $description = htmlentities(" La manager a saisi pour vouz le télétravail pour " . $jourstele . " à compter du " . date('d-m-Y', strtotime($date_prise_effet)));
+                $description = htmlentities("La manager vous a assigné les jours de télétravail suivants : " . $jourstele . " à compter du " . date('d-m-Y', strtotime($date_prise_effet)));
                 $date_notification = date('Y-m-d H:i:s');
 
                 $table = "Date_teletravail";
@@ -728,7 +728,7 @@ class AdminController extends Controller
                 $ttExists = $teletravail->getByCustom(['validation'], 'Date_teletravail', ['id_formateur', 'validation'], ['=', 'IS'], [$idFormateur, 'Null']);
 
                 if (!empty($ttExists) || !empty($ttValidExists)) {
-                    $resultat = $teletravail->updateJoursTeletravailParAdmin($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
+                    $resultat = $teletravail->createJoursTeletravailParAdmin($joursteletravail, $dateDemandeChangement, $date_prise_effet, $idFormateur);
 
                     if ($resultat) {
                         $_SESSION['success_teletravail'] = "Votre demande a été mise à jour avec succès.";
@@ -947,7 +947,8 @@ class AdminController extends Controller
         $infosMNSP = $formateur->getBy(['id_MNSP', 'date_debut_MNSP', 'date_fin_MNSP'], 'Date_MNSP', ['id_formateur'], [$currentId]);
         $infosPerfectionnement = $formateur->getBy(['id_perfectionnement', 'date_debut_perfectionnement', 'date_fin_perfectionnement'], 'Date_perfectionnement', ['id_formateur'], [$currentId]);
         $infosVacances = $formateur->getBy(['id_vacance', 'date_debut_vacances', 'date_fin_vacances'], 'date_vacance', ['id_formateur', 'validation'], [$currentId, 1]);
-        $teletravailActuel = $formateur->setSessionTeletravail($currentId);
+        $today = date('Y-m-d');
+        $teletravailActuel = $formateur->setSessionTeletravail($currentId ,$today);
         $infosFormateur = $formateur->getInformations();
         $infosFormation = $formateur->getAll('Formation');
         $infosAutres = $formateur->getBy(['id_autre', 'date_debut_autre', 'date_fin_autre', 'lettre'], 'Date_autre', ['id_formateur'], [$currentId]);
@@ -1095,7 +1096,10 @@ class AdminController extends Controller
                 ['Date_teletravail'],
                 ['id_formateur'],
                 ['Formateur.id_formateur'],
-                $id_formateur
+                $id_formateur,
+                true,
+                "date_prise_effet",
+                "ASC"
             );
             foreach ($formateurs as $formateur) {
                 $teletravail_formateurs = [
@@ -1503,6 +1507,7 @@ class AdminController extends Controller
                     $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
                     $formateur_autre[$formateurs[$z]['id_formateur']] = array();
 
+                    $lastMatchedDate = null;
                     // Boucle pour parcourir tous les jours du tableau
                     for ($i = 0; $i < $nbJours; $i++) {
 
@@ -1585,19 +1590,22 @@ class AdminController extends Controller
                         }
 
                         $formateurAvoirTeletravail = 0;
-                        foreach ($dates_teletravail_formateurs as $periode_teletravail) {
-                            if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
-                                if ($periode_teletravail['prise_effet'] <= $periode) {
-                                    $jours_array = explode(',', $periode_teletravail['jours']);
-                                    foreach ($jours_array as $jour) {
-                                        if ($jourLettre === $joursSemaine[$jour]) {
-                                            $formateurAvoirTeletravail = 1;
-                                            break;
+                            foreach ($dates_teletravail_formateurs as $periode_teletravail) {
+                                if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
+                                    if ($periode_teletravail['prise_effet'] <= $periode) {
+                                        if ($lastMatchedDate === null || $periode_teletravail['prise_effet'] >= $lastMatchedDate) {
+                                            $lastMatchedDate = $periode_teletravail['prise_effet'];
+                                            $jours_array = explode(',', $periode_teletravail['jours']);
+                                            foreach ($jours_array as $jour) {
+                                                if ($jourLettre === $joursSemaine[$jour]) {
+                                                    $formateurAvoirTeletravail = 1;
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
                         $formateurAvoirMNSP = false;
                         foreach ($formateur_MNSP[$formateurs[$z]['id_formateur']] as $MNSPFormateur) {

@@ -167,7 +167,10 @@ class RooterController extends Controller
                 ['Date_teletravail'],
                 ['id_formateur'],
                 ['Formateur.id_formateur'],
-                $formateursSelectionnes
+                $formateursSelectionnes,
+                true,
+                "date_prise_effet",
+                'ASC'
             );
             foreach ($formateurs as $formateur) {
                 $teletravail_formateurs = [
@@ -858,8 +861,8 @@ class RooterController extends Controller
                         $formateur_MNSP[$formateurs[$z]['id_formateur']] = array();
                         $formateur_perfectionnement[$formateurs[$z]['id_formateur']] = array();
                         $formateur_autre[$formateurs[$z]['id_formateur']] = array();
-
-
+                        
+                        $lastMatchedDate = null;
                         // Boucle pour parcourir tous les jours du tableau
                         for ($i = 0; $i < $nbJours; $i++) {
 
@@ -934,11 +937,14 @@ class RooterController extends Controller
                             foreach ($dates_teletravail_formateurs as $periode_teletravail) {
                                 if ($periode_teletravail['id_formateur'] === $formateurs[$z]['id_formateur'] && $periode_teletravail['validation'] == 1) {
                                     if ($periode_teletravail['prise_effet'] <= $periode) {
-                                        $jours_array = explode(',', $periode_teletravail['jours']);
-                                        foreach ($jours_array as $jour) {
-                                            if ($jourLettre === $joursSemaine[$jour]) {
-                                                $formateurAvoirTeletravail = 1;
-                                                break;
+                                        if ($lastMatchedDate === null || $periode_teletravail['prise_effet'] >= $lastMatchedDate) {
+                                            $lastMatchedDate = $periode_teletravail['prise_effet'];
+                                            $jours_array = explode(',', $periode_teletravail['jours']);
+                                            foreach ($jours_array as $jour) {
+                                                if ($jourLettre === $joursSemaine[$jour]) {
+                                                    $formateurAvoirTeletravail = 1;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
